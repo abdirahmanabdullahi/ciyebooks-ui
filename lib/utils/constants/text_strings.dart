@@ -78,9 +78,10 @@ class AppTexts {
   static const String emailNotReceivedMessage =
       "Didn’t get the email? Check your junk/spam or resend it.";
   static const String yourAccountCreatedTitle =
-      "Your account was successfully created!";
+      "Your account was successfully created!"; static const String emailVerified =
+      "Your email has been verified";
   static const String yourAccountCreatedSubTitle =
-      "Welcome to your Ciye Books account. Unleash the joy of seamless finance management";
+      "Go ahead and login to your account and unleash the joy of seamless finance management";
   // -- Product
   // static const String popularProducts = "Popular Products";
 

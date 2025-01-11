@@ -4,7 +4,7 @@
 class AppImages {
   // -- App Logos
   static const String logoDark = "assets/logos/logo dark.png";
-  static const String logoLight = "assets/logos/logo light.png";
+  static const String logoLight = "assets/logos/logo dark.png";
   //
   // static const String darkAppLogo = "assets/logos/ciye dark logo.png";
   // static const String lightAppLogo = "assets/logos/ciye light logo.png";

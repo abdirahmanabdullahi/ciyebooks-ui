@@ -1,7 +1,7 @@
 
 import 'package:ciyebooks/features/onboarding/widgets/dot_navigator.dart';
-import 'package:ciyebooks/features/onboarding/widgets/onboarding_nextButton.dart';
-import 'package:ciyebooks/features/onboarding/widgets/onboarding_skipButton.dart';
+import 'package:ciyebooks/features/onboarding/widgets/onboarding_next_button.dart';
+import 'package:ciyebooks/features/onboarding/widgets/onboarding_skip_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../utils/constants/image_strings.dart';

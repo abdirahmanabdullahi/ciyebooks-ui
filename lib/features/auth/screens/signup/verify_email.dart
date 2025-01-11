@@ -9,21 +9,18 @@ import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../login/login.dart';
+import 'controllers/verify_email_controller.dart';
 
 class VerifyEmail extends StatelessWidget {
   const VerifyEmail({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VerifyEmailController());
     return Scaffold(
       appBar: AppBar(backgroundColor: AppColors.quarternary,
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () => Get.offAll(() => const Login()),
-            icon: const Icon(CupertinoIcons.clear),
-          )
-        ],
+
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -60,12 +57,7 @@ AppSizes.sm          ),
                   width: double.infinity,
                   child: FloatingActionButton(elevation: 2,backgroundColor: AppColors.prettyDark,
                     child:  Text(AppTexts.tContinue,style: Theme.of(context).textTheme.titleLarge!.apply(color: AppColors.quinary),),
-                    onPressed: () => Get.to(() => SuccessScreen(
-                          image: AppImages.staticSuccessIllustration,
-                          title: AppTexts.yourAccountCreatedTitle,
-                          subtitle: AppTexts.yourAccountCreatedSubTitle,
-                          onPressed: () => Get.offAll(()=>Login())
-                        )),
+                    onPressed: () => controller.checkEmailVerificationStatus(),
                   ),
                 ),
 
@@ -77,7 +69,7 @@ AppSizes.sm          ),
                       AppTexts.resendEmail,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    onPressed: () {},
+                    onPressed: () => controller.sendVerificationEmail(),
                   ),
                 )
               ],

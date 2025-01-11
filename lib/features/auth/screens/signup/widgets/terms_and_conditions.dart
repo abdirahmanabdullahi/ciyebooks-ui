@@ -1,5 +1,7 @@
+import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
@@ -11,17 +13,20 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = SignupController.instance;
     return Row(
       children: [
         SizedBox(
           width: 20,
           height: 20,
-          child: Checkbox(
-            value: true,
-            onChanged: (value) {},
+          child: Obx(
+            () => Checkbox(
+              value: controller.privacyPolicy.value,
+              onChanged: (value)=>controller.privacyPolicy.value=!controller.privacyPolicy.value,
+            ),
           ),
         ),
-         Gap(AppSizes.spaceBtwInputFields),
+        Gap(AppSizes.spaceBtwInputFields),
         Text.rich(
           TextSpan(
             children: [

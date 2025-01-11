@@ -17,7 +17,7 @@ class CustomDivider extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Flexible(
-          child: Divider(
+          child: Divider(height: 0,
             color: dark ? AppColors.darkGrey : AppColors.grey,
             thickness: 1,
             indent: 60,

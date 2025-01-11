@@ -11,7 +11,7 @@ class TextFormFieldTheme {
     suffixIconColor: Colors.grey,
     // constraints: const BoxConstraints.expand(height: TSizes.inputFieldHeight),
     labelStyle: const TextStyle()
-        .copyWith(fontSize: AppSizes.fontSizeMd, color: AppColors.darkGrey),
+        .copyWith(fontSize: AppSizes.fontSizeMd, color: AppColors.darkGrey,),
     hintStyle: const TextStyle()
         .copyWith(fontSize: AppSizes.fontSizeSm, color: AppColors.dark),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),

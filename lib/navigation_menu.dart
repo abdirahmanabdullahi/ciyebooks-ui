@@ -1,6 +1,6 @@
-import 'dart:math';
 
 
+import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:ciyebooks/utils/constants/image_strings.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class NavigationMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     // final dark = HelperFunctions.isDarkMode(context);
     final controller = Get.put(NavigationController());
+    final authController = Get.put(AuthRepo());
     final no = controller.selectedIndex.value;
     return Scaffold(
       // Add the Drawer here
@@ -490,7 +491,7 @@ class NavigationMenu extends StatelessWidget {
             Gap(40),
             SizedBox(height: 70,
               child: FloatingActionButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),backgroundColor: AppColors.prettyDark,
-                  onPressed: () => Get.offAll(() => Login()),
+                  onPressed: () => authController.logoutUser(),
                   child: Text("Logout",style: Theme.of(context).textTheme.titleSmall!.apply(color: AppColors.quinary),)),
             )
           ],

@@ -12,7 +12,7 @@ class TFullScreenLoader {
   /// Parameters:
   ///   - text: The text to be displayed in the loading dialog.
   ///   - animation: The Lottie animation to be shown.
-  static void openLoadingDialog(String text, String animation) {
+  static void openLoadingDialog() {
     showDialog(
       context: Get.overlayContext!, // Use Get.overlayContext for overlay dialogs
       barrierDismissible: false, // The dialog can't be dismissed by tapping outside it
@@ -22,12 +22,7 @@ class TFullScreenLoader {
           color: HelperFunctions.isDarkMode(Get.context!) ? AppColors.prettyDark : AppColors.quinary,
           width: double.infinity,
           height: double.infinity,
-          child: Column(
-            children: [
-              const SizedBox(height: 250), // Adjust the spacing as needed
-              CustomAnimationLoaderWidget(text: text, animation: animation),
-            ],
-          ),
+          child: Center(child: CircularProgressIndicator()),
         ),
       ),
     );
