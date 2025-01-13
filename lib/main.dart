@@ -2,13 +2,14 @@ import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'app.dart';
 
-Future<void> main() async {
+Future<void> main() async {debugPaintBaselinesEnabled:true;
   final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();
 

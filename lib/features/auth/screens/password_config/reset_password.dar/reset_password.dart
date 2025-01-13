@@ -1,3 +1,4 @@
+import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -7,6 +8,7 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
+import '../../../controllers/forgot_passwor_controller.dart';
 import '../../login/login.dart';
 
 class ResetPassword extends StatelessWidget {
@@ -47,7 +49,7 @@ class ResetPassword extends StatelessWidget {
               child: FloatingActionButton(
                 backgroundColor: AppColors.prettyDark,
                 elevation: 2,
-                onPressed: () => Get.offAll(() => const Login()),
+                onPressed: () => AuthRepo.instance.screenRedirect(),
                 child: Text(
                   AppTexts.done,
                   style: Theme.of(context)
@@ -62,7 +64,7 @@ class ResetPassword extends StatelessWidget {
               width: double.infinity,
               child: TextButton(
                 child: const Text(AppTexts.resendEmail),
-                onPressed: () => Get.to(() => const Login()),
+                onPressed: () => ForgotPasswordController.instance.resendPasswordResetLink(),
               ),
             )
           ]),

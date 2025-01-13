@@ -1,5 +1,6 @@
-
+import 'package:ciyebooks/features/auth/controllers/forgot_passwor_controller.dart';
 import 'package:ciyebooks/features/auth/screens/password_config/reset_password.dar/reset_password.dart';
+import 'package:ciyebooks/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ForgotPasswordController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -33,27 +35,41 @@ class ForgotPassword extends StatelessWidget {
               style: Theme.of(context).textTheme.labelMedium,
             ),
             const Gap(AppSizes.spaceBtwSections * 2),
-            TextFormField(
-              decoration: const InputDecoration(labelText: AppTexts.email),
+            Form(
+              key: controller.forgotPasswordFormKey,
+              child: TextFormField(
+                validator: (value) =>
+                    Validator.validateEmptyText("Email", value),
+                controller: controller.email,
+                decoration: const InputDecoration(labelText: AppTexts.email),
+              ),
             ),
             const Gap(AppSizes.defaultSpace),
             SizedBox(
               height: 50,
               width: double.infinity,
-              child: FloatingActionButton(
-                backgroundColor: AppColors.prettyDark,
-                elevation: 2,
-                onPressed: () => Get.offAll(() => const ResetPassword()),
-                child: Text(
-                  AppTexts.submit,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: AppColors.quinary),
+              child: Obx(
+                () => FloatingActionButton(
+                  backgroundColor: AppColors.prettyDark,
+                  elevation: 2,
+                  onPressed: () => controller.sendPasswordResetLink(),
+                  child: controller.isLoading.value
+                      ? SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ))
+                      : Text(
+                          AppTexts.submit,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .apply(color: AppColors.quinary),
+                        ),
                 ),
               ),
             ),
-
           ],
         ),
       ),

@@ -10,12 +10,14 @@ import '../../../utils/exceptions/platform_exceptions.dart';
 
 class UserRepo extends GetxController {
   static UserRepo get instance => Get.find();
-final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
   //Function to save data to firestore
-  Future<void>saveUserDate(UserModel user) async{
-    try{
+
+  Future<void> saveUserDate(UserModel user) async {
+    try {
       await _db.collection('Users').doc(user.id).set(user.toJson());
-    }on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
@@ -28,5 +30,3 @@ final FirebaseFirestore _db = FirebaseFirestore.instance;
     }
   }
 }
-
-
