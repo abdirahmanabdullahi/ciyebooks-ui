@@ -38,7 +38,7 @@ class SignInForm extends StatelessWidget {
           ),
           Gap(AppSizes.spaceBtwInputFields),
           Obx(
-            () => TextFormField(
+            () => TextFormField(keyboardType: TextInputType.emailAddress,
               obscureText: controller.hidePassword.value,
               controller: controller.password,
               validator: (value) =>

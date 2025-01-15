@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
 import 'package:ciyebooks/features/setup/widgets/cash_in_hand_page.dart';
 import 'package:ciyebooks/features/setup/widgets/expense_page.dart';
 import 'package:ciyebooks/features/setup/widgets/foreign_currencies_page.dart';
@@ -9,6 +10,8 @@ import 'package:ciyebooks/features/setup/widgets/summary.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class Setup extends StatelessWidget {
   const Setup({super.key});
@@ -32,49 +35,11 @@ class Setup extends StatelessWidget {
             ReceivablesPage(),
             PayablesPage(),
             ExpensesPage(),
-            ForeignCurrenciesPage(),FinanceDashboardScreen()
+            ForeignCurrenciesPage(),
+            Summary()
           ],
         ),
       ),
     );
   }
-}
-
-/// Confirmation Page
-Widget _buildConfirmationPage() {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(
-        "Review Your Setup",
-        textAlign: TextAlign.center,
-      ),
-      const Gap(20),
-      Text(
-        "Please review all your entries. You can go back to make corrections if needed.",
-        textAlign: TextAlign.center,
-      ),
-      const Gap(30),
-      ElevatedButton(
-        onPressed: () {
-          // Submit setup logic here
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.prettyDark,
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-        child: const Text(
-          "Submit Setup",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    ],
-  );
 }

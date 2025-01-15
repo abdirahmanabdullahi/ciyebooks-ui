@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 
 class CashInHandPage extends StatelessWidget {
   const CashInHandPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +25,8 @@ class CashInHandPage extends StatelessWidget {
               const Gap(10),
               const Text(
                 "Cash in hand refers to the physical cash you have readily available. "
-                    "It's important for tracking your immediate liquidity and ensuring you have funds for day-to-day expenses. "
-                    "Keep this updated to manage your finances better.",
+                "It's important for tracking your immediate liquidity and ensuring you have funds for day-to-day expenses. "
+                "Keep this updated to manage your finances better.",
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
@@ -96,6 +95,69 @@ class CashInHandPage extends StatelessWidget {
                   ],
                 ),
               ),
+              const Gap(20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Cash at bank",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Gap(10),
+                    const Text(
+                      "KES 0.00",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const Gap(20),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showAddCashBottomSheet(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.prettyDark,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Edit",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -107,12 +169,12 @@ class CashInHandPage extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
+      backgroundColor: AppColors.quinary,
+      // shape: const RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.vertical(
+      //     top: Radius.circular(20),
+      //   ),
+      // ),
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(
@@ -125,15 +187,6 @@ class CashInHandPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Enter Cash in Hand",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const Gap(10),
               TextField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -178,7 +231,8 @@ class CashInHandPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),Gap(20)
+              ),
+              Gap(20)
             ],
           ),
         );

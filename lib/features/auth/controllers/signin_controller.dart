@@ -1,5 +1,6 @@
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/utils/helpers/network_manager.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,18 +18,16 @@ class SignInController extends GetxController {
   final password = TextEditingController();
   GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
 
-
-  @override
-  void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL');
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD');
-    super.onInit();
-
-
-  }
+  // @override
+  // void onInit() {
+  //   email.text = localStorage.read('REMEMBER_ME_EMAIL');
+  //   password.text = localStorage.read('REMEMBER_ME_PASSWORD');
+  //   super.onInit();
+  //
+  //
+  // }
 
   /// Autofill email and password
-
 
   Future<void> signIn() async {
     try {
@@ -67,6 +66,12 @@ class SignInController extends GetxController {
       final name = userCredentials.user?.email.toString();
 
       ///Success message
+
+      /// Stop loading
+      isLoading.value = false;
+
+      /// Redirect
+      AuthRepo.instance.screenRedirect();
       Get.snackbar(
         "Successfully logged in",
         "Welcome back $name",
@@ -77,16 +82,11 @@ class SignInController extends GetxController {
           color: Colors.white,
         ),
       );
-
-      /// Stop loading
-      isLoading.value = false;
-
-      /// Redirect
-      AuthRepo.instance.screenRedirect();
     } catch (e) {
       isLoading.value = false;
       Get.snackbar("There was an error during sign in!", e.toString(),
-          icon: Icon(size: 40,
+          icon: Icon(
+            size: 40,
             Icons.error,
             color: Colors.white,
           ),

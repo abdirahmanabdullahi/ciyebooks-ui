@@ -58,7 +58,7 @@ class PageOne extends StatelessWidget {
                   child: Row(
                     children: [
                       const Icon(Icons.lightbulb,
-                          color: Colors.orange, size: 20),
+                          color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -74,7 +74,7 @@ class PageOne extends StatelessWidget {
                   child: Row(
                     children: [
                       const Icon(Icons.lightbulb,
-                          color: Colors.orange, size: 20),
+                          color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -90,7 +90,7 @@ class PageOne extends StatelessWidget {
                   child: Row(
                     children: [
                       const Icon(Icons.lightbulb,
-                          color: Colors.orange, size: 20),
+                          color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -106,7 +106,7 @@ class PageOne extends StatelessWidget {
                   child: Row(
                     children: [
                       const Icon(Icons.lightbulb,
-                          color: Colors.orange, size: 20),
+                          color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -218,31 +218,7 @@ class PageOne extends StatelessWidget {
               ],
             ),
             const Gap(30),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, '/setupForm'); // Navigate to setup form
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.prettyDark,
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                child: const Text(
-                  "Start Setup",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+
           ],
         ),
       ),

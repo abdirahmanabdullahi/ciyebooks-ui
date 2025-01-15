@@ -9,12 +9,7 @@ class ExpensesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.quarternary,
-      appBar: AppBar(
-        backgroundColor: AppColors.quinary,
-        title: const Text("Expenses"),
-        centerTitle: true,
-        elevation: 0,
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -180,7 +175,7 @@ class ExpensesPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),Gap(20)
+              ),
             ],
           ),
         );

@@ -1,20 +1,23 @@
+import 'dart:ui';
+
 import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
-import 'package:ciyebooks/features/setup/setup.dart';
-import 'package:ciyebooks/navigation_menu.dart';
+import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/format_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/platform_exceptions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../features/auth/screens/login/login.dart';
 import '../../../features/onboarding/onboarding.dart';
+import '../../../features/setup/setup.dart';
+import '../../../navigation_menu.dart';
 
 class AuthRepo extends GetxController {
   static AuthRepo get instance => Get.find();
@@ -22,6 +25,7 @@ class AuthRepo extends GetxController {
   //Variables
   final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
+  // final uid = FirebaseAuth.instance.currentUser?.uid;
 
 // Called from main.dart on app launch
   @override
@@ -30,47 +34,58 @@ class AuthRepo extends GetxController {
     screenRedirect();
   }
 
-// Function to show relevant Screen
   screenRedirect() async {
     final user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      //Local storage
-      deviceStorage.writeIfNull('IsFirstTime', true);
-
-      deviceStorage.read('IsFirstTime') != true
-          ? Get.offAll(() => Login())
-          : Get.offAll(
-              () => WelcomeScreen(),
-            );
-    } else {
+    if (user != null) {
       if (user.emailVerified) {
-        /// Check if account is setup
         fetchSetupStatus();
-
-        // Get.offAll(() => NavigationMenu());
       } else {
         Get.offAll(() => VerifyEmail());
       }
+
     }
   }
+// Function to show relevant Screen
+//   screenRedirect() async {
+//     final user = _auth.currentUser;
+//
+//     if (user != null) {
+//       //Local storage
+//       deviceStorage.writeIfNull('IsFirstTime', true);
+//
+//       deviceStorage.read('IsFirstTime') != true
+//           ? Get.offAll(() => Login())
+//           : Get.offAll(
+//               () => WelcomeScreen(),
+//             );
+//     } else {
+//       if (user!.emailVerified) {
+//         Get.to(()=>NavigationMenu());
+//
+//         /// Check if account is setup
+//         // fetchSetupStatus();
+//
+//       } else {
+//         Get.offAll(() => VerifyEmail());
+//       }
+//     }
+//   }
 
   /// Check if account is setup
-  Future<UserModel> fetchSetupStatus() async {
+  Future<BalancesModel> fetchSetupStatus() async {
     try {
+      final uid =FirebaseAuth.instance.currentUser?.uid;
       final documentSnapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(_auth.currentUser!.uid)
+      .collection('Users').doc(uid).collection('Setup').doc('Balances')
           .get();
 
       if (documentSnapshot.exists &&
-          !UserModel.fromSnapshot(documentSnapshot).accountSetupComplete) {
-        // Get.to(NavigationMenu());
-        Get.offAll(()=>Setup());
-        return UserModel.fromSnapshot(documentSnapshot);
+          BalancesModel.fromSnapshot(documentSnapshot).accountIsSetup) {
+        Get.offAll(() => NavigationMenu());
+        return BalancesModel.fromSnapshot(documentSnapshot);
       } else {
-
-        return UserModel.empty();
+        Get.offAll(()=>Setup());
+        return BalancesModel.empty();
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
@@ -81,7 +96,8 @@ class AuthRepo extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      throw 'Something went wrong. Please try again';
+      throw Get.snackbar("Could not find setup data!", e.toString(),
+          backgroundColor: Color(0xffFF0033), colorText: Colors.white);
     }
   }
   /*------------------------ Email and password sign-in ------------------------*/

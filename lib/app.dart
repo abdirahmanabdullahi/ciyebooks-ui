@@ -25,7 +25,7 @@ class _AppState extends State<App> {
       // darkTheme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       // initialBinding: GeneralBindings(),
-      home: Scaffold(backgroundColor:AppColors.primary,body: Center(child: CircularProgressIndicator(color: AppColors.prettyDark,)))
+      home: Scaffold(backgroundColor:AppColors.primary,body: Center(child: Image(image: AssetImage('assets/images/loading.webp',),width: 300,)))
     );
   }
 }

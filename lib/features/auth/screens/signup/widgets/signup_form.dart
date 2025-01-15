@@ -57,9 +57,9 @@ class SignupForm extends StatelessWidget {
             ],
           ),
           const Gap(AppSizes.spaceBtwInputFields/2),
-          TextFormField(
+          TextFormField(cursorHeight: 30,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400),
             validator: (value) =>
-                Validator.validateEmptyText('user name', value),
+                Validator.validateEmptyText('username', value),
             controller: controller.userName,
             expands: false,
             decoration: const InputDecoration(
@@ -68,7 +68,7 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           const Gap(AppSizes.spaceBtwInputFields/2),
-          TextFormField(
+          TextFormField(keyboardType: TextInputType.emailAddress,
             validator: (value) => Validator.validateEmail(value),
             controller: controller.email,
             expands: false,

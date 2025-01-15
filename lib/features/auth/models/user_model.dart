@@ -8,7 +8,6 @@ class UserModel {
   final String email;
   String phoneNumber;
   String profilePicture;
-  bool accountSetupComplete;
 
   UserModel(
       {required this.firstName,
@@ -18,7 +17,7 @@ class UserModel {
       required this.email,
       required this.phoneNumber,
       required this.profilePicture,
-      required this.accountSetupComplete});
+     });
 
   String get fullName => '$firstName $lastName';
 
@@ -31,7 +30,6 @@ class UserModel {
         email: '',
         phoneNumber: '',
         profilePicture: '',
-        accountSetupComplete: false,
       );
 
   /// Convert usermodel to JSON structure for storing data in firestore
@@ -43,7 +41,6 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'ProfilePicture': profilePicture,
-      'accountSetupComplete':accountSetupComplete,
     };
   }
 
@@ -59,7 +56,7 @@ class UserModel {
           email: data['Email'] ?? '',
           phoneNumber: data['phoneNumber'] ?? '',
           profilePicture: data['profilePicture'] ?? '',
-          accountSetupComplete: data['accountSetupComplete'] ?? false);
+         );
     } else {
       return UserModel.empty();
     }
