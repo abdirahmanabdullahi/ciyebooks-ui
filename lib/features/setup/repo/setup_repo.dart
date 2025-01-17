@@ -30,4 +30,15 @@ class SetupRepo extends GetxController {
       throw 'Something went wrong. Please try again';
     }
   }
+
+  /// Update single field
+ Future<void> updateSingleField(Map<String,dynamic> json) async{
+   try {
+     await _db.collection('Users').doc('/$uid/Setup/Balances').update(json);///Hey chat gpt. Why is the uid here null??
+
+   } catch (e) {
+     throw e.toString();
+   }
+
+ }
 }

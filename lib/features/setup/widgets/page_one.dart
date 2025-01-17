@@ -57,8 +57,8 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb,
-                          color: Colors.green, size: 20),
+                      const Icon(Icons.lightbulb_outline,
+                          color: Colors.black, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -73,8 +73,8 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb,
-                          color: Colors.green, size: 20),
+                      const Icon(Icons.lightbulb_outline,
+                          color: Colors.black, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -89,8 +89,8 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb,
-                          color: Colors.green, size: 20),
+                      const Icon(Icons.lightbulb_outline,
+                          color: Colors.black, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -105,8 +105,8 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb,
-                          color: Colors.green, size: 20),
+                      const Icon(Icons.lightbulb_outline,
+                          color: Colors.black, size: 20),
                       const Gap(10),
                       Expanded(
                         child: Text(
@@ -139,7 +139,7 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const Icon(Icons.task_alt,
                           color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
@@ -155,7 +155,7 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const Icon(Icons.task_alt,
                           color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
@@ -171,7 +171,7 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const Icon(Icons.task_alt,
                           color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
@@ -187,7 +187,7 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const Icon(Icons.task_alt,
                           color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(
@@ -203,7 +203,7 @@ class PageOne extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle,
+                      const Icon(Icons.task_alt,
                           color: Colors.green, size: 20),
                       const Gap(10),
                       Expanded(

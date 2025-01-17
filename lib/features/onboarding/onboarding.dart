@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import '../../utils/constants/image_strings.dart';
 import '../../utils/constants/text_strings.dart';
 import 'onboarding_controller.dart';
-import 'widgets/onboarding_page.dart';
+import '../setup/widgets/onboarding_page.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

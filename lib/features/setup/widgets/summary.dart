@@ -4,7 +4,6 @@ import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../controller/setup_controller.dart';
 
@@ -13,111 +12,113 @@ class Summary extends StatelessWidget {
   const Summary({super.key});
 
   @override
-  Widget build(BuildContext context) {    final controller = Get.put(SetupController());
+  Widget build(BuildContext context) {
+    final controller = Get.put(SetupController());
 
-  return Scaffold(backgroundColor: AppColors.quinary,
-      body: SingleChildScrollView(physics: ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Gap(10),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Summary',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Gap(10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Summary',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Divider(),
+              BalanceSummaryWidget(
+                cashBalance: '\$12,500',
+                capitalAccount: '\$20,000',
+              ),
+              Divider(),
+              SizedBox(height: 10),
+              FinancialDetailWidget(
+                title: 'Payables',
+                value: '-\$3,000',
+                valueColor: Colors.red,
+              ),
+              FinancialDetailWidget(
+                title: '',
+                value: '-KES 245,500',
+                valueColor: Colors.red,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Divider(),
+              ),
+              FinancialDetailWidget(
+                title: 'Receivables',
+                value: '-\$3,000',
+                valueColor: Colors.green,
+              ),
+              FinancialDetailWidget(
+                title: '',
+                value: '340,000',
+                valueColor: Colors.green,
+              ),
+              Divider(),
+              SizedBox(height: 10),
+              FinancialDetailWidget(
+                title: 'Expenses',
+                value: '-\$800 ',
+                valueColor: Colors.red,
+              ),
+              SizedBox(height: 10),
+              Divider(),
+              SizedBox(height: 10),
+              FinancialDetailWidget(
+                title: 'Profit in hand',
+                value: 'KES 800 ',
+                valueColor: Colors.green,
+              ),
+              SizedBox(height: 10),
+              Divider(),
+              Gap(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Foreign currencies at cost',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ),
+              Gap(10),
+              ForexData(),
+              Divider(),
+              Gap(20),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () => controller.saveSetupData(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
                   ),
-                ),Divider(),
-                BalanceSummaryWidget(
-                  cashBalance: '\$12,500',
-                  capitalAccount: '\$20,000',
-                ),
-                Divider(),
-
-                SizedBox(height: 10),
-                FinancialDetailWidget(
-                  title: 'Payables',
-                  value: '-\$3,000',
-                  valueColor: Colors.red,
-                ),
-                FinancialDetailWidget(
-                  title: '',
-                  value: '-KES 245,500',
-                  valueColor: Colors.red,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Divider(),
-                ),
-                FinancialDetailWidget(
-                  title: 'Receivables',
-                  value: '-\$3,000',
-                  valueColor: Colors.green,
-                ),
-                FinancialDetailWidget(
-                  title: '',
-                  value: '340,000',
-                  valueColor: Colors.green,
-                ),
-                Divider(),
-                SizedBox(height: 10),
-                FinancialDetailWidget(
-                  title: 'Expenses',
-                  value: '-\$800 ',
-                  valueColor: Colors.red,
-                ),SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                FinancialDetailWidget(
-                  title: 'Profit in hand',
-                  value: 'KES 800 ',
-                  valueColor: Colors.green,
-                ),SizedBox(height: 10),
-                Divider(),
-                Gap(20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    'Foreign currencies at cost',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ),Gap(10),
-                ForexData(),
-                Divider(),Gap(20),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB( 16, 0,16,20),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () =>controller.saveSetupData(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.secondary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                ),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -199,7 +200,10 @@ class FinancialDetailWidget extends StatelessWidget {
           ),
           Text(
             value,
-            style: TextStyle(color: valueColor, fontWeight: FontWeight.w600,fontFamily: 'Poppins'),
+            style: TextStyle(
+                color: valueColor,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins'),
           ),
         ],
       ),
@@ -225,7 +229,8 @@ class CurrencyDetailWidget extends StatelessWidget {
         children: [
           Text(
             'Foreign Currencies at cost',
-            style: TextStyle( fontWeight: FontWeight.w600,fontFamily: 'Poppins'),
+            style:
+                TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
           ),
           SizedBox(height: 10),
           ...currencies.map((currency) => InfoRow(
@@ -294,11 +299,15 @@ class InfoRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle( fontWeight: FontWeight.w600,fontFamily: 'Poppins'),
+            style:
+                TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
           ),
           Text(
             value,
-            style: TextStyle(color: valueColor, fontWeight: FontWeight.w600,fontFamily: 'Poppins'),
+            style: TextStyle(
+                color: valueColor,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Poppins'),
           ),
         ],
       ),
@@ -313,7 +322,8 @@ class ForexData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SizedBox(width: double.infinity,
+      child: SizedBox(
+        width: double.infinity,
         child: DataTable(
           sortAscending: true,
           horizontalMargin: 5,
