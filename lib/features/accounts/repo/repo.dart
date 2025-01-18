@@ -1,25 +1,24 @@
-import 'package:ciyebooks/utils/helpers/network_manager.dart';
+import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
-import '../models/setup_model.dart';
 
-class SetupRepo extends GetxController {
-  static SetupRepo get instance => Get.find();
+class AccountsRepo extends GetxController {
+  static AccountsRepo get instance => Get.find();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final uid = FirebaseAuth.instance.currentUser?.uid;
 
   //Function to save data to firestore
-  Future<void> saveUserDate(BalancesModel balances) async {
+
+  Future<void> savaAccountData(AccountModel account) async {
     try {
-      await _db.collection('Users').doc(uid).collection('Setup').doc('Balances').set(balances.toJson());
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Accounts").doc("2025-01-18 04:14:37.262240"
+      ).set(account.toJson(),SetOptions(merge: true));
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -32,13 +31,4 @@ class SetupRepo extends GetxController {
       throw 'Something went wrong. Please try again';
     }
   }
-
-  /// Update single field
- Future<void> updateSingleField(Map<String,dynamic> json) async{
-
-   await _db.collection('Users').doc('/$uid/Setup/Balances').update(json);///Hey chat gpt. Why is the uid here null??
-
-
-
- }
 }

@@ -27,6 +27,7 @@ class SetupController extends GetxController {
   final dateCreated = TextEditingController();
 
   GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
 
   /// Dot navigator
   Rx<int> currentPageIndex = 0.obs;
@@ -54,10 +55,6 @@ class SetupController extends GetxController {
         return;
       }
 
-      // Form validation
-      // if (!capitalFormKey.currentState!.validate()) {
-      //   return;
-      // }
       final newSetup = BalancesModel(
         capital: double.tryParse(capital.text.trim()) ?? 00,
         kesCashBalance: double.tryParse(kesCashBalance.text.trim()) ?? 00,
@@ -88,7 +85,6 @@ class SetupController extends GetxController {
   }
 
   ///Update capital
-  /// Update capital
   Future<void> setupCapital() async {
     final setupRepo = Get.put(SetupRepo());
 
@@ -97,9 +93,13 @@ class SetupController extends GetxController {
       if (!capitalFormKey.currentState!.validate()) {
         return;
       }
-
-      // Parse the capital value
-
+      final connection = await NetworkManager.instance.isConnected();
+      connection? null:Get.snackbar(
+        "Success!",
+        "Capital has been saved locally and will sync once you're online.",
+        backgroundColor: Colors.blue,
+        colorText: Colors.white,
+      );
 
       // Prepare data to update
       Map<String, dynamic> capitalBalance = {
@@ -108,6 +108,46 @@ class SetupController extends GetxController {
 
       // Update the single field in the repository
       await setupRepo.updateSingleField(capitalBalance);
+      Get.back();
+
+      // Notify the user of success
+      Get.snackbar(
+        "Success!",
+        "Capital has been updated successfully.",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      // Handle errors and notify the user
+      print(e.toString());
+      Get.snackbar(
+        "Oh snap!",
+        e.toString(),
+        backgroundColor: Colors.black,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  ///Update kenya shilling cash in hand
+  Future<void> updateKesCashInHand() async {
+    final setupRepo = Get.put(SetupRepo());
+
+    try {
+      // Validate the form before proceeding
+      if (!cashKesInHandFormKey.currentState!.validate()) {
+        return;
+      }
+
+      // Prepare data to update
+      Map<String, dynamic> balances = {
+        'KesCashBalance': double.tryParse(kesCashBalance.text.trim()) ?? 00,
+        'KesBankBalance': double.tryParse(kesBankBalance.text.trim()) ?? 00,
+      };
+
+      // Update the single field in the repository
+      await setupRepo.updateSingleField(balances);
+      Get.back();
 
       // Notify the user of success
       Get.snackbar(

@@ -1,6 +1,12 @@
 import 'package:ciyebooks/utils/constants/colors.dart';
+import 'package:ciyebooks/utils/constants/sizes.dart';
+import 'package:ciyebooks/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../controller/setup_controller.dart';
 
 class CashInHandPage extends StatelessWidget {
   const CashInHandPage({super.key});
@@ -22,8 +28,8 @@ class CashInHandPage extends StatelessWidget {
           const Gap(10),
           const Text(
             "Cash in hand refers to the physical cash you have readily available. "
-                "It's important for tracking your immediate liquidity and ensuring you have funds for day-to-day expenses. "
-                "Keep this updated to manage your finances better.",
+            "It's important for tracking your immediate liquidity and ensuring you have funds for day-to-day expenses. "
+            "Keep this updated to manage your finances better.",
             style: TextStyle(
               fontSize: 16,
               color: Colors.black54,
@@ -92,69 +98,7 @@ class CashInHandPage extends StatelessWidget {
               ],
             ),
           ),
-          const Gap(20),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "Cash at bank",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-                const Gap(10),
-                const Text(
-                  "KES 0.00",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const Gap(20),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _showAddCashBottomSheet(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.prettyDark,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      "Edit",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+
         ],
       ),
     );
@@ -165,12 +109,8 @@ class CashInHandPage extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.quinary,
-      // shape: const RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.vertical(
-      //     top: Radius.circular(20),
-      //   ),
-      // ),
       builder: (context) {
+        final controller = Get.put(SetupController());
         return Padding(
           padding: EdgeInsets.only(
             left: 16,
@@ -178,57 +118,57 @@ class CashInHandPage extends StatelessWidget {
             top: 16,
             bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: "Enter amount in KES",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+          child: Form(
+            key: controller.cashKesInHandFormKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  validator: (value) =>
+                      Validator.validateEmptyText('field', value),
+                  controller: controller.kesCashBalance,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "KES cash in hand",
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                ),
-              ),
-              const Gap(20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Submit cash logic here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.secondary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
+                ),Gap(10), TextFormField(
+                  validator: (value) =>
+                      Validator.validateEmptyText('field', value),
+                  controller: controller.kesBankBalance,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "KES at bank",
                   ),
                 ),
-              ),
-              Gap(20)
-            ],
+
+                const Gap(20),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () => controller.updateKesCashInHand(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.secondary,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+                Gap(20)
+              ],
+            ),
           ),
         );
       },
