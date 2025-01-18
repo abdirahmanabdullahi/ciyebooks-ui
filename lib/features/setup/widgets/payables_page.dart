@@ -132,6 +132,7 @@ class PayablesPage extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
+                      ///hjghghg
                       child: TextFormField(
                         validator: (value) =>
                             Validator.validateEmptyText('field', value),
