@@ -75,8 +75,7 @@ class AuthRepo extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      throw Get.snackbar("Could not find setup data!", e.toString(),
-          backgroundColor: Color(0xffFF0033), colorText: Colors.white);
+      throw  e.toString();
     }
   }
   /*------------------------ Email and password sign-in ------------------------*/

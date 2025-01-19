@@ -10,7 +10,6 @@ class AccountsController extends GetxController {
 
   final accountRepo = Get.put(AccountsRepo());
 
-
   final firstName = TextEditingController();
   final lastName = TextEditingController();
   final phoneNo = TextEditingController();
@@ -23,10 +22,10 @@ class AccountsController extends GetxController {
   Future<void> saveData() async {
     try {
       if (!accountsFormKey.currentState!.validate()) {
-        return;}
+        return;
+      }
       final Map<String, double> newCurrency = {
-         currency.text.trim():
-         double.tryParse(amount.text.trim()) ?? 0
+        currency.text.trim(): double.tryParse(amount.text.trim()) ?? 0
       };
       final newAccount = AccountModel(
           currencyBalances: newCurrency,

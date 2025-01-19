@@ -3,10 +3,12 @@ import 'dart:ffi';
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-import '../../../utils/constants/text_strings.dart';
 import '../../../utils/helpers/network_manager.dart';
 
 class SetupController extends GetxController {
@@ -28,11 +30,50 @@ class SetupController extends GetxController {
 
   GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
+  Rx<BalancesModel> balances = BalancesModel.empty().obs;
+  final setupRepo = Get.put(SetupRepo());
 
-  /// Dot navigator
-  Rx<int> currentPageIndex = 0.obs;
-  final pageController = PageController();
-  void updatePageIndex(index) => currentPageIndex.value = index;
+  ///
+  final capitalAmount = ''.obs;
+
+
+    final setUpStream =  FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Setup')
+        .doc('Balances')
+        .snapshots();
+
+  final receivablesStream =  FirebaseFirestore.instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Setup')
+      .doc('Accounts')
+      .snapshots();
+
+
+
+  // / Fetch setup data
+  Future<void> fetchBalanceSData() async {
+    try {
+      capitalAmount.value =  capital.value.toString();
+
+      final balances = await SetupRepo.instance.getSetupData();
+      this.balances(balances);
+    } catch (e) {
+      Get.snackbar("There was an error fetching data",
+          "Please check your internet connection and try again",
+          icon: Icon(
+            Icons.cloud_off,
+            color: Colors.white,
+          ),
+          backgroundColor: Color(0xffFF0033),
+          colorText: Colors.white);
+
+      balances(BalancesModel.empty());
+    }
+  }
+
 
   /// Save setup data to firestore
   Future<void> saveSetupData() async {
@@ -51,33 +92,31 @@ class SetupController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-
-        return;
       }
 
       final newSetup = BalancesModel(
-        capital: double.tryParse(capital.text.trim()) ?? 00,
-        kesCashBalance: double.tryParse(kesCashBalance.text.trim()) ?? 00,
-        usdCashBalance: double.tryParse(usdCashBalance.text.trim()) ?? 00,
-        kesBankBalance: double.tryParse(kesBankBalance.text.trim()) ?? 00,
-        usdBankBalance: double.tryParse(usdBankBalance.text.trim()) ?? 00,
-        kesReceivables: double.tryParse(kesReceivables.text.trim()) ?? 00,
-        usdReceivables: double.tryParse(usdReceivables.text.trim()) ?? 00,
-        kesPayables: double.tryParse(kesPayables.text.trim()) ?? 00,
-        usdPayables: double.tryParse(usdPayables.text.trim()) ?? 00,
-        accountIsSetup: true,
-        profitBalance: double.tryParse(profitBalance.text.trim()) ?? 00,
+        capital: double.tryParse(capital.text.trim()) ?? 0.0,
+        kesCashBalance: double.tryParse(kesCashBalance.text.trim()) ?? 0.0,
+        usdCashBalance: double.tryParse(usdCashBalance.text.trim()) ?? 0.0,
+        kesBankBalance: double.tryParse(kesBankBalance.text.trim()) ?? 0.0,
+        usdBankBalance: double.tryParse(usdBankBalance.text.trim()) ?? 0.0,
+        kesReceivables: double.tryParse(kesReceivables.text.trim()) ?? 0.0,
+        usdReceivables: double.tryParse(usdReceivables.text.trim()) ?? 0.0,
+        kesPayables: double.tryParse(kesPayables.text.trim()) ?? 0.0,
+        usdPayables: double.tryParse(usdPayables.text.trim()) ?? 0.0,
+        accountIsSetup: false,
+        profitBalance: double.tryParse(profitBalance.text.trim()) ?? 0.0,
       );
 
       final setupRepo = Get.put(SetupRepo());
-      await setupRepo.saveUserDate(newSetup);
+      await setupRepo.saveSetupData(newSetup);
 
       ///Success message
-      Get.snackbar('Congratulations', ' Account setup complete',
-          backgroundColor: Colors.green, colorText: Colors.white);
+      // Get.snackbar('Congratulations', ' Account setup complete',
+      //     backgroundColor: Colors.green, colorText: Colors.white);
 
       ///Go to ScreenRedirect
-      AuthRepo.instance.screenRedirect();
+      // AuthRepo.instance.screenRedirect();
     } catch (e) {
       Get.snackbar("Oh snap!", e.toString(),
           backgroundColor: Color(0xffFF0033), colorText: Colors.white);
@@ -94,12 +133,14 @@ class SetupController extends GetxController {
         return;
       }
       final connection = await NetworkManager.instance.isConnected();
-      connection? null:Get.snackbar(
-        "Success!",
-        "Capital has been saved locally and will sync once you're online.",
-        backgroundColor: Colors.blue,
-        colorText: Colors.white,
-      );
+      connection
+          ? null
+          : Get.snackbar(
+              "Success!",
+              "Capital has been saved locally and will sync once you're online.",
+              backgroundColor: Colors.blue,
+              colorText: Colors.white,
+            );
 
       // Prepare data to update
       Map<String, dynamic> capitalBalance = {

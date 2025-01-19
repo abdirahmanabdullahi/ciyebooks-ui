@@ -1,6 +1,8 @@
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
+import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
+import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/utils/constants/text_strings.dart';
 import 'package:ciyebooks/utils/popups/full_screen_loader.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:get/get.dart';
 
 import '../../../data/repositories/user/user_repo.dart';
 import '../../../utils/helpers/network_manager.dart';
+import '../../setup/repo/setup_repo.dart';
 import '../screens/signup/controllers/verify_email_controller.dart';
 
 class SignupController extends GetxController {
@@ -44,7 +47,6 @@ class SignupController extends GetxController {
             colorText: Colors.white);
         return;
 
-        return;
       }
 
       //Form validation
@@ -78,9 +80,14 @@ class SignupController extends GetxController {
           phoneNumber: phoneNumber.text.trim(),
           profilePicture: '',
          );
-
+      ///Create empty setup data
+/// Save user data
       final userRepo = Get.put(UserRepo());
       await userRepo.saveUserDate(newUser);
+      /// Save setup data
+      final setupRepo = Get.put(SetupRepo());
+      final setup = BalancesModel.empty();
+      await setupRepo.saveSetupData(setup);
 
       //Success message
       Get.snackbar('Congratulations', AppTexts.yourAccountCreatedTitle,

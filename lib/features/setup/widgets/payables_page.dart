@@ -1,5 +1,6 @@
 import 'package:ciyebooks/features/accounts/controller/accounts_controller.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
+import 'package:ciyebooks/utils/formatters/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -121,7 +122,7 @@ class PayablesPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Add Receivable",
+                  "Add Payable",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -130,6 +131,7 @@ class PayablesPage extends StatelessWidget {
                 ),
                 const Gap(10),
                 Row(
+
                   children: [
                     Expanded(
                       ///hjghghg

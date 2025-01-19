@@ -1,9 +1,9 @@
 import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../utils/validators/validation.dart';
 
@@ -12,6 +12,7 @@ class StartingCapitalPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SetupController());
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -51,22 +52,47 @@ class StartingCapitalPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Capital balance",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
+                 Obx(()=>
+                   Text(
+                    controller.capitalAmount.toString(),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                                   ),
+                 ),
                 const Gap(10),
-                const Text(
-                  "KES 0.00",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+
+                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: controller.setUpStream,
+                  builder: (context, snapshot) {
+
+                    if (!snapshot.hasData || snapshot.data == null || snapshot.hasError) {
+                      return Text(
+                        "0.0",
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      );
+                    }
+
+                    final data = snapshot.data!;
+
+                    final capital =
+                        data['Capital'] ?? 0.0; // Default to 0.0 if missing
+
+                    return Text(
+                      "$capital",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    );
+                  },
                 ),
                 const Gap(20),
                 Align(

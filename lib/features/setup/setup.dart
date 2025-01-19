@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
 import 'package:ciyebooks/features/setup/widgets/cash_in_hand_page.dart';
 import 'package:ciyebooks/features/setup/widgets/expense_page.dart';
 import 'package:ciyebooks/features/setup/widgets/foreign_currencies_page.dart';
@@ -20,7 +21,6 @@ class Setup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(Setup());
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       body: SafeArea(
@@ -37,12 +37,12 @@ class Setup extends StatelessWidget {
                 ),
                 HowItWorksPage(),
                 PageOne(),
-                StartingCapitalPage(),
-                CashInHandPage(),
-                ReceivablesPage(),
-                PayablesPage(),
-                ExpensesPage(),
-                ForeignCurrenciesPage(),
+                // StartingCapitalPage(),
+                // CashInHandPage(),
+                // ReceivablesPage(),
+                // PayablesPage(),
+                // ExpensesPage(),
+                // ForeignCurrenciesPage(),
                 Summary(),
               ],
             ),

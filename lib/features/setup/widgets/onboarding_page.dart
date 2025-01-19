@@ -1,7 +1,10 @@
 import 'dart:core';
 
+import 'package:ciyebooks/features/auth/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -45,7 +48,7 @@ class OnboardingPage extends StatelessWidget {
             textAlign: TextAlign.center,
             subtitle,
             style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          ),FloatingActionButton(onPressed: ()=> Get.offAll(()=>Login()))
         ],
       ),
     );

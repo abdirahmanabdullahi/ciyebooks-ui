@@ -18,8 +18,8 @@ class DotNavigator extends StatelessWidget {
     return Positioned(
       bottom: 56,
       left: 24,
-      child: SmoothPageIndicator(
-        controller: controller.pageController,
+      child: SmoothPageIndicator(controller: PageController(),
+        // controller: controller.pageController,
         effect: ExpandingDotsEffect(
           dotWidth: 12,
           dotHeight: 6,

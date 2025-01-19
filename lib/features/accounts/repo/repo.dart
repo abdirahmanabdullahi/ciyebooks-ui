@@ -17,8 +17,7 @@ class AccountsRepo extends GetxController {
 
   Future<void> savaAccountData(AccountModel account) async {
     try {
-      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Accounts").doc("2025-01-18 04:14:37.262240"
-      ).set(account.toJson(),SetOptions(merge: true));
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Accounts").doc('123').set(account.toJson());
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
