@@ -35,7 +35,7 @@ class AccountsController extends GetxController {
           phoneNo: phoneNo.text.trim(),
           email: email.text.trim());
 
-      await accountRepo.savaAccountData(newAccount);
+      await accountRepo.savaAccountData(newAccount,);
       Get.snackbar(
         "Success!",
         "Capital has been updated successfully.",

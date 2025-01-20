@@ -62,16 +62,17 @@ class BalancesModel {
     final data = document.data();
     if (data != null) {
       return BalancesModel(
-        capital: (data['Capital'] as num?)?.toDouble() ?? 0.0,        kesCashBalance: data['KesCashBalance'] ?? 0.0,
-        usdCashBalance: data['UsdCashBalance'] ?? 0.0,
-        kesBankBalance: data['KesBankBalance'] ?? 0.0,
-        usdBankBalance: data['UsdBankBalance'] ?? 0.0,
-        kesReceivables: data['KesReceivables'] ?? 0.0,
-        usdReceivables: data['UsdReceivables'] ?? 0.0,
-        kesPayables: data['KesPayables'] ?? 0.0,
-        usdPayables: data['UsdPayables'] ?? 0.0,
-        accountIsSetup: data['AccountIsSetup'] ?? false,
-        profitBalance: data['ProfitBalance'] ?? 0.0,
+        capital: (data['Capital'] as num?)?.toDouble() ?? 0.0,
+        kesCashBalance: (data['KesCashBalance'] as num?)?.toDouble() ?? 0.0,
+        usdCashBalance: (data['UsdCashBalance'] as num?)?.toDouble() ?? 0.0,
+        kesBankBalance: (data['KesBankBalance'] as num?)?.toDouble() ?? 0.0,
+        usdBankBalance: (data['UsdBankBalance'] as num?)?.toDouble() ?? 0.0,
+        kesReceivables: (data['KesReceivables'] as num?)?.toDouble() ?? 0.0,
+        usdReceivables: (data['UsdReceivables'] as num?)?.toDouble() ?? 0.0,
+        kesPayables: (data['KesPayables'] as num?)?.toDouble() ?? 0.0,
+        usdPayables: (data['UsdPayables'] as num?)?.toDouble() ?? 0.0,
+        accountIsSetup: data['AccountIsSetup'] as bool? ?? false,
+        profitBalance: (data['ProfitBalance'] as num?)?.toDouble() ?? 0.0,
       );
     } else {
       throw Exception('Document snapshot data is null');

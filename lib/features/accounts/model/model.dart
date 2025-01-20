@@ -17,7 +17,7 @@ class AccountModel {
     required this.email,
   });
 
-  String get fullName => '$firstName$lastName';
+  String get fullName => '$firstName $lastName';
 
   /// Convert AccountsModel to JSON structure for storing data in firestore
 

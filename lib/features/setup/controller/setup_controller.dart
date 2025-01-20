@@ -37,12 +37,13 @@ class SetupController extends GetxController {
   final capitalAmount = ''.obs;
 
 
-    final setUpStream =  FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('Setup')
-        .doc('Balances')
-        .snapshots();
+  final setUpStream =  FirebaseFirestore.instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection('Setup')
+      .doc('Balances')
+      .snapshots();
+
 
   final receivablesStream =  FirebaseFirestore.instance
       .collection('Users')

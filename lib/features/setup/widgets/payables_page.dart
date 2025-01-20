@@ -65,7 +65,7 @@ class PayablesPage extends StatelessWidget {
                       const Gap(10),
                       ElevatedButton(
                         onPressed: () {
-                          _showAddReceivableBottomSheet(context);
+                          showAddReceivableBottomSheet(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.prettyDark,
@@ -96,7 +96,7 @@ class PayablesPage extends StatelessWidget {
     );
   }
 
-  void _showAddReceivableBottomSheet(BuildContext context) {
+  void showAddReceivableBottomSheet(BuildContext context) {
     final controller = Get.put(AccountsController());
     showModalBottomSheet(
       context: context,
