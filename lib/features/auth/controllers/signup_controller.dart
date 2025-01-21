@@ -30,6 +30,7 @@ class SignupController extends GetxController {
 
   // SIGNUP
 
+
   void signup() async {
     try {
       //Start loading

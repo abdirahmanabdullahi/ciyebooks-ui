@@ -34,7 +34,8 @@ class SetupController extends GetxController {
   final setupRepo = Get.put(SetupRepo());
 
   ///
-  final capitalAmount = ''.obs;
+  // final capitalAmount = ''.obs;
+
 
 
   final setUpStream =  FirebaseFirestore.instance
@@ -57,7 +58,6 @@ class SetupController extends GetxController {
   // / Fetch setup data
   Future<void> fetchBalanceSData() async {
     try {
-      capitalAmount.value =  capital.value.toString();
 
       final balances = await SetupRepo.instance.getSetupData();
       this.balances(balances);

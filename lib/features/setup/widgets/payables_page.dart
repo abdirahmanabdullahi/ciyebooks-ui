@@ -194,11 +194,11 @@ class PayablesPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        controller: controller.currency,
+                        controller: controller.usd,
                         validator: (value) =>
                             Validator.validateEmptyText('field', value),
                         decoration: InputDecoration(
-                          labelText: "Currency",
+                          labelText: "USD amount",
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -206,12 +206,12 @@ class PayablesPage extends StatelessWidget {
                     const Gap(10),
                     Expanded(
                       child: TextFormField(
-                        controller: controller.amount,
+                        controller: controller.kes,
                         validator: (value) =>
                             Validator.validateEmptyText('field', value),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: "Amount",
+                          labelText: "KES amount",
                           border: OutlineInputBorder(),
                         ),
                       ),

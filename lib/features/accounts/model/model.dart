@@ -7,9 +7,13 @@ class AccountModel {
   final String accountNo;
   final String phoneNo;
   final String email;
-  final Map<String, double> currencyBalances;
+  final double usdBalance;
+  final double kesBalance;
+  final DateTime dateCreated;
   AccountModel({
-    required this.currencyBalances,
+    required this.usdBalance,
+    required this.kesBalance,
+    required this.dateCreated,
     required this.firstName,
     required this.lastName,
     required this.accountNo,
@@ -23,12 +27,15 @@ class AccountModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'DateCreated': dateCreated,
+      'AccountName': fullName,
       'FirstName': firstName,
       'LastName': lastName,
       'AccountNo': accountNo,
       'PhoneNo': phoneNo,
       'Email': email,
-      'CurrencyBalances': currencyBalances
+      "UsdBalance": usdBalance,
+      'KesBalance': kesBalance,
     };
   }
 
@@ -42,9 +49,9 @@ class AccountModel {
           accountNo: data['AccountNo'] ?? '',
           email: data['Email'] ?? '',
           phoneNo: data['PhoneNo'] ?? '',
-          currencyBalances: Map<String, double>.from(
-            data['CurrencyBalances'] ?? {},
-          ));
+          usdBalance: data['UsdBalance'] ?? 0.0,
+          kesBalance: data['KesBalances'],
+          dateCreated: data['DateCreated']);
     } else {
       throw Text('Once created accounts will appear here');
     }

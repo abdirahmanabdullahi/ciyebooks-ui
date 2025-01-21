@@ -52,16 +52,16 @@ class StartingCapitalPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Obx(()=>
+
                    Text(
-                    controller.capitalAmount.toString(),
+                  '',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                                    ),
-                 ),
+
                 const Gap(10),
 
                 StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
