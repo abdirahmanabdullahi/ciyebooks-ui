@@ -53,7 +53,7 @@ class AccountModel {
           kesBalance: data['KesBalances'],
           dateCreated: data['DateCreated']);
     } else {
-      throw Text('Once created accounts will appear here');
+      throw Text('There was an error fetching currencies');
     }
   }
 }

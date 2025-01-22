@@ -506,75 +506,118 @@ class NavigationMenu extends StatelessWidget {
               ),
             ),
           ),
-          child: NavigationBar(
-            animationDuration: Duration.zero,
-            indicatorColor: Colors.transparent,
-            backgroundColor: AppColors.quinary,
-            height: 60,
-            selectedIndex: controller.selectedIndex.value,
-            onDestinationSelected: (index) =>
+          child: BottomNavigationBar(useLegacyColorScheme: false,
+
+            // animationDuration: Duration.zero,
+            // indicatorColor: Colors.transparent,
+            // backgroundColor: AppColors.quinary,
+            // height: 60,
+            currentIndex: controller.selectedIndex.value,
+            onTap: (index) =>
                 controller.selectedIndex.value = index,
             elevation: 3,
-            destinations: [
-              NavigationDestination(
+            items: [
+              BottomNavigationBarItem(
                 icon: Icon(
                   Icons.home_outlined,
                   color: AppColors.prettyDark,
                 ),
                 label: 'Home',
-                selectedIcon: Icon(
-                  Icons.home,
-                  color: AppColors.prettyDark,
-                ),
-              ),
-              NavigationDestination(
+                // selectedIcon: Icon(
+                //   Icons.home,
+                //   color: AppColors.prettyDark,
+                // ),
+              ), BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.description_outlined,
+                  Icons.home_outlined,
                   color: AppColors.prettyDark,
                 ),
-                label: 'Notes',
-                selectedIcon: Icon(
-                  Icons.description,
-                  color: AppColors.prettyDark,
-                ),
-              ),
-              NavigationDestination(
+                label: 'Home',
+                // selectedIcon: Icon(
+                //   Icons.home,
+                //   color: AppColors.prettyDark,
+                // ),
+              ), BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.fact_check_outlined,
+                  Icons.home_outlined,
                   color: AppColors.prettyDark,
                 ),
-                label: 'Todos',
-                selectedIcon: Icon(
-                  Icons.fact_check,
-                  color: AppColors.prettyDark,
-                ),
-              ),
-              NavigationDestination(
+                label: 'Home',
+                // selectedIcon: Icon(
+                //   Icons.home,
+                //   color: AppColors.prettyDark,
+                // ),
+              ), BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.calculate_outlined,
+                  Icons.home_outlined,
                   color: AppColors.prettyDark,
                 ),
-                label: 'Calc',
-                selectedIcon: Icon(
-                  Icons.calculate,
-                  color: AppColors.prettyDark,
-                ),
-              ),
-              NavigationDestination(
+                label: 'Home',
+                // selectedIcon: Icon(
+                //   Icons.home,
+                //   color: AppColors.prettyDark,
+                // ),
+              ), BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.leaderboard_outlined,
+                  Icons.home_outlined,
                   color: AppColors.prettyDark,
                 ),
-                label: 'Stats',
-                selectedIcon: Icon(
-                  Icons.leaderboard,
-                  color: AppColors.prettyDark,
-                ),
+                label: 'Home',
+                // selectedIcon: Icon(
+                //   Icons.home,
+                //   color: AppColors.prettyDark,
+                // ),
               ),
+              // NavigationDestination(
+              //   icon: Icon(
+              //     Icons.description_outlined,
+              //     color: AppColors.prettyDark,
+              //   ),
+              //   label: 'Notes',
+              //   selectedIcon: Icon(
+              //     Icons.description,
+              //     color: AppColors.prettyDark,
+              //   ),
+              // ),
+              // NavigationDestination(
+              //   icon: Icon(
+              //     Icons.fact_check_outlined,
+              //     color: AppColors.prettyDark,
+              //   ),
+              //   label: 'Todos',
+              //   selectedIcon: Icon(
+              //     Icons.fact_check,
+              //     color: AppColors.prettyDark,
+              //   ),
+              // ),
+              // NavigationDestination(
+              //   icon: Icon(
+              //     Icons.calculate_outlined,
+              //     color: AppColors.prettyDark,
+              //   ),
+              //   label: 'Calc',
+              //   selectedIcon: Icon(
+              //     Icons.calculate,
+              //     color: AppColors.prettyDark,
+              //   ),
+              // ),
+              // NavigationDestination(
+              //   icon: Icon(
+              //     Icons.leaderboard_outlined,
+              //     color: AppColors.prettyDark,
+              //   ),
+              //   label: 'Stats',
+              //   selectedIcon: Icon(
+              //     Icons.leaderboard,
+              //     color: AppColors.prettyDark,
+              //   ),
+              // ),
             ],
           ),
         ),
-      ),
+      ),      floatingActionButton: FloatingActionButton(onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+
       body: Obx(
         () => controller.screens[controller.selectedIndex.value],
       ),

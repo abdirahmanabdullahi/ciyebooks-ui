@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 
 import '../../../utils/validators/validation.dart';
 import '../../accounts/controller/accounts_controller.dart';
+import '../../forex/controller/currency_controller.dart';
+import '../../forex/new_currency/new_currency_bottomSheet.dart';
 import '../controller/setup_controller.dart';
 
 // Main Finance Dashboard Screen
@@ -20,13 +22,15 @@ class Summary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final setupController = Get.put(SetupController());
+    //Todo: Romove these,
+    final testingController = Get.put(CurrencyController());
     final accountsController = Get.put(AccountsController());
 
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: setupController.setUpStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null || snapshot.hasError) {
-          return Text('When done, setup data will appear here');
+          return Text('As you continue, setup data will appear here');
         }
 
         final data = snapshot.data!;
@@ -78,14 +82,28 @@ class Summary extends StatelessWidget {
                     InfoRow(title: 'Starting capital', value: "$capital"),
                     Gap(15),
                     InfoRow(
-                        title: 'Kes cash balance', value: '$kesCashBalance'),
+                        title: 'KES cash in hand', value: '$kesCashBalance'), Gap(15),
+                    InfoRow(
+                        title: 'KES receivables', value: '$kesCashBalance'),
+                    Gap(15),
+                    InfoRow(
+                        title: 'USD receivables', value: '$kesCashBalance'),
+                    Gap(15),
+                    InfoRow(
+                        title: 'KES payables', value: '$kesCashBalance'),
+                    Gap(15),
+                    InfoRow(
+                        title: 'USD payables', value: '$kesCashBalance'),
+                    Gap(15),
+                    // InfoRow(
+                    //     title: 'Kes cash balance', value: '$kesCashBalance'),
                     ExpansionTile(
                       childrenPadding: EdgeInsets.zero,
                       tilePadding: EdgeInsets.zero,
                       collapsedShape:
                           Border(bottom: BorderSide.none, top: BorderSide.none),
-                      title: InfoRow(
-                          title: 'Receivables', value: '$kesReceivables'),
+                      title: Text('Accounts',          style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
+                      ),
                       children: [
                         Column(
                           children: [
@@ -225,7 +243,7 @@ class Summary extends StatelessWidget {
                                 onPressed: () {
 
 
-                                  createPayableBottomSheet(context);
+                                  createNewAccountBottom(context);
 
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -260,168 +278,6 @@ class Summary extends StatelessWidget {
                       collapsedShape:
                           Border(bottom: BorderSide.none, top: BorderSide.none),
                       title:
-                          InfoRow(title: 'Payables', value: '$kesReceivables'),
-                      children: [
-                        Column(
-                          children: [
-                            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                              stream: FirebaseFirestore.instance
-                                  .collection('Users')
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .collection('Accounts')
-                                  .where('KesBalance', isGreaterThan: 0)
-                                  // .where('UsdBalance',
-                                  //     isGreaterThan: 0)
-                                  // where("population", isGreaterThan: 1000000)
-                                  //     .where("density", isLessThan: 10000);
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData || snapshot.hasError) {
-                                  return Center(
-                                    child: Text(
-                                        'No accounts found or an error occurred.'),
-                                  );
-                                }
-
-                                final accounts = snapshot.data!.docs;
-
-                                if (accounts.isEmpty) {
-                                  return Center(
-                                    child: Text('No accounts available.'),
-                                  );
-                                }
-
-                                // Using a for loop to generate the list of widgets
-                                List<Widget> accountWidgets = [];
-
-                                /// Format the number to have decimals and 1,000 separator
-                                final formatter =
-                                    NumberFormat.decimalPatternDigits(
-                                  locale: 'en_us',
-                                  decimalDigits: 2,
-                                );
-
-                                for (var account in accounts) {
-                                  final accountData = account.data();
-                                  accountWidgets.add(
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: ListTile(
-                                        titleAlignment:
-                                            ListTileTitleAlignment.titleHeight,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 3),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        dense: true,
-                                        tileColor: AppColors.quinary,
-                                        title: Text(
-                                          '${accountData['AccountName']}',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall!
-                                              .apply(fontSizeFactor: .8),
-                                        ),
-                                        subtitle: Text(
-                                            'Acc_no: ${accountData['AccountNo']}'),
-                                        trailing: Column(
-                                            spacing: 0,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                'KES: ${formatter.format(accountData['KesBalance'] ?? 0.0)}',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall,
-                                              ),
-                                              Gap(6),
-                                              Text(
-                                                'USD: ${formatter.format(accountData['usdBalance'] ?? 0.0)}',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall,
-                                              )
-                                            ]),
-
-                                        // Column(
-                                        //   crossAxisAlignment:
-                                        //       CrossAxisAlignment
-                                        //           .start,
-                                        //   children: [
-                                        //   ],
-                                        // ),
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                return Column(
-                                  children: accountWidgets,
-                                );
-                              },
-                            ),
-                            Divider(),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          createPayableBottomSheet(context),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.secondary,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 12,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        "New account",
-                                        style: TextStyle(
-                                          color: AppColors.quinary,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Gap(6),
-                                  // Align(
-                                  //   alignment: Alignment.centerRight,
-                                  //   child: TextButton(
-                                  //     onPressed: () =>
-                                  //         showAddReceivableBottomSheet(context),
-                                  //     child: const Text(
-                                  //       "Add a receivable",
-                                  //       style: TextStyle(
-                                  //         color: AppColors.prettyDark,
-                                  //         fontSize: 16,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    ExpansionTile(
-                      childrenPadding: EdgeInsets.zero,
-                      tilePadding: EdgeInsets.zero,
-                      collapsedShape:
-                          Border(bottom: BorderSide.none, top: BorderSide.none),
-                      title:
                           InfoRow(title: 'Expenses', value: '$kesReceivables'),
                       children: [],
                     ),
@@ -433,7 +289,32 @@ class Summary extends StatelessWidget {
                       title: InfoRow(
                           title: 'Foreign currencies at cost',
                           value: '$kesPayables'),
-                      children: [],
+                      children: [Column(children: [                            Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          onPressed: () => showAddNewCurrencyBottomSheet(context),
+
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondary,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            "New currency",
+                            style: TextStyle(
+                              color: AppColors.quinary,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ],)],
                     ),
                     Gap(10),
                     Divider(),
@@ -508,147 +389,8 @@ class InfoRow extends StatelessWidget {
   }
 }
 
-// void showAddReceivableBottomSheet(BuildContext context) {
-//   final controller = Get.put(AccountsController());
-//   showModalBottomSheet(
-//     context: context,
-//     isScrollControlled: true,
-//     backgroundColor: Colors.white,
-//     shape: const RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(
-//         top: Radius.circular(20),
-//       ),
-//     ),
-//     builder: (context) {
-//       return Padding(
-//         padding: EdgeInsets.only(
-//           left: 16,
-//           right: 16,
-//           top: 16,
-//           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//         ),
-//         child: Form(
-//           key: controller.accountsFormKey,
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               const Text(
-//                 "Add Payable",
-//                 style: TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.black,
-//                 ),
-//               ),
-//               const Gap(10),
-//               StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-//                 stream: FirebaseFirestore.instance
-//                     .collection('Users')
-//                     .doc(FirebaseAuth.instance.currentUser!.uid)
-//                     .collection('Accounts')
-//                     .snapshots(),
-//                 builder: (context, snapshot) {
-//                   if (!snapshot.hasData || snapshot.hasError) {
-//                     return Center(
-//                       child: Text('No accounts found or an error occurred.'),
-//                     );
-//                   }
-//
-//                   final accounts = snapshot.data!.docs;
-//
-//                   if (accounts.isEmpty) {
-//                     return Center(
-//                       child: Text('No accounts available.'),
-//                     );
-//                   }
-//
-//                   // This will hold all the dropdown menu entries
-//                   List<DropdownMenuEntry<String>> dropdownMenuEntries = [];
-//
-//                   for (var account in accounts) {
-//                     final accountData = account.data();
-//                     final accountName = accountData[
-//                         'FirstName']; // Assuming 'FirstName' is the account name
-//                     final balance =
-//                         accountData['PhoneNo']; // Consider if you need this
-//
-//                     // Add each account as a dropdown entry for the account name
-//                     dropdownMenuEntries.add(DropdownMenuEntry<String>(
-//                       value: accountName,
-//                       label: accountName,
-//                     ));
-//                   }
-//
-//                   return DropdownMenu<String>(
-//                     width: double.infinity,
-//                     dropdownMenuEntries: dropdownMenuEntries,
-//                     onSelected: (value) {
-//                       // Handle the selected value here
-//                     },
-//                   );
-//                 },
-//               ),
-//               const Gap(10),
-//               Row(
-//                 children: [
-//                   Expanded(
-//                     child: DropdownMenu(
-//                         width: double.infinity, dropdownMenuEntries: []),
-//                   ),
-//                   const Gap(10),
-//                   Expanded(
-//                     child: TextFormField(
-//                       controller: controller.email,
-//                       validator: (value) =>
-//                           Validator.validateEmptyText('field', value),
-//                       keyboardType: TextInputType.emailAddress,
-//                       decoration: InputDecoration(
-//                         labelText: "Email",
-//                         border: OutlineInputBorder(),
-//                       ),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//               const Gap(10),
-//               Gap(10),
-//               Align(
-//                 alignment: Alignment.centerRight,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     // controller.makeItNegative.value = false;
-//                     controller.saveData();
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: AppColors.secondary,
-//                     padding: const EdgeInsets.symmetric(
-//                       horizontal: 20,
-//                       vertical: 12,
-//                     ),
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(12),
-//                     ),
-//                   ),
-//                   child: const Text(
-//                     "Submit",
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 16,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               Gap(20),
-//             ],
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
 
-void createPayableBottomSheet(BuildContext context) {
+void createNewAccountBottom(BuildContext context) {
   final controller = Get.put(AccountsController());
   showModalBottomSheet(
     context: context,
@@ -674,7 +416,7 @@ void createPayableBottomSheet(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Create new receivable account",
+                "Create new account",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

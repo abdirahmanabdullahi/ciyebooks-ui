@@ -112,6 +112,7 @@ class HowItWorksPage extends StatelessWidget {
                     'Offline',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
                   ),
+
                 ],
               ),
             ],
