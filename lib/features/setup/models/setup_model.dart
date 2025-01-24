@@ -56,6 +56,23 @@ class BalancesModel {
     };
   }
 
+  /// Factory constructor to convert firestore data from Map to BalancesModel
+
+  factory BalancesModel.fromJson(Map<String, dynamic> jsonData) {
+    return BalancesModel(
+      capital: (jsonData['Capital'] as num?)?.toDouble() ?? 0.0,
+      kesCashBalance: (jsonData['KesCashBalance'] as num?)?.toDouble() ?? 0.0,
+      usdCashBalance: (jsonData['UsdCashBalance'] as num?)?.toDouble() ?? 0.0,
+      kesBankBalance: (jsonData['KesBankBalance'] as num?)?.toDouble() ?? 0.0,
+      usdBankBalance: (jsonData['UsdBankBalance'] as num?)?.toDouble() ?? 0.0,
+      kesReceivables: (jsonData['KesReceivables'] as num?)?.toDouble() ?? 0.0,
+      usdReceivables: (jsonData['UsdReceivables'] as num?)?.toDouble() ?? 0.0,
+      kesPayables: (jsonData['KesPayables'] as num?)?.toDouble() ?? 0.0,
+      usdPayables: (jsonData['UsdPayables'] as num?)?.toDouble() ?? 0.0,
+      accountIsSetup: jsonData['AccountIsSetup'] as bool? ?? false,
+      profitBalance: (jsonData['ProfitBalance'] as num?)?.toDouble() ?? 0.0,);
+  }
+
   /// Factory constructor for creating a `BalancesModel` instance from a Firestore document snapshot
   factory BalancesModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {

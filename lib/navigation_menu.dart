@@ -615,7 +615,8 @@ class NavigationMenu extends StatelessWidget {
             ],
           ),
         ),
-      ),      floatingActionButton: FloatingActionButton(onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      ),
+      // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
 
 
       body: Obx(

@@ -60,6 +60,22 @@ try{
       "code": "USD",
       "name_plural": "US dollars"
     },
+    "all": {
+    "symbol": "\$",
+    "name": "US Dollar Small Bills",
+    "symbol_native": "\$",
+    "decimal_digits": 2,
+    "rounding": 0,
+    "code": "usd small bills",
+
+  },"USD-OLD": {
+    "symbol": "\$",
+    "name": "US Dollar Old bills",
+    "symbol_native": "\$",
+    "decimal_digits": 2,
+    "rounding": 0,
+    "code": "USD-OLD",
+  },
     "CAD": {
       "symbol": "CA\$",
       "name": "Canadian Dollar",

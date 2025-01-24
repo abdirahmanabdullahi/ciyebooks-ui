@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
+import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,33 +33,42 @@ class SetupController extends GetxController {
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> balances = BalancesModel.empty().obs;
   final setupRepo = Get.put(SetupRepo());
+  // Rx<BalancesModel> balances = <BalancesModel>.obs;
 
-  ///
-  // final capitalAmount = ''.obs;
+  @override
+  void onInit() {
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Setup')
+        .doc('Balances')
+        .snapshots()
+        .listen((snapshot) {
+      if (snapshot.exists) {
+        balances.value =
+            BalancesModel.fromJson(snapshot.data()!);
+      }
+    });
+    super.onInit();
+  }
 
-
-
-  final setUpStream =  FirebaseFirestore.instance
+  final setUpStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('Setup')
       .doc('Balances')
       .snapshots();
 
-
-  final receivablesStream =  FirebaseFirestore.instance
+  final receivablesStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection('Setup')
       .doc('Accounts')
       .snapshots();
 
-
-
   // / Fetch setup data
   Future<void> fetchBalanceSData() async {
     try {
-
       final balances = await SetupRepo.instance.getSetupData();
       this.balances(balances);
     } catch (e) {
@@ -74,7 +84,6 @@ class SetupController extends GetxController {
       balances(BalancesModel.empty());
     }
   }
-
 
   /// Save setup data to firestore
   Future<void> saveSetupData() async {
