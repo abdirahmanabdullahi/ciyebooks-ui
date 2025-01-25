@@ -63,66 +63,6 @@ class CashInHandPage extends StatelessWidget {
                   ),
                 ),
                 const Gap(10),
-                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: controller.setUpStream,
-                  builder: (context, snapshot) {
-
-                    if (!snapshot.hasData || snapshot.data == null || snapshot.hasError) {
-                      return Text(
-                        "0.0",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      );
-                    }
-
-                    final data = snapshot.data!;
-
-                    final capital =
-                        data['KesCashBalance'] ?? 0.0; // Default to 0.0 if missing
-
-                    return Text(
-                      "$capital",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    );
-                  },
-                ),
-                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: controller.setUpStream,
-                  builder: (context, snapshot) {
-
-                    if (!snapshot.hasData || snapshot.data == null || snapshot.hasError) {
-                      return Text(
-                        "0.0",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      );
-                    }
-
-                    final data = snapshot.data!;
-
-                    final capital =
-                        data['KesBankBalance'] ?? 0.0; // Default to 0.0 if missing
-
-                    return Text(
-                      "$capital",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    );
-                  },
-                ),
                 const Gap(20),
                 Align(
                   alignment: Alignment.centerRight,

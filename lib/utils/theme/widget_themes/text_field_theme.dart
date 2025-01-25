@@ -6,7 +6,7 @@ class TextFormFieldTheme {
   TextFormFieldTheme._();
 
   static InputDecorationTheme lightInputDecorationTheme = InputDecorationTheme(
-
+filled: true,fillColor: AppColors.quinary,
     constraints:
     BoxConstraints.tight(const Size.fromHeight(48)),
     focusedBorder: const OutlineInputBorder(

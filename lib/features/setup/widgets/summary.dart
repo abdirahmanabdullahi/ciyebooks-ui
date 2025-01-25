@@ -5,6 +5,7 @@ import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 
 import '../../../utils/validators/validation.dart';
 import '../../accounts/controller/accounts_controller.dart';
+import '../../accounts/model/model.dart';
 import '../../forex/controller/currency_controller.dart';
 import '../../forex/new_currency/new_currency_bottomSheet.dart';
 import '../controller/setup_controller.dart';
@@ -50,28 +52,54 @@ class Summary extends StatelessWidget {
                   height: 0,
                 ),
                 Gap(20),
-                Obx(() => InfoRow(valueColor: Colors.green,
+                Obx(() => InfoRow(
+                    valueColor: Colors.green,
                     title: 'Starting capital(Shilling)',
-                    value: formatter.format(controller.balances.value.capital))),
-                Gap(10),Divider(),Gap(10),
-                Obx(() => InfoRow(valueColor: Colors.blue,
+                    value:
+                        formatter.format(controller.balances.value.capital))),
+                Gap(10),
+                Divider(),
+                Gap(10),
+                Obx(() => InfoRow(
+                    valueColor: Colors.blue,
                     title: 'Shilling cash balance',
-                    value: formatter.format(controller.balances.value.kesCashBalance))),
-                Gap(10),Divider(),Gap(10),        Obx(() => InfoRow(valueColor: Colors.purple,
+                    value: formatter
+                        .format(controller.balances.value.kesCashBalance))),
+                Gap(10),
+                Divider(),
+                Gap(10),
+                Obx(() => InfoRow(
+                    valueColor: Colors.purple,
                     title: 'Shilling receivable',
-                    value: formatter.format(controller.balances.value.kesReceivables))),
-                Gap(10),Divider(),Gap(10),            Obx(() => InfoRow(valueColor: Colors.red,
+                    value: formatter
+                        .format(controller.balances.value.kesReceivables))),
+                Gap(10),
+                Divider(),
+                Gap(10),
+                Obx(() => InfoRow(
+                    valueColor: Colors.red,
                     title: 'Shilling payable',
-                    value: formatter.format(controller.balances.value.kesPayables))),
-                Gap(10),Divider(),Gap(10),
-                Obx(() => InfoRow(valueColor:CupertinoColors.systemBlue,
+                    value: formatter
+                        .format(controller.balances.value.kesPayables))),
+                Gap(10),
+                Divider(),
+                Gap(10),
+                Obx(() => InfoRow(
+                    valueColor: CupertinoColors.systemBlue,
                     title: 'Dollar receivable',
-                    value:  formatter.format(controller.balances.value.usdReceivables))),
-                Gap(10),Divider(),Gap(10),
-                Obx(() => InfoRow(valueColor: Colors.red,
+                    value: formatter
+                        .format(controller.balances.value.usdReceivables))),
+                Gap(10),
+                Divider(),
+                Gap(10),
+                Obx(() => InfoRow(
+                    valueColor: Colors.deepOrange,
                     title: 'Dollar payable',
-                    value: formatter.format(controller.balances.value.usdReceivables))),
-                Gap(10),Divider(),Gap(10),
+                    value: formatter
+                        .format(controller.balances.value.usdReceivables))),
+                Gap(10),
+                Divider(),
+                Gap(10),
                 ExpansionTile(
                   childrenPadding: EdgeInsets.zero,
                   tilePadding: EdgeInsets.zero,
@@ -83,165 +111,486 @@ class Summary extends StatelessWidget {
                         fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
                   ),
                   children: [
-                    Column(
-                      children: [
-                        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                          stream: FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .collection('Accounts')
-                              .orderBy('DateCreated', descending: true)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData || snapshot.hasError) {
-                              return Center(
-                                child: Text(
-                                    'No accounts found or an error occurred.'),
-                              );
-                            }
+                    Obx(
+                      () {
+                        if (controller.accounts.isEmpty) {
+                          return Text(
+                              'Once created, accounts will appear here');
+                        }
+                        return ListView.builder(
+                          physics: ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller.accounts.length,
+                          itemBuilder: (context, index) {
+                            final AccountModel account =
+                                controller.accounts[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: GestureDetector(
+                                dragStartBehavior: DragStartBehavior.start,
+                                onTapDown: (details) {
+                                  final offset = details.globalPosition;
 
-                            final accounts = snapshot.data!.docs;
+                                  showMenu(
+                                      color: AppColors.quinary,
+                                      constraints: BoxConstraints.expand(
+                                          width: 200, height: 200),
+                                      context: context,
+                                      position: RelativeRect.fromLTRB(
+                                        offset.dx,
+                                        offset.dy,
+                                        MediaQuery.of(context).size.width -
+                                            offset.dx,
+                                        MediaQuery.of(context).size.height -
+                                            offset.dy,
+                                      ),
+                                      items: [
+                                        PopupMenuItem(
+                                          child: Text(
+                                            "Pay",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          onTap: () {
+                                            print(account.fullName);
+                                          },
+                                          child: Text(
+                                            "Receive",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          child: Text(
+                                            "New currency",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          child: Text(
+                                            "Edit info",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ]);
+                                },
+                                // onTap: () {
+                                //   showMenu(
+                                //       context: context,
+                                //       position: RelativeRect.fill,
+                                //       items: [
+                                //         PopupMenuItem(
+                                //           // onTapDown: (TapDownDetails details) {
+                                //           //
+                                //           //   // Access tap position
+                                //           //
+                                //           //   double tapX = details.globalPosition.dx;
+                                //           //
+                                //           //   double tapY = details.globalPosition.dy;
+                                //           //
+                                //           //   print("Tapped at: ($tapX, $tapY)");
+                                //           //
+                                //           // },
+                                //
+                                //           //   onTap:(TapDownDetails details)async{
+                                //           //   final offset = globalPosition;
+                                //           //   print(account.fullName);
+                                //           // },
+                                //           child: Text('Pay'),
+                                //         ),
+                                //       ]);
+                                // },
 
-                            if (accounts.isEmpty) {
-                              return Center(
-                                child: Text('No accounts available.'),
-                              );
-                            }
+                                // onTap: () {
+                                //   showDialog(
+                                //     context: context,
+                                //     builder: (context) {
+                                //       return Dialog(
+                                //         backgroundColor: AppColors.quarternary,
+                                //         insetPadding: EdgeInsets.symmetric(
+                                //             horizontal: 15, vertical: 10),
+                                //         shape: RoundedRectangleBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(15),
+                                //         ),
+                                //         child: Padding(
+                                //           padding: EdgeInsets.all(15.0),
+                                //           child: Column(
+                                //             mainAxisSize: MainAxisSize.min,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.start,
+                                //             children: [
+                                //               // Dialog Title
+                                //               Text(
+                                //                 "Add New Currency",
+                                //                 style: TextStyle(
+                                //                   fontSize: 20,
+                                //                   fontWeight: FontWeight.bold,
+                                //                   color: Colors.blue,
+                                //                 ),
+                                //               ),
+                                //               SizedBox(height: 6),
+                                //               Divider(),
+                                //
+                                //               SizedBox(height: 20),
+                                //
+                                //               // Account Details
+                                //               Text(
+                                //                 account.fullName,
+                                //                 style: TextStyle(
+                                //                   fontSize: 18,
+                                //                   fontWeight: FontWeight.bold,
+                                //                 ),
+                                //               ),
+                                //               SizedBox(height: 10),
+                                //               Text(
+                                //                 account.accountNo,
+                                //                 style: TextStyle(
+                                //                   fontSize: 14,
+                                //                   color: Colors.black54,
+                                //                 ),
+                                //               ),
+                                //               SizedBox(height: 20),
+                                //
+                                //               // Dropdown Field
+                                //               DropdownMenu(
+                                //                 inputDecorationTheme:
+                                //                     InputDecorationTheme(
+                                //                         filled: true,
+                                //                         fillColor:
+                                //                             AppColors.quinary),
+                                //                 width: double.infinity,
+                                //                 requestFocusOnTap: true,
+                                //                 dropdownMenuEntries: [],
+                                //               ),
+                                //               SizedBox(height: 6),
+                                //
+                                //               // Row for Input Field and Dropdown Menu
+                                //               Row(
+                                //                 children: [
+                                //                   Expanded(
+                                //                     child: TextFormField(
+                                //                       decoration:
+                                //                           InputDecoration(
+                                //                         hintText:
+                                //                             "Enter Amount",
+                                //                         border:
+                                //                             OutlineInputBorder(
+                                //                           borderRadius:
+                                //                               BorderRadius
+                                //                                   .circular(8),
+                                //                         ),
+                                //                       ),
+                                //                     ),
+                                //                   ),
+                                //                   SizedBox(width: 6),
+                                //                   Expanded(
+                                //                     child: DropdownMenu(
+                                //                       inputDecorationTheme:
+                                //                           InputDecorationTheme(
+                                //                               filled: true,
+                                //                               fillColor:
+                                //                                   AppColors
+                                //                                       .quinary),
+                                //                       width: double.infinity,
+                                //                       requestFocusOnTap: true,
+                                //                       dropdownMenuEntries: [
+                                //                         DropdownMenuEntry(
+                                //                             value: "Receivable",
+                                //                             label:
+                                //                                 "Receivable"),
+                                //                         DropdownMenuEntry(
+                                //                             value: "Payable",
+                                //                             label: "Payable"),
+                                //                       ],
+                                //                     ),
+                                //                   ),
+                                //                 ],
+                                //               ),
+                                //               SizedBox(height: 30),
+                                //
+                                //               // Action Buttons: Cancel and Submit
+                                //               Row(
+                                //                 mainAxisAlignment:
+                                //                     MainAxisAlignment.end,
+                                //                 children: [
+                                //                   ElevatedButton(
+                                //                     style: ElevatedButton
+                                //                         .styleFrom(
+                                //                       backgroundColor:
+                                //                           AppColors.prettyDark,
+                                //                       padding: const EdgeInsets
+                                //                           .symmetric(
+                                //                         horizontal: 20,
+                                //                         vertical: 12,
+                                //                       ),
+                                //                       shape:
+                                //                           RoundedRectangleBorder(
+                                //                         borderRadius:
+                                //                             BorderRadius
+                                //                                 .circular(12),
+                                //                       ),
+                                //                       foregroundColor:
+                                //                           Colors.white,
+                                //                       textStyle: TextStyle(
+                                //                           fontSize: 16),
+                                //                     ),
+                                //                     onPressed: () {
+                                //                       // Handle submission logic here
+                                //                       Navigator.of(context)
+                                //                           .pop(); // Close dialog
+                                //                     },
+                                //                     child: Text("Cancel"),
+                                //                   ),
+                                //                   Gap(10),
+                                //                   ElevatedButton(
+                                //                     style: ElevatedButton
+                                //                         .styleFrom(
+                                //                       backgroundColor:
+                                //                           AppColors.prettyDark,
+                                //                       padding: const EdgeInsets
+                                //                           .symmetric(
+                                //                         horizontal: 20,
+                                //                         vertical: 12,
+                                //                       ),
+                                //                       shape:
+                                //                           RoundedRectangleBorder(
+                                //                         borderRadius:
+                                //                             BorderRadius
+                                //                                 .circular(12),
+                                //                       ),
+                                //                       foregroundColor:
+                                //                           Colors.white,
+                                //                       textStyle: TextStyle(
+                                //                           fontSize: 16),
+                                //                     ),
+                                //                     onPressed: () {
+                                //                       // Handle submission logic here
+                                //                       Navigator.of(context)
+                                //                           .pop(); // Close dialog
+                                //                     },
+                                //                     child: Text("  Add  "),
+                                //                   ),
+                                //                 ],
+                                //               ),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //       );
+                                //     },
+                                //   );
+                                // },
+                                child: CustomContainer(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(10),
+                                  darkColor: AppColors.quinary,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            account.fullName,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            account.accountNo,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.purple),
+                                          ),
 
-                            // Using a for loop to generate the list of widgets
-                            List<Widget> accountWidgets = [];
-
-                            /// Format the number to have decimals and 1,000 separator
-                            final formatter = NumberFormat.decimalPatternDigits(
-                              locale: 'en_us',
-                              decimalDigits: 2,
-                            );
-
-                            for (var account in accounts) {
-                              final accountData = account.data();
-                              accountWidgets.add(
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: ListTile(
-                                    isThreeLine: true, dense: true,
-                                    titleAlignment:
-                                        ListTileTitleAlignment.titleHeight,
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 3),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    // dense: true,
-                                    tileColor: AppColors.quinary,
-                                    title: Text('${accountData['AccountName']}',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold)),
-                                    subtitle: Text(
-                                      'Acc-no: ${accountData['AccountNo']}',
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.purple),
-                                    ),
-                                    trailing: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                            'KES: ${formatter.format(accountData['KesBalance'] ?? 0.0)}',
+                                        ],
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: account.currencies.entries
+                                            .map((entry) {
+                                          return Text(
+                                            '${entry.key}: ${(entry.value is num) ? formatter.format(entry.value as num) : 0.0}',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                                color: (accountData[
-                                                                'KesBalance'] ??
-                                                            0.0) <
-                                                        0
-                                                    ? Colors.red
-                                                    : Colors.blue)),
-                                        Gap(4),
-                                        Text(
-                                            'USD: ${formatter.format(accountData['UsdBalance'] ?? 0.0)}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                                color: (accountData[
-                                                                'UsdBalance'] ??
-                                                            0.0) <
-                                                        0
-                                                    ? Colors.red
-                                                    : Colors.green))
-                                      ],
-                                    ),
+                                                fontSize: 14,
+                                                color: (entry.value is num)
+                                                    ? (entry.value as num) < 0
+                                                        ? Colors.red
+                                                        : CupertinoColors
+                                                            .systemBlue
+                                                    : null),
+                                          );
+                                        }).toList(),
+                                        // Text(
+                                        //   'KES: ',
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.bold,
+                                        //     fontSize: 13,
+                                        //     // color: account.kesBalance < 0
+                                        //     //     ? Colors.red
+                                        //     //     : CupertinoColors.systemBlue,
+                                        //   ),
+                                        // ),
+                                        // Text(
+                                        //   'USD: ',
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.bold,
+                                        //     fontSize: 13,
+                                        //     // color: account.usdBalance < 0
+                                        //     //     ? Colors.red
+                                        //     //     : CupertinoColors.activeGreen,
+                                        //   ),
+                                        // ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            }
-
-                            return Column(
-                              children: accountWidgets,
+                              ),
                             );
                           },
-                        ),
-                        Divider(),
-                        // Expanded(
-                        //   child: Align(
-                        //     alignment: Alignment.centerRight,
-                        //     child: ElevatedButton(
-                        //       onPressed: () {
-                        //
-                        //         createPayableBottomSheet(context);
-                        //       },
-                        //       style: ElevatedButton.styleFrom(
-                        //         backgroundColor: AppColors.secondary,
-                        //         padding: const EdgeInsets.symmetric(
-                        //           horizontal: 20,
-                        //           vertical: 12,
-                        //         ),
-                        //         shape: RoundedRectangleBorder(
-                        //           borderRadius:
-                        //               BorderRadius.circular(12),
-                        //         ),
-                        //       ),
-                        //       child: const Text(
-                        //         "New payable",
-                        //         style: TextStyle(
-                        //           color: AppColors.quinary,
-                        //           fontSize: 16,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              createNewAccountBottom(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.secondary,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: const Text(
-                              "New account",
-                              style: TextStyle(
-                                color: AppColors.quinary,
-                                fontSize: 16,
-                              ),
-                            ),
+                        );
+                      },
+                    ),
+                    Divider(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          createNewAccountBottom(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-
-                        Gap(6),
-                      ],
+                        child: const Text(
+                          "New account",
+                          style: TextStyle(
+                            color: AppColors.quinary,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ),
+                    // Column(
+                    //   children: [
+                    //     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    //       stream: FirebaseFirestore.instance
+                    //           .collection('Users')
+                    //           .doc(FirebaseAuth.instance.currentUser!.uid)
+                    //           .collection('Accounts')
+                    //           .orderBy('DateCreated', descending: true)
+                    //           .snapshots(),
+                    //       builder: (context, snapshot) {
+                    //         if (!snapshot.hasData || snapshot.hasError) {
+                    //           return Center(
+                    //             child: Text(
+                    //                 'No accounts found or an error occurred.'),
+                    //           );
+                    //         }
+                    //
+                    //         final accounts = snapshot.data!.docs;
+                    //
+                    //         if (accounts.isEmpty) {
+                    //           return Center(
+                    //             child: Text('No accounts available.'),
+                    //           );
+                    //         }
+                    //
+                    //         // Using a for loop to generate the list of widgets
+                    //         List<Widget> accountWidgets = [];
+                    //
+                    //         /// Format the number to have decimals and 1,000 separator
+                    //         final formatter = NumberFormat.decimalPatternDigits(
+                    //           locale: 'en_us',
+                    //           decimalDigits: 2,
+                    //         );
+                    //
+                    //         for (var account in accounts) {
+                    //           final accountData = account.data();
+                    //           accountWidgets.add(
+                    //             Padding(
+                    //               padding: const EdgeInsets.only(bottom: 8.0),
+                    //               child: ListTile(
+                    //                 isThreeLine: true, dense: true,
+                    //                 titleAlignment:
+                    //                     ListTileTitleAlignment.titleHeight,
+                    //                 contentPadding: EdgeInsets.symmetric(
+                    //                     horizontal: 10, vertical: 3),
+                    //                 shape: RoundedRectangleBorder(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(10)),
+                    //                 // dense: true,
+                    //                 tileColor: AppColors.quinary,
+                    //                 title: Text('${accountData['AccountName']}',
+                    //                     style: TextStyle(
+                    //                         fontSize: 15,
+                    //                         fontWeight: FontWeight.bold)),
+                    //                 subtitle: Text(
+                    //                   'Acc-no: ${accountData['AccountNo']}',
+                    //                   style: TextStyle(
+                    //                       fontSize: 12, color: Colors.purple),
+                    //                 ),
+                    //                 trailing: Column(
+                    //                   mainAxisAlignment:
+                    //                       MainAxisAlignment.spaceEvenly,
+                    //                   crossAxisAlignment:
+                    //                       CrossAxisAlignment.end,
+                    //                   children: [
+                    //                     Text(
+                    //                         'KES: ${formatter.format(accountData['KesBalance'] ?? 0.0)}',
+                    //                         style: TextStyle(
+                    //                             fontWeight: FontWeight.bold,
+                    //                             fontSize: 13,
+                    //                             color: (accountData[
+                    //                                             'KesBalance'] ??
+                    //                                         0.0) <
+                    //                                     0
+                    //                                 ? Colors.red
+                    //                                 : Colors.blue)),
+                    //                     Gap(4),
+                    //                     Text(
+                    //                         'USD: ${formatter.format(accountData['UsdBalance'] ?? 0.0)}',
+                    //                         style: TextStyle(
+                    //                             fontWeight: FontWeight.bold,
+                    //                             fontSize: 13,
+                    //                             color: (accountData[
+                    //                                             'UsdBalance'] ??
+                    //                                         0.0) <
+                    //                                     0
+                    //                                 ? Colors.red
+                    //                                 : Colors.green))
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           );
+                    //         }
+                    //
+                    //         return Column(
+                    //           children: accountWidgets,
+                    //         );
+                    //       },
+                    //     ),
+
+                    //     Gap(6),
+                    //   ],
+                    // ),
                   ],
                 ),
                 ExpansionTile(
@@ -385,7 +734,10 @@ class InfoRow extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins',color: valueColor),
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Poppins',
+              color: valueColor),
         ),
         Text(
           value,
@@ -569,7 +921,7 @@ void createNewAccountBottom(BuildContext context) {
                 child: ElevatedButton(
                   onPressed: () {
                     // controller.makeItNegative.value = true;
-                    controller.saveData();
+                    controller.createAccount();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.secondary,

@@ -219,7 +219,7 @@ class ReceivablesPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
-                    onPressed: () => controller.saveData(),
+                    onPressed: () => controller.createAccount(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.secondary,
                       padding: const EdgeInsets.symmetric(

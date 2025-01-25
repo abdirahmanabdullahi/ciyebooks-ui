@@ -52,49 +52,15 @@ class StartingCapitalPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                   Text(
+                Text(
                   '',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                                   ),
-
-                const Gap(10),
-
-                StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                  stream: controller.setUpStream,
-                  builder: (context, snapshot) {
-
-                    if (!snapshot.hasData || snapshot.data == null || snapshot.hasError) {
-                      return Text(
-                        "0.0",
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      );
-                    }
-
-                    final data = snapshot.data!;
-
-                    final capital =
-                        data['Capital'] ?? 0.0; // Default to 0.0 if missing
-
-                    return Text(
-                      "$capital",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    );
-                  },
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
                 ),
-                const Gap(20),
+
                 Align(
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(

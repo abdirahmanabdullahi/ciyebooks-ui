@@ -1,4 +1,5 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,33 +29,33 @@ class AccountsController extends GetxController {
 
   GlobalKey<FormState> accountsFormKey = GlobalKey<FormState>();
 
-  Future<void> saveData() async {
-    // print('makeItNegative.value');    print(changeToNegative.value);
+/// Create accounts
+  Future<void> createAccount() async {
 
     try {
       if (!accountsFormKey.currentState!.validate()) {
         return;
       }
-      // final Map<String, double> newCurrency = {
-      //   currency.text.trim(): double.tryParse(amount.text.trim()) ?? 0
-      // };
+      final Map<String, double> newCurrency = {
+        'USD': 0,'KES':0,
+      };
       final date = DateTime.now();
       print('Value in the saveData method');
       final accountNo =
           '${date.millisecond}${date.second}${date.minute}-${date.hour}${date.day}${date.month}${date.year}';
       final newAccount = AccountModel(
-          usdBalance: usdIsNegative.value
-              ? -(double.tryParse(usd.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
-              : (double.tryParse(usd.text.trim()) ?? 0.0),
-          kesBalance: kesIsNegative.value
-              ? -(double.tryParse(kes.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
-              : (double.tryParse(kes.text.trim()) ?? 0.0),
+          // usdBalance: usdIsNegative.value
+          //     ? -(double.tryParse(usd.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
+          //     : (double.tryParse(usd.text.trim()) ?? 0.0),
+          // kesBalance: kesIsNegative.value
+          //     ? -(double.tryParse(kes.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
+          //     : (double.tryParse(kes.text.trim()) ?? 0.0),
           firstName: firstName.text.trim(),
           lastName: lastName.text.trim(),
           accountNo: accountNo,
           phoneNo: phoneNo.text.trim(),
           email: email.text.trim(),
-          dateCreated: date);
+          dateCreated: date, currencies: newCurrency);
 
       await accountRepo.savaAccountData(
         newAccount,
@@ -75,5 +76,27 @@ class AccountsController extends GetxController {
         colorText: Colors.white,
       );
     }
+  }
+}
+
+/// Update totals
+Future<void> updateTotals()async{
+  try{
+    final c = AccountsController.instance;
+    final u  = c.usdIsNegative.value;
+    final setupRepo = Get.put(SetupRepo());
+
+    Map<String,dynamic> totals = {
+
+
+
+    }; Map<String,dynamic> totals2 = {
+
+
+    };
+await setupRepo.updateSingleField(totals);
+
+  }catch(e){
+
   }
 }

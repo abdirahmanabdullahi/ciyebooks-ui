@@ -33,10 +33,11 @@ class SetupController extends GetxController {
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> balances = BalancesModel.empty().obs;
   final setupRepo = Get.put(SetupRepo());
-  // Rx<BalancesModel> balances = <BalancesModel>.obs;
+  RxList<AccountModel> accounts = <AccountModel>[].obs;
 
   @override
   void onInit() {
+    /// Stream for the totals
     FirebaseFirestore.instance
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -45,45 +46,42 @@ class SetupController extends GetxController {
         .snapshots()
         .listen((snapshot) {
       if (snapshot.exists) {
-        balances.value =
-            BalancesModel.fromJson(snapshot.data()!);
+        balances.value = BalancesModel.fromJson(snapshot.data()!);
       }
+    });
+
+    /// Stream for the accounts
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Accounts')
+        .snapshots()
+        .listen((querySnapshot) {
+      accounts.value = querySnapshot.docs.map((doc) {
+        return AccountModel.fromJson(doc.data());
+      }).toList();
     });
     super.onInit();
   }
 
-  final setUpStream = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Setup')
-      .doc('Balances')
-      .snapshots();
-
-  final receivablesStream = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection('Setup')
-      .doc('Accounts')
-      .snapshots();
-
   // / Fetch setup data
-  Future<void> fetchBalanceSData() async {
-    try {
-      final balances = await SetupRepo.instance.getSetupData();
-      this.balances(balances);
-    } catch (e) {
-      Get.snackbar("There was an error fetching data",
-          "Please check your internet connection and try again",
-          icon: Icon(
-            Icons.cloud_off,
-            color: Colors.white,
-          ),
-          backgroundColor: Color(0xffFF0033),
-          colorText: Colors.white);
-
-      balances(BalancesModel.empty());
-    }
-  }
+  // Future<void> fetchBalanceSData() async {
+  //   try {
+  //     final balances = await SetupRepo.instance.getSetupData();
+  //     this.balances(balances);
+  //   } catch (e) {
+  //     Get.snackbar("There was an error fetching data",
+  //         "Please check your internet connection and try again",
+  //         icon: Icon(
+  //           Icons.cloud_off,
+  //           color: Colors.white,
+  //         ),
+  //         backgroundColor: Color(0xffFF0033),
+  //         colorText: Colors.white);
+  //
+  //     balances(BalancesModel.empty());
+  //   }
+  // }
 
   /// Save setup data to firestore
   Future<void> saveSetupData() async {
