@@ -148,9 +148,7 @@ class Summary extends StatelessWidget {
                                         PopupMenuItem(
                                           ///Todo: implement pay client popup
                                           onTap: () {
-                                            print(
-                                                account.currencies.toString());
-                                            showDialog(
+                                           showDialog(
                                               context: context,
                                               builder: (context) {
                                                 return Dialog(
