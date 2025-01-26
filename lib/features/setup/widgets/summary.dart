@@ -125,7 +125,7 @@ class Summary extends StatelessWidget {
                             final AccountModel account =
                                 controller.accounts[index];
                             return Padding(
-                              padding: const EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.only(top: 4.0),
                               child: GestureDetector(
                                 dragStartBehavior: DragStartBehavior.start,
                                 onTapDown: (details) {
@@ -146,6 +146,337 @@ class Summary extends StatelessWidget {
                                       ),
                                       items: [
                                         PopupMenuItem(
+                                          ///Todo: implement pay client popup
+                                          onTap: () {
+                                            print(
+                                                account.currencies.toString());
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  backgroundColor:
+                                                      AppColors.quarternary,
+                                                  insetPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 15,
+                                                          vertical: 10),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.all(15.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        // Dialog Title
+                                                        Text(
+                                                          "Pay Client",
+                                                          style: TextStyle(
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Colors
+                                                                .blueAccent,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 8),
+                                                        Divider(
+                                                            thickness: 1,
+                                                            color:
+                                                                Colors.black12),
+
+                                                        SizedBox(height: 20),
+
+                                                        // Account Details
+                                                        Text(
+                                                          account.fullName,
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 12),
+
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    'Account No: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .black87,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    '${account.accountNo}',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .black54,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 6),
+
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'Email: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .black87,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    '${account.email}',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .black54,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        SizedBox(height: 6),
+
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    'Phone No: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .black87,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: account
+                                                                    .phoneNo,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: Colors
+                                                                      .black54,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(height: 20),
+
+                                                        DropdownMenu(
+                                                          onSelected: (v) {},
+                                                          expandedInsets:
+                                                              EdgeInsets.zero,
+                                                          requestFocusOnTap:
+                                                              false,
+                                                          label: Text(
+                                                              'Select currency to pay'),
+                                                          enableFilter: true,
+                                                          enableSearch: true,
+                                                          menuHeight: 150,
+                                                          inputDecorationTheme:
+                                                              InputDecorationTheme(
+                                                            fillColor: AppColors
+                                                                .quinary,
+                                                            filled: true,
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 10),
+                                                            border:
+                                                                const OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              5)),
+                                                            ),
+                                                          ),
+                                                          menuStyle: MenuStyle(
+                                                              // backgroundColor:
+                                                              //     WidgetStateProperty
+                                                              //         .all<Color>(
+                                                              //   AppColors
+                                                              //       .quarternary,
+                                                              // ),
+                                                              ),
+                                                          dropdownMenuEntries:
+                                                              account.currencies
+                                                                  .entries
+                                                                  .map((entry) {
+                                                            return DropdownMenuEntry<
+                                                                String>(
+                                                              style:
+                                                                  ButtonStyle(textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                                                                padding: WidgetStateProperty
+                                                                    .all(EdgeInsets
+                                                                        .all(
+                                                                            10)),
+                                                                foregroundColor:
+                                                                    WidgetStatePropertyAll((entry.value
+                                                                                as num) <
+                                                                            0
+                                                                        ? Colors
+                                                                            .red
+                                                                        : CupertinoColors
+                                                                            .systemBlue),
+                                                                backgroundColor:
+                                                                    WidgetStateProperty.all(
+                                                                        AppColors
+                                                                            .quinary),
+                                                              ),
+                                                              value: entry.key,
+                                                              label:
+                                                                  "${entry.key}",
+                                                            );
+                                                          }).toList(),
+                                                        ),
+                                                        SizedBox(height: 6),
+
+                                                        TextFormField(
+                                                          decoration:
+                                                              InputDecoration(
+                                                            hintText:
+                                                                "Enter Amount",
+                                                            border:
+                                                                OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(height: 30),
+
+                                                        // Action Buttons: Cancel and Submit
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .prettyDark,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal:
+                                                                      20,
+                                                                  vertical: 12,
+                                                                ),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12),
+                                                                ),
+                                                                foregroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(); // Close dialog
+                                                              },
+                                                              child: Text(
+                                                                  "Cancel"),
+                                                            ),
+                                                            SizedBox(width: 10),
+                                                            ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .prettyDark,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal:
+                                                                      20,
+                                                                  vertical: 12,
+                                                                ),
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12),
+                                                                ),
+                                                                foregroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                        fontSize:
+                                                                            16),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(); // Close dialog
+                                                              },
+                                                              child: Text(
+                                                                  "  Add  "),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
                                           child: Text(
                                             "Pay",
                                             style: TextStyle(fontSize: 15),
@@ -153,7 +484,7 @@ class Summary extends StatelessWidget {
                                         ),
                                         PopupMenuItem(
                                           onTap: () {
-                                            print(account.fullName);
+                                            ///Todo: implement Receipt popup
                                           },
                                           child: Text(
                                             "Receive",
@@ -161,6 +492,9 @@ class Summary extends StatelessWidget {
                                           ),
                                         ),
                                         PopupMenuItem(
+                                          onTap: () {
+                                            ///Todo: implement New currency popup
+                                          },
                                           child: Text(
                                             "New currency",
                                             style: TextStyle(fontSize: 15),
@@ -174,212 +508,6 @@ class Summary extends StatelessWidget {
                                         ),
                                       ]);
                                 },
-                                // onTap: () {
-                                //   showMenu(
-                                //       context: context,
-                                //       position: RelativeRect.fill,
-                                //       items: [
-                                //         PopupMenuItem(
-                                //           // onTapDown: (TapDownDetails details) {
-                                //           //
-                                //           //   // Access tap position
-                                //           //
-                                //           //   double tapX = details.globalPosition.dx;
-                                //           //
-                                //           //   double tapY = details.globalPosition.dy;
-                                //           //
-                                //           //   print("Tapped at: ($tapX, $tapY)");
-                                //           //
-                                //           // },
-                                //
-                                //           //   onTap:(TapDownDetails details)async{
-                                //           //   final offset = globalPosition;
-                                //           //   print(account.fullName);
-                                //           // },
-                                //           child: Text('Pay'),
-                                //         ),
-                                //       ]);
-                                // },
-
-                                // onTap: () {
-                                //   showDialog(
-                                //     context: context,
-                                //     builder: (context) {
-                                //       return Dialog(
-                                //         backgroundColor: AppColors.quarternary,
-                                //         insetPadding: EdgeInsets.symmetric(
-                                //             horizontal: 15, vertical: 10),
-                                //         shape: RoundedRectangleBorder(
-                                //           borderRadius:
-                                //               BorderRadius.circular(15),
-                                //         ),
-                                //         child: Padding(
-                                //           padding: EdgeInsets.all(15.0),
-                                //           child: Column(
-                                //             mainAxisSize: MainAxisSize.min,
-                                //             crossAxisAlignment:
-                                //                 CrossAxisAlignment.start,
-                                //             children: [
-                                //               // Dialog Title
-                                //               Text(
-                                //                 "Add New Currency",
-                                //                 style: TextStyle(
-                                //                   fontSize: 20,
-                                //                   fontWeight: FontWeight.bold,
-                                //                   color: Colors.blue,
-                                //                 ),
-                                //               ),
-                                //               SizedBox(height: 6),
-                                //               Divider(),
-                                //
-                                //               SizedBox(height: 20),
-                                //
-                                //               // Account Details
-                                //               Text(
-                                //                 account.fullName,
-                                //                 style: TextStyle(
-                                //                   fontSize: 18,
-                                //                   fontWeight: FontWeight.bold,
-                                //                 ),
-                                //               ),
-                                //               SizedBox(height: 10),
-                                //               Text(
-                                //                 account.accountNo,
-                                //                 style: TextStyle(
-                                //                   fontSize: 14,
-                                //                   color: Colors.black54,
-                                //                 ),
-                                //               ),
-                                //               SizedBox(height: 20),
-                                //
-                                //               // Dropdown Field
-                                //               DropdownMenu(
-                                //                 inputDecorationTheme:
-                                //                     InputDecorationTheme(
-                                //                         filled: true,
-                                //                         fillColor:
-                                //                             AppColors.quinary),
-                                //                 width: double.infinity,
-                                //                 requestFocusOnTap: true,
-                                //                 dropdownMenuEntries: [],
-                                //               ),
-                                //               SizedBox(height: 6),
-                                //
-                                //               // Row for Input Field and Dropdown Menu
-                                //               Row(
-                                //                 children: [
-                                //                   Expanded(
-                                //                     child: TextFormField(
-                                //                       decoration:
-                                //                           InputDecoration(
-                                //                         hintText:
-                                //                             "Enter Amount",
-                                //                         border:
-                                //                             OutlineInputBorder(
-                                //                           borderRadius:
-                                //                               BorderRadius
-                                //                                   .circular(8),
-                                //                         ),
-                                //                       ),
-                                //                     ),
-                                //                   ),
-                                //                   SizedBox(width: 6),
-                                //                   Expanded(
-                                //                     child: DropdownMenu(
-                                //                       inputDecorationTheme:
-                                //                           InputDecorationTheme(
-                                //                               filled: true,
-                                //                               fillColor:
-                                //                                   AppColors
-                                //                                       .quinary),
-                                //                       width: double.infinity,
-                                //                       requestFocusOnTap: true,
-                                //                       dropdownMenuEntries: [
-                                //                         DropdownMenuEntry(
-                                //                             value: "Receivable",
-                                //                             label:
-                                //                                 "Receivable"),
-                                //                         DropdownMenuEntry(
-                                //                             value: "Payable",
-                                //                             label: "Payable"),
-                                //                       ],
-                                //                     ),
-                                //                   ),
-                                //                 ],
-                                //               ),
-                                //               SizedBox(height: 30),
-                                //
-                                //               // Action Buttons: Cancel and Submit
-                                //               Row(
-                                //                 mainAxisAlignment:
-                                //                     MainAxisAlignment.end,
-                                //                 children: [
-                                //                   ElevatedButton(
-                                //                     style: ElevatedButton
-                                //                         .styleFrom(
-                                //                       backgroundColor:
-                                //                           AppColors.prettyDark,
-                                //                       padding: const EdgeInsets
-                                //                           .symmetric(
-                                //                         horizontal: 20,
-                                //                         vertical: 12,
-                                //                       ),
-                                //                       shape:
-                                //                           RoundedRectangleBorder(
-                                //                         borderRadius:
-                                //                             BorderRadius
-                                //                                 .circular(12),
-                                //                       ),
-                                //                       foregroundColor:
-                                //                           Colors.white,
-                                //                       textStyle: TextStyle(
-                                //                           fontSize: 16),
-                                //                     ),
-                                //                     onPressed: () {
-                                //                       // Handle submission logic here
-                                //                       Navigator.of(context)
-                                //                           .pop(); // Close dialog
-                                //                     },
-                                //                     child: Text("Cancel"),
-                                //                   ),
-                                //                   Gap(10),
-                                //                   ElevatedButton(
-                                //                     style: ElevatedButton
-                                //                         .styleFrom(
-                                //                       backgroundColor:
-                                //                           AppColors.prettyDark,
-                                //                       padding: const EdgeInsets
-                                //                           .symmetric(
-                                //                         horizontal: 20,
-                                //                         vertical: 12,
-                                //                       ),
-                                //                       shape:
-                                //                           RoundedRectangleBorder(
-                                //                         borderRadius:
-                                //                             BorderRadius
-                                //                                 .circular(12),
-                                //                       ),
-                                //                       foregroundColor:
-                                //                           Colors.white,
-                                //                       textStyle: TextStyle(
-                                //                           fontSize: 16),
-                                //                     ),
-                                //                     onPressed: () {
-                                //                       // Handle submission logic here
-                                //                       Navigator.of(context)
-                                //                           .pop(); // Close dialog
-                                //                     },
-                                //                     child: Text("  Add  "),
-                                //                   ),
-                                //                 ],
-                                //               ),
-                                //             ],
-                                //           ),
-                                //         ),
-                                //       );
-                                //     },
-                                //   );
-                                // },
                                 child: CustomContainer(
                                   width: double.infinity,
                                   padding: EdgeInsets.all(10),
@@ -408,7 +536,6 @@ class Summary extends StatelessWidget {
                                                 fontSize: 12,
                                                 color: Colors.purple),
                                           ),
-
                                         ],
                                       ),
                                       Column(
@@ -423,12 +550,10 @@ class Summary extends StatelessWidget {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,
-                                                color: (entry.value is num)
-                                                    ? (entry.value as num) < 0
-                                                        ? Colors.red
-                                                        : CupertinoColors
-                                                            .systemBlue
-                                                    : null),
+                                                color: (entry.value as num) < 0
+                                                    ? Colors.red
+                                                    : CupertinoColors
+                                                        .systemBlue),
                                           );
                                         }).toList(),
                                         // Text(

@@ -16,6 +16,8 @@ class SetupController extends GetxController {
   static SetupController get instance => Get.find();
 
   final isLoading = false.obs;
+  final isLoading1 = '54675486565etrjdhnhdh'.obs;
+
   final capital = TextEditingController();
   final kesCashBalance = TextEditingController();
   final usdCashBalance = TextEditingController();
@@ -47,6 +49,7 @@ class SetupController extends GetxController {
         .listen((snapshot) {
       if (snapshot.exists) {
         balances.value = BalancesModel.fromJson(snapshot.data()!);
+        // currency.value = BalancesModel.fromJson()
       }
     });
 
