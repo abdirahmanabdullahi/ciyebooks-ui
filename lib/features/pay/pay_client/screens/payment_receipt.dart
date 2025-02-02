@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../common/styles/custom_container.dart';
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/amount_and_receipt_tile_header.dart';
+import '../../../../common/styles/custom_container.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../common/widgets/amount_and_receipt_tile_header.dart';
 
 class PaymentReceipt extends StatelessWidget {
   const PaymentReceipt({

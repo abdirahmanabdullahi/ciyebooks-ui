@@ -37,28 +37,30 @@ class AccountSearch extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 2, vertical: 12),
-                child: TextFormField(
-                  autofocus: true,
-                  decoration: const InputDecoration().copyWith(
-                    filled: true,
-                    fillColor: AppColors.quinary,
-                    focusedBorder: const OutlineInputBorder().copyWith(
-                      borderRadius:
-                          BorderRadius.circular(AppSizes.inputFieldRadius),
-                      borderSide:
-                          const BorderSide(width: 1, color: Colors.blueAccent),
+                child: SizedBox(height: 48,
+                  child: TextFormField(
+                    autofocus: true,
+                    decoration: const InputDecoration().copyWith(
+                      filled: true,
+                      fillColor: AppColors.quinary,
+                      focusedBorder: const OutlineInputBorder().copyWith(
+                        borderRadius:
+                            BorderRadius.circular(AppSizes.inputFieldRadius),
+                        borderSide:
+                            const BorderSide(width: 1, color: Colors.blueAccent),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      isDense: true,
+                      suffixIcon: const Icon(
+                        Icons.search,
+                        size: 25,
+                        color: Colors.blueAccent,
+                      ),
+                      label: const Text("Search account"),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    isDense: true,
-                    suffixIcon: const Icon(
-                      Icons.search,
-                      size: 25,
-                      color: Colors.blueAccent,
-                    ),
-                    label: const Text("Search account"),
                   ),
                 ),
               ),

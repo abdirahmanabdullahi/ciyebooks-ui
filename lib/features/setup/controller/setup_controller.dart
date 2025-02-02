@@ -18,18 +18,17 @@ class SetupController extends GetxController {
   final isLoading = false.obs;
   final isLoading1 = '54675486565etrjdhnhdh'.obs;
 
-  final capital = TextEditingController();
-  final kesCashBalance = TextEditingController();
-  final usdCashBalance = TextEditingController();
-  final kesBankBalance = TextEditingController();
-  final usdBankBalance = TextEditingController();
-  final kesReceivables = TextEditingController();
-  final usdReceivables = TextEditingController();
-  final kesPayables = TextEditingController();
-  final usdPayables = TextEditingController();
-  final accountIsSetup = TextEditingController();
-  final profitBalance = TextEditingController();
-  final dateCreated = TextEditingController();
+  final shillingAtBank = TextEditingController();
+  final shillingCashBalance = TextEditingController();
+  final shillingReceivable = TextEditingController();
+  final shillingPayable = TextEditingController();
+  final dollarAtBank = TextEditingController();
+  final dollarCashInHand = TextEditingController();
+  final dollarReceivable = TextEditingController();
+  final dollarPayable = TextEditingController();
+  final averageRateOfDollar = TextEditingController();
+  final workingCapital = TextEditingController();
+
 
   GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
@@ -106,17 +105,16 @@ class SetupController extends GetxController {
       }
 
       final newSetup = BalancesModel(
-        capital: double.tryParse(capital.text.trim()) ?? 0.0,
-        kesCashBalance: double.tryParse(kesCashBalance.text.trim()) ?? 0.0,
-        usdCashBalance: double.tryParse(usdCashBalance.text.trim()) ?? 0.0,
-        kesBankBalance: double.tryParse(kesBankBalance.text.trim()) ?? 0.0,
-        usdBankBalance: double.tryParse(usdBankBalance.text.trim()) ?? 0.0,
-        kesReceivables: double.tryParse(kesReceivables.text.trim()) ?? 0.0,
-        usdReceivables: double.tryParse(usdReceivables.text.trim()) ?? 0.0,
-        kesPayables: double.tryParse(kesPayables.text.trim()) ?? 0.0,
-        usdPayables: double.tryParse(usdPayables.text.trim()) ?? 0.0,
-        accountIsSetup: false,
-        profitBalance: double.tryParse(profitBalance.text.trim()) ?? 0.0,
+        shillingAtBank: double.tryParse(shillingAtBank.text.trim())??0.0,
+        shillingCashInHand: double.tryParse(shillingCashBalance.text.trim())??0.0,
+        shillingReceivable: double.tryParse(shillingReceivable.text.trim())??0.0,
+        shillingPayable: double.tryParse(shillingPayable.text.trim())??0.0,
+        dollarAtBank: double.tryParse(dollarAtBank.text.trim())??0.0,
+        dollarCashInHand: double.tryParse(dollarCashInHand.text.trim())??0.0,
+        dollarReceivable: double.tryParse(dollarReceivable.text.trim())??0.0,
+        dollarPayable: double.tryParse(dollarPayable.text.trim())??0.0,
+        averageRateOfDollar: double.tryParse(averageRateOfDollar.text.trim())??0.0,
+        workingCapital: double.tryParse(workingCapital.text.trim())??0.0,
       );
 
       final setupRepo = Get.put(SetupRepo());
@@ -135,88 +133,88 @@ class SetupController extends GetxController {
   }
 
   ///Update capital
-  Future<void> setupCapital() async {
-    final setupRepo = Get.put(SetupRepo());
-
-    try {
-      // Validate the form before proceeding
-      if (!capitalFormKey.currentState!.validate()) {
-        return;
-      }
-      final connection = await NetworkManager.instance.isConnected();
-      connection
-          ? null
-          : Get.snackbar(
-              "Success!",
-              "Capital has been saved locally and will sync once you're online.",
-              backgroundColor: Colors.blue,
-              colorText: Colors.white,
-            );
-
-      // Prepare data to update
-      Map<String, dynamic> capitalBalance = {
-        'Capital': double.tryParse(capital.text.trim()) ?? 00,
-      };
-
-      // Update the single field in the repository
-      await setupRepo.updateSingleField(capitalBalance);
-      Get.back();
-
-      // Notify the user of success
-      Get.snackbar(
-        "Success!",
-        "Capital has been updated successfully.",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      // Handle errors and notify the user
-      print(e.toString());
-      Get.snackbar(
-        "Oh snap!",
-        e.toString(),
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-      );
-    }
-  }
+  // Future<void> setupCapital() async {
+  //   final setupRepo = Get.put(SetupRepo());
+  //
+  //   try {
+  //     // Validate the form before proceeding
+  //     if (!capitalFormKey.currentState!.validate()) {
+  //       return;
+  //     }
+  //     final connection = await NetworkManager.instance.isConnected();
+  //     connection
+  //         ? null
+  //         : Get.snackbar(
+  //             "Success!",
+  //             "Capital has been saved locally and will sync once you're online.",
+  //             backgroundColor: Colors.blue,
+  //             colorText: Colors.white,
+  //           );
+  //
+  //     // Prepare data to update
+  //     // Map<String, dynamic> capitalBalance = {
+  //     //   'Capital': double.tryParse(capital.text.trim()) ?? 00,
+  //     // };
+  //
+  //     // Update the single field in the repository
+  //     await setupRepo.updateSingleField(capitalBalance);
+  //     Get.back();
+  //
+  //     // Notify the user of success
+  //     Get.snackbar(
+  //       "Success!",
+  //       "Capital has been updated successfully.",
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } catch (e) {
+  //     // Handle errors and notify the user
+  //     print(e.toString());
+  //     Get.snackbar(
+  //       "Oh snap!",
+  //       e.toString(),
+  //       backgroundColor: Colors.black,
+  //       colorText: Colors.white,
+  //     );
+  //   }
+  // }
 
   ///Update kenya shilling cash in hand
-  Future<void> updateKesCashInHand() async {
-    final setupRepo = Get.put(SetupRepo());
-
-    try {
-      // Validate the form before proceeding
-      if (!cashKesInHandFormKey.currentState!.validate()) {
-        return;
-      }
-
-      // Prepare data to update
-      Map<String, dynamic> balances = {
-        'KesCashBalance': double.tryParse(kesCashBalance.text.trim()) ?? 00,
-        'KesBankBalance': double.tryParse(kesBankBalance.text.trim()) ?? 00,
-      };
-
-      // Update the single field in the repository
-      await setupRepo.updateSingleField(balances);
-      Get.back();
-
-      // Notify the user of success
-      Get.snackbar(
-        "Success!",
-        "Capital has been updated successfully.",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      // Handle errors and notify the user
-      print(e.toString());
-      Get.snackbar(
-        "Oh snap!",
-        e.toString(),
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-      );
-    }
-  }
+  // Future<void> updateKesCashInHand() async {
+  //   final setupRepo = Get.put(SetupRepo());
+  //
+  //   try {
+  //     // Validate the form before proceeding
+  //     if (!cashKesInHandFormKey.currentState!.validate()) {
+  //       return;
+  //     }
+  //
+  //     // Prepare data to update
+  //     Map<String, dynamic> balances = {
+  //       'KesCashBalance': double.tryParse(kesCashBalance.text.trim()) ?? 00,
+  //       'KesBankBalance': double.tryParse(kesBankBalance.text.trim()) ?? 00,
+  //     };
+  //
+  //     // Update the single field in the repository
+  //     await setupRepo.updateSingleField(balances);
+  //     Get.back();
+  //
+  //     // Notify the user of success
+  //     Get.snackbar(
+  //       "Success!",
+  //       "Capital has been updated successfully.",
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } catch (e) {
+  //     // Handle errors and notify the user
+  //     print(e.toString());
+  //     Get.snackbar(
+  //       "Oh snap!",
+  //       e.toString(),
+  //       backgroundColor: Colors.black,
+  //       colorText: Colors.white,
+  //     );
+  //   }
+  // }
 }

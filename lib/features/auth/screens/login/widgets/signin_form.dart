@@ -24,19 +24,16 @@ class SignInForm extends StatelessWidget {
       key: controller.signInFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(
-            controller: controller.email,
-            validator: (value) => Validator.validateEmail(value),
-            decoration: const InputDecoration(
-              suffix: Icon(
-                Icons.mail_outline,
-                color: Colors.grey,
-              ),
-              label: Text(AppTexts.email),
-            ),
-          ),
-          Gap(AppSizes.spaceBtwInputFields),
+        children: [TextFormField(
+          controller: controller.email,
+          validator: (value) =>
+              Validator.validateEmptyText('Email', value),
+          decoration: InputDecoration(
+              label: const Text(AppTexts.email),
+             ),
+        ),
+
+          Gap(AppSizes.spaceBtwInputFields/2),
           Obx(
             () => TextFormField(keyboardType: TextInputType.emailAddress,
               obscureText: controller.hidePassword.value,

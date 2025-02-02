@@ -12,7 +12,7 @@ import '../../bank/withdraw/withdraw_account_selector.dart';
 import '../../forex/buy/buy_account_selector.dart';
 import '../../forex/forex_history.dart';
 import '../../forex/sell/sell_account_selector.dart';
-import '../../pay/pay_client/pay_account_selector.dart';
+import '../../pay/pay_client/screens/pay_account_selector.dart';
 import '../../search/transaction_history.dart';
 import '../../forex/currency_stock.dart';
 import '../../internal_transfer/internal_transfer_account_selector.dart';

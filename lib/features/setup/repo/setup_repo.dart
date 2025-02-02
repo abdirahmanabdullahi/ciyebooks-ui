@@ -45,31 +45,31 @@ class SetupRepo extends GetxController {
   }
 
   /// Fetch setup data
-  Future<BalancesModel> getSetupData() async {
-    try {
-      final documentSnapshot = await _db
-          .collection('Users')
-          .doc(uid)
-          .collection('Setup')
-          .doc('Balances')
-          .get();
-
-      if (documentSnapshot.exists) {
-        return BalancesModel.fromSnapshot(documentSnapshot);
-      } else {
-        return BalancesModel.empty();
-      }
-
-    } on FirebaseAuthException catch (e) {
-      throw TFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw TFirebaseException(e.code).message;
-    } on FormatException catch (_) {
-      throw const TFormatException();
-    } on TPlatformException catch (e) {
-      throw TPlatformException(e.code).message;
-    } catch (e) {
-      throw 'Something went wrong. Please try again';
-    }
-  }
+  // Future<BalancesModel> getSetupData() async {
+  //   try {
+  //     final documentSnapshot = await _db
+  //         .collection('Users')
+  //         .doc(uid)
+  //         .collection('Setup')
+  //         .doc('Balances')
+  //         .get();
+  //
+  //     if (documentSnapshot.exists) {
+  //       return BalancesModel.fromSnapshot(documentSnapshot);
+  //     } else {
+  //       return BalancesModel.empty();
+  //     }
+  //
+  //   } on FirebaseAuthException catch (e) {
+  //     throw TFirebaseAuthException(e.code).message;
+  //   } on FirebaseException catch (e) {
+  //     throw TFirebaseException(e.code).message;
+  //   } on FormatException catch (_) {
+  //     throw const TFormatException();
+  //   } on TPlatformException catch (e) {
+  //     throw TPlatformException(e.code).message;
+  //   } catch (e) {
+  //     throw 'Something went wrong. Please try again';
+  //   }
+  // }
 }

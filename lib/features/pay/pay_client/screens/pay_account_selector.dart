@@ -1,9 +1,9 @@
 
-import 'package:ciyebooks/features/pay/pay_client/pay_amount_screen.dart';
+import 'package:ciyebooks/features/pay/pay_client/screens/pay_amount_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../common/screens/account_selector.dart';
+import '../../../common/screens/account_selector.dart';
 
 class PayAccountSelector extends StatelessWidget {
   const PayAccountSelector({super.key});

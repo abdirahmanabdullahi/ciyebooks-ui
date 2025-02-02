@@ -1,9 +1,9 @@
 
-import 'package:ciyebooks/features/pay/pay_client/pay_confirm_screen.dart';
+import 'package:ciyebooks/features/pay/pay_client/screens/pay_confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../common/screens/amount_screen.dart';
+import '../../../common/screens/amount_screen.dart';
 
 class PayAmountScreen extends StatelessWidget {
   const PayAmountScreen({super.key});

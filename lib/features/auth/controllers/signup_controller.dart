@@ -30,7 +30,6 @@ class SignupController extends GetxController {
 
   // SIGNUP
 
-
   void signup() async {
     try {
       //Start loading
@@ -47,7 +46,6 @@ class SignupController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-
       }
 
       //Form validation
@@ -73,18 +71,20 @@ class SignupController extends GetxController {
 
       // Save authenticated data to the firestore.
       final newUser = UserModel(
-          firstName: firstName.text.trim(),
-          lastName: lastName.text.trim(),
-          id: userCredential.user!.uid,
-          userName: userName.text.trim(),
-          email: email.text.trim(),
-          phoneNumber: phoneNumber.text.trim(),
-          profilePicture: '',
-         );
+        firstName: firstName.text.trim(),
+        lastName: lastName.text.trim(),
+        id: userCredential.user!.uid,
+        userName: userName.text.trim(),
+        email: email.text.trim(),
+        phoneNumber: phoneNumber.text.trim(),
+        accountIsSetup: false,
+      );
+
       ///Create empty setup data
-/// Save user data
+      /// Save user data
       final userRepo = Get.put(UserRepo());
       await userRepo.saveUserDate(newUser);
+
       /// Save setup data
       final setupRepo = Get.put(SetupRepo());
       final setup = BalancesModel.empty();

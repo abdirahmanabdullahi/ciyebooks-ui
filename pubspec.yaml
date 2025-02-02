@@ -51,6 +51,8 @@ dependencies:
   cloud_firestore: ^5.5.0
   firebase_storage: ^12.3.6
   fl_chart: ^0.69.2
+  excel: ^4.0.6
+  file_picker: ^8.1.7
 
 
 dev_dependencies:
