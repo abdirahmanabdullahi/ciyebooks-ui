@@ -29,6 +29,8 @@ class AuthRepo extends GetxController {
 
   screenRedirect() async {
     final user = FirebaseAuth.instance.currentUser;
+    Get.to(() => NavigationMenu());
+
 
     if (user != null) {
       if (user.emailVerified) {

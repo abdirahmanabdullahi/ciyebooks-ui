@@ -11,20 +11,30 @@ class BalancesModel {
   final double dollarPayable;
   final double averageRateOfDollar;
   final double workingCapital;
+  final double expenses;
+  double? payments;
+  double? receipts;
+  double? withdrawals;
+  double? deposits;
+  double? transfers;
 
-
-  BalancesModel({
-    required this.shillingAtBank,
-    required this.shillingCashInHand,
-    required this.shillingReceivable,
-    required this.shillingPayable,
-    required this.dollarAtBank,
-    required this.dollarCashInHand,
-    required this.dollarReceivable,
-    required this.dollarPayable,
-    required this.averageRateOfDollar,
-    required this.workingCapital,
-  });
+  BalancesModel(
+      {required this.expenses,
+      required this.shillingAtBank,
+      required this.shillingCashInHand,
+      required this.shillingReceivable,
+      required this.shillingPayable,
+      required this.dollarAtBank,
+      required this.dollarCashInHand,
+      required this.dollarReceivable,
+      required this.dollarPayable,
+      required this.averageRateOfDollar,
+      required this.workingCapital,
+      this.payments,
+      this.deposits,
+      this.receipts,
+      this.transfers,
+      this.withdrawals});
 
   /// Convert `BalancesModel` to JSON structure for storing data in Firestore
   Map<String, dynamic> toJson() {
@@ -39,38 +49,53 @@ class BalancesModel {
       'dollarPayable': dollarPayable,
       'averageRateOfDollar': averageRateOfDollar,
       'workingCapital': workingCapital,
+      'expenses': expenses,
+      'payments': payments,
+      'deposits': deposits,
+      'receipts': receipts,
+      'transfers': transfers,
+      'withdrawals': withdrawals
     };
   }
 
   /// Factory constructor to convert firestore data from Map to BalancesModel
   static BalancesModel empty() => BalancesModel(
-      shillingAtBank: 0.0,
-      shillingCashInHand: 0.0,
-      shillingReceivable: 0.0,
-      shillingPayable: 0.0,
-      dollarAtBank: 0.0,
-      dollarCashInHand: 0.0,
-      dollarReceivable: 0.0,
-      dollarPayable: 0.0,
-      averageRateOfDollar: 0.0,
-      workingCapital: 0.0);
+        shillingAtBank: 0.0,
+        shillingCashInHand: 0.0,
+        shillingReceivable: 0.0,
+        shillingPayable: 0.0,
+        dollarAtBank: 0.0,
+        dollarCashInHand: 0.0,
+        dollarReceivable: 0.0,
+        dollarPayable: 0.0,
+        averageRateOfDollar: 0.0,
+        workingCapital: 0.0,
+        expenses: 0.0,
+        payments: 0.0,
+        deposits: 0.0,
+        receipts: 0.0,
+        transfers: 0.0,
+        withdrawals: 0.0,
+      );
 
   factory BalancesModel.fromJson(Map<String, dynamic> jsonData) {
     return BalancesModel(
       shillingAtBank: (jsonData['shillingAtBank'] as num?)?.toDouble() ?? 0.0,
-      shillingCashInHand:
-          (jsonData['shillingCashInHand'] as num?)?.toDouble() ?? 0.0,
-      shillingReceivable:
-          (jsonData['shillingReceivable'] as num?)?.toDouble() ?? 0.0,
+      shillingCashInHand: (jsonData['shillingCashInHand'] as num?)?.toDouble() ?? 0.0,
+      shillingReceivable: (jsonData['shillingReceivable'] as num?)?.toDouble() ?? 0.0,
       shillingPayable: (jsonData['shillingPayable'] as num?)?.toDouble() ?? 0.0,
       dollarAtBank: (jsonData['dollarAtBank'] as num?)?.toDouble() ?? 0.0,
-      dollarCashInHand:
-          (jsonData['dollarCashInHand'] as num?)?.toDouble() ?? 0.0,
-      dollarReceivable:
-          (jsonData['dollarReceivable'] as num?)?.toDouble() ?? 0.0,
+      dollarCashInHand: (jsonData['dollarCashInHand'] as num?)?.toDouble() ?? 0.0,
+      dollarReceivable: (jsonData['dollarReceivable'] as num?)?.toDouble() ?? 0.0,
       dollarPayable: (jsonData['dollarPayable'] as num?)?.toDouble() ?? 0.0,
       averageRateOfDollar: (jsonData['averageRateOfDollar'] as num?)?.toDouble() ?? 0.0,
       workingCapital: (jsonData['workingCapital'] as num?)?.toDouble() ?? 0.0,
+      expenses: (jsonData['expenses'] as num?)?.toDouble() ?? 0.0,
+      payments: (jsonData['payments'] as num?)?.toDouble() ?? 0.0,
+      deposits: (jsonData['deposits'] as num?)?.toDouble() ?? 0.0,
+      withdrawals: (jsonData['withdrawals'] as num?)?.toDouble() ?? 0.0,
+      receipts: (jsonData['receipts'] as num?)?.toDouble() ?? 0.0,
+      transfers: (jsonData['transfers'] as num?)?.toDouble() ?? 0.0,
     );
   }
 

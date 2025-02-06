@@ -30,6 +30,7 @@ class VerifyEmailController extends GetxController {
           'Please check your inbox and verify your email.',
           backgroundColor: Colors.green, colorText: Colors.white);
     } catch (e) {
+      print(e.toString());
       Get.snackbar("Oh snap! ", e.toString(),
           icon: Icon(
             Icons.cloud_off,

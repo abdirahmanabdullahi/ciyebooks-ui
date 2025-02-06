@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../common/custom_appbar.dart';
-import '../../../navigation_menu.dart';
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/acounts_tile.dart';
+import '../../../../common/custom_appbar.dart';
+import '../../../../navigation_menu.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../common/widgets/acounts_tile.dart';
 import 'bank_amount_screen.dart';
 
 class BankDepositAccountSelector extends StatelessWidget {

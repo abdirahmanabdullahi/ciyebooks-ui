@@ -2,6 +2,9 @@ import 'dart:ffi';
 
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
+import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
+import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,30 +14,32 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../utils/helpers/network_manager.dart';
+import '../../bank/withdraw/model/withdraw_model.dart';
 
 class SetupController extends GetxController {
   static SetupController get instance => Get.find();
 
   final isLoading = false.obs;
-  final isLoading1 = '54675486565etrjdhnhdh'.obs;
-
-  final shillingAtBank = TextEditingController();
-  final shillingCashBalance = TextEditingController();
-  final shillingReceivable = TextEditingController();
-  final shillingPayable = TextEditingController();
-  final dollarAtBank = TextEditingController();
-  final dollarCashInHand = TextEditingController();
-  final dollarReceivable = TextEditingController();
-  final dollarPayable = TextEditingController();
-  final averageRateOfDollar = TextEditingController();
-  final workingCapital = TextEditingController();
-
-
   GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> balances = BalancesModel.empty().obs;
   final setupRepo = Get.put(SetupRepo());
   RxList<AccountModel> accounts = <AccountModel>[].obs;
+
+  ///
+  RxList<PayClientModel> payments = <PayClientModel>[].obs;
+  final payClientList = <PayClientModel>[];
+
+  ///
+  final receiptsList = <ReceiveModel>[];
+  RxList<ReceiveModel> receipts = <ReceiveModel>[].obs;
+
+  ///
+  RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
+  final expensesList = <ExpenseModel>[];
+  ///
+  final withdrawalList = <WithdrawModel>[];
+  RxList<WithdrawModel> withdrawals = <WithdrawModel>[].obs;
 
   @override
   void onInit() {
@@ -62,6 +67,47 @@ class SetupController extends GetxController {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
+    });
+
+    /// Stream for transactions
+    // FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .collection('transactions')
+    //     .snapshots()
+    //     .listen((querySnapshot) {
+    //   payments.value = querySnapshot.docs.map((doc) {
+    //     // final data = doc.data();
+    //     // final transactionType = data['transactionType'].toString();
+    //
+    //     return PayClientModel.fromJson(doc.data());
+    //   }).toList();
+    // });
+
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('transactions')
+        .snapshots()
+        .listen((querySnapshot) {
+      // Filter only expenses
+      for (var doc in querySnapshot.docs) {
+        final transactionType = doc.data()['transactionType'];
+        if (doc.exists && transactionType == 'expense') {
+          expensesList.add(ExpenseModel.fromJson(doc.data()));
+          print('Expense');
+        } else if (transactionType == 'payment') {
+          payClientList.add(PayClientModel.fromJson(doc.data()));
+        } else if (transactionType == 'receipt') {
+          receiptsList.add(ReceiveModel.fromJson(doc.data()));
+        } else if (transactionType == 'withdraw') {
+          withdrawalList.add(WithdrawModel.fromJson(doc.data()));
+        }
+      }
+      withdrawals.value = withdrawalList;
+      receipts.value = receiptsList;
+      payments.value = payClientList;
+      expenses.value = expensesList;
     });
     super.onInit();
   }
@@ -104,21 +150,21 @@ class SetupController extends GetxController {
         return;
       }
 
-      final newSetup = BalancesModel(
-        shillingAtBank: double.tryParse(shillingAtBank.text.trim())??0.0,
-        shillingCashInHand: double.tryParse(shillingCashBalance.text.trim())??0.0,
-        shillingReceivable: double.tryParse(shillingReceivable.text.trim())??0.0,
-        shillingPayable: double.tryParse(shillingPayable.text.trim())??0.0,
-        dollarAtBank: double.tryParse(dollarAtBank.text.trim())??0.0,
-        dollarCashInHand: double.tryParse(dollarCashInHand.text.trim())??0.0,
-        dollarReceivable: double.tryParse(dollarReceivable.text.trim())??0.0,
-        dollarPayable: double.tryParse(dollarPayable.text.trim())??0.0,
-        averageRateOfDollar: double.tryParse(averageRateOfDollar.text.trim())??0.0,
-        workingCapital: double.tryParse(workingCapital.text.trim())??0.0,
-      );
+      // final newSetup = BalancesModel(
+      //   shillingAtBank: double.tryParse(shillingAtBank.text.trim())??0.0,
+      //   shillingCashInHand: double.tryParse(shillingCashBalance.text.trim())??0.0,
+      //   shillingReceivable: double.tryParse(shillingReceivable.text.trim())??0.0,
+      //   shillingPayable: double.tryParse(shillingPayable.text.trim())??0.0,
+      //   dollarAtBank: double.tryParse(dollarAtBank.text.trim())??0.0,
+      //   dollarCashInHand: double.tryParse(dollarCashInHand.text.trim())??0.0,
+      //   dollarReceivable: double.tryParse(dollarReceivable.text.trim())??0.0,
+      //   dollarPayable: double.tryParse(dollarPayable.text.trim())??0.0,
+      //   averageRateOfDollar: double.tryParse(averageRateOfDollar.text.trim())??0.0,
+      //   workingCapital: double.tryParse(workingCapital.text.trim())??0.0,
+      // );
 
-      final setupRepo = Get.put(SetupRepo());
-      await setupRepo.saveSetupData(newSetup);
+      // final setupRepo = Get.put(SetupRepo());
+      // await setupRepo.saveSetupData(newSetup);
 
       ///Success message
       // Get.snackbar('Congratulations', ' Account setup complete',
@@ -218,3 +264,12 @@ class SetupController extends GetxController {
   //   }
   // }
 }
+
+// final paymentDocs = querySnapshot.docs
+//     .where((doc) => doc.data()['transactionType'] == 'payment')
+//     .map((doc) => PayClientModel.fromJson(doc.data()))
+//     .toList();
+// final expenseDocs = querySnapshot.docs
+//     .where((doc) => doc.data()['transactionType'] == 'expense')
+//     .map((doc) => ExpenseModel.fromJson(doc.data()))
+//     .toList();

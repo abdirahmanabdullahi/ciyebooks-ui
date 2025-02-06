@@ -1,8 +1,9 @@
-import 'package:ciyebooks/features/receive/receive_receipt_screen.dart';
+import 'package:ciyebooks/features/receive/screens/receive_receipt_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../common/screens/confirm_screen.dart';
+import '../../common/screens/confirm_screen.dart';
+
 
 class ReceiveConfirmScreen extends StatelessWidget {
   const ReceiveConfirmScreen({super.key});

@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../common/custom_appbar.dart';
-import '../../../common/styles/custom_container.dart';
-import '../../../navigation_menu.dart';
-import '../../../utils/constants/colors.dart';
-import '../../common/widgets/amount_and_receipt_tile_header.dart';
-import '../../common/widgets/continue_button.dart';
-import '../../common/widgets/share_or_download_buttons.dart';
-import '../../common/widgets/status_text.dart';
+import '../../../../common/custom_appbar.dart';
+import '../../../../common/styles/custom_container.dart';
+import '../../../../navigation_menu.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../common/widgets/amount_and_receipt_tile_header.dart';
+import '../../../common/widgets/continue_button.dart';
+import '../../../common/widgets/share_or_download_buttons.dart';
+import '../../../common/widgets/status_text.dart';
 
 class ExpenseReceipt extends StatelessWidget {
   const ExpenseReceipt({super.key});

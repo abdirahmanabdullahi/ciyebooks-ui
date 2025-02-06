@@ -39,22 +39,21 @@ class AccountModel {
       'Email': email,
       // "UsdBalance": usdBalance,
       // 'KesBalance': kesBalance,
-      'Currencies':currencies
+      'Currencies': currencies
     };
   }
 
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
     DateFormat dateFormat = DateFormat('dd-MM-yyyy');
     return AccountModel(
-        // usdBalance: jsonData['UsdBalance'] ?? '',
-        // kesBalance: jsonData['KesBalance'] ?? '',
-        dateCreated:
-            DateTime.parse(jsonData['DateCreated'].toDate().toString()),
-        firstName: jsonData['FirstName'] ?? '',
-        lastName: jsonData['LastName'] ?? '',
-        accountNo: jsonData['AccountNo'] ?? '',
-        phoneNo: jsonData['PhoneNo'] ?? '',
-        email: jsonData['Email'] ?? '',
+      // usdBalance: jsonData['UsdBalance'] ?? '',
+      // kesBalance: jsonData['KesBalance'] ?? '',
+      dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+      firstName: jsonData['FirstName'] ?? '',
+      lastName: jsonData['LastName'] ?? '',
+      accountNo: jsonData['AccountNo'] ?? '',
+      phoneNo: jsonData['PhoneNo'] ?? '',
+      email: jsonData['Email'] ?? '',
       currencies: Map<String, dynamic>.from(jsonData['Currencies'] ?? {}),
     );
   }

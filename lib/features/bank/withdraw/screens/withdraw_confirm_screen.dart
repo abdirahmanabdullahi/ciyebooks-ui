@@ -1,27 +1,27 @@
 
+import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_receipt_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../common/custom_appbar.dart';
-import '../../../common/styles/custom_container.dart';
-import '../../../navigation_menu.dart';
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/amount_and_receipt_tile_header.dart';
-import '../../common/widgets/continue_button.dart';
-import '../../common/widgets/status_text.dart';
-import 'bank_deposit_receipt_screen.dart';
+import '../../../../common/custom_appbar.dart';
+import '../../../../common/styles/custom_container.dart';
+import '../../../../navigation_menu.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../common/widgets/amount_and_receipt_tile_header.dart';
+import '../../../common/widgets/continue_button.dart';
+import '../../../common/widgets/status_text.dart';
 
-class BankDepositConfirmScreen extends StatelessWidget {
-  const BankDepositConfirmScreen({super.key});
+class WithdrawConfirmScreen extends StatelessWidget {
+  const WithdrawConfirmScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
         showBackArrow: true,
-        title: const Text("Confirm Deposit"),
+        title: const Text("Confirm cash withdraw"),
         actions: [
           IconButton(
               onPressed: () => Get.offAll(() => NavigationMenu()),
@@ -44,7 +44,7 @@ class BankDepositConfirmScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AmountAndReceiptTileHeader(
-                          title: "Confirm bank deposit",
+                          title: "Confirm bank withdraw",
                           icon: Icon(
                             Icons.account_balance,
                             color: AppColors.quinary,
@@ -62,7 +62,7 @@ class BankDepositConfirmScreen extends StatelessWidget {
                               minTileHeight: 30,
                               leading: const Icon(Icons.person_outline),
                               title: const Text("Abdirahman Abdullahi Abdi"),
-                              subtitle: Text("Account deposited to"),
+                              subtitle: Text("Account withdrawn from"),
                             ),
                             ListTile(
                               isThreeLine: true,
@@ -122,8 +122,11 @@ class BankDepositConfirmScreen extends StatelessWidget {
               ],
             ),
             ContinueButton(
-                label: "Confirm",
-                onPressed: () => Get.to(() => BankDepositReceiptScreen()))
+              label: "Confirm",
+              onPressed: () => Get.to(
+                () => WithdrawReceiptScreen(),
+              ),
+            ),
           ],
         ),
       ),

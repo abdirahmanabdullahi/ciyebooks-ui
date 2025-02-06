@@ -9,8 +9,10 @@ class PayClientModel {
   final String receiver;
   final DateTime dateCreated;
   final String description;
+  final String transactionType;
   PayClientModel({
     required this.transactionId,
+    required this.transactionType,
     required this.accountFrom,
     required this.currency,
     required this.amountPaid,
@@ -27,17 +29,20 @@ class PayClientModel {
       'Receiver': receiver,
       'DateCreated': dateCreated,
       'Description': description,
+      'transactionType': transactionType
     };
   }
 
   factory PayClientModel.fromJson(Map<String, dynamic> jsonData) {
     return PayClientModel(
-        transactionId: jsonData['TransactionId'],
-        accountFrom: jsonData['AccountFrom'],
-        currency: jsonData['Currency'],
-        amountPaid: jsonData['AmountPaid']??0.0,
-        receiver: jsonData['Receiver'],
-        dateCreated: jsonData['DateCreated'],
-        description: jsonData['Description']);
+      transactionId: jsonData['TransactionId'],
+      transactionType: jsonData['transactionType'],
+      accountFrom: jsonData['AccountFrom'],
+      currency: jsonData['Currency'],
+      amountPaid: jsonData['AmountPaid'] ?? 0.0,
+      receiver: jsonData['Receiver'],
+      description: jsonData['Description'],
+      dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+    );
   }
 }

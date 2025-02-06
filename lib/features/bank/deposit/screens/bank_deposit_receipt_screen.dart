@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../common/custom_appbar.dart';
-import '../../../common/styles/custom_container.dart';
-import '../../../navigation_menu.dart';
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/amount_and_receipt_tile_header.dart';
-import '../../common/widgets/continue_button.dart';
-import '../../common/widgets/status_text.dart';
-import '../../dashboard/widgets/top_button.dart';
+import '../../../../common/custom_appbar.dart';
+import '../../../../common/styles/custom_container.dart';
+import '../../../../navigation_menu.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../common/widgets/amount_and_receipt_tile_header.dart';
+import '../../../common/widgets/continue_button.dart';
+import '../../../common/widgets/status_text.dart';
+import '../../../dashboard/widgets/top_button.dart';
 
 class BankDepositReceiptScreen extends StatelessWidget {
   const BankDepositReceiptScreen({super.key});

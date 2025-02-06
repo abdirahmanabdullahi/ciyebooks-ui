@@ -1,13 +1,13 @@
 
-import 'package:ciyebooks/features/bank/withdraw/withdraw_amount_screen.dart';
+import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_amount_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../common/custom_appbar.dart';
-import '../../../navigation_menu.dart';
-import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/acounts_tile.dart';
+import '../../../../common/custom_appbar.dart';
+import '../../../../navigation_menu.dart';
+import '../../../../utils/constants/colors.dart';
+import '../../../../utils/constants/sizes.dart';
+import '../../../common/widgets/acounts_tile.dart';
 
 class WithdrawAccountSelector extends StatelessWidget {
   const WithdrawAccountSelector({super.key});
