@@ -1,7 +1,5 @@
-import 'dart:ffi';
-
-import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
@@ -11,10 +9,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../../utils/helpers/network_manager.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
+import '../../forex/model/new_currency_model.dart';
 
 class SetupController extends GetxController {
   static SetupController get instance => Get.find();
@@ -22,9 +20,16 @@ class SetupController extends GetxController {
   final isLoading = false.obs;
   GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
-  Rx<BalancesModel> balances = BalancesModel.empty().obs;
+  Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final setupRepo = Get.put(SetupRepo());
+
   RxList<AccountModel> accounts = <AccountModel>[].obs;
+  RxList<CurrencyModel> currency = <CurrencyModel>[].obs;
+
+  ///Transaction counters
+  final counters = {}.obs;
+
+  final _uid = FirebaseAuth.instance.currentUser!.uid;
 
   ///
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
@@ -37,22 +42,26 @@ class SetupController extends GetxController {
   ///
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
   final expensesList = <ExpenseModel>[];
+
   ///
   final withdrawalList = <WithdrawModel>[];
   RxList<WithdrawModel> withdrawals = <WithdrawModel>[].obs;
 
+  /// fireStore instance
+  final _db = FirebaseFirestore.instance;
   @override
   void onInit() {
     /// Stream for the totals
     FirebaseFirestore.instance
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(_uid)
         .collection('Setup')
         .doc('Balances')
         .snapshots()
         .listen((snapshot) {
       if (snapshot.exists) {
-        balances.value = BalancesModel.fromJson(snapshot.data()!);
+        totals.value = BalancesModel.fromJson(snapshot.data()!);
+        counters.value = totals.value.transactionCounters;
         // currency.value = BalancesModel.fromJson()
       }
     });
@@ -60,12 +69,24 @@ class SetupController extends GetxController {
     /// Stream for the accounts
     FirebaseFirestore.instance
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(_uid)
         .collection('Accounts')
         .snapshots()
         .listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
+      }).toList();
+    });
+
+    /// Stream for currency stock
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(_uid)
+        .collection('CurrencyStock')
+        .snapshots()
+        .listen((querySnapshot) {
+      currency.value = querySnapshot.docs.map((doc) {
+        return CurrencyModel.fromJson(doc.data());
       }).toList();
     });
 
@@ -86,30 +107,38 @@ class SetupController extends GetxController {
 
     FirebaseFirestore.instance
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(_uid)
         .collection('transactions')
         .snapshots()
         .listen((querySnapshot) {
+      expenses.clear();
+      payments.clear();
+      receipts.clear();
+      withdrawals.clear();
       // Filter only expenses
       for (var doc in querySnapshot.docs) {
         final transactionType = doc.data()['transactionType'];
         if (doc.exists && transactionType == 'expense') {
-          expensesList.add(ExpenseModel.fromJson(doc.data()));
-          print('Expense');
+          expenses.add(ExpenseModel.fromJson(doc.data()));
         } else if (transactionType == 'payment') {
-          payClientList.add(PayClientModel.fromJson(doc.data()));
+          payments.add(PayClientModel.fromJson(doc.data()));
         } else if (transactionType == 'receipt') {
-          receiptsList.add(ReceiveModel.fromJson(doc.data()));
+          receipts.add(ReceiveModel.fromJson(doc.data()));
         } else if (transactionType == 'withdraw') {
-          withdrawalList.add(WithdrawModel.fromJson(doc.data()));
+          withdrawals.add(WithdrawModel.fromJson(doc.data()));
         }
       }
-      withdrawals.value = withdrawalList;
-      receipts.value = receiptsList;
-      payments.value = payClientList;
-      expenses.value = expensesList;
     });
     super.onInit();
+  }
+
+  Future<void> updatePaymentsCounter() async {
+    await _db
+        .collection('Users')
+        .doc(_uid)
+        .collection('Setup')
+        .doc('Balances')
+        .update({"transactionCounters.paymentsCounter": FieldValue.increment(1)});
   }
 
   // / Fetch setup data

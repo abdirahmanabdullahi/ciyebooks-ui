@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ReceiveModel {
   final String transactionType;

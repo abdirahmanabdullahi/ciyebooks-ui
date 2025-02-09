@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/forex/model/currency_model.dart';
+import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/forex/repo/currency_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,10 +22,8 @@ class CurrencyController extends GetxController {
     try {
       final newCurrency = CurrencyModel(
         currencyName: currencyName.text.trim(),
-        currencyCode: currencyCode.text.trim(),
-        country: country.text.trim(),
-        rate: double.tryParse(rate.text.trim()) ?? 0.0,
-        totalCost: double.tryParse(total.text.trim()) ?? 0.0,
+        currencyCode: currencyCode.text.trim(), dateCreated: DateTime.now(),
+
       );
       await _currencyRepo.createCurrency(newCurrency);
       Get.snackbar('Congratulations', 'Currency created',
@@ -36,7 +34,7 @@ class CurrencyController extends GetxController {
       throw e.toString();
     }
   }
-
+///Todo: Remove this method below
   Future<void> addAllCurrencies()async{
 try{
   await _db.collection("Common").doc('Currencies').set(currencies);

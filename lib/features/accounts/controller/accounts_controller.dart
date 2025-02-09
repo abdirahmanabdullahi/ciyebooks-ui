@@ -1,6 +1,5 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -55,7 +54,7 @@ class AccountsController extends GetxController {
           accountNo: accountNo,
           phoneNo: phoneNo.text.trim(),
           email: email.text.trim(),
-          dateCreated: date, currencies: newCurrency);
+          dateCreated: date, usdBalance: 0.0, kesBalance: 0.0);
 
       await accountRepo.savaAccountData(
         newAccount,
@@ -80,23 +79,3 @@ class AccountsController extends GetxController {
 }
 
 /// Update totals
-Future<void> updateTotals()async{
-  try{
-    final c = AccountsController.instance;
-    final u  = c.usdIsNegative.value;
-    final setupRepo = Get.put(SetupRepo());
-
-    Map<String,dynamic> totals = {
-
-
-
-    }; Map<String,dynamic> totals2 = {
-
-
-    };
-await setupRepo.updateSingleField(totals);
-
-  }catch(e){
-
-  }
-}

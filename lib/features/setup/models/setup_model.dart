@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BalancesModel {
   final double shillingAtBank;
@@ -12,29 +11,38 @@ class BalancesModel {
   final double averageRateOfDollar;
   final double workingCapital;
   final double expenses;
-  double? payments;
-  double? receipts;
-  double? withdrawals;
-  double? deposits;
-  double? transfers;
+  final double payments;
+  final double receipts;
+  final double withdrawals;
+  final double deposits;
+  final double transfers;
+  final double currenciesAtCost;
+  final Map<String, dynamic> inflows;
+  final Map<String, dynamic> outflows;
+  final Map<String, dynamic> transactionCounters;
 
-  BalancesModel(
-      {required this.expenses,
-      required this.shillingAtBank,
-      required this.shillingCashInHand,
-      required this.shillingReceivable,
-      required this.shillingPayable,
-      required this.dollarAtBank,
-      required this.dollarCashInHand,
-      required this.dollarReceivable,
-      required this.dollarPayable,
-      required this.averageRateOfDollar,
-      required this.workingCapital,
-      this.payments,
-      this.deposits,
-      this.receipts,
-      this.transfers,
-      this.withdrawals});
+  BalancesModel({
+    required this.expenses,
+    required this.shillingAtBank,
+    required this.shillingCashInHand,
+    required this.shillingReceivable,
+    required this.shillingPayable,
+    required this.dollarAtBank,
+    required this.dollarCashInHand,
+    required this.dollarReceivable,
+    required this.dollarPayable,
+    required this.averageRateOfDollar,
+    required this.workingCapital,
+    required this.payments,
+    required this.deposits,
+    required this.receipts,
+    required this.transfers,
+    required this.withdrawals,
+    required this.currenciesAtCost,
+    required this.inflows,
+    required this.outflows,
+    required this.transactionCounters,
+  });
 
   /// Convert `BalancesModel` to JSON structure for storing data in Firestore
   Map<String, dynamic> toJson() {
@@ -54,29 +62,48 @@ class BalancesModel {
       'deposits': deposits,
       'receipts': receipts,
       'transfers': transfers,
-      'withdrawals': withdrawals
+      'withdrawals': withdrawals,
+      'currenciesAtCost': currenciesAtCost,
+      'inflows': inflows,
+      'outflows': outflows,
+      'transactionCounters': transactionCounters
     };
   }
 
   /// Factory constructor to convert firestore data from Map to BalancesModel
   static BalancesModel empty() => BalancesModel(
-        shillingAtBank: 0.0,
-        shillingCashInHand: 0.0,
-        shillingReceivable: 0.0,
-        shillingPayable: 0.0,
-        dollarAtBank: 0.0,
-        dollarCashInHand: 0.0,
-        dollarReceivable: 0.0,
-        dollarPayable: 0.0,
-        averageRateOfDollar: 0.0,
-        workingCapital: 0.0,
-        expenses: 0.0,
-        payments: 0.0,
-        deposits: 0.0,
-        receipts: 0.0,
-        transfers: 0.0,
-        withdrawals: 0.0,
-      );
+      shillingAtBank: 0.0,
+      shillingCashInHand: 0.0,
+      shillingReceivable: 0.0,
+      shillingPayable: 0.0,
+      dollarAtBank: 0.0,
+      dollarCashInHand: 0.0,
+      dollarReceivable: 0.0,
+      dollarPayable: 0.0,
+      averageRateOfDollar: 0.0,
+      workingCapital: 0.0,
+      expenses: 0.0,
+      payments: 0.0,
+      deposits: 0.0,
+      receipts: 0.0,
+      transfers: 0.0,
+      withdrawals: 0.0,
+      currenciesAtCost: 0.0,
+    inflows: {'USD': 0.0, 'KES': 0.0},
+    outflows: {'USD': 0.0, 'KES': 0.0},
+    transactionCounters: {
+      'paymentsCounter': 0,
+      'receiptsCounter': 0,
+      'transfersCounter': 0,
+      'expenseCounter': 0,
+      'buyFxCounter': 0,
+      'sellFxCounter': 0,
+      'accountsCounter': 0,
+      'bankDepositCounter': 0,
+      'bankWithdrawCounter': 0,
+      'bankTransferCounter': 0,
+      'internalTransferCounter': 0,
+    },);
 
   factory BalancesModel.fromJson(Map<String, dynamic> jsonData) {
     return BalancesModel(
@@ -96,6 +123,10 @@ class BalancesModel {
       withdrawals: (jsonData['withdrawals'] as num?)?.toDouble() ?? 0.0,
       receipts: (jsonData['receipts'] as num?)?.toDouble() ?? 0.0,
       transfers: (jsonData['transfers'] as num?)?.toDouble() ?? 0.0,
+      currenciesAtCost: (jsonData['currenciesAtCost'] as num?)?.toDouble() ?? 0.0,
+      inflows: Map<String, dynamic>.from(jsonData['inflows'] ?? {}),
+      outflows: Map<String, dynamic>.from(jsonData['outflows'] ?? {}),
+      transactionCounters: Map<String, dynamic>.from(jsonData['transactionCounters']),
     );
   }
 

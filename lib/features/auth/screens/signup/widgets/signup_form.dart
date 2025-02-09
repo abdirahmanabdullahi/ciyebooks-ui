@@ -13,7 +13,6 @@ import '../../common/social_icons.dart';
 
 import '../../login/login.dart';
 import '../../../controllers/signup_controller.dart';
-import '../verify_email.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({

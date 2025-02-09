@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class AccountModel {
@@ -8,14 +6,12 @@ class AccountModel {
   final String accountNo;
   final String phoneNo;
   final String email;
-  // final double usdBalance;
-  // final double kesBalance;
+  final double usdBalance;
+  final double kesBalance;
   final DateTime dateCreated;
-  final Map<String, dynamic> currencies;
   AccountModel({
-    required this.currencies,
-    // required this.usdBalance,
-    // required this.kesBalance,
+    required this.usdBalance,
+    required this.kesBalance,
     required this.dateCreated,
     required this.firstName,
     required this.lastName,
@@ -37,24 +33,22 @@ class AccountModel {
       'AccountNo': accountNo,
       'PhoneNo': phoneNo,
       'Email': email,
-      // "UsdBalance": usdBalance,
-      // 'KesBalance': kesBalance,
-      'Currencies': currencies
+      "UsdBalance": usdBalance,
+      'KesBalance': kesBalance,
+
     };
   }
 
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
-    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
     return AccountModel(
-      // usdBalance: jsonData['UsdBalance'] ?? '',
-      // kesBalance: jsonData['KesBalance'] ?? '',
+      usdBalance: jsonData['UsdBalance']?? 0.0,
+      kesBalance: jsonData['KesBalance']?? 0.0,
       dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
       firstName: jsonData['FirstName'] ?? '',
       lastName: jsonData['LastName'] ?? '',
       accountNo: jsonData['AccountNo'] ?? '',
       phoneNo: jsonData['PhoneNo'] ?? '',
       email: jsonData['Email'] ?? '',
-      currencies: Map<String, dynamic>.from(jsonData['Currencies'] ?? {}),
     );
   }
   // factory AccountModel.fromSnapshot(

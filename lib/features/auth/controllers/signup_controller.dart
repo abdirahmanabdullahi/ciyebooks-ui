@@ -1,10 +1,8 @@
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
-import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/utils/constants/text_strings.dart';
-import 'package:ciyebooks/utils/popups/full_screen_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,8 +61,7 @@ class SignupController extends GetxController {
         );
         return;
       }
-      final userCredential =
-          await AuthRepo.instance.registerWithEmailAndPassword(
+      final userCredential = await AuthRepo.instance.registerWithEmailAndPassword(
         email.text.trim(),
         password.text.trim(),
       );
@@ -96,12 +93,17 @@ class SignupController extends GetxController {
 
       final controller = Get.put(VerifyEmailController());
       // Send email verification
-      await controller.sendVerificationEmail();
-      Get.to(VerifyEmail());
+
+      try {
+        await controller.sendVerificationEmail();
+        Get.to(VerifyEmail());
+      } catch (e) {
+        Get.snackbar("Ohqwerwerwerwerwerwe snap!", e.toString(),
+            backgroundColor: Color(0xffFF0033), colorText: Colors.white);
+      }
 
       /// Notify user that verification email was sent
-      Get.snackbar('Verification email sent',
-          'Please check your inbox and verify your email.',
+      Get.snackbar('Verification email sent', 'Please check your inbox and verify your email.',
           backgroundColor: Colors.green, colorText: Colors.white);
     } catch (e) {
       Get.snackbar("Oh snap!", e.toString(),

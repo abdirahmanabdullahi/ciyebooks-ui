@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../../common/success_screens/success_screen.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
-import '../login/login.dart';
 import 'controllers/verify_email_controller.dart';
 
 class VerifyEmail extends StatelessWidget {

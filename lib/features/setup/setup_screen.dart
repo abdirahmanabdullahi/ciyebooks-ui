@@ -75,7 +75,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: CupertinoColors.systemBlue,
                             title: 'Shilling at bank',
-                            value: formatter.format(controller.balances.value.shillingAtBank),
+                            value: formatter.format(controller.totals.value.shillingAtBank),
                           ),
                         ),
                         Gap(10),
@@ -85,7 +85,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: CupertinoColors.systemBlue,
                             title: 'Shilling cash balance',
-                            value: formatter.format(controller.balances.value.shillingCashInHand),
+                            value: formatter.format(controller.totals.value.shillingCashInHand),
                           ),
                         ),
                         Gap(10),
@@ -95,7 +95,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: CupertinoColors.systemBlue,
                             title: 'Shilling receivable',
-                            value: formatter.format(controller.balances.value.shillingReceivable),
+                            value: formatter.format(controller.totals.value.shillingReceivable),
                           ),
                         ),
                         Gap(10),
@@ -105,7 +105,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: CupertinoColors.systemBlue,
                             title: 'Shilling payable',
-                            value: formatter.format(controller.balances.value.shillingPayable),
+                            value: formatter.format(controller.totals.value.shillingPayable),
                           ),
                         ),
                         Gap(10),
@@ -118,7 +118,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: Color(0xff05a12e),
                             title: 'Dollar at bank',
-                            value: formatter.format(controller.balances.value.dollarAtBank),
+                            value: formatter.format(controller.totals.value.dollarAtBank),
                           ),
                         ),
                         Gap(10),
@@ -128,7 +128,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: Color(0xff05a12e),
                             title: 'Dollar cash balance',
-                            value: formatter.format(controller.balances.value.dollarCashInHand),
+                            value: formatter.format(controller.totals.value.dollarCashInHand),
                           ),
                         ),
                         Gap(10),
@@ -138,7 +138,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: Color(0xff05a12e),
                             title: 'Dollar receivable',
-                            value: formatter.format(controller.balances.value.dollarReceivable),
+                            value: formatter.format(controller.totals.value.dollarReceivable),
                           ),
                         ),
                         Gap(10),
@@ -148,7 +148,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: Color(0xff05a12e),
                             title: 'Dollar payable',
-                            value: formatter.format(controller.balances.value.dollarPayable),
+                            value: formatter.format(controller.totals.value.dollarPayable),
                           ),
                         ),
                         Gap(10),
@@ -163,8 +163,8 @@ class SetupScreen extends StatelessWidget {
                         valueColor: CupertinoColors.systemBlue,
 
                         // valueColor: CupertinoColors.systemBlue,
-                        title: 'Average rate of dollar',
-                        value: formatter.format(controller.balances.value.averageRateOfDollar),
+                        title: 'Total cost of dollar',
+                        value: formatter.format(controller.totals.value.averageRateOfDollar),
                       ),
                     ),
                     Gap(10),
@@ -176,9 +176,36 @@ class SetupScreen extends StatelessWidget {
                           fontSize: 17,
                           valueColor: CupertinoColors.systemBlue,
                           title: 'Working capital',
-                          value: formatter.format(controller.balances.value.workingCapital)),
+                          value: formatter.format(controller.totals.value.workingCapital)),
                     ),
-                    Gap(10),
+                    Gap(10), Divider(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          uploadController.uploadTotals();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Upload totals",
+                          style: TextStyle(
+                            color: AppColors.quinary,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // uploadTotals
                     Divider(
                       thickness: 2,
                       color: Colors.black,
@@ -217,6 +244,7 @@ class SetupScreen extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -244,128 +272,12 @@ class SetupScreen extends StatelessWidget {
                                                     ],
                                                   ),
                                                 ),
-                                                // Gap(3),
-                                                // RichText(
-                                                //   text: TextSpan(
-                                                //     children: [
-                                                //       TextSpan(
-                                                //         text: '#',
-                                                //         style: TextStyle(
-                                                //           fontWeight:
-                                                //           FontWeight.w500,
-                                                //           fontSize: 10,
-                                                //           color: Colors.grey[
-                                                //           600], // Grey Label
-                                                //         ),
-                                                //       ),
-                                                //       TextSpan(
-                                                //         text:
-                                                //         account.accountNo,
-                                                //         style: TextStyle(
-                                                //           fontWeight:
-                                                //           FontWeight.w500,
-                                                //           fontSize: 12,
-                                                //           color: Colors.blue,
-                                                //           // Grey Label
-                                                //           // Black Value
-                                                //         ),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                              ],
-                                            ),
-                                            Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: account.currencies.entries.map((entry) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(0.5),
-                                                  child: RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: '${entry.key}: '.toString(),
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600], // Grey Label
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: formatter
-                                                              .format(entry.value)
-                                                              // text: payment.amountPaid
-                                                              .toString(),
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w700,
-                                                            fontSize: 12,
-                                                            color: entry.value < 0
-                                                                ? Colors.redAccent
-                                                                : Colors.blue, // Grey Label
-                                                            // Black Value
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                                Text(
-                                                  '${entry.key}: ${(entry.value is num) ? formatter.format(entry.value as num) : 0.0}',
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 14,
-                                                      color: (entry.value as num) < 0
-                                                          ? Colors.red
-                                                          : CupertinoColors.systemBlue),
-                                                );
-                                              }).toList(),
-                                              // Text(
-                                              //   'KES: ',
-                                              //   style: TextStyle(
-                                              //     fontWeight: FontWeight.bold,
-                                              //     fontSize: 13,
-                                              //     // color: account.kesBalance < 0
-                                              //     //     ? Colors.red
-                                              //     //     : CupertinoColors.systemBlue,
-                                              //   ),
-                                              // ),
-                                              // Text(
-                                              //   'USD: ',
-                                              //   style: TextStyle(
-                                              //     fontWeight: FontWeight.bold,
-                                              //     fontSize: 13,
-                                              //     // color: account.usdBalance < 0
-                                              //     //     ? Colors.red
-                                              //     //     : CupertinoColors.activeCupertinoColors.systemBlue,
-                                              //   ),
-                                              // ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        Divider(color: Colors.grey[400], thickness: 1),
-
-                                        // Second Row (Transaction ID, Type, Date)
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                RichText(
-                                                  text: TextSpan(
-                                                    children: [
-
-                                                    ],
-                                                  ),
-                                                ),
-                                                // Gap(10),
+                                                Gap(3),
                                                 RichText(
                                                   text: TextSpan(
                                                     children: [
                                                       TextSpan(
-                                                        text: 'Account no: ',
+                                                        text: 'Phone no: ',
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.w500,
                                                           fontSize: 10,
@@ -373,13 +285,123 @@ class SetupScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       TextSpan(
-                                                        text: account.accountNo,
+                                                        text: account.phoneNo,
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 12,
+                                                          color: Colors.blue,
+                                                          // Grey Label
+                                                          // Black Value
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: 'USD: ',
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 10,
+                                                          color: Colors.grey[600], // Grey Label
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: formatter
+                                                            .format(account.usdBalance)
+
+                                                            // text: payment.amountPaid
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 12,
+                                                          color: account.usdBalance < 0
+                                                              ? Colors.redAccent
+                                                              : Colors.blue, // Grey Label
+                                                          // Black Value
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Gap(3),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: 'KES: ',
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 10,
+                                                          color: Colors.grey[600], // Grey Label
+                                                        ),
+                                                      ),
+                                                      TextSpan(
+                                                        text: formatter
+                                                            .format(account.kesBalance)
+
+                                                            // text: payment.amountPaid
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 12,
+                                                          color: account.kesBalance < 0
+                                                              ? Colors.redAccent
+                                                              : Colors.blue, // Grey Label
+                                                          // Black Value
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Divider(color: Colors.grey[400], thickness: 1),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+
+
+                                                RichText(
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: 'REF: ',
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 10,
+                                                          color: Colors.grey[600], // Grey Label
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    children: [
+
+                                                      TextSpan(
+                                                        text: 'PA-${account.accountNo}',
                                                         style: TextStyle(
                                                             fontWeight: FontWeight.w500,
                                                             fontSize: 10,
                                                             color: Colors.blue // Grey Label
-                                                            // Black Value
-                                                            ),
+                                                          // Black Value
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -389,16 +411,6 @@ class SetupScreen extends StatelessWidget {
                                             RichText(
                                               text: TextSpan(
                                                 children: [
-                                                  // TextSpan(
-                                                  //   text: 'Date: ',
-                                                  //   style: TextStyle(
-                                                  //     fontWeight:
-                                                  //     FontWeight.w500,
-                                                  //     fontSize: 12,
-                                                  //     color: Colors
-                                                  //         .blue, // Grey Label
-                                                  //   ),
-                                                  // ),
                                                   TextSpan(
                                                     text: DateFormat("dd MMM yyyy HH:mm").format(
                                                       account.dateCreated,
@@ -1592,7 +1604,6 @@ class SetupScreen extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               uploadController.uploadAccounts();
-                              // createNewAccountBottom(context);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.secondary,
@@ -1730,7 +1741,7 @@ class SetupScreen extends StatelessWidget {
                         () => InfoRow(
                           fontWeight: FontWeight.w600,
                           title: 'Payments',
-                          value: formatter.format(controller.balances.value.payments),
+                          value: formatter.format(controller.totals.value.payments),
                         ),
                       ),
                       children: [
@@ -3122,7 +3133,7 @@ class SetupScreen extends StatelessWidget {
                           // fontSize: 17,
                           // valueColor: CupertinoColors.systemBlue,
                           title: 'Expenses',
-                          value: formatter.format(controller.balances.value.expenses)),
+                          value: formatter.format(controller.totals.value.expenses)),
                       children: [
                         Obx(
                           () {
@@ -3863,24 +3874,24 @@ class SetupScreen extends StatelessWidget {
                                                               fontWeight: FontWeight.w500,
                                                               fontSize: 10,
                                                               color: Colors.blue // Grey Label
-                                                            // Black Value
-                                                          ),
+                                                              // Black Value
+                                                              ),
                                                         ),
                                                       ],
                                                     ),
-                                                  ), Gap(15),
+                                                  ),
+                                                  Gap(15),
                                                   RichText(
                                                     text: TextSpan(
                                                       children: [
-
                                                         TextSpan(
                                                           text: withdrawal.withdrawalType,
                                                           style: TextStyle(
                                                               fontWeight: FontWeight.w500,
                                                               fontSize: 10,
                                                               color: Colors.blue // Grey Label
-                                                            // Black Value
-                                                          ),
+                                                              // Black Value
+                                                              ),
                                                         ),
                                                       ],
                                                     ),
@@ -4154,7 +4165,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: () {
-                              uploadController.uploadPayments();
+                              uploadController.uploadDeposits();
                               // createNewAccountBottom(context);
                             },
                             style: ElevatedButton.styleFrom(
@@ -4168,7 +4179,7 @@ class SetupScreen extends StatelessWidget {
                               ),
                             ),
                             child: const Text(
-                              "Upload payments",
+                              "Upload deposits",
                               style: TextStyle(
                                 color: AppColors.quinary,
                                 fontSize: 16,
@@ -4186,14 +4197,14 @@ class SetupScreen extends StatelessWidget {
                       childrenPadding: EdgeInsets.zero,
                       tilePadding: EdgeInsets.zero,
                       title: Text(
-                        'Transfers',
+                        'Currency stock',
                         style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
                       ),
                       children: [
                         Obx(
                           () {
                             if (controller.payments.isEmpty) {
-                              return Text('Once created, payments will appear here');
+                              return Text('Once created, currencies will appear here');
                             }
                             return ListView.builder(
                               physics: ClampingScrollPhysics(),
@@ -4301,7 +4312,7 @@ class SetupScreen extends StatelessWidget {
 
                                           Divider(color: Colors.grey[400], thickness: 1),
 
-                                          /// Second Row (Transaction ID, Type, Date)
+                                          // Second Row (Transaction ID, Type, Date)
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
@@ -4389,7 +4400,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: () {
-                              uploadController.uploadPayments();
+                              uploadController.uploadDeposits();
                               // createNewAccountBottom(context);
                             },
                             style: ElevatedButton.styleFrom(
@@ -4403,7 +4414,7 @@ class SetupScreen extends StatelessWidget {
                               ),
                             ),
                             child: const Text(
-                              "Upload payments",
+                              "Upload currencies",
                               style: TextStyle(
                                 color: AppColors.quinary,
                                 fontSize: 16,
@@ -4416,6 +4427,241 @@ class SetupScreen extends StatelessWidget {
                     Divider(
                       height: 0,
                     ),
+//                     ExpansionTile(
+//                       shape: Border(bottom: BorderSide.none, top: BorderSide.none),
+//                       childrenPadding: EdgeInsets.zero,
+//                       tilePadding: EdgeInsets.zero,
+//                       title: Text(
+//                         'Transfers',
+//                         style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
+//                       ),
+//                       children: [
+//                         Obx(
+//                           () {
+//                             if (controller.payments.isEmpty) {
+//                               return Text('Once created, payments will appear here');
+//                             }
+//                             return ListView.builder(
+//                               physics: ClampingScrollPhysics(),
+//                               shrinkWrap: true,
+//                               itemCount: controller.payments.length,
+//                               itemBuilder: (context, index) {
+//                                 final PayClientModel payment = controller.payments[index];
+//                                 return Padding(
+//                                   padding: const EdgeInsets.only(top: 4.0),
+//                                   child: GestureDetector(
+//                                     dragStartBehavior: DragStartBehavior.start,
+//                                     child: CustomContainer(
+//                                       darkColor: AppColors.quinary,
+//                                       width: double.infinity,
+//                                       padding: EdgeInsets.all(8),
+//                                       child: Column(
+//                                         crossAxisAlignment: CrossAxisAlignment.start,
+//                                         children: [
+//                                           // First Row (From, Receiver, Amount)
+//                                           Row(crossAxisAlignment: CrossAxisAlignment.center,
+//                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Column(
+//                                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                                 children: [
+//                                                   RichText(
+//                                                     text: TextSpan(
+//                                                       children: [
+//                                                         TextSpan(
+//                                                           text: 'From: ',
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 10,
+//                                                             color: Colors.grey[600],
+//                                                           ),
+//                                                         ),
+//                                                         TextSpan(
+//                                                           text: payment.accountFrom,
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 12,
+//                                                             color: Colors.blue,
+//                                                             // Black Value
+//                                                           ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                   Gap(3),
+//                                                   RichText(
+//                                                     text: TextSpan(
+//                                                       children: [
+//                                                         TextSpan(
+//                                                           text: 'Receiver: ',
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 10,
+//                                                             color: Colors.grey[600], // Grey Label
+//                                                           ),
+//                                                         ),
+//                                                         TextSpan(
+//                                                           text: payment.receiver,
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 12,
+//                                                             color: Colors.blue,
+// // Grey Label
+//                                                             // Black Value
+//                                                           ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               RichText(
+//                                                 text: TextSpan(
+//                                                   children: [
+//                                                     TextSpan(
+//                                                       text: '${payment.currency}: ',
+//                                                       style: TextStyle(
+//                                                         fontWeight: FontWeight.w500,
+//                                                         // fontSize: 12,
+//                                                         fontSize: 10,
+//                                                         color: Colors.grey[600], // Grey Label
+//                                                       ),
+//                                                     ),
+//                                                     TextSpan(
+//                                                       text: formatter
+//                                                           .format(payment.amountPaid)
+//                                                           // text: payment.amountPaid
+//                                                           .toString(),
+//                                                       style: TextStyle(
+//                                                         fontWeight: FontWeight.w700,
+//                                                         fontSize: 12,
+//                                                         color: Colors.redAccent, // Grey Label
+//                                                         // Black Value
+//                                                       ),
+//                                                     ),
+//                                                   ],
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//
+//                                           Divider(color: Colors.grey[400], thickness: 1),
+//
+//                                           /// Second Row (Transaction ID, Type, Date)
+//                                           Row(
+//                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                                             children: [
+//                                               Row(
+//                                                 mainAxisAlignment: MainAxisAlignment.start,
+//                                                 children: [
+//                                                   RichText(
+//                                                     text: TextSpan(
+//                                                       children: [
+//                                                         TextSpan(
+//                                                           text: 'type: ',
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 10,
+//                                                             color: Colors.grey[600], // Grey Label
+//                                                           ),
+//                                                         ),
+//                                                         TextSpan(
+//                                                           text: payment.transactionType,
+//                                                           style: TextStyle(
+//                                                               fontWeight: FontWeight.w500,
+//                                                               fontSize: 10,
+//                                                               color: Colors.blue // Grey Label
+//                                                               // Black Value
+//                                                               ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                   Gap(10),
+//                                                   RichText(
+//                                                     text: TextSpan(
+//                                                       children: [
+//                                                         TextSpan(
+//                                                           text: '# ',
+//                                                           style: TextStyle(
+//                                                             fontWeight: FontWeight.w500,
+//                                                             fontSize: 10,
+//                                                             color: Colors.grey[600], // Grey Label
+//                                                           ),
+//                                                         ),
+//                                                         TextSpan(
+//                                                           text: payment.transactionId,
+//                                                           style: TextStyle(
+//                                                               fontWeight: FontWeight.w500,
+//                                                               fontSize: 10,
+//                                                               color: Colors.blue // Grey Label
+//                                                               // Black Value
+//                                                               ),
+//                                                         ),
+//                                                       ],
+//                                                     ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                               RichText(
+//                                                 text: TextSpan(
+//                                                   children: [
+//                                                     TextSpan(
+//                                                       text: DateFormat("dd MMM yyyy HH:mm")
+//                                                           .format(payment.dateCreated),
+//                                                       style: TextStyle(
+//                                                           fontWeight: FontWeight.w500,
+//                                                           fontSize: 10,
+//                                                           color: Colors.blue // Grey Label
+//                                                           // Black Value
+//                                                           ),
+//                                                     ),
+//                                                   ],
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 );
+//                               },
+//                             );
+//                           },
+//                         ),
+//                         Divider(),
+//                         Align(
+//                           alignment: Alignment.centerRight,
+//                           child: ElevatedButton(
+//                             onPressed: () {
+//                               uploadController.uploadPayments();
+//                               // createNewAccountBottom(context);
+//                             },
+//                             style: ElevatedButton.styleFrom(
+//                               backgroundColor: AppColors.secondary,
+//                               padding: const EdgeInsets.symmetric(
+//                                 horizontal: 20,
+//                                 vertical: 12,
+//                               ),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(12),
+//                               ),
+//                             ),
+//                             child: const Text(
+//                               "Upload payments",
+//                               style: TextStyle(
+//                                 color: AppColors.quinary,
+//                                 fontSize: 16,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     Divider(
+//                       height: 0,
+//                     ),
                     Gap(20),
                   ],
                 ),

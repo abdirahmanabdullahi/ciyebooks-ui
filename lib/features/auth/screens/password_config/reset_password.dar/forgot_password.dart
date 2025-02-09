@@ -1,5 +1,4 @@
 import 'package:ciyebooks/features/auth/controllers/forgot_passwor_controller.dart';
-import 'package:ciyebooks/features/auth/screens/password_config/reset_password.dar/reset_password.dart';
 import 'package:ciyebooks/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

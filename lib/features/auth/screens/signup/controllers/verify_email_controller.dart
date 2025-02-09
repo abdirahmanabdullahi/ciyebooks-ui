@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:ciyebooks/common/success_screens/success_screen.dart';
 import 'package:ciyebooks/utils/constants/image_strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../data/repositories/auth/auth_repo.dart';
 import '../../../../../utils/constants/text_strings.dart';
-import '../../login/login.dart';
 
 class VerifyEmailController extends GetxController {
   static VerifyEmailController get instance => Get.find();

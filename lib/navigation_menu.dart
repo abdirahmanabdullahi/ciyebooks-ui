@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'features/auth/screens/login/login.dart';
 import 'features/calculator/calculator_screen.dart';
 import 'features/dashboard/home.dart';
 import 'features/notes/notes.dart';

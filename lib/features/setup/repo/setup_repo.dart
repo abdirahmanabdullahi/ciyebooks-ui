@@ -1,8 +1,5 @@
-import 'package:ciyebooks/utils/helpers/network_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
@@ -25,7 +22,7 @@ class SetupRepo extends GetxController {
           .doc(uid)
           .collection('Setup')
           .doc('Balances')
-          .set(balances.toJson());
+          .set(balances.toJson(),SetOptions(merge: true));
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

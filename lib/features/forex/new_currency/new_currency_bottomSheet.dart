@@ -1,16 +1,11 @@
 import 'package:ciyebooks/features/forex/controller/currency_controller.dart';
-import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../utils/constants/colors.dart';
-import '../../../utils/device/device_utility.dart';
 import '../../../utils/validators/validation.dart';
-import '../../accounts/controller/accounts_controller.dart';
 
 void showAddNewCurrencyBottomSheet(BuildContext context) {
   final controller = Get.put(CurrencyController());

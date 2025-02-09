@@ -1,5 +1,4 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
-import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -17,7 +16,7 @@ class AccountsRepo extends GetxController {
 
   Future<void> savaAccountData(AccountModel account) async {
     try {
-      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Accounts").doc(account.accountNo.toString()).set(account.toJson(),SetOptions(merge: true),);
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Accounts").doc(account.accountNo.toString()).set(account.toJson(),);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
