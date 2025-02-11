@@ -54,7 +54,7 @@ class AccountsController extends GetxController {
           accountNo: accountNo,
           phoneNo: phoneNo.text.trim(),
           email: email.text.trim(),
-          dateCreated: date, usdBalance: 0.0, kesBalance: 0.0);
+          dateCreated: date, usdBalance: 0.0, kesBalance: 0.0, accountName: '${firstName.text.trim()}  ${lastName.text.trim()}');
 
       await accountRepo.savaAccountData(
         newAccount,

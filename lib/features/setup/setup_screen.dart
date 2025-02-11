@@ -1,4 +1,5 @@
 import 'package:ciyebooks/common/styles/custom_container.dart';
+import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
@@ -25,6 +26,7 @@ class SetupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final signUpController = Get.put(SignupController());
     final uploadController = Get.put(UploadController());
     final controller = Get.put(SetupController());
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -163,8 +165,8 @@ class SetupScreen extends StatelessWidget {
                         valueColor: CupertinoColors.systemBlue,
 
                         // valueColor: CupertinoColors.systemBlue,
-                        title: 'Total cost of dollar',
-                        value: formatter.format(controller.totals.value.averageRateOfDollar),
+                        title: 'Foreign currencies at cost',
+                        value: formatter.format(controller.totals.value.currenciesAtCost),
                       ),
                     ),
                     Gap(10),
@@ -183,7 +185,31 @@ class SetupScreen extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         onPressed: () {
-                          uploadController.uploadTotals();
+                          signUpController.recreatedBalances();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Recreate balances",
+                          style: TextStyle(
+                            color: AppColors.quinary,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),  Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          uploadController.uploadTotals(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondary,
@@ -373,8 +399,6 @@ class SetupScreen extends StatelessWidget {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
-
-
                                                 RichText(
                                                   text: TextSpan(
                                                     children: [
@@ -386,22 +410,20 @@ class SetupScreen extends StatelessWidget {
                                                           color: Colors.grey[600], // Grey Label
                                                         ),
                                                       ),
-
                                                     ],
                                                   ),
                                                 ),
                                                 RichText(
                                                   text: TextSpan(
                                                     children: [
-
                                                       TextSpan(
-                                                        text: 'PA-${account.accountNo}',
+                                                        text: account.accountNo,
                                                         style: TextStyle(
                                                             fontWeight: FontWeight.w500,
                                                             fontSize: 10,
                                                             color: Colors.blue // Grey Label
-                                                          // Black Value
-                                                        ),
+                                                            // Black Value
+                                                            ),
                                                       ),
                                                     ],
                                                   ),
@@ -1737,13 +1759,7 @@ class SetupScreen extends StatelessWidget {
                       shape: Border(bottom: BorderSide.none, top: BorderSide.none),
                       childrenPadding: EdgeInsets.zero,
                       tilePadding: EdgeInsets.zero,
-                      title: Obx(
-                        () => InfoRow(
-                          fontWeight: FontWeight.w600,
-                          title: 'Payments',
-                          value: formatter.format(controller.totals.value.payments),
-                        ),
-                      ),
+                      title: Text('Payments'),
                       children: [
                         Obx(
                           () {
@@ -3133,7 +3149,7 @@ class SetupScreen extends StatelessWidget {
                           // fontSize: 17,
                           // valueColor: CupertinoColors.systemBlue,
                           title: 'Expenses',
-                          value: formatter.format(controller.totals.value.expenses)),
+                          value: ''),
                       children: [
                         Obx(
                           () {

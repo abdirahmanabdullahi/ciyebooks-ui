@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 class AccountModel {
+  final String accountName;
   final String firstName;
   final String lastName;
   final String accountNo;
@@ -10,6 +11,7 @@ class AccountModel {
   final double kesBalance;
   final DateTime dateCreated;
   AccountModel({
+    required this.accountName,
     required this.usdBalance,
     required this.kesBalance,
     required this.dateCreated,
@@ -40,7 +42,7 @@ class AccountModel {
   }
 
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
-    return AccountModel(
+    return AccountModel(accountName:jsonData['AccountName']??'',
       usdBalance: jsonData['UsdBalance']?? 0.0,
       kesBalance: jsonData['KesBalance']?? 0.0,
       dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),

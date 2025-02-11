@@ -61,7 +61,7 @@ class SetupController extends GetxController {
         .listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
-        counters.value = totals.value.transactionCounters;
+        counters.value = totals.value.transactionCounters!;
         // currency.value = BalancesModel.fromJson()
       }
     });

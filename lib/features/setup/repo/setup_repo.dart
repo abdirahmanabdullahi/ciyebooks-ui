@@ -22,7 +22,7 @@ class SetupRepo extends GetxController {
           .doc(uid)
           .collection('Setup')
           .doc('Balances')
-          .set(balances.toJson(),SetOptions(merge: true));
+          .set(balances.toJson(),);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

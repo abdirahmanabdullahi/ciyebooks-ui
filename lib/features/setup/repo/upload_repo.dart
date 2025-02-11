@@ -8,14 +8,14 @@ class UploadRepo extends GetxController {
   static UploadRepo get instance => Get.find();
 
 
-  Future<File?> uploadFile() async {
+  Future uploadFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
       if (result != null) {
         File file = File(result.files.single.path!);
-        return file;
-      }else{
-        Get.snackbar('title',  'message',backgroundColor: Colors.orange);
+
+
+      }else{       Get.snackbar('title',  'message',backgroundColor: Colors.orange);
       }
     } catch (e) {
       throw e.toString();

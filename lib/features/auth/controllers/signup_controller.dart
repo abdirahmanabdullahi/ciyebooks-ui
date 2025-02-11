@@ -26,7 +26,12 @@ class SignupController extends GetxController {
   final password = TextEditingController();
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
+  final setupRepo = Get.put(SetupRepo());
+
   // SIGNUP
+  void recreatedBalances() async {
+    await setupRepo.saveSetupData(BalancesModel.empty());
+  }
 
   void signup() async {
     try {
@@ -83,9 +88,7 @@ class SignupController extends GetxController {
       await userRepo.saveUserDate(newUser);
 
       /// Save setup data
-      final setupRepo = Get.put(SetupRepo());
-      final setup = BalancesModel.empty();
-      await setupRepo.saveSetupData(setup);
+      await setupRepo.saveSetupData(BalancesModel.empty());
 
       //Success message
       Get.snackbar('Congratulations', AppTexts.yourAccountCreatedTitle,
@@ -98,7 +101,7 @@ class SignupController extends GetxController {
         await controller.sendVerificationEmail();
         Get.to(VerifyEmail());
       } catch (e) {
-        Get.snackbar("Ohqwerwerwerwerwerwe snap!", e.toString(),
+        Get.snackbar("Oh snap!", e.toString(),
             backgroundColor: Color(0xffFF0033), colorText: Colors.white);
       }
 
