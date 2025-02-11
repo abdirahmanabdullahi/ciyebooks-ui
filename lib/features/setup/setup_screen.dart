@@ -165,7 +165,7 @@ class SetupScreen extends StatelessWidget {
                         valueColor: CupertinoColors.systemBlue,
 
                         // valueColor: CupertinoColors.systemBlue,
-                        title: 'Foreign currencies at cost',
+                        title: 'Cost of foreign currencies in hand ',
                         value: formatter.format(controller.totals.value.currenciesAtCost),
                       ),
                     ),

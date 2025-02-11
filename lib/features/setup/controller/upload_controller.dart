@@ -18,6 +18,7 @@ import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -68,7 +69,7 @@ class UploadController extends GetxController {
     try {
       ///Upload the file
       FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['CSV']);
+          await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
       if (result != null) {
         File file = File(result.files.single.path!);
 
@@ -85,50 +86,149 @@ class UploadController extends GetxController {
 
         List content = [];
         for (var line in lines) {
-          print(line.split(','));
-          print(
-              '---------------------------------------------------------------------splitting-----------------------------------------------------------');
           content.add(line.split(',')[0].replaceAll('"', '').trim());
+
+          /// Check if the file has two columns only
+          if (line.split(',').length != 2) {
+            if (context.mounted) {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 10,
+                  titlePadding: EdgeInsets.zero,
+                  title: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        decoration: BoxDecoration(
+                          color: AppColors.quarternary,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error_outline_outlined, color: Color(0xffFF2929), size: 30),
+                            SizedBox(width: 10),
+                            Text(
+                              "Invalid file format!",
+                              style: TextStyle(
+                                color: Color(0xffFF2929),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  content: Text(
+                    'Please use the "Totals Excel sheet template" provided to upload your data.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  actionsAlignment: MainAxisAlignment.center,
+                  actionsPadding: EdgeInsets.only(bottom: 15),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xffFF2929),
+                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 5,
+                      ),
+                      child: Text(
+                        "OK",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return;
+          }
         }
 
+        ///Check if the data contains all required fields
         if (!content.every((item) => totalsList.contains(item))) {
-          print(content);
-          print(totalsList);
           if (context.mounted) {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 10,
+                titlePadding: EdgeInsets.zero,
                 title: Column(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.block,
-                          color: Colors.red,
-                          size: 30,
-                        ),
-                        Gap(10),
-                        Text(
-                          "Wrong format!",
-                          style: TextStyle(color: Colors.red.shade800),
-                        ),
-                      ],
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        color: AppColors.quarternary,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error_outline_outlined, color: Color(0xffFF2929), size: 30),
+                          SizedBox(width: 10),
+                          Text(
+                            "Invalid file format!",
+                            style: TextStyle(
+                              color: Color(0xffFF2929),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Divider()
                   ],
                 ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 content: Text(
-                  "Please use the totals excel sheet template provided to upload your data.",
-                  style: TextStyle(fontSize: 18),
+                  'Please use the "Totals Excel sheet template" provided to upload your data.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
+                actionsAlignment: MainAxisAlignment.center,
+                actionsPadding: EdgeInsets.only(bottom: 15),
                 actions: [
-                  TextButton(
+                  ElevatedButton(
                     onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xffFF2929),
+                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 5,
+                    ),
                     child: Text(
                       "OK",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: AppColors.prettyDark, fontSize: 15),
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -138,37 +238,15 @@ class UploadController extends GetxController {
           return;
         }
 
-        // if (dataList.contains('KesBankBalance')) {
-        //   print('yessssssssssssss');
-        // } else {
-        //   print('????????????????????????');
-        // }
-
+        /// Now process the data
         Map<String, double> parsedTotals = {};
-
         for (var line in lines) {
           final splitLine = line.split(',');
-          print(
-              '<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-          print(line);
-          print(splitLine);
 
           final key = splitLine[0];
           final value = double.tryParse(splitLine[1]) ?? 0.0;
           parsedTotals[key] = value;
         }
-        print(parsedTotals);
-
-        // final convertedDollarTotal = (parsedTotals['dollarAtBank']! +
-        //         parsedTotals['dollarCashInHand']! +
-        //         parsedTotals['dollarReceivable']! -
-        //         parsedTotals['dollarPayable']!) *
-        //     parsedTotals['averageRateOfDollar']!;
-        //
-        // final shillingTotal = parsedTotals['shillingAtBank']! +
-        //     parsedTotals['shillingCashInHand']! +
-        //     parsedTotals['shillingReceivable']! -
-        //     parsedTotals['shillingPayable']!;
 
         final totals = BalancesModel(
           shillingAtBank: parsedTotals['shillingAtBank'] ?? 0.0,
@@ -206,9 +284,7 @@ class UploadController extends GetxController {
 
         /// Save the data to firestore
 
-        await _setupRepo.saveSetupData(
-          totals
-        );
+        await _setupRepo.saveSetupData(totals);
 
         Get.snackbar(
           "Success!",
@@ -217,11 +293,11 @@ class UploadController extends GetxController {
           colorText: Colors.white,
         );
       } else {
-        Get.snackbar('Selection cancelled!', 'No file was selected',
+        Get.snackbar('Selection cancelled!', 'No file was uploaded',
             backgroundColor: Colors.orange);
       }
     } catch (e) {
-      Get.snackbar('Selection cancelled!', 'No file was selected', backgroundColor: Colors.orange);
+      Get.snackbar('Error!', 'No data uploaded', backgroundColor: Colors.orange);
       throw e.toString();
     }
   }
@@ -237,20 +313,6 @@ class UploadController extends GetxController {
         //
         //   ///Process the content
         final lines = file.readAsLinesSync(encoding: utf8);
-        // if (!lines[0].toLowerCase().contains('accounts')) {
-        //   Get.snackbar(
-        //     icon: Icon(
-        //       Icons.cloud_done,
-        //       color: Colors.white,
-        //     ),
-        //     shouldIconPulse: true,
-        //     "Failed!",
-        //     'Please upload a file with accounts',
-        //     backgroundColor: Colors.redAccent,
-        //     colorText: Colors.white,
-        //   );
-        //   return;
-        // }
 
         lines.removeAt(0);
         int accountsCounter = 1000;
@@ -266,10 +328,6 @@ class UploadController extends GetxController {
             .doc('Balances');
 
         for (var line in lines) {
-          print(line);
-          print(
-              '---------------------------------------------------------------------splitting accounts-----------------------------------------------------------');
-
           final splitLine = line.split(',');
           if (splitLine.length < 5) {
             return;
