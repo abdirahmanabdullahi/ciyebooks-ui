@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
@@ -22,7 +23,16 @@ class SetupRepo extends GetxController {
           .doc(uid)
           .collection('Setup')
           .doc('Balances')
-          .set(balances.toJson(),);
+          .set(
+            balances.toJson(),
+          )
+          .then((value) => Get.snackbar(
+                "Success!",
+                'Balances update complete',
+                backgroundColor: Colors.green,
+                colorText: Colors.white,
+              ));
+      ;
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -37,8 +47,21 @@ class SetupRepo extends GetxController {
   }
 
   /// Update single field
-  Future<void> updateSingleField(Map<String, dynamic> json) async {
-    await _db.collection('Users').doc(uid).collection('Setup').doc('Balances').update(json);
+  Future<void> updateSetupStatus(Map<String, dynamic> jsonData) async {
+    try {
+      await _db.collection('Users').doc(uid).update(jsonData);
+
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on TPlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
   }
 
   /// Fetch setup data

@@ -29,9 +29,9 @@ class SignupController extends GetxController {
   final setupRepo = Get.put(SetupRepo());
 
   // SIGNUP
-  void recreatedBalances() async {
-    await setupRepo.saveSetupData(BalancesModel.empty());
-  }
+  // void recreatedBalances() async {
+  //   await setupRepo.saveSetupData(BalancesModel.empty());
+  // }
 
   void signup() async {
     try {
@@ -75,7 +75,7 @@ class SignupController extends GetxController {
       final newUser = UserModel(
         firstName: firstName.text.trim(),
         lastName: lastName.text.trim(),
-        id: userCredential.user!.uid,
+        accountId: userCredential.user!.uid,
         userName: userName.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),

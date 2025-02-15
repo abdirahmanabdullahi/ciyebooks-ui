@@ -1,8 +1,10 @@
+import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/format_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/platform_exceptions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,9 @@ class AuthRepo extends GetxController {
   final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
   // final uid = FirebaseAuth.instance.currentUser?.uid;
+  Rx<UserModel> userData = UserModel.empty().obs;
+  final accountIsSetUp = false.obs;
+
 
 // Called from main.dart on app launch
   @override
@@ -29,14 +34,14 @@ class AuthRepo extends GetxController {
 
   screenRedirect() async {
     final user = FirebaseAuth.instance.currentUser;
-    Get.to(() => NavigationMenu());
-
 
     if (user != null) {
       if (user.emailVerified) {
-        Get.to(() => SetupScreen());
 
-        // fetchSetupStatus();
+        final accountIsSetup = await fetchSetupStatus();
+        accountIsSetup?Get.to(() => NavigationMenu()):Get.to(() => SetupScreen());
+
+
       } else {
         Get.offAll(() => VerifyEmail());
       }
@@ -46,47 +51,32 @@ class AuthRepo extends GetxController {
   }
 
   /// Check if account is setup
-  // Future<BalancesModel> fetchSetupStatus() async {
-  //   try {
-  //     final uid = FirebaseAuth.instance.currentUser?.uid;
-  //     final documentSnapshot = await FirebaseFirestore.instance
-  //         .collection('Users')
-  //         .doc(uid)
-  //         .collection('Setup')
-  //         .doc('Balances')
-  //         .get();
-  //
-  //     if (documentSnapshot.exists &&
-  //         BalancesModel.fromSnapshot(documentSnapshot).accountIsSetup) {
-  //       Get.offAll(() => NavigationMenu());
-  //       return BalancesModel.fromSnapshot(documentSnapshot);
-  //     } else {
-  //       Get.offAll(() => Setup());
-  //       return BalancesModel.empty();
-  //     }
-  //   // } on FirebaseAuthException catch (e) {
-  //   //   throw TFirebaseAuthException(e.code).message;
-  //   // } on FirebaseException catch (e) {
-  //   //   throw TFirebaseException(e.code).message;
-  //   // } on FormatException catch (_) {
-  //   //   throw const TFormatException();
-  //   // } on TPlatformException catch (e) {
-  //   //   throw TPlatformException(e.code).message;
-  //
-  //   } catch (e) {
-  //     print('objectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobjectobject');
-  //     print(e.toString());
-  //     throw  e.toString();
-  //
-  //   }
-  // }
+  Future<bool> fetchSetupStatus() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final data = await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      if (data.exists) {
+        userData.value = UserModel.fromJson(data.data()!);
+      }
+      return userData.value.accountIsSetup;
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on TPlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
   /*------------------------ Email and password sign-in ------------------------*/
 
 // sign-in
   Future<UserCredential> login(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -102,11 +92,9 @@ class AuthRepo extends GetxController {
 
 // Sign-up
 
-  Future<UserCredential> registerWithEmailAndPassword(
-      String email, String password) async {
+  Future<UserCredential> registerWithEmailAndPassword(String email, String password) async {
     try {
-      return await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      return await _auth.createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

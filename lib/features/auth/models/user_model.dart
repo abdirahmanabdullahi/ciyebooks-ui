@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String id;
+  final String accountId;
   String firstName;
   String lastName;
   final String userName;
@@ -12,7 +12,7 @@ class UserModel {
   UserModel(
       {required this.firstName,required this.accountIsSetup,
         required this.lastName,
-      required this.id,
+      required this.accountId,
       required this.userName,
       required this.email,
       required this.phoneNumber,
@@ -24,14 +24,14 @@ class UserModel {
   static UserModel empty() => UserModel(
         firstName: '',
         lastName: '',
-        id: '',
+    accountId: '',
         userName: '',
         email: '',
         phoneNumber: '',
         accountIsSetup: false,
       );
 
-  /// Convert usermodel to JSON structure for storing data in firestore
+  /// Convert userModel to JSON structure for storing data in firestore
   Map<String, dynamic> toJson() {
     return {
       'firstName': firstName,
@@ -40,25 +40,22 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'AccountIsSetup': accountIsSetup,
+      'accountId':accountId,
 
     };
   }
 
-  factory UserModel.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    if (document.data() != null) {
-      final data = document.data()!;
+  factory UserModel.fromJson(Map<String, dynamic> jsonData) {
+
       return UserModel(
-          firstName: data['FirstName'] ?? '',
-          lastName: data['LastName'] ?? '',
-          id: document.id,
-          userName: data['UserName'] ?? '',
-          email: data['Email'] ?? '',
-          phoneNumber: data['phoneNumber'] ?? '',
-         accountIsSetup: data['AccountIsSetup'],
+          firstName: jsonData['FirstName'] ?? '',
+          lastName: jsonData['LastName'] ?? '',
+          accountId: jsonData['id'] ?? '',
+          userName: jsonData['UserName'] ?? '',
+          email: jsonData['Email'] ?? '',
+          phoneNumber: jsonData['phoneNumber'] ?? '',
+         accountIsSetup: jsonData['AccountIsSetup'],
          );
-    } else {
-      return UserModel.empty();
-    }
+
   }
 }

@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/accounts/repo/repo.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/deposit/repo/deposit_repo.dart';
+import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/repo/withdrawRepo.dart';
+import 'package:ciyebooks/features/forex/model/forex_model.dart';
+import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_repo/pay_client_repo.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_repo/expense_repo.dart';
@@ -19,6 +23,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -30,16 +35,34 @@ import '../repo/setup_repo.dart';
 
 class UploadController extends GetxController {
   static UploadController get instance => Get.find();
-  final _accountRepo = Get.put(AccountsRepo());
   final _setupRepo = Get.put(SetupRepo());
-  final _payClientRepo = Get.put(PayClientRepo());
-  final _expenseRepo = Get.put(ExpenseRepo());
-  final _receiptRepo = Get.put(ReceiptRepo());
-  final _withdrawalRepo = Get.put(WithdrawRepo());
-  final _depositRepo = Get.put(DepositRepo());
+
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final counters = {}.obs;
   final _db = FirebaseFirestore.instance;
+  final uploadRepo = Get.put(UploadRepo());
+
+  /// Headers checklists
+  final totalsFieldChecklist = [
+    'shillingAtBank',
+    'shillingCashInHand',
+    'shillingReceivable',
+    'shillingPayable',
+    'dollarAtBank',
+    'dollarCashInHand',
+    'dollarReceivable',
+    'dollarPayable',
+    'currenciesAtCost'
+  ];
+  final depositsCheckList = ['Date', 'Deposited_By', 'Currency', 'Amount', 'Narrative'];
+  final transfersCheckList = ['Date', 'Currency', 'Receiver','Amount', 'Narrative'];
+  final withdrawalsCheckList = ['Date', 'Currency', 'Amount', 'Withdrawn_By', 'Narrative'];
+  final totalsHeadersCheckList = ['Name', 'Amount'];
+  final receiptsCheckList = ['Date', 'Received_From', 'Receiving_Account', 'Currency', 'Amount', 'Description'];
+  final paymentsCheckList = ['Date', 'Account_From', 'Receiver', 'Currency', 'Amount', 'Description'];
+  final accountsCheckList = ['First_Name', 'Last_Name', 'Phone_No', 'Email', 'USD', 'KES'];
+  final currenciesCheckList = ['Date', 'Currency_Name', 'Currency_Code', 'Rate', 'Amount', 'Total'];
+  final expensesCheckList = ['Date_Paid', 'Category', 'Currency', 'Amount', 'Description'];
 
   ///Method to update the counters
   // Future<void> updateCounter(String counterToUpdate) async {
@@ -53,370 +76,179 @@ class UploadController extends GetxController {
 
   ///Todo: upload totals
   Future<void> uploadTotals(BuildContext context) async {
-    final totalsList = [
-      'shillingAtBank',
-      'shillingCashInHand',
-      'shillingReceivable',
-      'shillingPayable',
-      'dollarAtBank',
-      'dollarCashInHand',
-      'dollarReceivable',
-      'dollarPayable',
-      'currenciesAtCost',
-      'expenses'
-    ];
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: totalsHeadersCheckList, fileName: 'Totals template');
 
-    try {
-      ///Upload the file
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
-      if (result != null) {
-        File file = File(result.files.single.path!);
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
 
-        ///Process the content
-        final lines = file.readAsLinesSync(encoding: utf8);
-        print(lines);
+      ///Parse the data to a map.
+      Map<String, dynamic> parsedTotals = {};
+      final List fieldNames = [];
+      for (var line in lines) {
+        final key = line.split(',')[0].replaceAll('"', '');
+        fieldNames.add(key);
 
-        // final dataList2 = lines.map((line)=>line.split(',')).toList();
-        //
-        // final dataList = lines.map((line)=>line.split(',')).toList().expand((pair) => pair).toList();
-        // print('---------------------------------------------------------------------datalist-----------------------------------------------------------');
-        // print(dataList[0]);
-        // print(dataList[1]);
+        final value = double.tryParse(line.split(',')[1].replaceAll('"', '').trim()) ?? 0.0;
 
-        List content = [];
-        for (var line in lines) {
-          content.add(line.split(',')[0].replaceAll('"', '').trim());
+        parsedTotals[key] = value;
+      }
 
-          /// Check if the file has two columns only
-          if (line.split(',').length != 2) {
-            if (context.mounted) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  elevation: 10,
-                  titlePadding: EdgeInsets.zero,
-                  title: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        decoration: BoxDecoration(
-                          color: AppColors.quarternary,
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error_outline_outlined, color: Color(0xffFF2929), size: 30),
-                            SizedBox(width: 10),
-                            Text(
-                              "Invalid file format!",
-                              style: TextStyle(
-                                color: Color(0xffFF2929),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  content: Text(
-                    'Please use the "Totals Excel sheet template" provided to upload your data.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                  ),
-                  actionsAlignment: MainAxisAlignment.center,
-                  actionsPadding: EdgeInsets.only(bottom: 15),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xffFF2929),
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 5,
-                      ),
-                      child: Text(
-                        "OK",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            return;
-          }
+      if (!listEquals(fieldNames, totalsFieldChecklist)) {
+        if (context.mounted) {
+          uploadRepo.showErrorDialog(context, "Oops! Unsupported data format!.", 'Missing or wrong data format. Please use the provided "Total template" excel sheet to upload your data');
         }
+        return;
+      }
+      final workingCapita =
+          (parsedTotals['shillingAtBank'] + parsedTotals['shillingCashInHand'] + parsedTotals['shillingReceivable'] + parsedTotals['currenciesAtCost']) - parsedTotals['shillingPayable'];
+      final totals = BalancesModel(
+        shillingAtBank: parsedTotals['shillingAtBank'],
+        shillingCashInHand: parsedTotals['shillingCashInHand'],
+        shillingReceivable: parsedTotals['shillingReceivable'],
+        shillingPayable: parsedTotals['shillingPayable'],
+        dollarAtBank: parsedTotals['dollarAtBank'],
+        dollarCashInHand: parsedTotals['dollarCashInHand'],
+        dollarReceivable: parsedTotals['dollarReceivable'],
+        dollarPayable: parsedTotals['dollarPayable'],
+        currenciesAtCost: parsedTotals['currenciesAtCost'],
+        workingCapital: workingCapita,
+        expenses: {'USD': 0.0, 'KES': 0.0},
+        receipts: {'USD': 0.0, 'KES': 0.0},
+        transfers: {'USD': 0.0, 'KES': 0.0},
+        withdrawals: {'USD': 0.0, 'KES': 0.0},
+        payments: {'USD': 0.0, 'KES': 0.0},
+        deposits: {'USD': 0.0, 'KES': 0.0},
+        inflows: {'USD': 0.0, 'KES': 0.0},
+        outflows: {'USD': 0.0, 'KES': 0.0},
+        transactionCounters: {
+          'paymentsCounter': 0,
+          'receiptsCounter': 0,
+          'transfersCounter': 0,
+          'expenseCounter': 0,
+          'buyFxCounter': 0,
+          'sellFxCounter': 0,
+          'accountsCounter': 0,
+          'bankDepositCounter': 0,
+          'bankWithdrawCounter': 0,
+          'bankTransferCounter': 0,
+          'internalTransferCounter': 0,
+        },
+      );
 
-        ///Check if the data contains all required fields
-        if (!content.every((item) => totalsList.contains(item))) {
-          if (context.mounted) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 10,
-                titlePadding: EdgeInsets.zero,
-                title: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                        color: AppColors.quarternary,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.error_outline_outlined, color: Color(0xffFF2929), size: 30),
-                          SizedBox(width: 10),
-                          Text(
-                            "Invalid file format!",
-                            style: TextStyle(
-                              color: Color(0xffFF2929),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                content: Text(
-                  'Please use the "Totals Excel sheet template" provided to upload your data.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                actionsAlignment: MainAxisAlignment.center,
-                actionsPadding: EdgeInsets.only(bottom: 15),
-                actions: [
-                  ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xffFF2929),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 5,
-                    ),
-                    child: Text(
-                      "OK",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+      /// Save the data to firestore
+      ///Todo: Upload the data to firestore
+      await _setupRepo.saveSetupData(totals);
+    }
+  }
+
+  Future<void> uploadAccounts(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: accountsCheckList, fileName: 'Accounts template');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int accountsCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        if (splitLine.length < 5) {
           return;
         }
+        final newAccount = AccountModel(
+            usdBalance: double.tryParse(splitLine[4]) ?? 0.0,
+            kesBalance: double.tryParse(splitLine[5]) ?? 0.0,
+            dateCreated: DateTime.now(),
+            firstName: splitLine[0],
+            lastName: splitLine[1],
+            accountNo: 'PA-$accountsCounter',
+            phoneNo: splitLine[2],
+            email: splitLine[3],
+            accountName: '${splitLine[0]} ${splitLine[1]}');
 
-        /// Now process the data
-        Map<String, double> parsedTotals = {};
-        for (var line in lines) {
-          final splitLine = line.split(',');
+        ///Point where to create each new account
+        final newAccountRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("accounts").doc('PA-$accountsCounter');
 
-          final key = splitLine[0];
-          final value = double.tryParse(splitLine[1]) ?? 0.0;
-          parsedTotals[key] = value;
-        }
+        ///CREATE THE ACCOUNT
+        batch.set(newAccountRef, newAccount.toJson());
 
-        final totals = BalancesModel(
-          shillingAtBank: parsedTotals['shillingAtBank'] ?? 0.0,
-          shillingCashInHand: parsedTotals['shillingCashInHand'] ?? 0.0,
-          shillingReceivable: parsedTotals['shillingReceivable'] ?? 0.0,
-          shillingPayable: parsedTotals['shillingPayable'] ?? 0.0,
-          dollarAtBank: parsedTotals['dollarAtBank'] ?? 0.0,
-          dollarCashInHand: parsedTotals['dollarCashInHand'] ?? 0.0,
-          dollarReceivable: parsedTotals['dollarReceivable'] ?? 0.0,
-          dollarPayable: parsedTotals['dollarPayable'] ?? 0.0,
-          currenciesAtCost: parsedTotals['currenciesAtCost'] ?? 0.0,
-          workingCapital: 0.0,
-          expenses: {'USD': 0.0, 'KES': 0.0},
-          receipts: {'USD': 0.0, 'KES': 0.0},
-          transfers: {'USD': 0.0, 'KES': 0.0},
-          withdrawals: {'USD': 0.0, 'KES': 0.0},
-          payments: {'USD': 0.0, 'KES': 0.0},
-          deposits: {'USD': 0.0, 'KES': 0.0},
-          inflows: {'USD': 0.0, 'KES': 0.0},
-          outflows: {'USD': 0.0, 'KES': 0.0},
-          transactionCounters: {
-            'paymentsCounter': 0,
-            'receiptsCounter': 0,
-            'transfersCounter': 0,
-            'expenseCounter': 0,
-            'buyFxCounter': 0,
-            'sellFxCounter': 0,
-            'accountsCounter': 0,
-            'bankDepositCounter': 0,
-            'bankWithdrawCounter': 0,
-            'bankTransferCounter': 0,
-            'internalTransferCounter': 0,
-          },
-        );
+        ///UPDATE THE COUNTER
+        accountsCounter++;
+      }
 
-        /// Save the data to firestore
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.accountsCounter": accountsCounter});
 
-        await _setupRepo.saveSetupData(totals);
-
+      await batch.commit().then((_) {
         Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
           "Success!",
-          'Balances update complete',
+          '${accountsCounter - 1000} accounts uploaded',
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-      } else {
-        Get.snackbar('Selection cancelled!', 'No file was uploaded',
-            backgroundColor: Colors.orange);
-      }
-    } catch (e) {
-      Get.snackbar('Error!', 'No data uploaded', backgroundColor: Colors.orange);
-      throw e.toString();
+      });
     }
-  }
 
-  ///Todo: upload accounts
-  Future<void> uploadAccounts() async {
-    try {
-      // ///Upload the file
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
-      if (result != null) {
-        File file = File(result.files.single.path!);
-        //
-        //   ///Process the content
-        final lines = file.readAsLinesSync(encoding: utf8);
-
-        lines.removeAt(0);
-        int accountsCounter = 1000;
-
-        ///PROCESSING
-        final batch = _db.batch();
-
-        ///Reference to the counter
-        final counterRef = _db
-            .collection('Users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .collection('Setup')
-            .doc('Balances');
-
-        for (var line in lines) {
-          final splitLine = line.split(',');
-          if (splitLine.length < 5) {
-            return;
-          }
-          final newAccount = AccountModel(
-              usdBalance: double.tryParse(splitLine[4]) ?? 0.0,
-              kesBalance: double.tryParse(splitLine[5]) ?? 0.0,
-              dateCreated: DateTime.now(),
-              firstName: splitLine[0],
-              lastName: splitLine[1],
-              accountNo: 'PA-$accountsCounter',
-              phoneNo: splitLine[2],
-              email: splitLine[3],
-              accountName: '${splitLine[0]} ${splitLine[1]}');
-
-          ///Point where to create each new account
-          final newAccountRef = _db
-              .collection('Users')
-              .doc(FirebaseAuth.instance.currentUser?.uid)
-              .collection("Accounts")
-              .doc('PA-$accountsCounter');
-
-          ///CREATE THE ACCOUNT
-          batch.set(newAccountRef, newAccount.toJson());
-
-          ///UPDATE THE COUNTER
-          accountsCounter++;
-        }
-
-        ///After accounts are created, update the firestore counter
-        batch.update(counterRef, {"transactionCounters.accountsCounter": accountsCounter});
-
-        await batch.commit().then((_) {
-          Get.snackbar(
-            icon: Icon(
-              Icons.cloud_done,
-              color: Colors.white,
-            ),
-            shouldIconPulse: true,
-            "Success!",
-            '${accountsCounter - 1000} accounts uploaded',
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-          );
-        });
-      } else {
-        Get.snackbar(
-          icon: Icon(
-            Icons.file_upload_off,
-            color: Colors.red,
-          ),
-          shouldIconPulse: true,
-          "Process cancelled!",
-          'No file was uploaded',
-          backgroundColor: Colors.orangeAccent,
-          colorText: Colors.white,
-        );
-      }
-    } catch (e) {
-      throw e.toString();
-    }
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
   }
 
   ///Todo: upload payments
-  Future<void> uploadPayments() async {
-    try {
-      final uploadRepo = Get.put(UploadRepo());
-      final result = await uploadRepo.uploadFile();
-      final lines = result?.readAsLinesSync(encoding: utf8);
-      lines?.removeAt(0);
+  Future<void> uploadPayments(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: paymentsCheckList, fileName: 'Payments template');
 
-      /// Create the counter
-      int paymentCounter = 1;
-      final db = FirebaseFirestore.instance;
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
 
-      /// Get the uid of the current logged in user
-      final uid = FirebaseAuth.instance.currentUser?.uid;
+      ///Process the content
 
-      final paymentCounterRef = db.collection('Users').doc(uid).collection('Setup').doc('Balances');
+      int paymentsCounter = 1000;
 
-      ///Initialize the batch
+      ///PROCESSING
+      final batch = _db.batch();
 
-      final batch = db.batch();
-
-      for (var line in lines!) {
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
         final splitLine = line.split(',');
-
+        if (splitLine.length < 5) {
+          return;
+        }
         final newPayment = PayClientModel(
-          transactionId: 'pymnt-$paymentCounter',
+          transactionId: 'PAY-$paymentsCounter',
           accountFrom: splitLine[1],
           currency: splitLine[3],
           amountPaid: double.tryParse(splitLine[4]) ?? 0.0,
@@ -426,251 +258,155 @@ class UploadController extends GetxController {
           transactionType: 'payment',
         );
 
-        final newPaymentRef =
-            db.collection('Users').doc(uid).collection('transactions').doc('pymnt-$paymentCounter');
+        ///Point where to create each new account
+        final newPaymentRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('PAY-$paymentsCounter');
 
-        /// Save the data to firestore
+        ///CREATE THE ACCOUNT
         batch.set(newPaymentRef, newPayment.toJson());
-        paymentCounter++;
-      }
-      batch.update(paymentCounterRef, {'transactionCounters.paymentsCounter': paymentCounter});
-      await batch.commit();
 
-      Get.snackbar(
-        "Success!",
-        result.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      throw e.toString();
+        ///UPDATE THE COUNTER
+        paymentsCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.paymentsCounter": paymentsCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${paymentsCounter - 1000} payments uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
     }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
   }
 
   ///Todo: upload expenses
-  Future<void> uploadExpense() async {
-    try {
-      final uploadRepo = Get.put(UploadRepo());
-      final setupRepo = Get.put(SetupRepo());
-      final result = await uploadRepo.uploadFile();
-      final lines = result?.readAsLinesSync(encoding: utf8);
-      lines?.removeAt(0);
+  Future<void> uploadExpenses(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: expensesCheckList, fileName: 'Expenses template');
 
-      for (var line in lines!) {
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int expenseCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
         final splitLine = line.split(',');
-
+        if (splitLine.length < 5) {
+          return;
+        }
         final newExpense = ExpenseModel(
             transactionType: 'expense',
-            transactionId: splitLine[1],
+            transactionId: 'EXP-$expenseCounter',
             category: splitLine[1],
             description: splitLine[4],
             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
             currency: splitLine[2],
             amountPaid: double.tryParse(splitLine[3]) ?? 0.0);
 
-        /// Save the data to firestore
-        try {
-          await _expenseRepo.recordExpense(
-            newExpense,
-          );
+        ///Point where to create each new account
+        final newExpenseRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('EXP-$expenseCounter');
 
-          // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-        } catch (e) {
-          Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-        }
-        // } else {
-        //   Get.snackbar('Skipped', 'Data too short');
-        // }
+        ///CREATE THE ACCOUNT
+        batch.set(newExpenseRef, newExpense.toJson());
+
+        ///UPDATE THE COUNTER
+        expenseCounter++;
       }
 
-      Get.snackbar(
-        "Success!",
-        result.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      throw e.toString();
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.expenseCounter": expenseCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${expenseCounter - 1000} expenses uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
     }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
   }
 
-  ///Todo: upload receipts
-  Future<void> uploadReceipts() async {
-    try {
-      final uploadRepo = Get.put(UploadRepo());
-      final setupRepo = Get.put(SetupRepo());
-      final result = await uploadRepo.uploadFile();
-      final lines = result?.readAsLinesSync(encoding: utf8);
-      lines?.removeAt(0);
-
-      for (var line in lines!) {
-        final splitLine = line.split(',');
-
-        final newReceipt = ReceiveModel(
-            transactionType: 'receipt',
-            transactionId: splitLine[1],
-            description: splitLine[5],
-            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-            currency: splitLine[3],
-            amount: double.tryParse(splitLine[4]) ?? 0.0,
-            depositorName: splitLine[1],
-            receivingAccountName: splitLine[1],
-            receivingAccountNo: '65975679587956');
-
-        /// Save the data to firestore
-        try {
-          await _receiptRepo.recordReceipt(
-            newReceipt,
-          );
-
-          // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-        } catch (e) {
-          Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-        }
-        // } else {
-        //   Get.snackbar('Skipped', 'Data too short');
-        // }
-      }
-
-      Get.snackbar(
-        "Success!",
-        result.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  ///Todo: upload withdrawals
-  Future<void> uploadWithdrawals() async {
-    try {
-      final uploadRepo = Get.put(UploadRepo());
-      final setupRepo = Get.put(SetupRepo());
-      final result = await uploadRepo.uploadFile();
-      final lines = result?.readAsLinesSync(encoding: utf8);
-      lines?.removeAt(0);
-
-      for (var line in lines!) {
-        final splitLine = line.split(',');
-
-        final newWithdrawal = WithdrawModel(
-            transactionType: 'withdraw',
-            transactionId: 'transaction12134nId',
-            currency: 'currency',
-            amount: 0,
-            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-            withdrawalType: 'Cheque',
-            withdrawnBy: 'Abdullahi Abdi');
-
-        /// Save the data to firestore
-        try {
-          await _withdrawalRepo.recordWithdrawal(
-            newWithdrawal,
-          );
-
-          // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-        } catch (e) {
-          Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-        }
-        // } else {
-        //   Get.snackbar('Skipped', 'Data too short');
-        // }
-      }
-
-      Get.snackbar(
-        "Success!",
-        result.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  ///Todo: upload withdrawals
-  Future<void> uploadDeposits() async {
-    try {
-      final uploadRepo = Get.put(UploadRepo());
-      final setupRepo = Get.put(SetupRepo());
-      final result = await uploadRepo.uploadFile();
-      final lines = result?.readAsLinesSync(encoding: utf8);
-      lines?.removeAt(0);
-
-      for (var line in lines!) {
-        final splitLine = line.split(',');
-
-        final newDeposit = DepositModel(
-            transactionType: 'deposit',
-            transactionId: 'transaction12134nId',
-            currency: 'USD',
-            amount: 400,
-            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-            depositType: 'Cheque',
-            depositedBy: 'Abdullahi Abdi');
-
-        /// Save the data to firestore
-        try {
-          await _depositRepo.recordDeposit(
-            newDeposit,
-          );
-
-          // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-        } catch (e) {
-          Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-        }
-        // } else {
-        //   Get.snackbar('Skipped', 'Data too short');
-        // }
-      }
-
-      Get.snackbar(
-        "Success!",
-        result.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-  ///Todo: upload currency stock
-  // Future<void> uploadCurrencyStock() async {
+  // Future<void> uploadExpense() async {
   //   try {
   //     final uploadRepo = Get.put(UploadRepo());
   //     final setupRepo = Get.put(SetupRepo());
   //     final result = await uploadRepo.uploadFile();
   //     final lines = result?.readAsLinesSync(encoding: utf8);
   //     lines?.removeAt(0);
-  //     final date = DateTime.now();
-  //     print(lines);
-  //
-  //     var accountNo = int.tryParse(
-  //             '${date.millisecond}${date.second}${date.minute}${date.hour}${date.day}${date.month}${date.year}') ??
-  //         0;
   //
   //     for (var line in lines!) {
   //       final splitLine = line.split(',');
-  //       // if (splitLine.length > 5) {
-  //       accountNo -= 1;
   //
-  //       final newAccount = AccountModel(
-  //           usdBalance: double.tryParse(splitLine[4]) ?? 0.0,
-  //           kesBalance: double.tryParse(splitLine[5]) ?? 0.0,
-  //           dateCreated: DateTime.now(),
-  //           firstName: splitLine[0],
-  //           lastName: splitLine[1],
-  //           accountNo: '$accountNo',
-  //           phoneNo: splitLine[2],
-  //           email: splitLine[3]);
+  //       final newExpense = ExpenseModel(
+  //           transactionType: 'expense',
+  //           transactionId: splitLine[1],
+  //           category: splitLine[1],
+  //           description: splitLine[4],
+  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+  //           currency: splitLine[2],
+  //           amountPaid: double.tryParse(splitLine[3]) ?? 0.0);
   //
   //       /// Save the data to firestore
   //       try {
-  //         await _accountRepo.savaAccountData(
-  //           newAccount,
+  //         await _expenseRepo.recordExpense(
+  //           newExpense,
   //         );
   //
   //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
@@ -682,8 +418,133 @@ class UploadController extends GetxController {
   //       // }
   //     }
   //
-  //     print(
-  //         '//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
+  //     Get.snackbar(
+  //       "Success!",
+  //       result.toString(),
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } catch (e) {
+  //     throw e.toString();
+  //   }
+  // }
+  //
+  // ///Todo: upload receipts
+  Future<void> uploadReceipts(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: receiptsCheckList, fileName: 'Receipts template');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int receiptsCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        if (splitLine.length < 5) {
+          return;
+        }
+        final newReceipt = ReceiveModel(
+            transactionType: 'receipt',
+            transactionId: 'RCPT-$receiptsCounter',
+            depositorName: splitLine[1],
+            receivingAccountName: splitLine[2],
+            currency: splitLine[3],
+            amount: double.tryParse(splitLine[4]) ?? 0.0,
+            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+            description: splitLine[5]);
+
+        ///Point where to create each new account
+        final newReceiptRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('RCPT-$receiptsCounter');
+
+        ///CREATE THE ACCOUNT
+        batch.set(newReceiptRef, newReceipt.toJson());
+
+        ///UPDATE THE COUNTER
+        receiptsCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.receiptsCounter": receiptsCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${receiptsCounter - 1000} receipts uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+    }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
+  }
+
+  // Future<void> uploadReceipts() async {
+  //   try {
+  //     final uploadRepo = Get.put(UploadRepo());
+  //     final setupRepo = Get.put(SetupRepo());
+  //     final result = await uploadRepo.uploadFile();
+  //     final lines = result?.readAsLinesSync(encoding: utf8);
+  //     lines?.removeAt(0);
+  //
+  //     for (var line in lines!) {
+  //       final splitLine = line.split(',');
+  //
+  //       final newReceipt = ReceiveModel(
+  //           transactionType: 'receipt',
+  //           transactionId: splitLine[1],
+  //           description: splitLine[5],
+  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+  //           currency: splitLine[3],
+  //           amount: double.tryParse(splitLine[4]) ?? 0.0,
+  //           depositorName: splitLine[1],
+  //           receivingAccountName: splitLine[1],
+  //           receivingAccountNo: '65975679587956');
+  //
+  //       /// Save the data to firestore
+  //       try {
+  //         await _receiptRepo.recordReceipt(
+  //           newReceipt,
+  //         );
+  //
+  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
+  //       } catch (e) {
+  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
+  //       }
+  //       // } else {
+  //       //   Get.snackbar('Skipped', 'Data too short');
+  //       // }
+  //     }
   //
   //     Get.snackbar(
   //       "Success!",
@@ -695,4 +556,411 @@ class UploadController extends GetxController {
   //     throw e.toString();
   //   }
   // }
+  //
+  // ///Todo: upload withdrawals
+  Future<void> uploadWithdrawals(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: withdrawalsCheckList, fileName: 'Withdrawals template');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int bankWithdrawCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        if (splitLine.length < 5) {
+          return;
+        }
+        final newWithdrawal = WithdrawModel(
+            transactionType: 'withdraw',
+            transactionId: 'WDR$bankWithdrawCounter',
+            currency: splitLine[1],
+            amount: double.tryParse(splitLine[2]) ?? 0.0,
+            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+            withdrawalType: 'cash',
+            withdrawnBy: splitLine[3],
+            description: splitLine[4]);
+
+        ///Point where to create each new account
+        final newReceiptRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('WDR-$bankWithdrawCounter');
+
+        ///CREATE THE ACCOUNT
+        batch.set(newReceiptRef, newWithdrawal.toJson());
+
+        ///UPDATE THE COUNTER
+        bankWithdrawCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.receiptsCounter": bankWithdrawCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${bankWithdrawCounter - 1000} withdrawals uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+    }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
+  }
+
+  // Future<void> uploadWithdrawals() async {
+  //   try {
+  //     final uploadRepo = Get.put(UploadRepo());
+  //     final setupRepo = Get.put(SetupRepo());
+  //     final result = await uploadRepo.uploadFile();
+  //     final lines = result?.readAsLinesSync(encoding: utf8);
+  //     lines?.removeAt(0);
+  //
+  //     for (var line in lines!) {
+  //       final splitLine = line.split(',');
+  //
+  //       final newWithdrawal = WithdrawModel(
+  //           transactionType: 'withdraw',
+  //           transactionId: 'transaction12134nId',
+  //           currency: 'currency',
+  //           amount: 0,
+  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+  //           withdrawalType: 'Cheque',
+  //           withdrawnBy: 'Abdullahi Abdi');
+  //
+  //       /// Save the data to firestore
+  //       try {
+  //         await _withdrawalRepo.recordWithdrawal(
+  //           newWithdrawal,
+  //         );
+  //
+  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
+  //       } catch (e) {
+  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
+  //       }
+  //       // } else {
+  //       //   Get.snackbar('Skipped', 'Data too short');
+  //       // }
+  //     }
+  //
+  //     Get.snackbar(
+  //       "Success!",
+  //       result.toString(),
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } catch (e) {
+  //     throw e.toString();
+  //   }
+  // }
+  //
+  // ///Todo: upload deposits
+  Future<void> uploadDeposits(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: depositsCheckList, fileName: 'Deposits template');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int bankDepositCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        if (splitLine.length < 5) {
+          return;
+        }
+        final newDeposit =
+            DepositModel(transactionType: 'deposit', transactionId: 'DPST-$bankDepositCounter', depositedBy:splitLine[1],currency: splitLine[2], amount: double.tryParse(splitLine[3])??0.0, dateCreated:  DateFormat("dd/MM/yyyy").parse(splitLine[0]), );
+
+        ///Point where to create each new account
+        final newDepositRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('DPST-$bankDepositCounter');
+
+        ///CREATE THE ACCOUNT
+        batch.set(newDepositRef, newDeposit.toJson());
+
+        ///UPDATE THE COUNTER
+        bankDepositCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.bankDepositCounter": bankDepositCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${bankDepositCounter - 1000} withdrawals uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+    }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
+  }
+
+  Future<void> uploadTransfers(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: transfersCheckList, fileName: 'Transfers template');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+
+      ///Process the content
+
+      int bankTransferCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        if (splitLine.length < 5) {
+          return;
+        }
+        final newTransfer =
+        TransferModel(transactionType: 'transfer', transactionId: 'TRF-$bankTransferCounter', receiver:splitLine[2],currency: splitLine[1], amount: double.tryParse(splitLine[3])??0.0, dateCreated:  DateFormat("dd/MM/yyyy").parse(splitLine[0]), );
+
+        ///Point where to create each new transfer
+        final newTransferRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('TRF-$bankTransferCounter');
+
+        ///CREATE THE ACCOUNT
+        batch.set(newTransferRef, newTransfer.toJson());
+
+        ///UPDATE THE COUNTER
+        bankTransferCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.bankDepositCounter": bankTransferCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${bankTransferCounter - 1000} transfers uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+    }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
+  }
+
+  // Future<void> uploadDeposits() async {
+  //   try {
+  //     final uploadRepo = Get.put(UploadRepo());
+  //     final setupRepo = Get.put(SetupRepo());
+  //     final result = await uploadRepo.uploadFile();
+  //     final lines = result?.readAsLinesSync(encoding: utf8);
+  //     lines?.removeAt(0);
+  //
+  //     for (var line in lines!) {
+  //       final splitLine = line.split(',');
+  //
+  //       final newDeposit = DepositModel(
+  //           transactionType: 'deposit',
+  //           transactionId: 'transaction12134nId',
+  //           currency: 'USD',
+  //           amount: 400,
+  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+  //           depositType: 'Cheque',
+  //           depositedBy: 'Abdullahi Abdi');
+  //
+  //       /// Save the data to firestore
+  //       try {
+  //         await _depositRepo.recordDeposit(
+  //           newDeposit,
+  //         );
+  //
+  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
+  //       } catch (e) {
+  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
+  //       }
+  //       // } else {
+  //       //   Get.snackbar('Skipped', 'Data too short');
+  //       // }
+  //     }
+  //
+  //     Get.snackbar(
+  //       "Success!",
+  //       result.toString(),
+  //       backgroundColor: Colors.green,
+  //       colorText: Colors.white,
+  //     );
+  //   } catch (e) {
+  //     throw e.toString();
+  //   }
+  // }
+
+  ///Todo: upload currency stock
+
+  Future<void> uploadCurrencyStock(BuildContext context) async {
+    //     // ///Upload the file
+    final List? lines = await uploadRepo.uploadData(context: context, checkList: currenciesCheckList, fileName: 'Currency stock');
+
+    ///Todo: Check if all required fields are there.
+    if (lines != null && lines.isNotEmpty) {
+      /// Remove the headers
+      lines.removeAt(0);
+      print(lines);
+
+      ///Process the content
+      int buyFxCounter = 1000;
+
+      ///PROCESSING
+      final batch = _db.batch();
+
+      ///Reference to the counter
+      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      for (var line in lines) {
+        final splitLine = line.split(',');
+        print(splitLine);
+        if (splitLine.length != 6) {
+          return;
+        }
+        final buyCurrency = ForexModel(
+            currencyName: splitLine[1],
+            currencyCode: splitLine[2].toUpperCase(),
+            rate: double.parse(splitLine[3]),
+            amount: double.parse(splitLine[4]),
+            totalCost: double.parse(splitLine[5]),
+            dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+            transactionType: 'Fx-Buy',
+            transactionId: 'FXBY-$buyFxCounter');
+        final newCurrencyAccount = CurrencyModel(totalCost: double.parse(splitLine[5]), amount: double.parse(splitLine[4]), currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase());
+
+        ///Point where to create each new currency account
+        final buyFxTransactionRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('FXBY-$buyFxCounter');
+
+        ///Point where to create each new currency account
+        final newCurrencyRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("currencyStock").doc('${splitLine[2].toUpperCase()}');
+
+        ///CREATE THE FX TRANSACTION
+        batch.set(buyFxTransactionRef, buyCurrency.toJson());
+
+        ///Create the new currency
+        ///
+        batch.set(newCurrencyRef, newCurrencyAccount.toJson());
+
+        ///UPDATE THE COUNTER
+        buyFxCounter++;
+      }
+
+      ///After accounts are created, update the firestore counter
+      batch.update(counterRef, {"transactionCounters.buyFxCounter": buyFxCounter});
+
+      await batch.commit().then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          '${buyFxCounter - 1000} currencies uploaded',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+    }
+
+    // } else {
+    //       Get.snackbar(
+    //         icon: Icon(
+    //           Icons.file_upload_off,
+    //           color: Colors.red,
+    //         ),
+    //         shouldIconPulse: true,
+    //         "Process cancelled!",
+    //         'No file was uploaded',
+    //         backgroundColor: Colors.orangeAccent,
+    //         colorText: Colors.white,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     throw e.toString();
+    //   }
+  }
 }

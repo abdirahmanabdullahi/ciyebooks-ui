@@ -1,13 +1,13 @@
 
-class DepositModel {
+class TransferModel {
   final String transactionType;
   final String transactionId;
   final String currency;
   final double amount;
   final DateTime dateCreated;
-  final String? depositedBy;
-  DepositModel({
-    required this.depositedBy,
+  final String receiver;
+  TransferModel({
+    required this.receiver,
     required this.transactionType,
     required this.transactionId,
     required this.currency,
@@ -21,18 +21,18 @@ class DepositModel {
       'currency': currency,
       'amount': amount,
       'dateCreated': dateCreated,
-      'depositedBy': depositedBy,
+      'receiver': receiver,
     };
   }
 
-  factory DepositModel.fromJson(Map<String, dynamic> jsonData) {
-    return DepositModel(
+  factory TransferModel.fromJson(Map<String, dynamic> jsonData) {
+    return TransferModel(
       transactionType: jsonData['transactionType'],
       transactionId: jsonData['transactionId'],
       currency: jsonData['currency'],
       amount: (jsonData['amount'] as num?)?.toDouble() ?? 0.0,
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
-      depositedBy: jsonData['depositedBy'],
+      receiver: jsonData['receiver'],
     );
   }
 }

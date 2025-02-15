@@ -22,7 +22,7 @@ class CurrencyController extends GetxController {
     try {
       final newCurrency = CurrencyModel(
         currencyName: currencyName.text.trim(),
-        currencyCode: currencyCode.text.trim(), dateCreated: DateTime.now(),
+        currencyCode: currencyCode.text.trim(),  totalCost: 0.0, amount: 0.0,
 
       );
       await _currencyRepo.createCurrency(newCurrency);

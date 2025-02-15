@@ -1,4 +1,3 @@
-
 class WithdrawModel {
   final String transactionType;
   final String transactionId;
@@ -6,9 +5,10 @@ class WithdrawModel {
   final double amount;
   final DateTime dateCreated;
   final String withdrawalType;
-  final String? withdrawnBy;
-  WithdrawModel({
-    this.withdrawnBy,
+  final String withdrawnBy;
+  final String description;
+  WithdrawModel({required this.description,
+    required this.withdrawnBy,
     required this.transactionType,
     required this.transactionId,
     required this.currency,
@@ -25,6 +25,7 @@ class WithdrawModel {
       'dateCreated': dateCreated,
       'withdrawalType': withdrawalType,
       'withdrawnBy': withdrawnBy,
+      'description':description,
     };
   }
 
@@ -35,7 +36,8 @@ class WithdrawModel {
       currency: jsonData['currency'],
       amount: (jsonData['amount'] as num?)?.toDouble() ?? 0.0,
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
-      withdrawalType: jsonData['withdrawalType'],withdrawnBy: jsonData['withdrawnBy'],
+      withdrawalType: jsonData['withdrawalType'],
+      withdrawnBy: jsonData['withdrawnBy'], description: jsonData['description'],
     );
   }
 }

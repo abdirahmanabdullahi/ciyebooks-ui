@@ -1,4 +1,8 @@
+import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
+import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
+import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
@@ -24,7 +28,7 @@ class SetupController extends GetxController {
   final setupRepo = Get.put(SetupRepo());
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
-  RxList<CurrencyModel> currency = <CurrencyModel>[].obs;
+  RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
 
   ///Transaction counters
   final counters = {}.obs;
@@ -33,32 +37,29 @@ class SetupController extends GetxController {
 
   ///
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
-  final payClientList = <PayClientModel>[];
 
   ///
-  final receiptsList = <ReceiveModel>[];
   RxList<ReceiveModel> receipts = <ReceiveModel>[].obs;
 
   ///
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
-  final expensesList = <ExpenseModel>[];
 
   ///
-  final withdrawalList = <WithdrawModel>[];
   RxList<WithdrawModel> withdrawals = <WithdrawModel>[].obs;
+
+  ///
+  RxList<DepositModel> deposits = <DepositModel>[].obs;
+
+  ///
+  RxList<TransferModel> transfers = <TransferModel>[].obs;
 
   /// fireStore instance
   final _db = FirebaseFirestore.instance;
+
   @override
   void onInit() {
     /// Stream for the totals
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('Setup')
-        .doc('Balances')
-        .snapshots()
-        .listen((snapshot) {
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         counters.value = totals.value.transactionCounters!;
@@ -67,25 +68,16 @@ class SetupController extends GetxController {
     });
 
     /// Stream for the accounts
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('Accounts')
-        .snapshots()
-        .listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
     });
 
     /// Stream for currency stock
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('CurrencyStock')
-        .snapshots()
-        .listen((querySnapshot) {
-      currency.value = querySnapshot.docs.map((doc) {
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('currencyStock').snapshots().listen((querySnapshot) {
+      currencies.clear();
+      currencies.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());
       }).toList();
     });
@@ -105,16 +97,12 @@ class SetupController extends GetxController {
     //   }).toList();
     // });
 
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('transactions')
-        .snapshots()
-        .listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('transactions').snapshots().listen((querySnapshot) {
       expenses.clear();
       payments.clear();
       receipts.clear();
       withdrawals.clear();
+      deposits.clear();
       // Filter only expenses
       for (var doc in querySnapshot.docs) {
         final transactionType = doc.data()['transactionType'];
@@ -126,19 +114,14 @@ class SetupController extends GetxController {
           receipts.add(ReceiveModel.fromJson(doc.data()));
         } else if (transactionType == 'withdraw') {
           withdrawals.add(WithdrawModel.fromJson(doc.data()));
+        } else if (transactionType == 'deposit') {
+          deposits.add(DepositModel.fromJson(doc.data()));
+        } else if (transactionType == 'transfer') {
+          transfers.add(TransferModel.fromJson(doc.data()));
         }
       }
     });
     super.onInit();
-  }
-
-  Future<void> updatePaymentsCounter() async {
-    await _db
-        .collection('Users')
-        .doc(_uid)
-        .collection('Setup')
-        .doc('Balances')
-        .update({"transactionCounters.paymentsCounter": FieldValue.increment(1)});
   }
 
   // / Fetch setup data
@@ -161,15 +144,14 @@ class SetupController extends GetxController {
   // }
 
   /// Save setup data to firestore
-  Future<void> saveSetupData() async {
+  Future<void> completeSetup() async {
     try {
       //Start loading
       isLoading.value = true;
       //Check connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        Get.snackbar("Oh snap! No internet connection.",
-            "Please check your internet connection and try again",
+        Get.snackbar("Oh snap! No internet connection.", "Please check your internet connection and try again",
             icon: Icon(
               Icons.cloud_off,
               color: Colors.white,
@@ -178,127 +160,24 @@ class SetupController extends GetxController {
             colorText: Colors.white);
         return;
       }
+      final setupStatus = {'AccountIsSetup': true};
 
-      // final newSetup = BalancesModel(
-      //   shillingAtBank: double.tryParse(shillingAtBank.text.trim())??0.0,
-      //   shillingCashInHand: double.tryParse(shillingCashBalance.text.trim())??0.0,
-      //   shillingReceivable: double.tryParse(shillingReceivable.text.trim())??0.0,
-      //   shillingPayable: double.tryParse(shillingPayable.text.trim())??0.0,
-      //   dollarAtBank: double.tryParse(dollarAtBank.text.trim())??0.0,
-      //   dollarCashInHand: double.tryParse(dollarCashInHand.text.trim())??0.0,
-      //   dollarReceivable: double.tryParse(dollarReceivable.text.trim())??0.0,
-      //   dollarPayable: double.tryParse(dollarPayable.text.trim())??0.0,
-      //   averageRateOfDollar: double.tryParse(averageRateOfDollar.text.trim())??0.0,
-      //   workingCapital: double.tryParse(workingCapital.text.trim())??0.0,
-      // );
-
-      // final setupRepo = Get.put(SetupRepo());
-      // await setupRepo.saveSetupData(newSetup);
-
-      ///Success message
-      // Get.snackbar('Congratulations', ' Account setup complete',
-      //     backgroundColor: Colors.green, colorText: Colors.white);
-
-      ///Go to ScreenRedirect
-      // AuthRepo.instance.screenRedirect();
+      await setupRepo.updateSetupStatus(setupStatus).then((_) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success!",
+          'Setup has been completed',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        AuthRepo.instance.screenRedirect();
+      });
     } catch (e) {
-      Get.snackbar("Oh snap!", e.toString(),
-          backgroundColor: Color(0xffFF0033), colorText: Colors.white);
+      Get.snackbar("Oh snap!", e.toString(), backgroundColor: Color(0xffFF0033), colorText: Colors.white);
     }
   }
-
-  ///Update capital
-  // Future<void> setupCapital() async {
-  //   final setupRepo = Get.put(SetupRepo());
-  //
-  //   try {
-  //     // Validate the form before proceeding
-  //     if (!capitalFormKey.currentState!.validate()) {
-  //       return;
-  //     }
-  //     final connection = await NetworkManager.instance.isConnected();
-  //     connection
-  //         ? null
-  //         : Get.snackbar(
-  //             "Success!",
-  //             "Capital has been saved locally and will sync once you're online.",
-  //             backgroundColor: Colors.blue,
-  //             colorText: Colors.white,
-  //           );
-  //
-  //     // Prepare data to update
-  //     // Map<String, dynamic> capitalBalance = {
-  //     //   'Capital': double.tryParse(capital.text.trim()) ?? 00,
-  //     // };
-  //
-  //     // Update the single field in the repository
-  //     await setupRepo.updateSingleField(capitalBalance);
-  //     Get.back();
-  //
-  //     // Notify the user of success
-  //     Get.snackbar(
-  //       "Success!",
-  //       "Capital has been updated successfully.",
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     // Handle errors and notify the user
-  //     print(e.toString());
-  //     Get.snackbar(
-  //       "Oh snap!",
-  //       e.toString(),
-  //       backgroundColor: Colors.black,
-  //       colorText: Colors.white,
-  //     );
-  //   }
-  // }
-
-  ///Update kenya shilling cash in hand
-  // Future<void> updateKesCashInHand() async {
-  //   final setupRepo = Get.put(SetupRepo());
-  //
-  //   try {
-  //     // Validate the form before proceeding
-  //     if (!cashKesInHandFormKey.currentState!.validate()) {
-  //       return;
-  //     }
-  //
-  //     // Prepare data to update
-  //     Map<String, dynamic> balances = {
-  //       'KesCashBalance': double.tryParse(kesCashBalance.text.trim()) ?? 00,
-  //       'KesBankBalance': double.tryParse(kesBankBalance.text.trim()) ?? 00,
-  //     };
-  //
-  //     // Update the single field in the repository
-  //     await setupRepo.updateSingleField(balances);
-  //     Get.back();
-  //
-  //     // Notify the user of success
-  //     Get.snackbar(
-  //       "Success!",
-  //       "Capital has been updated successfully.",
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     // Handle errors and notify the user
-  //     print(e.toString());
-  //     Get.snackbar(
-  //       "Oh snap!",
-  //       e.toString(),
-  //       backgroundColor: Colors.black,
-  //       colorText: Colors.white,
-  //     );
-  //   }
-  // }
 }
-
-// final paymentDocs = querySnapshot.docs
-//     .where((doc) => doc.data()['transactionType'] == 'payment')
-//     .map((doc) => PayClientModel.fromJson(doc.data()))
-//     .toList();
-// final expenseDocs = querySnapshot.docs
-//     .where((doc) => doc.data()['transactionType'] == 'expense')
-//     .map((doc) => ExpenseModel.fromJson(doc.data()))
-//     .toList();
