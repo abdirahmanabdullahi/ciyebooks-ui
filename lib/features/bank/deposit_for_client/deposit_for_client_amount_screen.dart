@@ -21,7 +21,7 @@ class DepositForClientAmountScreen extends StatelessWidget {
         title: const Text("Select currency and amount"),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.close))
         ],
       ),

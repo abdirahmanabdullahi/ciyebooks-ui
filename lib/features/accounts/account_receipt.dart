@@ -25,7 +25,7 @@ class AccountReceipt extends StatelessWidget {
         title: const Text("Create a personal account"),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.clear))
         ],
       ),

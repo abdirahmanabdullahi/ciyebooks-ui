@@ -60,9 +60,19 @@ class SignInController extends GetxController {
 
       /// Login user with email and password
       final userCredentials = await AuthRepo.instance
-          .login(email.text.trim(), password.text.trim());
+          .login(email.text.trim(), password.text.trim()).then((_) {
+        Get.snackbar(
+          "Successfully logged in",
+          "Welcome back",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          icon: Icon(
+            Icons.verified_user,
+            color: Colors.white,
+          ),
+        );
+      });
       final name = userCredentials.user?.email.toString();
-
       ///Success message
 
       /// Stop loading

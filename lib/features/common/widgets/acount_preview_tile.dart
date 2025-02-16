@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants/colors.dart';
@@ -17,27 +18,27 @@ class AccountPreviewTile extends StatelessWidget {
       enabled: true,
       selected: true,
       selectedTileColor: Colors.white,
-      leading: Container(
-        width: 35,
-        height: 35,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(width: 1, color: AppColors.darkGrey)),
-        child: Center(
-          child: Text(
-            "AA",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .apply(color: Colors.blueAccent),
-          ),
-        ),
-      ),
+      // leading: Container(
+      //   width: 35,
+      //   height: 35,
+      //   decoration: BoxDecoration(
+      //       borderRadius: BorderRadius.circular(30),
+      //       border: Border.all(width: 1, color: AppColors.darkGrey)),
+      //   child: Center(
+      //     child: Text(
+      //       "AA",
+      //       style: Theme.of(context)
+      //           .textTheme
+      //           .bodyLarge!
+      //           .apply(color: Colors.blueAccent),
+      //     ),
+      //   ),
+      // ),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text(
-            "Abdirahman \nAbdullahi",
+            "Abdirahman Abdullahi",
             style: TextStyle(
                 // fontFamily: "Oswald",
                 color: AppColors.prettyDark,
@@ -61,14 +62,11 @@ class AccountPreviewTile extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: "Account no:    ",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style:TextStyle(color: Colors.black54)
                 ),
                 TextSpan(
                   text: "23436467867",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: AppColors.darkGrey),
+                  style:TextStyle(color: CupertinoColors.systemBlue,fontSize: 16)
                 ),
               ],
             ),
@@ -78,14 +76,11 @@ class AccountPreviewTile extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: "Phone no:       ",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: TextStyle(color: Colors.black54)
                 ),
                 TextSpan(
                   text: "0700905900",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: AppColors.darkGrey),
+                    style:TextStyle(color: CupertinoColors.systemBlue,fontSize: 16)
                 ),
               ],
             ),
@@ -95,14 +90,11 @@ class AccountPreviewTile extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: "USD balance:  ",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: TextStyle(color: Colors.black54)
                 ),
                 TextSpan(
                   text: "230",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: AppColors.darkGrey),
+                    style:TextStyle(color:Colors.blue.shade800,fontSize: 16)
                 ),
               ],
             ),
@@ -112,14 +104,11 @@ class AccountPreviewTile extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: "KES balance:   ",
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: TextStyle(color: Colors.black54)
                 ),
                 TextSpan(
                   text: "45,567",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: AppColors.darkGrey),
+                    style:TextStyle(color: CupertinoColors.systemBlue,fontSize: 16)
                 ),
               ],
             ),

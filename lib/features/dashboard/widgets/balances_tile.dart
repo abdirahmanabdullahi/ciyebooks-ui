@@ -7,9 +7,11 @@ class BalanceTile extends StatelessWidget {
     super.key,
     required this.leading,
     required this.title,
-    required this.subtitle,
+    required this.subtitle, required this.valueColor,
+
   });
   final String leading, title, subtitle;
+  final Color valueColor;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +48,11 @@ class BalanceTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,fontFamily: 'Oswald')
       ),
       subtitle: Text(
         subtitle,
-        style: Theme.of(context)
-            .textTheme
-            .labelSmall!
-            .apply(color: AppColors.darkGrey),
+        style:TextStyle(color: Colors.grey.shade400,fontWeight: FontWeight.w700,fontSize: 12)
       ),
     );
   }

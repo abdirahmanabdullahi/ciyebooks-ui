@@ -20,7 +20,7 @@ class BuyAmountScreen extends StatelessWidget {
         title: const Text("Buy currency"),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.close))
         ],
       ),

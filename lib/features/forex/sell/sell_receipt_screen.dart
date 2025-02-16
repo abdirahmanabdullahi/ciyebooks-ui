@@ -24,7 +24,7 @@ class SellReceiptScreen extends StatelessWidget {
         title: Text("Sell Currency"),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.clear))
         ],
       ),

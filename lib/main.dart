@@ -14,13 +14,13 @@ Future<void> main() async {debugPaintBaselinesEnabled:true;
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then((FirebaseApp value) => Get.put(AuthRepo));
-  // Get local storage
+  /// Get local storage
   await GetStorage.init();
 
-  // Await native splash until other items load.
+  /// Await native splash until other items load.
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-//Initialize firebase and Auth repository
+///Initialize firebase and Auth repository
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
       .then(
     (FirebaseApp value) => Get.put(
@@ -28,6 +28,6 @@ Future<void> main() async {debugPaintBaselinesEnabled:true;
     ),
   );
 
-//Load all the material design/themes/localization/bindings
+///Load all the material design/themes/localization/bindings
   runApp(const App());
 }

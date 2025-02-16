@@ -3,7 +3,6 @@ import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
@@ -22,7 +21,6 @@ import 'package:intl/intl.dart';
 import '../../utils/validators/validation.dart';
 import '../accounts/controller/accounts_controller.dart';
 import '../accounts/model/model.dart';
-import '../forex/model/new_currency_model.dart';
 import 'controller/setup_controller.dart';
 
 class SetupScreen extends StatelessWidget {
@@ -3665,7 +3663,7 @@ class SetupScreen extends StatelessWidget {
                         Obx(
                           () {
                             if (controller.withdrawals.isEmpty) {
-                              return Text('Once created, payments will appear here');
+                              return Text('Once created, withdrawals will appear here');
                             }
                             return ListView.builder(
                               physics: ClampingScrollPhysics(),

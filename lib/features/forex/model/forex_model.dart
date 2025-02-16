@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 class ForexModel {
   final String transactionId;

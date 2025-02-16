@@ -2,7 +2,6 @@ import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
-import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
@@ -16,7 +15,6 @@ import 'package:get/get.dart';
 
 import '../../../utils/helpers/network_manager.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
-import '../../forex/model/new_currency_model.dart';
 
 class SetupController extends GetxController {
   static SetupController get instance => Get.find();
@@ -59,6 +57,7 @@ class SetupController extends GetxController {
   @override
   void onInit() {
     /// Stream for the totals
+
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
@@ -83,20 +82,6 @@ class SetupController extends GetxController {
     });
 
     /// Stream for transactions
-    // FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(FirebaseAuth.instance.currentUser!.uid)
-    //     .collection('transactions')
-    //     .snapshots()
-    //     .listen((querySnapshot) {
-    //   payments.value = querySnapshot.docs.map((doc) {
-    //     // final data = doc.data();
-    //     // final transactionType = data['transactionType'].toString();
-    //
-    //     return PayClientModel.fromJson(doc.data());
-    //   }).toList();
-    // });
-
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('transactions').snapshots().listen((querySnapshot) {
       expenses.clear();
       payments.clear();
@@ -124,26 +109,8 @@ class SetupController extends GetxController {
     super.onInit();
   }
 
-  // / Fetch setup data
-  // Future<void> fetchBalanceSData() async {
-  //   try {
-  //     final balances = await SetupRepo.instance.getSetupData();
-  //     this.balances(balances);
-  //   } catch (e) {
-  //     Get.snackbar("There was an error fetching data",
-  //         "Please check your internet connection and try again",
-  //         icon: Icon(
-  //           Icons.cloud_off,
-  //           color: Colors.white,
-  //         ),
-  //         backgroundColor: Color(0xffFF0033),
-  //         colorText: Colors.white);
-  //
-  //     balances(BalancesModel.empty());
-  //   }
-  // }
 
-  /// Save setup data to firestore
+  /// Update setup status
   Future<void> completeSetup() async {
     try {
       //Start loading

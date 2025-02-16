@@ -36,17 +36,20 @@ class AuthRepo extends GetxController {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+
+      ///Check if email is verified
       if (user.emailVerified) {
 
+        /// Check if setup is complete
         final accountIsSetup = await fetchSetupStatus();
-        accountIsSetup?Get.to(() => NavigationMenu()):Get.to(() => SetupScreen());
+        accountIsSetup?Get.offAll(() => NavigationMenu()):Get.offAll(() => SetupScreen());
 
 
       } else {
         Get.offAll(() => VerifyEmail());
       }
     } else {
-      Get.to(() => Login());
+      Get.offAll(() => Login());
     }
   }
 
@@ -73,7 +76,7 @@ class AuthRepo extends GetxController {
   }
   /*------------------------ Email and password sign-in ------------------------*/
 
-// sign-in
+/// sign-in
   Future<UserCredential> login(String email, String password) async {
     try {
       return await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -90,7 +93,7 @@ class AuthRepo extends GetxController {
     }
   }
 
-// Sign-up
+/// Sign-up
 
   Future<UserCredential> registerWithEmailAndPassword(String email, String password) async {
     try {
@@ -108,7 +111,7 @@ class AuthRepo extends GetxController {
     }
   }
 
-  ///Email verification
+  /// Send Email verification
   Future<void> sendEmailVerification() async {
     try {
       await _auth.currentUser?.sendEmailVerification();
@@ -126,7 +129,6 @@ class AuthRepo extends GetxController {
   }
 
   /// Logout user
-
   Future<void> logoutUser() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -162,7 +164,7 @@ class AuthRepo extends GetxController {
     }
   }
 
-  /// Rend password reset link
+  /// Resend password reset link
 
   Future<void> resendPasswordResetLink(String email) async {
     try {

@@ -32,7 +32,6 @@ class SetupRepo extends GetxController {
                 backgroundColor: Colors.green,
                 colorText: Colors.white,
               ));
-      ;
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

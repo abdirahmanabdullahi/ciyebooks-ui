@@ -71,7 +71,7 @@ class CalculatorController extends GetxController {
     if (number2.isNotEmpty) {
       number2.value = number2.value.substring(0, number2.value.length - 1);
     } else if (operand.isNotEmpty) {
-      operand.value = '';
+      operand.value = '0';
     } else if (number1.isNotEmpty) {
       number1.value = number1.value.substring(0, number1.value.length - 1);
     }

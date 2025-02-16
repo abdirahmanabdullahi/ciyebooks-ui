@@ -20,7 +20,7 @@ class SellAmountScreen extends StatelessWidget {
         title: const Text("Sell currency"),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.close))
         ],
       ),

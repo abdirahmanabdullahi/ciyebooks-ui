@@ -32,7 +32,7 @@ class ReceiptScreen extends StatelessWidget {
         title: Text(title),
         actions: [
           IconButton(
-              onPressed: () => Get.offAll(() => const Home()),
+              onPressed: () => Get.offAll(() => const Dashboard()),
               icon: const Icon(Icons.clear))
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
-import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

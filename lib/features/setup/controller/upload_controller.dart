@@ -1,32 +1,20 @@
-import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 
 import 'package:ciyebooks/features/accounts/model/model.dart';
-import 'package:ciyebooks/features/accounts/repo/repo.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/deposit/repo/deposit_repo.dart';
 import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/bank/withdraw/repo/withdrawRepo.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_repo/pay_client_repo.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_repo/expense_repo.dart';
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
-import 'package:ciyebooks/features/receive/repository/receipt_repo.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/upload_repo.dart';
-import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -55,7 +43,7 @@ class UploadController extends GetxController {
     'currenciesAtCost'
   ];
   final depositsCheckList = ['Date', 'Deposited_By', 'Currency', 'Amount', 'Narrative'];
-  final transfersCheckList = ['Date', 'Currency', 'Receiver','Amount', 'Narrative'];
+  final transfersCheckList = ['Date', 'Currency', 'Receiver', 'Amount', 'Narrative'];
   final withdrawalsCheckList = ['Date', 'Currency', 'Amount', 'Withdrawn_By', 'Narrative'];
   final totalsHeadersCheckList = ['Name', 'Amount'];
   final receiptsCheckList = ['Date', 'Received_From', 'Receiving_Account', 'Currency', 'Amount', 'Description'];
@@ -63,16 +51,6 @@ class UploadController extends GetxController {
   final accountsCheckList = ['First_Name', 'Last_Name', 'Phone_No', 'Email', 'USD', 'KES'];
   final currenciesCheckList = ['Date', 'Currency_Name', 'Currency_Code', 'Rate', 'Amount', 'Total'];
   final expensesCheckList = ['Date_Paid', 'Category', 'Currency', 'Amount', 'Description'];
-
-  ///Method to update the counters
-  // Future<void> updateCounter(String counterToUpdate) async {
-  //   await FirebaseFirestore.instance
-  //       .collection('Users')
-  //       .doc(FirebaseAuth.instance.currentUser?.uid)
-  //       .collection('Setup')
-  //       .doc('Balances')
-  //       .update({"transactionCounters.$counterToUpdate": FieldValue.increment(1)});
-  // }
 
   ///Todo: upload totals
   Future<void> uploadTotals(BuildContext context) async {
@@ -204,23 +182,6 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
   ///Todo: upload payments
@@ -285,23 +246,6 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
   ///Todo: upload expenses
@@ -364,71 +308,8 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
-  // Future<void> uploadExpense() async {
-  //   try {
-  //     final uploadRepo = Get.put(UploadRepo());
-  //     final setupRepo = Get.put(SetupRepo());
-  //     final result = await uploadRepo.uploadFile();
-  //     final lines = result?.readAsLinesSync(encoding: utf8);
-  //     lines?.removeAt(0);
-  //
-  //     for (var line in lines!) {
-  //       final splitLine = line.split(',');
-  //
-  //       final newExpense = ExpenseModel(
-  //           transactionType: 'expense',
-  //           transactionId: splitLine[1],
-  //           category: splitLine[1],
-  //           description: splitLine[4],
-  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-  //           currency: splitLine[2],
-  //           amountPaid: double.tryParse(splitLine[3]) ?? 0.0);
-  //
-  //       /// Save the data to firestore
-  //       try {
-  //         await _expenseRepo.recordExpense(
-  //           newExpense,
-  //         );
-  //
-  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-  //       } catch (e) {
-  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-  //       }
-  //       // } else {
-  //       //   Get.snackbar('Skipped', 'Data too short');
-  //       // }
-  //     }
-  //
-  //     Get.snackbar(
-  //       "Success!",
-  //       result.toString(),
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
-  //
   // ///Todo: upload receipts
   Future<void> uploadReceipts(BuildContext context) async {
     //     // ///Upload the file
@@ -490,73 +371,8 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
-  // Future<void> uploadReceipts() async {
-  //   try {
-  //     final uploadRepo = Get.put(UploadRepo());
-  //     final setupRepo = Get.put(SetupRepo());
-  //     final result = await uploadRepo.uploadFile();
-  //     final lines = result?.readAsLinesSync(encoding: utf8);
-  //     lines?.removeAt(0);
-  //
-  //     for (var line in lines!) {
-  //       final splitLine = line.split(',');
-  //
-  //       final newReceipt = ReceiveModel(
-  //           transactionType: 'receipt',
-  //           transactionId: splitLine[1],
-  //           description: splitLine[5],
-  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-  //           currency: splitLine[3],
-  //           amount: double.tryParse(splitLine[4]) ?? 0.0,
-  //           depositorName: splitLine[1],
-  //           receivingAccountName: splitLine[1],
-  //           receivingAccountNo: '65975679587956');
-  //
-  //       /// Save the data to firestore
-  //       try {
-  //         await _receiptRepo.recordReceipt(
-  //           newReceipt,
-  //         );
-  //
-  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-  //       } catch (e) {
-  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-  //       }
-  //       // } else {
-  //       //   Get.snackbar('Skipped', 'Data too short');
-  //       // }
-  //     }
-  //
-  //     Get.snackbar(
-  //       "Success!",
-  //       result.toString(),
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
-  //
   // ///Todo: upload withdrawals
   Future<void> uploadWithdrawals(BuildContext context) async {
     //     // ///Upload the file
@@ -602,7 +418,7 @@ class UploadController extends GetxController {
       }
 
       ///After accounts are created, update the firestore counter
-      batch.update(counterRef, {"transactionCounters.receiptsCounter": bankWithdrawCounter});
+      batch.update(counterRef, {"transactionCounters.bankWithdrawCounter": bankWithdrawCounter});
 
       await batch.commit().then((_) {
         Get.snackbar(
@@ -618,72 +434,8 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
-  // Future<void> uploadWithdrawals() async {
-  //   try {
-  //     final uploadRepo = Get.put(UploadRepo());
-  //     final setupRepo = Get.put(SetupRepo());
-  //     final result = await uploadRepo.uploadFile();
-  //     final lines = result?.readAsLinesSync(encoding: utf8);
-  //     lines?.removeAt(0);
-  //
-  //     for (var line in lines!) {
-  //       final splitLine = line.split(',');
-  //
-  //       final newWithdrawal = WithdrawModel(
-  //           transactionType: 'withdraw',
-  //           transactionId: 'transaction12134nId',
-  //           currency: 'currency',
-  //           amount: 0,
-  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-  //           withdrawalType: 'Cheque',
-  //           withdrawnBy: 'Abdullahi Abdi');
-  //
-  //       /// Save the data to firestore
-  //       try {
-  //         await _withdrawalRepo.recordWithdrawal(
-  //           newWithdrawal,
-  //         );
-  //
-  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-  //       } catch (e) {
-  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-  //       }
-  //       // } else {
-  //       //   Get.snackbar('Skipped', 'Data too short');
-  //       // }
-  //     }
-  //
-  //     Get.snackbar(
-  //       "Success!",
-  //       result.toString(),
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
-  //
-  // ///Todo: upload deposits
   Future<void> uploadDeposits(BuildContext context) async {
     //     // ///Upload the file
     final List? lines = await uploadRepo.uploadData(context: context, checkList: depositsCheckList, fileName: 'Deposits template');
@@ -707,8 +459,14 @@ class UploadController extends GetxController {
         if (splitLine.length < 5) {
           return;
         }
-        final newDeposit =
-            DepositModel(transactionType: 'deposit', transactionId: 'DPST-$bankDepositCounter', depositedBy:splitLine[1],currency: splitLine[2], amount: double.tryParse(splitLine[3])??0.0, dateCreated:  DateFormat("dd/MM/yyyy").parse(splitLine[0]), );
+        final newDeposit = DepositModel(
+          transactionType: 'deposit',
+          transactionId: 'DPST-$bankDepositCounter',
+          depositedBy: splitLine[1],
+          currency: splitLine[2],
+          amount: double.tryParse(splitLine[3]) ?? 0.0,
+          dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+        );
 
         ///Point where to create each new account
         final newDepositRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('DPST-$bankDepositCounter');
@@ -737,23 +495,6 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 
   Future<void> uploadTransfers(BuildContext context) async {
@@ -779,8 +520,14 @@ class UploadController extends GetxController {
         if (splitLine.length < 5) {
           return;
         }
-        final newTransfer =
-        TransferModel(transactionType: 'transfer', transactionId: 'TRF-$bankTransferCounter', receiver:splitLine[2],currency: splitLine[1], amount: double.tryParse(splitLine[3])??0.0, dateCreated:  DateFormat("dd/MM/yyyy").parse(splitLine[0]), );
+        final newTransfer = TransferModel(
+          transactionType: 'transfer',
+          transactionId: 'TRF-$bankTransferCounter',
+          receiver: splitLine[2],
+          currency: splitLine[1],
+          amount: double.tryParse(splitLine[3]) ?? 0.0,
+          dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+        );
 
         ///Point where to create each new transfer
         final newTransferRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('TRF-$bankTransferCounter');
@@ -793,7 +540,7 @@ class UploadController extends GetxController {
       }
 
       ///After accounts are created, update the firestore counter
-      batch.update(counterRef, {"transactionCounters.bankDepositCounter": bankTransferCounter});
+      batch.update(counterRef, {"transactionCounters.bankTransferCounter": bankTransferCounter});
 
       await batch.commit().then((_) {
         Get.snackbar(
@@ -809,70 +556,7 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
-
-  // Future<void> uploadDeposits() async {
-  //   try {
-  //     final uploadRepo = Get.put(UploadRepo());
-  //     final setupRepo = Get.put(SetupRepo());
-  //     final result = await uploadRepo.uploadFile();
-  //     final lines = result?.readAsLinesSync(encoding: utf8);
-  //     lines?.removeAt(0);
-  //
-  //     for (var line in lines!) {
-  //       final splitLine = line.split(',');
-  //
-  //       final newDeposit = DepositModel(
-  //           transactionType: 'deposit',
-  //           transactionId: 'transaction12134nId',
-  //           currency: 'USD',
-  //           amount: 400,
-  //           dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-  //           depositType: 'Cheque',
-  //           depositedBy: 'Abdullahi Abdi');
-  //
-  //       /// Save the data to firestore
-  //       try {
-  //         await _depositRepo.recordDeposit(
-  //           newDeposit,
-  //         );
-  //
-  //         // Get.snackbar('Success', 'Account created',backgroundColor: Colors.green);
-  //       } catch (e) {
-  //         Get.snackbar('Failed', 'No account created', backgroundColor: Colors.red);
-  //       }
-  //       // } else {
-  //       //   Get.snackbar('Skipped', 'Data too short');
-  //       // }
-  //     }
-  //
-  //     Get.snackbar(
-  //       "Success!",
-  //       result.toString(),
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } catch (e) {
-  //     throw e.toString();
-  //   }
-  // }
 
   ///Todo: upload currency stock
 
@@ -884,7 +568,6 @@ class UploadController extends GetxController {
     if (lines != null && lines.isNotEmpty) {
       /// Remove the headers
       lines.removeAt(0);
-      print(lines);
 
       ///Process the content
       int buyFxCounter = 1000;
@@ -921,7 +604,6 @@ class UploadController extends GetxController {
         batch.set(buyFxTransactionRef, buyCurrency.toJson());
 
         ///Create the new currency
-        ///
         batch.set(newCurrencyRef, newCurrencyAccount.toJson());
 
         ///UPDATE THE COUNTER
@@ -945,22 +627,5 @@ class UploadController extends GetxController {
         );
       });
     }
-
-    // } else {
-    //       Get.snackbar(
-    //         icon: Icon(
-    //           Icons.file_upload_off,
-    //           color: Colors.red,
-    //         ),
-    //         shouldIconPulse: true,
-    //         "Process cancelled!",
-    //         'No file was uploaded',
-    //         backgroundColor: Colors.orangeAccent,
-    //         colorText: Colors.white,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     throw e.toString();
-    //   }
   }
 }
