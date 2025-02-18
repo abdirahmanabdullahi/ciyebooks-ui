@@ -1,12 +1,17 @@
+import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
+import 'package:ciyebooks/features/pay/pay_client/pay_client_controller/pay_client_controller.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:ciyebooks/utils/constants/image_strings.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
+import 'package:ciyebooks/utils/device/device_utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import 'features/calculator/calculator_screen.dart';
@@ -150,7 +155,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Pay client'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -165,7 +170,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Pay expense'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -180,7 +185,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Schedule a payment'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -195,7 +200,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Payment history'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -214,7 +219,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Receive funds from a client'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -229,7 +234,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Receipt history'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -248,7 +253,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Cash bank deposit'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -263,7 +268,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Withdraw cash'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -278,7 +283,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Deposit for client'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -293,7 +298,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Bank history'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -312,7 +317,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Internal transfer'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -327,7 +332,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Bank transfer'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -342,7 +347,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Transfer history'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -361,7 +366,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Buy'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -376,7 +381,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Sell'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -391,7 +396,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('New currency'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -406,7 +411,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Currency stock'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -421,7 +426,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Forex history'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -440,7 +445,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Create new account'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -455,7 +460,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('View accounts'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -474,7 +479,7 @@ class NavigationMenu extends StatelessWidget {
                 leading: const Icon(Icons.settings),
                 title: const Text('Search transactions'),
                 onTap: () {
-                  Get.offAll(() => PayAccountSelector());
+                  // Get.offAll(() => PayAccountSelectorScreen());
                   Get.back(); // C
                 },
               ),
@@ -639,80 +644,3 @@ class NavigationController extends GetxController {
   ];
 }
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits();
-    final ButtonLabelsList = ['9',8,7,6,5,4,3,2,1,0,];
-
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const AccountPreviewTile(),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: DropdownButtonFormField(
-                menuMaxHeight: 100,
-                // elevation: 3,
-                decoration: InputDecoration(
-                  fillColor: AppColors.quinary,
-                  filled: true,
-                  label: Text(
-                    'Select currency',
-                  ),
-                ),
-                icon: const Icon(Icons.keyboard_arrow_down),
-                items: const [
-                  DropdownMenuItem(
-                    value: "USD",
-                    child: Text("US dollar"),
-                  ),
-                  DropdownMenuItem(
-                    value: "KES",
-                    child: Text("Shilling"),
-                  ),
-                ],
-                onChanged: (value) {},
-              ),
-            ),
-            TextFormField(
-              textAlign: TextAlign.center,
-              showCursor: false,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600, color: CupertinoColors.activeGreen),
-              inputFormatters: [LengthLimitingTextInputFormatter(10), FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))],
-              decoration: InputDecoration(
-                fillColor: AppColors.quinary,
-                border: const OutlineInputBorder().copyWith(
-                  borderSide: const BorderSide(
-                    color: AppColors.quarternary,
-                    width: 0,
-                  ),
-                ),
-                enabledBorder: const OutlineInputBorder().copyWith(
-                  borderRadius: BorderRadius.circular(AppSizes.inputFieldRadius),
-                  borderSide: const BorderSide(
-                    color: AppColors.quarternary,
-                    width: 0,
-                  ),
-                ),
-                focusedBorder: const OutlineInputBorder().copyWith(
-                  borderSide: const BorderSide(
-                    color: AppColors.quarternary,
-                    width: 0,
-                  ),
-                ),
-              ),
-            ),
-            Wrap(
-              children: [],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

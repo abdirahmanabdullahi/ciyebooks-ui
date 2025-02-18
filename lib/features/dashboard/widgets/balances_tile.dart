@@ -48,7 +48,7 @@ class BalanceTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500,fontFamily: 'Oswald')
+        style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400,)
       ),
       subtitle: Text(
         subtitle,

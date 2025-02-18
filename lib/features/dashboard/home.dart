@@ -202,7 +202,6 @@ class Dashboard extends StatelessWidget {
                               Tab(
                                 child: Text('Bank'),
                               ),
-
                               Tab(
                                 child: Text('Forex'),
                               ),
@@ -217,8 +216,8 @@ class Dashboard extends StatelessWidget {
                             child: TabBarView(children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 6.0),
-                                child:     Obx(
-                                      () {
+                                child: Obx(
+                                  () {
                                     if (controller.payments.isEmpty) {
                                       return Text('Once created, payments will appear here');
                                     }
@@ -1349,7 +1348,7 @@ class Dashboard extends StatelessWidget {
                                                             TextSpan(
                                                               text: formatter
                                                                   .format(payment.amountPaid)
-                                                              // text: payment.amountPaid
+                                                                  // text: payment.amountPaid
                                                                   .toString(),
                                                               style: TextStyle(
                                                                 fontWeight: FontWeight.w700,
@@ -1387,8 +1386,8 @@ class Dashboard extends StatelessWidget {
                                                                 TextSpan(
                                                                   text: payment.transactionType,
                                                                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                    // Black Value
-                                                                  ),
+                                                                      // Black Value
+                                                                      ),
                                                                 ),
                                                               ],
                                                             ),
@@ -1408,8 +1407,8 @@ class Dashboard extends StatelessWidget {
                                                                 TextSpan(
                                                                   text: payment.transactionId,
                                                                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                    // Black Value
-                                                                  ),
+                                                                      // Black Value
+                                                                      ),
                                                                 ),
                                                               ],
                                                             ),
@@ -1432,8 +1431,8 @@ class Dashboard extends StatelessWidget {
                                                             TextSpan(
                                                               text: DateFormat("dd MMM yyyy HH:mm").format(payment.dateCreated),
                                                               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                // Black Value
-                                                              ),
+                                                                  // Black Value
+                                                                  ),
                                                             ),
                                                           ],
                                                         ),
@@ -1645,18 +1644,15 @@ class Dashboard extends StatelessWidget {
                                       labelPadding: EdgeInsets.zero,
                                       labelStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.bold),
                                       tabs: [
-
                                         Tab(
                                           child: Text('Deposits'),
                                         ),
                                         Tab(
                                           child: Text('Withdrawals'),
                                         ),
-
                                         Tab(
                                           child: Text('Transfers'),
                                         ),
-
                                       ],
                                     ),
                                     Container(
@@ -1665,8 +1661,8 @@ class Dashboard extends StatelessWidget {
                                       child: TabBarView(children: [
                                         Padding(
                                           padding: const EdgeInsets.only(top: 6.0),
-                                          child:       Obx(
-                                                () {
+                                          child: Obx(
+                                            () {
                                               if (controller.deposits.isEmpty) {
                                                 return Text('Once created, deposits will appear here');
                                               }
@@ -1759,7 +1755,7 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: formatter
                                                                             .format(deposit.amount)
-                                                                        // text: payment.amountPaid
+                                                                            // text: payment.amountPaid
                                                                             .toString(),
                                                                         style: TextStyle(
                                                                           fontWeight: FontWeight.w700,
@@ -1797,8 +1793,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: deposit.transactionType,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1818,8 +1814,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: deposit.transactionId,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1832,8 +1828,8 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: DateFormat("dd MMM yyyy HH:mm").format(deposit.dateCreated),
                                                                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                          // Black Value
-                                                                        ),
+                                                                            // Black Value
+                                                                            ),
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1852,8 +1848,8 @@ class Dashboard extends StatelessWidget {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(top: 6.0),
-                                          child:                         Obx(
-                                                () {
+                                          child: Obx(
+                                            () {
                                               if (controller.withdrawals.isEmpty) {
                                                 return Text('Once created, withdrawals will appear here');
                                               }
@@ -1946,7 +1942,7 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: formatter
                                                                             .format(withdrawal.amount)
-                                                                        // text: payment.amountPaid
+                                                                            // text: payment.amountPaid
                                                                             .toString(),
                                                                         style: TextStyle(
                                                                           fontWeight: FontWeight.w700,
@@ -1984,8 +1980,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: withdrawal.transactionType,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2005,8 +2001,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: withdrawal.transactionId,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2018,8 +2014,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: withdrawal.withdrawalType,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2032,8 +2028,8 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: DateFormat("dd MMM yyyy HH:mm").format(withdrawal.dateCreated),
                                                                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                          // Black Value
-                                                                        ),
+                                                                            // Black Value
+                                                                            ),
                                                                       ),
                                                                     ],
                                                                   ),
@@ -2049,12 +2045,11 @@ class Dashboard extends StatelessWidget {
                                               );
                                             },
                                           ),
-
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(top: 6.0),
                                           child: Obx(
-                                                () {
+                                            () {
                                               if (controller.transfers.isEmpty) {
                                                 return Text('Once created, Transfers will appear here');
                                               }
@@ -2147,7 +2142,7 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: formatter
                                                                             .format(transfer.amount)
-                                                                        // text: payment.amountPaid
+                                                                            // text: payment.amountPaid
                                                                             .toString(),
                                                                         style: TextStyle(
                                                                           fontWeight: FontWeight.w700,
@@ -2185,8 +2180,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: transfer.transactionType,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2206,8 +2201,8 @@ class Dashboard extends StatelessWidget {
                                                                           TextSpan(
                                                                             text: transfer.transactionId,
                                                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                              // Black Value
-                                                                            ),
+                                                                                // Black Value
+                                                                                ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2220,8 +2215,8 @@ class Dashboard extends StatelessWidget {
                                                                       TextSpan(
                                                                         text: DateFormat("dd MMM yyyy HH:mm").format(transfer.dateCreated),
                                                                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                          // Black Value
-                                                                        ),
+                                                                            // Black Value
+                                                                            ),
                                                                       ),
                                                                     ],
                                                                   ),
@@ -2238,18 +2233,21 @@ class Dashboard extends StatelessWidget {
                                             },
                                           ),
                                         ),
-
-
                                       ]),
                                     )
-                                  ])),                              Padding(
+                                  ])),
+                              Padding(
                                 padding: const EdgeInsets.only(top: 6.0),
                                 child: Obx(
                                   () {
                                     if (controller.receipts.isEmpty) {
                                       return Center(child: Text('Once created, receipts will appear here'));
                                     }
-                                    return Center(child: Text('Forex',style: TextStyle(fontSize: 45,fontWeight: FontWeight.bold),));
+                                    return Center(
+                                        child: Text(
+                                      'Forex',
+                                      style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+                                    ));
                                   },
                                 ),
                               ),
@@ -2447,7 +2445,6 @@ class Dashboard extends StatelessWidget {
                                   },
                                 ),
                               ),
-
                             ]),
                           )
                         ])),
@@ -2456,1371 +2453,1373 @@ class Dashboard extends StatelessWidget {
                   Text(
                     "Client accounts",
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),                  CustomContainer(width: double.maxFinite, child:                         Obx(
-                        () {
-                      if (controller.accounts.isEmpty) {
-                        return Text('Once created, accounts will appear here');
-                      }
-                      return ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.accounts.length,
-                        itemBuilder: (context, index) {
-                          final AccountModel account = controller.accounts[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: CustomContainer(
-                              darkColor: AppColors.quinary,
-                              width: double.infinity,
-                              padding: EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Name: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: '${account.firstName}${account.lastName}',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                    color: Colors.blue,
-                                                    // Black Value
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Gap(3),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Phone no: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600], // Grey Label
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: account.phoneNo,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12,
-                                                    color: Colors.blue,
-                                                    // Grey Label
-                                                    // Black Value
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'USD: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600], // Grey Label
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: formatter
-                                                      .format(account.usdBalance)
-
-                                                  // text: payment.amountPaid
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 12,
-                                                    color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
-                                                    // Black Value
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Gap(3),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'KES: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600], // Grey Label
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: formatter
-                                                      .format(account.kesBalance)
-
-                                                  // text: payment.amountPaid
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 12,
-                                                    color: account.kesBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
-                                                    // Black Value
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Divider(color: Colors.grey[400], thickness: 1),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'REF: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600], // Grey Label
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: account.accountNo,
-                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                    // Black Value
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: DateFormat("dd MMM yyyy HH:mm").format(
-                                                account.dateCreated,
-                                              ),
-                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                // Black Value
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // GestureDetector(
-                            //   dragStartBehavior: DragStartBehavior.start,
-                            //   onTapDown: (details) {
-                            //     final offset = details.globalPosition;
-                            //
-                            //     showMenu(
-                            //         color: AppColors.quinary,
-                            //         constraints: BoxConstraints.expand(
-                            //             width: 200, height: 200),
-                            //         context: context,
-                            //         position: RelativeRect.fromLTRB(
-                            //           offset.dx,
-                            //           offset.dy,
-                            //           MediaQuery.of(context).size.width -
-                            //               offset.dx,
-                            //           MediaQuery.of(context).size.height -
-                            //               offset.dy,
-                            //         ),
-                            //         items: [
-                            //           PopupMenuItem(
-                            //             ///Todo: implement pay client popup
-                            //             onTap: () {
-                            //               showDialog(
-                            //                 context: context,
-                            //                 builder: (context) {
-                            //                   return Dialog(
-                            //                     backgroundColor:
-                            //                         AppColors.quarternary,
-                            //                     insetPadding:
-                            //                         EdgeInsets.symmetric(
-                            //                             horizontal: 15,
-                            //                             vertical: 10),
-                            //                     shape:
-                            //                         RoundedRectangleBorder(
-                            //                       borderRadius:
-                            //                           BorderRadius
-                            //                               .circular(15),
-                            //                     ),
-                            //                     child: Padding(
-                            //                       padding: EdgeInsets.all(
-                            //                           15.0),
-                            //                       child: Column(
-                            //                         mainAxisSize:
-                            //                             MainAxisSize.min,
-                            //                         crossAxisAlignment:
-                            //                             CrossAxisAlignment
-                            //                                 .start,
-                            //                         children: [
-                            //                           // Dialog Title
-                            //                           Text(
-                            //                             "Pay Client",
-                            //                             style: TextStyle(
-                            //                               fontSize: 22,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .w600,
-                            //                               color: Colors
-                            //                                   .blueAccent,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 8),
-                            //                           Divider(
-                            //                               thickness: 1,
-                            //                               color: Colors
-                            //                                   .black12),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           // Account Details
-                            //                           Text(
-                            //                             account.fullName,
-                            //                             style: TextStyle(
-                            //                               fontSize: 18,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .bold,
-                            //                               color: Colors
-                            //                                   .black87,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(
-                            //                               height: 12),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Account No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .accountNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Email: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .email,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Phone No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .phoneNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           DropdownMenu(
-                            //                             onSelected:
-                            //                                 (v) {},
-                            //                             expandedInsets:
-                            //                                 EdgeInsets
-                            //                                     .zero,
-                            //                             requestFocusOnTap:
-                            //                                 false,
-                            //                             label: Text(
-                            //                                 'Select currency to pay'),
-                            //                             enableFilter:
-                            //                                 true,
-                            //                             enableSearch:
-                            //                                 true,
-                            //                             menuHeight: 150,
-                            //                             inputDecorationTheme:
-                            //                                 InputDecorationTheme(
-                            //                               fillColor:
-                            //                                   AppColors
-                            //                                       .quinary,
-                            //                               filled: true,
-                            //                               contentPadding:
-                            //                                   const EdgeInsets
-                            //                                       .only(
-                            //                                       left:
-                            //                                           10),
-                            //                               border:
-                            //                                   const OutlineInputBorder(
-                            //                                 borderRadius:
-                            //                                     BorderRadius.all(
-                            //                                         Radius.circular(
-                            //                                             5)),
-                            //                               ),
-                            //                             ),
-                            //                             menuStyle: MenuStyle(
-                            //                                 // backgroundColor:
-                            //                                 //     WidgetStateProperty
-                            //                                 //         .all<Color>(
-                            //                                 //   AppColors
-                            //                                 //       .quarternary,
-                            //                                 // ),
-                            //                                 ),
-                            //                             dropdownMenuEntries:
-                            //                                 account
-                            //                                     .currencies
-                            //                                     .entries
-                            //                                     .map(
-                            //                                         (entry) {
-                            //                               return DropdownMenuEntry<
-                            //                                   String>(
-                            //                                 style:
-                            //                                     ButtonStyle(
-                            //                                   textStyle: WidgetStatePropertyAll(TextStyle(
-                            //                                       fontSize:
-                            //                                           15,
-                            //                                       fontWeight:
-                            //                                           FontWeight.w500)),
-                            //                                   padding: WidgetStateProperty.all(
-                            //                                       EdgeInsets.all(
-                            //                                           10)),
-                            //                                   foregroundColor: WidgetStatePropertyAll((entry.value
-                            //                                               as num) <
-                            //                                           0
-                            //                                       ? Colors
-                            //                                           .red
-                            //                                       : CupertinoColors
-                            //                                           .systemBlue),
-                            //                                   backgroundColor:
-                            //                                       WidgetStateProperty.all(
-                            //                                           AppColors.quinary),
-                            //                                 ),
-                            //                                 value:
-                            //                                     entry.key,
-                            //                                 label:
-                            //                                     entry.key,
-                            //                               );
-                            //                             }).toList(),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           TextFormField(
-                            //                             decoration:
-                            //                                 InputDecoration(
-                            //                               hintText:
-                            //                                   "Enter Amount",
-                            //                               border:
-                            //                                   OutlineInputBorder(
-                            //                                 borderRadius:
-                            //                                     BorderRadius
-                            //                                         .circular(
-                            //                                             8),
-                            //                               ),
-                            //                             ),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 30),
-                            //
-                            //                           // Action Buttons: Cancel and Submit
-                            //                           Row(
-                            //                             mainAxisAlignment:
-                            //                                 MainAxisAlignment
-                            //                                     .end,
-                            //                             children: [
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "Cancel"),
-                            //                               ),
-                            //                               SizedBox(
-                            //                                   width: 10),
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "  Add  "),
-                            //                               ),
-                            //                             ],
-                            //                           ),
-                            //                         ],
-                            //                       ),
-                            //                     ),
-                            //                   );
-                            //                 },
-                            //               );
-                            //             },
-                            //             child: Text(
-                            //               "Pay",
-                            //               style: TextStyle(fontSize: 15),
-                            //             ),
-                            //           ),
-                            //           PopupMenuItem(
-                            //             ///Todo: implement New receive backend
-                            //
-                            //             onTap: () {
-                            //               showDialog(
-                            //                 context: context,
-                            //                 builder: (context) {
-                            //                   return Dialog(
-                            //                     backgroundColor:
-                            //                         AppColors.quarternary,
-                            //                     insetPadding:
-                            //                         EdgeInsets.symmetric(
-                            //                             horizontal: 15,
-                            //                             vertical: 10),
-                            //                     shape:
-                            //                         RoundedRectangleBorder(
-                            //                       borderRadius:
-                            //                           BorderRadius
-                            //                               .circular(15),
-                            //                     ),
-                            //                     child: Padding(
-                            //                       padding: EdgeInsets.all(
-                            //                           15.0),
-                            //                       child: Column(
-                            //                         mainAxisSize:
-                            //                             MainAxisSize.min,
-                            //                         crossAxisAlignment:
-                            //                             CrossAxisAlignment
-                            //                                 .start,
-                            //                         children: [
-                            //                           // Dialog Title
-                            //                           Text(
-                            //                             "Receive deposit",
-                            //                             style: TextStyle(
-                            //                               fontSize: 22,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .w600,
-                            //                               color: Colors
-                            //                                   .blueAccent,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 8),
-                            //                           Divider(
-                            //                               thickness: 1,
-                            //                               color: Colors
-                            //                                   .black12),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           // Account Details
-                            //                           Text(
-                            //                             account.fullName,
-                            //                             style: TextStyle(
-                            //                               fontSize: 18,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .bold,
-                            //                               color: Colors
-                            //                                   .black87,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(
-                            //                               height: 12),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Account No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .accountNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Email: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .email,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Phone No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .phoneNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           DropdownMenu(
-                            //                             onSelected:
-                            //                                 (v) {},
-                            //                             expandedInsets:
-                            //                                 EdgeInsets
-                            //                                     .zero,
-                            //                             requestFocusOnTap:
-                            //                                 false,
-                            //                             label: Text(
-                            //                                 'Select currency to pay'),
-                            //                             enableFilter:
-                            //                                 true,
-                            //                             enableSearch:
-                            //                                 true,
-                            //                             menuHeight: 150,
-                            //                             inputDecorationTheme:
-                            //                                 InputDecorationTheme(
-                            //                               fillColor:
-                            //                                   AppColors
-                            //                                       .quinary,
-                            //                               filled: true,
-                            //                               contentPadding:
-                            //                                   const EdgeInsets
-                            //                                       .only(
-                            //                                       left:
-                            //                                           10),
-                            //                               border:
-                            //                                   const OutlineInputBorder(
-                            //                                 borderRadius:
-                            //                                     BorderRadius.all(
-                            //                                         Radius.circular(
-                            //                                             5)),
-                            //                               ),
-                            //                             ),
-                            //                             menuStyle: MenuStyle(
-                            //                                 // backgroundColor:
-                            //                                 //     WidgetStateProperty
-                            //                                 //         .all<Color>(
-                            //                                 //   AppColors
-                            //                                 //       .quarternary,
-                            //                                 // ),
-                            //                                 ),
-                            //                             dropdownMenuEntries:
-                            //                                 account
-                            //                                     .currencies
-                            //                                     .entries
-                            //                                     .map(
-                            //                                         (entry) {
-                            //                               return DropdownMenuEntry<
-                            //                                   String>(
-                            //                                 style:
-                            //                                     ButtonStyle(
-                            //                                   textStyle: WidgetStatePropertyAll(TextStyle(
-                            //                                       fontSize:
-                            //                                           15,
-                            //                                       fontWeight:
-                            //                                           FontWeight.w500)),
-                            //                                   padding: WidgetStateProperty.all(
-                            //                                       EdgeInsets.all(
-                            //                                           10)),
-                            //                                   foregroundColor: WidgetStatePropertyAll((entry.value
-                            //                                               as num) <
-                            //                                           0
-                            //                                       ? Colors
-                            //                                           .red
-                            //                                       : CupertinoColors
-                            //                                           .systemBlue),
-                            //                                   backgroundColor:
-                            //                                       WidgetStateProperty.all(
-                            //                                           AppColors.quinary),
-                            //                                 ),
-                            //                                 value:
-                            //                                     entry.key,
-                            //                                 label:
-                            //                                     entry.key,
-                            //                               );
-                            //                             }).toList(),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           TextFormField(
-                            //                             decoration:
-                            //                                 InputDecoration(
-                            //                               hintText:
-                            //                                   "Enter Amount",
-                            //                               border:
-                            //                                   OutlineInputBorder(
-                            //                                 borderRadius:
-                            //                                     BorderRadius
-                            //                                         .circular(
-                            //                                             8),
-                            //                               ),
-                            //                             ),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 30),
-                            //
-                            //                           // Action Buttons: Cancel and Submit
-                            //                           Row(
-                            //                             mainAxisAlignment:
-                            //                                 MainAxisAlignment
-                            //                                     .end,
-                            //                             children: [
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "Cancel"),
-                            //                               ),
-                            //                               SizedBox(
-                            //                                   width: 10),
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "  Add  "),
-                            //                               ),
-                            //                             ],
-                            //                           ),
-                            //                         ],
-                            //                       ),
-                            //                     ),
-                            //                   );
-                            //                 },
-                            //               );
-                            //             },
-                            //
-                            //             child: Text(
-                            //               "Receive",
-                            //               style: TextStyle(fontSize: 15),
-                            //             ),
-                            //           ),
-                            //           PopupMenuItem(
-                            //             ///Todo: implement New currency popup
-                            //             onTap: () {
-                            //               showDialog(
-                            //                 context: context,
-                            //                 builder: (context) {
-                            //                   return Dialog(
-                            //                     backgroundColor:
-                            //                         AppColors.quarternary,
-                            //                     insetPadding:
-                            //                         EdgeInsets.symmetric(
-                            //                             horizontal: 15,
-                            //                             vertical: 10),
-                            //                     shape:
-                            //                         RoundedRectangleBorder(
-                            //                       borderRadius:
-                            //                           BorderRadius
-                            //                               .circular(15),
-                            //                     ),
-                            //                     child: Padding(
-                            //                       padding: EdgeInsets.all(
-                            //                           15.0),
-                            //                       child: Column(
-                            //                         mainAxisSize:
-                            //                             MainAxisSize.min,
-                            //                         crossAxisAlignment:
-                            //                             CrossAxisAlignment
-                            //                                 .start,
-                            //                         children: [
-                            //                           // Dialog Title
-                            //                           Text(
-                            //                             "Add new currency",
-                            //                             style: TextStyle(
-                            //                               fontSize: 22,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .w600,
-                            //                               color: Colors
-                            //                                   .blueAccent,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 8),
-                            //                           Divider(
-                            //                               thickness: 1,
-                            //                               color: Colors
-                            //                                   .black12),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           // Account Details
-                            //                           Text(
-                            //                             account.fullName,
-                            //                             style: TextStyle(
-                            //                               fontSize: 18,
-                            //                               fontWeight:
-                            //                                   FontWeight
-                            //                                       .bold,
-                            //                               color: Colors
-                            //                                   .black87,
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(
-                            //                               height: 12),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Account No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .accountNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Email: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .email,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //                           SizedBox(height: 6),
-                            //
-                            //                           RichText(
-                            //                             text: TextSpan(
-                            //                               children: [
-                            //                                 TextSpan(
-                            //                                   text:
-                            //                                       'Phone No: ',
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold,
-                            //                                     color: Colors
-                            //                                         .black87,
-                            //                                   ),
-                            //                                 ),
-                            //                                 TextSpan(
-                            //                                   text: account
-                            //                                       .phoneNo,
-                            //                                   style:
-                            //                                       TextStyle(
-                            //                                     fontSize:
-                            //                                         14,
-                            //                                     color: Colors
-                            //                                         .black54,
-                            //                                   ),
-                            //                                 ),
-                            //                               ],
-                            //                             ),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 20),
-                            //
-                            //                           DropdownMenu(
-                            //                             onSelected:
-                            //                                 (v) {},
-                            //                             expandedInsets:
-                            //                                 EdgeInsets
-                            //                                     .zero,
-                            //                             requestFocusOnTap:
-                            //                                 false,
-                            //                             label: Text(
-                            //                                 'Select currency to pay'),
-                            //                             enableFilter:
-                            //                                 true,
-                            //                             enableSearch:
-                            //                                 true,
-                            //                             menuHeight: 150,
-                            //                             inputDecorationTheme:
-                            //                                 InputDecorationTheme(
-                            //                               fillColor:
-                            //                                   AppColors
-                            //                                       .quinary,
-                            //                               filled: true,
-                            //                               contentPadding:
-                            //                                   const EdgeInsets
-                            //                                       .only(
-                            //                                       left:
-                            //                                           10),
-                            //                               border:
-                            //                                   const OutlineInputBorder(
-                            //                                 borderRadius:
-                            //                                     BorderRadius.all(
-                            //                                         Radius.circular(
-                            //                                             5)),
-                            //                               ),
-                            //                             ),
-                            //                             menuStyle: MenuStyle(
-                            //                                 // backgroundColor:
-                            //                                 //     WidgetStateProperty
-                            //                                 //         .all<Color>(
-                            //                                 //   AppColors
-                            //                                 //       .quarternary,
-                            //                                 // ),
-                            //                                 ),
-                            //                             dropdownMenuEntries:
-                            //                                 account
-                            //                                     .currencies
-                            //                                     .entries
-                            //                                     .map(
-                            //                                         (entry) {
-                            //                               return DropdownMenuEntry<
-                            //                                   String>(
-                            //                                 style:
-                            //                                     ButtonStyle(
-                            //                                   textStyle: WidgetStatePropertyAll(TextStyle(
-                            //                                       fontSize:
-                            //                                           15,
-                            //                                       fontWeight:
-                            //                                           FontWeight.w500)),
-                            //                                   padding: WidgetStateProperty.all(
-                            //                                       EdgeInsets.all(
-                            //                                           10)),
-                            //                                   foregroundColor: WidgetStatePropertyAll((entry.value
-                            //                                               as num) <
-                            //                                           0
-                            //                                       ? Colors
-                            //                                           .red
-                            //                                       : CupertinoColors
-                            //                                           .systemBlue),
-                            //                                   backgroundColor:
-                            //                                       WidgetStateProperty.all(
-                            //                                           AppColors.quinary),
-                            //                                 ),
-                            //                                 value:
-                            //                                     entry.key,
-                            //                                 label:
-                            //                                     entry.key,
-                            //                               );
-                            //                             }).toList(),
-                            //                           ),
-                            //
-                            //                           SizedBox(
-                            //                               height: 30),
-                            //
-                            //                           // Action Buttons: Cancel and Submit
-                            //                           Row(
-                            //                             mainAxisAlignment:
-                            //                                 MainAxisAlignment
-                            //                                     .end,
-                            //                             children: [
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "Cancel"),
-                            //                               ),
-                            //                               SizedBox(
-                            //                                   width: 10),
-                            //                               ElevatedButton(
-                            //                                 style: ElevatedButton
-                            //                                     .styleFrom(
-                            //                                   backgroundColor:
-                            //                                       AppColors
-                            //                                           .prettyDark,
-                            //                                   padding:
-                            //                                       const EdgeInsets
-                            //                                           .symmetric(
-                            //                                     horizontal:
-                            //                                         20,
-                            //                                     vertical:
-                            //                                         12,
-                            //                                   ),
-                            //                                   shape:
-                            //                                       RoundedRectangleBorder(
-                            //                                     borderRadius:
-                            //                                         BorderRadius.circular(
-                            //                                             12),
-                            //                                   ),
-                            //                                   foregroundColor:
-                            //                                       Colors
-                            //                                           .grey,
-                            //                                   textStyle: TextStyle(
-                            //                                       fontSize:
-                            //                                           16),
-                            //                                 ),
-                            //                                 onPressed:
-                            //                                     () {
-                            //                                   Navigator.of(
-                            //                                           context)
-                            //                                       .pop(); // Close dialog
-                            //                                 },
-                            //                                 child: Text(
-                            //                                     "  Add  "),
-                            //                               ),
-                            //                             ],
-                            //                           ),
-                            //                         ],
-                            //                       ),
-                            //                     ),
-                            //                   );
-                            //                 },
-                            //               );
-                            //             },
-                            //
-                            //             child: Text(
-                            //               "New currency",
-                            //               style: TextStyle(fontSize: 15),
-                            //             ),
-                            //           ),
-                            //           PopupMenuItem(
-                            //             child: Text(
-                            //               "Edit info",
-                            //               style: TextStyle(fontSize: 15),
-                            //             ),
-                            //           ),
-                            //         ]);
-                            //   },
-                            //   child: CustomContainer(
-                            //     width: double.infinity,
-                            //     padding: EdgeInsets.all(10),
-                            //     darkColor: AppColors.quinary,
-                            //     child: Row(
-                            //       crossAxisAlignment:
-                            //           CrossAxisAlignment.start,
-                            //       mainAxisAlignment:
-                            //           MainAxisAlignment.spaceBetween,
-                            //       children: [
-                            //         Column(
-                            //           crossAxisAlignment:
-                            //               CrossAxisAlignment.start,
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.start,
-                            //           children: [
-                            //             Text(
-                            //               account.fullName,
-                            //               style: TextStyle(
-                            //                   fontSize: 15,
-                            //                   fontWeight:
-                            //                       FontWeight.bold),
-                            //             ),
-                            //             Text(
-                            //               account.accountNo,
-                            //               style: TextStyle(
-                            //                   fontSize: 12,
-                            //                   color: Colors.purple),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //         Column(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceEvenly,
-                            //           crossAxisAlignment:
-                            //               CrossAxisAlignment.end,
-                            //           children: account.currencies.entries
-                            //               .map((entry) {
-                            //             return Text(
-                            //               '${entry.key}: ${(entry.value is num) ? formatter.format(entry.value as num) : 0.0}',
-                            //               style: TextStyle(
-                            //                   fontWeight: FontWeight.bold,
-                            //                   fontSize: 14,
-                            //                   color:
-                            //                       (entry.value as num) < 0
-                            //                           ? Colors.red
-                            //                           : CupertinoColors
-                            //                               .systemBlue),
-                            //             );
-                            //           }).toList(),
-                            //           // Text(
-                            //           //   'KES: ',
-                            //           //   style: TextStyle(
-                            //           //     fontWeight: FontWeight.bold,
-                            //           //     fontSize: 13,
-                            //           //     // color: account.kesBalance < 0
-                            //           //     //     ? Colors.red
-                            //           //     //     : CupertinoColors.systemBlue,
-                            //           //   ),
-                            //           // ),
-                            //           // Text(
-                            //           //   'USD: ',
-                            //           //   style: TextStyle(
-                            //           //     fontWeight: FontWeight.bold,
-                            //           //     fontSize: 13,
-                            //           //     // color: account.usdBalance < 0
-                            //           //     //     ? Colors.red
-                            //           //     //     : CupertinoColors.activeCupertinoColors.systemBlue,
-                            //           //   ),
-                            //           // ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                          );
-                        },
-                      );
-                    },
                   ),
-                       padding: EdgeInsets.zero),
+                  // CustomContainer(
+                  //     width: double.maxFinite,
+                  //     child: Obx(
+                  //       () {
+                  //         if (controller.accounts.isEmpty) {
+                  //           return Text('Once created, accounts will appear here');
+                  //         }
+                  //         return ListView.builder(
+                  //           physics: ClampingScrollPhysics(),
+                  //           shrinkWrap: true,
+                  //           itemCount: controller.accounts.length,
+                  //           itemBuilder: (context, index) {
+                  //             final AccountModel account = controller.accounts[index];
+                  //             return Padding(
+                  //               padding: const EdgeInsets.only(top: 4.0),
+                  //               child: CustomContainer(
+                  //                 darkColor: AppColors.quinary,
+                  //                 width: double.infinity,
+                  //                 padding: EdgeInsets.all(8),
+                  //                 child: Column(
+                  //                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     Row(
+                  //                       crossAxisAlignment: CrossAxisAlignment.center,
+                  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                       children: [
+                  //                         Column(
+                  //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                           mainAxisSize: MainAxisSize.min,
+                  //                           crossAxisAlignment: CrossAxisAlignment.start,
+                  //                           children: [
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: 'Name: ',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 10,
+                  //                                       color: Colors.grey[600],
+                  //                                     ),
+                  //                                   ),
+                  //                                   TextSpan(
+                  //                                     text: '${account.firstName}${account.lastName}',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w600,
+                  //                                       fontSize: 13,
+                  //                                       color: Colors.blue,
+                  //                                       // Black Value
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                             Gap(3),
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: 'Phone no: ',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 10,
+                  //                                       color: Colors.grey[600], // Grey Label
+                  //                                     ),
+                  //                                   ),
+                  //                                   TextSpan(
+                  //                                     text: account.phoneNo,
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 12,
+                  //                                       color: Colors.blue,
+                  //                                       // Grey Label
+                  //                                       // Black Value
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                         Column(
+                  //                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //                           crossAxisAlignment: CrossAxisAlignment.end,
+                  //                           children: [
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: 'USD: ',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 10,
+                  //                                       color: Colors.grey[600], // Grey Label
+                  //                                     ),
+                  //                                   ),
+                  //                                   TextSpan(
+                  //                                     text: 'formatteformat(account.usdBalance)'
+                  //
+                  //                                         // text: payment.amountPaid
+                  //                                         .toString(),
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w700,
+                  //                                       fontSize: 12,
+                  //                                       // color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
+                  //                                       // Black Value
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                             Gap(3),
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: 'KES: ',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 10,
+                  //                                       color: Colors.grey[600], // Grey Label
+                  //                                     ),
+                  //                                   ),
+                  //                                   TextSpan(
+                  //                                     text:''' formatter
+                  //                                         .format(account.kesBalance)'''
+                  //
+                  //                                         // text: payment.amountPaid
+                  //                                         .toString(),
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w700,
+                  //                                       fontSize: 12,
+                  //                                       // color: account.kesBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
+                  //                                       // Black Value
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                     Divider(color: Colors.grey[400], thickness: 1),
+                  //                     Row(
+                  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                       children: [
+                  //                         Row(
+                  //                           mainAxisAlignment: MainAxisAlignment.start,
+                  //                           children: [
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: 'REF: ',
+                  //                                     style: TextStyle(
+                  //                                       fontWeight: FontWeight.w500,
+                  //                                       fontSize: 10,
+                  //                                       color: Colors.grey[600], // Grey Label
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                             RichText(
+                  //                               text: TextSpan(
+                  //                                 children: [
+                  //                                   TextSpan(
+                  //                                     text: account.accountNo,
+                  //                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
+                  //                                         // Black Value
+                  //                                         ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                         RichText(
+                  //                           text: TextSpan(
+                  //                             children: [
+                  //                               TextSpan(
+                  //                                 text: DateFormat("dd MMM yyyy HH:mm").format(
+                  //                                   account.dateCreated,
+                  //                                 ),
+                  //                                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
+                  //                                     // Black Value
+                  //                                     ),
+                  //                               ),
+                  //                             ],
+                  //                           ),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //               // GestureDetector(
+                  //               //   dragStartBehavior: DragStartBehavior.start,
+                  //               //   onTapDown: (details) {
+                  //               //     final offset = details.globalPosition;
+                  //               //
+                  //               //     showMenu(
+                  //               //         color: AppColors.quinary,
+                  //               //         constraints: BoxConstraints.expand(
+                  //               //             width: 200, height: 200),
+                  //               //         context: context,
+                  //               //         position: RelativeRect.fromLTRB(
+                  //               //           offset.dx,
+                  //               //           offset.dy,
+                  //               //           MediaQuery.of(context).size.width -
+                  //               //               offset.dx,
+                  //               //           MediaQuery.of(context).size.height -
+                  //               //               offset.dy,
+                  //               //         ),
+                  //               //         items: [
+                  //               //           PopupMenuItem(
+                  //               //             ///Todo: implement pay client popup
+                  //               //             onTap: () {
+                  //               //               showDialog(
+                  //               //                 context: context,
+                  //               //                 builder: (context) {
+                  //               //                   return Dialog(
+                  //               //                     backgroundColor:
+                  //               //                         AppColors.quarternary,
+                  //               //                     insetPadding:
+                  //               //                         EdgeInsets.symmetric(
+                  //               //                             horizontal: 15,
+                  //               //                             vertical: 10),
+                  //               //                     shape:
+                  //               //                         RoundedRectangleBorder(
+                  //               //                       borderRadius:
+                  //               //                           BorderRadius
+                  //               //                               .circular(15),
+                  //               //                     ),
+                  //               //                     child: Padding(
+                  //               //                       padding: EdgeInsets.all(
+                  //               //                           15.0),
+                  //               //                       child: Column(
+                  //               //                         mainAxisSize:
+                  //               //                             MainAxisSize.min,
+                  //               //                         crossAxisAlignment:
+                  //               //                             CrossAxisAlignment
+                  //               //                                 .start,
+                  //               //                         children: [
+                  //               //                           // Dialog Title
+                  //               //                           Text(
+                  //               //                             "Pay Client",
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 22,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .w600,
+                  //               //                               color: Colors
+                  //               //                                   .blueAccent,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 8),
+                  //               //                           Divider(
+                  //               //                               thickness: 1,
+                  //               //                               color: Colors
+                  //               //                                   .black12),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           // Account Details
+                  //               //                           Text(
+                  //               //                             account.fullName,
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 18,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .bold,
+                  //               //                               color: Colors
+                  //               //                                   .black87,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(
+                  //               //                               height: 12),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Account No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .accountNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Email: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .email,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Phone No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .phoneNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           DropdownMenu(
+                  //               //                             onSelected:
+                  //               //                                 (v) {},
+                  //               //                             expandedInsets:
+                  //               //                                 EdgeInsets
+                  //               //                                     .zero,
+                  //               //                             requestFocusOnTap:
+                  //               //                                 false,
+                  //               //                             label: Text(
+                  //               //                                 'Select currency to pay'),
+                  //               //                             enableFilter:
+                  //               //                                 true,
+                  //               //                             enableSearch:
+                  //               //                                 true,
+                  //               //                             menuHeight: 150,
+                  //               //                             inputDecorationTheme:
+                  //               //                                 InputDecorationTheme(
+                  //               //                               fillColor:
+                  //               //                                   AppColors
+                  //               //                                       .quinary,
+                  //               //                               filled: true,
+                  //               //                               contentPadding:
+                  //               //                                   const EdgeInsets
+                  //               //                                       .only(
+                  //               //                                       left:
+                  //               //                                           10),
+                  //               //                               border:
+                  //               //                                   const OutlineInputBorder(
+                  //               //                                 borderRadius:
+                  //               //                                     BorderRadius.all(
+                  //               //                                         Radius.circular(
+                  //               //                                             5)),
+                  //               //                               ),
+                  //               //                             ),
+                  //               //                             menuStyle: MenuStyle(
+                  //               //                                 // backgroundColor:
+                  //               //                                 //     WidgetStateProperty
+                  //               //                                 //         .all<Color>(
+                  //               //                                 //   AppColors
+                  //               //                                 //       .quarternary,
+                  //               //                                 // ),
+                  //               //                                 ),
+                  //               //                             dropdownMenuEntries:
+                  //               //                                 account
+                  //               //                                     .currencies
+                  //               //                                     .entries
+                  //               //                                     .map(
+                  //               //                                         (entry) {
+                  //               //                               return DropdownMenuEntry<
+                  //               //                                   String>(
+                  //               //                                 style:
+                  //               //                                     ButtonStyle(
+                  //               //                                   textStyle: WidgetStatePropertyAll(TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           15,
+                  //               //                                       fontWeight:
+                  //               //                                           FontWeight.w500)),
+                  //               //                                   padding: WidgetStateProperty.all(
+                  //               //                                       EdgeInsets.all(
+                  //               //                                           10)),
+                  //               //                                   foregroundColor: WidgetStatePropertyAll((entry.value
+                  //               //                                               as num) <
+                  //               //                                           0
+                  //               //                                       ? Colors
+                  //               //                                           .red
+                  //               //                                       : CupertinoColors
+                  //               //                                           .systemBlue),
+                  //               //                                   backgroundColor:
+                  //               //                                       WidgetStateProperty.all(
+                  //               //                                           AppColors.quinary),
+                  //               //                                 ),
+                  //               //                                 value:
+                  //               //                                     entry.key,
+                  //               //                                 label:
+                  //               //                                     entry.key,
+                  //               //                               );
+                  //               //                             }).toList(),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           TextFormField(
+                  //               //                             decoration:
+                  //               //                                 InputDecoration(
+                  //               //                               hintText:
+                  //               //                                   "Enter Amount",
+                  //               //                               border:
+                  //               //                                   OutlineInputBorder(
+                  //               //                                 borderRadius:
+                  //               //                                     BorderRadius
+                  //               //                                         .circular(
+                  //               //                                             8),
+                  //               //                               ),
+                  //               //                             ),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 30),
+                  //               //
+                  //               //                           // Action Buttons: Cancel and Submit
+                  //               //                           Row(
+                  //               //                             mainAxisAlignment:
+                  //               //                                 MainAxisAlignment
+                  //               //                                     .end,
+                  //               //                             children: [
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "Cancel"),
+                  //               //                               ),
+                  //               //                               SizedBox(
+                  //               //                                   width: 10),
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "  Add  "),
+                  //               //                               ),
+                  //               //                             ],
+                  //               //                           ),
+                  //               //                         ],
+                  //               //                       ),
+                  //               //                     ),
+                  //               //                   );
+                  //               //                 },
+                  //               //               );
+                  //               //             },
+                  //               //             child: Text(
+                  //               //               "Pay",
+                  //               //               style: TextStyle(fontSize: 15),
+                  //               //             ),
+                  //               //           ),
+                  //               //           PopupMenuItem(
+                  //               //             ///Todo: implement New receive backend
+                  //               //
+                  //               //             onTap: () {
+                  //               //               showDialog(
+                  //               //                 context: context,
+                  //               //                 builder: (context) {
+                  //               //                   return Dialog(
+                  //               //                     backgroundColor:
+                  //               //                         AppColors.quarternary,
+                  //               //                     insetPadding:
+                  //               //                         EdgeInsets.symmetric(
+                  //               //                             horizontal: 15,
+                  //               //                             vertical: 10),
+                  //               //                     shape:
+                  //               //                         RoundedRectangleBorder(
+                  //               //                       borderRadius:
+                  //               //                           BorderRadius
+                  //               //                               .circular(15),
+                  //               //                     ),
+                  //               //                     child: Padding(
+                  //               //                       padding: EdgeInsets.all(
+                  //               //                           15.0),
+                  //               //                       child: Column(
+                  //               //                         mainAxisSize:
+                  //               //                             MainAxisSize.min,
+                  //               //                         crossAxisAlignment:
+                  //               //                             CrossAxisAlignment
+                  //               //                                 .start,
+                  //               //                         children: [
+                  //               //                           // Dialog Title
+                  //               //                           Text(
+                  //               //                             "Receive deposit",
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 22,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .w600,
+                  //               //                               color: Colors
+                  //               //                                   .blueAccent,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 8),
+                  //               //                           Divider(
+                  //               //                               thickness: 1,
+                  //               //                               color: Colors
+                  //               //                                   .black12),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           // Account Details
+                  //               //                           Text(
+                  //               //                             account.fullName,
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 18,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .bold,
+                  //               //                               color: Colors
+                  //               //                                   .black87,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(
+                  //               //                               height: 12),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Account No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .accountNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Email: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .email,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Phone No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .phoneNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           DropdownMenu(
+                  //               //                             onSelected:
+                  //               //                                 (v) {},
+                  //               //                             expandedInsets:
+                  //               //                                 EdgeInsets
+                  //               //                                     .zero,
+                  //               //                             requestFocusOnTap:
+                  //               //                                 false,
+                  //               //                             label: Text(
+                  //               //                                 'Select currency to pay'),
+                  //               //                             enableFilter:
+                  //               //                                 true,
+                  //               //                             enableSearch:
+                  //               //                                 true,
+                  //               //                             menuHeight: 150,
+                  //               //                             inputDecorationTheme:
+                  //               //                                 InputDecorationTheme(
+                  //               //                               fillColor:
+                  //               //                                   AppColors
+                  //               //                                       .quinary,
+                  //               //                               filled: true,
+                  //               //                               contentPadding:
+                  //               //                                   const EdgeInsets
+                  //               //                                       .only(
+                  //               //                                       left:
+                  //               //                                           10),
+                  //               //                               border:
+                  //               //                                   const OutlineInputBorder(
+                  //               //                                 borderRadius:
+                  //               //                                     BorderRadius.all(
+                  //               //                                         Radius.circular(
+                  //               //                                             5)),
+                  //               //                               ),
+                  //               //                             ),
+                  //               //                             menuStyle: MenuStyle(
+                  //               //                                 // backgroundColor:
+                  //               //                                 //     WidgetStateProperty
+                  //               //                                 //         .all<Color>(
+                  //               //                                 //   AppColors
+                  //               //                                 //       .quarternary,
+                  //               //                                 // ),
+                  //               //                                 ),
+                  //               //                             dropdownMenuEntries:
+                  //               //                                 account
+                  //               //                                     .currencies
+                  //               //                                     .entries
+                  //               //                                     .map(
+                  //               //                                         (entry) {
+                  //               //                               return DropdownMenuEntry<
+                  //               //                                   String>(
+                  //               //                                 style:
+                  //               //                                     ButtonStyle(
+                  //               //                                   textStyle: WidgetStatePropertyAll(TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           15,
+                  //               //                                       fontWeight:
+                  //               //                                           FontWeight.w500)),
+                  //               //                                   padding: WidgetStateProperty.all(
+                  //               //                                       EdgeInsets.all(
+                  //               //                                           10)),
+                  //               //                                   foregroundColor: WidgetStatePropertyAll((entry.value
+                  //               //                                               as num) <
+                  //               //                                           0
+                  //               //                                       ? Colors
+                  //               //                                           .red
+                  //               //                                       : CupertinoColors
+                  //               //                                           .systemBlue),
+                  //               //                                   backgroundColor:
+                  //               //                                       WidgetStateProperty.all(
+                  //               //                                           AppColors.quinary),
+                  //               //                                 ),
+                  //               //                                 value:
+                  //               //                                     entry.key,
+                  //               //                                 label:
+                  //               //                                     entry.key,
+                  //               //                               );
+                  //               //                             }).toList(),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           TextFormField(
+                  //               //                             decoration:
+                  //               //                                 InputDecoration(
+                  //               //                               hintText:
+                  //               //                                   "Enter Amount",
+                  //               //                               border:
+                  //               //                                   OutlineInputBorder(
+                  //               //                                 borderRadius:
+                  //               //                                     BorderRadius
+                  //               //                                         .circular(
+                  //               //                                             8),
+                  //               //                               ),
+                  //               //                             ),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 30),
+                  //               //
+                  //               //                           // Action Buttons: Cancel and Submit
+                  //               //                           Row(
+                  //               //                             mainAxisAlignment:
+                  //               //                                 MainAxisAlignment
+                  //               //                                     .end,
+                  //               //                             children: [
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "Cancel"),
+                  //               //                               ),
+                  //               //                               SizedBox(
+                  //               //                                   width: 10),
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "  Add  "),
+                  //               //                               ),
+                  //               //                             ],
+                  //               //                           ),
+                  //               //                         ],
+                  //               //                       ),
+                  //               //                     ),
+                  //               //                   );
+                  //               //                 },
+                  //               //               );
+                  //               //             },
+                  //               //
+                  //               //             child: Text(
+                  //               //               "Receive",
+                  //               //               style: TextStyle(fontSize: 15),
+                  //               //             ),
+                  //               //           ),
+                  //               //           PopupMenuItem(
+                  //               //             ///Todo: implement New currency popup
+                  //               //             onTap: () {
+                  //               //               showDialog(
+                  //               //                 context: context,
+                  //               //                 builder: (context) {
+                  //               //                   return Dialog(
+                  //               //                     backgroundColor:
+                  //               //                         AppColors.quarternary,
+                  //               //                     insetPadding:
+                  //               //                         EdgeInsets.symmetric(
+                  //               //                             horizontal: 15,
+                  //               //                             vertical: 10),
+                  //               //                     shape:
+                  //               //                         RoundedRectangleBorder(
+                  //               //                       borderRadius:
+                  //               //                           BorderRadius
+                  //               //                               .circular(15),
+                  //               //                     ),
+                  //               //                     child: Padding(
+                  //               //                       padding: EdgeInsets.all(
+                  //               //                           15.0),
+                  //               //                       child: Column(
+                  //               //                         mainAxisSize:
+                  //               //                             MainAxisSize.min,
+                  //               //                         crossAxisAlignment:
+                  //               //                             CrossAxisAlignment
+                  //               //                                 .start,
+                  //               //                         children: [
+                  //               //                           // Dialog Title
+                  //               //                           Text(
+                  //               //                             "Add new currency",
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 22,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .w600,
+                  //               //                               color: Colors
+                  //               //                                   .blueAccent,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 8),
+                  //               //                           Divider(
+                  //               //                               thickness: 1,
+                  //               //                               color: Colors
+                  //               //                                   .black12),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           // Account Details
+                  //               //                           Text(
+                  //               //                             account.fullName,
+                  //               //                             style: TextStyle(
+                  //               //                               fontSize: 18,
+                  //               //                               fontWeight:
+                  //               //                                   FontWeight
+                  //               //                                       .bold,
+                  //               //                               color: Colors
+                  //               //                                   .black87,
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(
+                  //               //                               height: 12),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Account No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .accountNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Email: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .email,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //                           SizedBox(height: 6),
+                  //               //
+                  //               //                           RichText(
+                  //               //                             text: TextSpan(
+                  //               //                               children: [
+                  //               //                                 TextSpan(
+                  //               //                                   text:
+                  //               //                                       'Phone No: ',
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     fontWeight:
+                  //               //                                         FontWeight
+                  //               //                                             .bold,
+                  //               //                                     color: Colors
+                  //               //                                         .black87,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                                 TextSpan(
+                  //               //                                   text: account
+                  //               //                                       .phoneNo,
+                  //               //                                   style:
+                  //               //                                       TextStyle(
+                  //               //                                     fontSize:
+                  //               //                                         14,
+                  //               //                                     color: Colors
+                  //               //                                         .black54,
+                  //               //                                   ),
+                  //               //                                 ),
+                  //               //                               ],
+                  //               //                             ),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 20),
+                  //               //
+                  //               //                           DropdownMenu(
+                  //               //                             onSelected:
+                  //               //                                 (v) {},
+                  //               //                             expandedInsets:
+                  //               //                                 EdgeInsets
+                  //               //                                     .zero,
+                  //               //                             requestFocusOnTap:
+                  //               //                                 false,
+                  //               //                             label: Text(
+                  //               //                                 'Select currency to pay'),
+                  //               //                             enableFilter:
+                  //               //                                 true,
+                  //               //                             enableSearch:
+                  //               //                                 true,
+                  //               //                             menuHeight: 150,
+                  //               //                             inputDecorationTheme:
+                  //               //                                 InputDecorationTheme(
+                  //               //                               fillColor:
+                  //               //                                   AppColors
+                  //               //                                       .quinary,
+                  //               //                               filled: true,
+                  //               //                               contentPadding:
+                  //               //                                   const EdgeInsets
+                  //               //                                       .only(
+                  //               //                                       left:
+                  //               //                                           10),
+                  //               //                               border:
+                  //               //                                   const OutlineInputBorder(
+                  //               //                                 borderRadius:
+                  //               //                                     BorderRadius.all(
+                  //               //                                         Radius.circular(
+                  //               //                                             5)),
+                  //               //                               ),
+                  //               //                             ),
+                  //               //                             menuStyle: MenuStyle(
+                  //               //                                 // backgroundColor:
+                  //               //                                 //     WidgetStateProperty
+                  //               //                                 //         .all<Color>(
+                  //               //                                 //   AppColors
+                  //               //                                 //       .quarternary,
+                  //               //                                 // ),
+                  //               //                                 ),
+                  //               //                             dropdownMenuEntries:
+                  //               //                                 account
+                  //               //                                     .currencies
+                  //               //                                     .entries
+                  //               //                                     .map(
+                  //               //                                         (entry) {
+                  //               //                               return DropdownMenuEntry<
+                  //               //                                   String>(
+                  //               //                                 style:
+                  //               //                                     ButtonStyle(
+                  //               //                                   textStyle: WidgetStatePropertyAll(TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           15,
+                  //               //                                       fontWeight:
+                  //               //                                           FontWeight.w500)),
+                  //               //                                   padding: WidgetStateProperty.all(
+                  //               //                                       EdgeInsets.all(
+                  //               //                                           10)),
+                  //               //                                   foregroundColor: WidgetStatePropertyAll((entry.value
+                  //               //                                               as num) <
+                  //               //                                           0
+                  //               //                                       ? Colors
+                  //               //                                           .red
+                  //               //                                       : CupertinoColors
+                  //               //                                           .systemBlue),
+                  //               //                                   backgroundColor:
+                  //               //                                       WidgetStateProperty.all(
+                  //               //                                           AppColors.quinary),
+                  //               //                                 ),
+                  //               //                                 value:
+                  //               //                                     entry.key,
+                  //               //                                 label:
+                  //               //                                     entry.key,
+                  //               //                               );
+                  //               //                             }).toList(),
+                  //               //                           ),
+                  //               //
+                  //               //                           SizedBox(
+                  //               //                               height: 30),
+                  //               //
+                  //               //                           // Action Buttons: Cancel and Submit
+                  //               //                           Row(
+                  //               //                             mainAxisAlignment:
+                  //               //                                 MainAxisAlignment
+                  //               //                                     .end,
+                  //               //                             children: [
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "Cancel"),
+                  //               //                               ),
+                  //               //                               SizedBox(
+                  //               //                                   width: 10),
+                  //               //                               ElevatedButton(
+                  //               //                                 style: ElevatedButton
+                  //               //                                     .styleFrom(
+                  //               //                                   backgroundColor:
+                  //               //                                       AppColors
+                  //               //                                           .prettyDark,
+                  //               //                                   padding:
+                  //               //                                       const EdgeInsets
+                  //               //                                           .symmetric(
+                  //               //                                     horizontal:
+                  //               //                                         20,
+                  //               //                                     vertical:
+                  //               //                                         12,
+                  //               //                                   ),
+                  //               //                                   shape:
+                  //               //                                       RoundedRectangleBorder(
+                  //               //                                     borderRadius:
+                  //               //                                         BorderRadius.circular(
+                  //               //                                             12),
+                  //               //                                   ),
+                  //               //                                   foregroundColor:
+                  //               //                                       Colors
+                  //               //                                           .grey,
+                  //               //                                   textStyle: TextStyle(
+                  //               //                                       fontSize:
+                  //               //                                           16),
+                  //               //                                 ),
+                  //               //                                 onPressed:
+                  //               //                                     () {
+                  //               //                                   Navigator.of(
+                  //               //                                           context)
+                  //               //                                       .pop(); // Close dialog
+                  //               //                                 },
+                  //               //                                 child: Text(
+                  //               //                                     "  Add  "),
+                  //               //                               ),
+                  //               //                             ],
+                  //               //                           ),
+                  //               //                         ],
+                  //               //                       ),
+                  //               //                     ),
+                  //               //                   );
+                  //               //                 },
+                  //               //               );
+                  //               //             },
+                  //               //
+                  //               //             child: Text(
+                  //               //               "New currency",
+                  //               //               style: TextStyle(fontSize: 15),
+                  //               //             ),
+                  //               //           ),
+                  //               //           PopupMenuItem(
+                  //               //             child: Text(
+                  //               //               "Edit info",
+                  //               //               style: TextStyle(fontSize: 15),
+                  //               //             ),
+                  //               //           ),
+                  //               //         ]);
+                  //               //   },
+                  //               //   child: CustomContainer(
+                  //               //     width: double.infinity,
+                  //               //     padding: EdgeInsets.all(10),
+                  //               //     darkColor: AppColors.quinary,
+                  //               //     child: Row(
+                  //               //       crossAxisAlignment:
+                  //               //           CrossAxisAlignment.start,
+                  //               //       mainAxisAlignment:
+                  //               //           MainAxisAlignment.spaceBetween,
+                  //               //       children: [
+                  //               //         Column(
+                  //               //           crossAxisAlignment:
+                  //               //               CrossAxisAlignment.start,
+                  //               //           mainAxisAlignment:
+                  //               //               MainAxisAlignment.start,
+                  //               //           children: [
+                  //               //             Text(
+                  //               //               account.fullName,
+                  //               //               style: TextStyle(
+                  //               //                   fontSize: 15,
+                  //               //                   fontWeight:
+                  //               //                       FontWeight.bold),
+                  //               //             ),
+                  //               //             Text(
+                  //               //               account.accountNo,
+                  //               //               style: TextStyle(
+                  //               //                   fontSize: 12,
+                  //               //                   color: Colors.purple),
+                  //               //             ),
+                  //               //           ],
+                  //               //         ),
+                  //               //         Column(
+                  //               //           mainAxisAlignment:
+                  //               //               MainAxisAlignment.spaceEvenly,
+                  //               //           crossAxisAlignment:
+                  //               //               CrossAxisAlignment.end,
+                  //               //           children: account.currencies.entries
+                  //               //               .map((entry) {
+                  //               //             return Text(
+                  //               //               '${entry.key}: ${(entry.value is num) ? formatter.format(entry.value as num) : 0.0}',
+                  //               //               style: TextStyle(
+                  //               //                   fontWeight: FontWeight.bold,
+                  //               //                   fontSize: 14,
+                  //               //                   color:
+                  //               //                       (entry.value as num) < 0
+                  //               //                           ? Colors.red
+                  //               //                           : CupertinoColors
+                  //               //                               .systemBlue),
+                  //               //             );
+                  //               //           }).toList(),
+                  //               //           // Text(
+                  //               //           //   'KES: ',
+                  //               //           //   style: TextStyle(
+                  //               //           //     fontWeight: FontWeight.bold,
+                  //               //           //     fontSize: 13,
+                  //               //           //     // color: account.kesBalance < 0
+                  //               //           //     //     ? Colors.red
+                  //               //           //     //     : CupertinoColors.systemBlue,
+                  //               //           //   ),
+                  //               //           // ),
+                  //               //           // Text(
+                  //               //           //   'USD: ',
+                  //               //           //   style: TextStyle(
+                  //               //           //     fontWeight: FontWeight.bold,
+                  //               //           //     fontSize: 13,
+                  //               //           //     // color: account.usdBalance < 0
+                  //               //           //     //     ? Colors.red
+                  //               //           //     //     : CupertinoColors.activeCupertinoColors.systemBlue,
+                  //               //           //   ),
+                  //               //           // ),
+                  //               //         ),
+                  //               //       ],
+                  //               //     ),
+                  //               //   ),
+                  //               // ),
+                  //             );
+                  //           },
+                  //         );
+                  //       },
+                  //     ),
+                  //     padding: EdgeInsets.zero),
                   Gap(30)
                 ],
               ),

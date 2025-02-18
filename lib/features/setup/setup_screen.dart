@@ -304,15 +304,15 @@ class SetupScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       TextSpan(
-                                                        text: formatter
-                                                            .format(account.usdBalance)
+                                                        text: '''formatter
+                                                            .format(account.usdBalance)'''
 
                                                             // text: payment.amountPaid
                                                             .toString(),
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.w700,
                                                           fontSize: 12,
-                                                          color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
+                                                          // color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
                                                           // Black Value
                                                         ),
                                                       ),
@@ -332,15 +332,15 @@ class SetupScreen extends StatelessWidget {
                                                         ),
                                                       ),
                                                       TextSpan(
-                                                        text: formatter
-                                                            .format(account.kesBalance)
+                                                        text: '''formatter
+                                                            .format(account.kesBalance)'''
 
                                                             // text: payment.amountPaid
                                                             .toString(),
                                                         style: TextStyle(
                                                           fontWeight: FontWeight.w700,
                                                           fontSize: 12,
-                                                          color: account.kesBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
+                                                          // color: account.kesBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
                                                           // Black Value
                                                         ),
                                                       ),

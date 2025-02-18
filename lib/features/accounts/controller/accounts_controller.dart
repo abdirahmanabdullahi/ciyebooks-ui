@@ -42,6 +42,7 @@ class AccountsController extends GetxController {
       final accountNo =
           '${date.millisecond}${date.second}${date.minute}-${date.hour}${date.day}${date.month}${date.year}';
       final newAccount = AccountModel(
+        currencies: {},
           // usdBalance: usdIsNegative.value
           //     ? -(double.tryParse(usd.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
           //     : (double.tryParse(usd.text.trim()) ?? 0.0),
@@ -53,7 +54,7 @@ class AccountsController extends GetxController {
           accountNo: accountNo,
           phoneNo: phoneNo.text.trim(),
           email: email.text.trim(),
-          dateCreated: date, usdBalance: 0.0, kesBalance: 0.0, accountName: '${firstName.text.trim()}  ${lastName.text.trim()}');
+          dateCreated: date,  accountName: '${firstName.text.trim()}  ${lastName.text.trim()}');
 
       await accountRepo.savaAccountData(
         newAccount,

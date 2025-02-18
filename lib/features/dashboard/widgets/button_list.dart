@@ -10,6 +10,7 @@ import '../../accounts/create_accounts.dart';
 import '../../bank/deposit/screens/bank_deposit_account_selector.dart';
 import '../../bank/deposit_for_client/client_deposit_account_selector.dart';
 import '../../bank/withdraw/screens/withdraw_account_selector.dart';
+import '../../common/screens/account_selector_screen.dart';
 import '../../forex/buy/buy_account_selector.dart';
 import '../../forex/forex_history.dart';
 import '../../forex/sell/sell_account_selector.dart';
@@ -39,83 +40,83 @@ class ButtonList extends StatelessWidget {
             heroTag: "Payment",
             icon: Icons.arrow_outward,
             label: 'Pay',
-            onPressed: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Testing()));
-            },
-            // onPressed: () {
-            //   showModalBottomSheet<dynamic>(
-            //     isScrollControlled: true,
-            //     context: context,
-            //     builder: (BuildContext bc) {
-            //       return Wrap(
-            //         children: <Widget>[
-            //           Padding(
-            //             padding: const EdgeInsets.all(8.0),
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Text(
-            //                   "Make a payment",
-            //                   style: Theme.of(context).textTheme.titleMedium,
-            //                 ),
-            //                 Gap(20),
-            //                 Divider(
-            //                   height: 0,
-            //                 ),
-            //                 BottomSheetButton(
-            //                   heroTag: "Pay a client",
-            //                   label: "Pay a client",
-            //                   icon: Icons.north_east,
-            //                   onPressed: () {
-            //                     Get.back();
-            //                     Get.to(() => PayAccountSelector());
-            //                   },
-            //                 ),
-            //                 Divider(
-            //                   height: 0,
-            //                 ),
-            //                 BottomSheetButton(
-            //                     heroTag: "Pay an expense",
-            //                     label: "Pay an expense",
-            //                     icon: Icons.shopping_bag,
-            //                     onPressed: () =>
-            //                         Get.to(() => ExpenseAccountSelector())),
-            //                 Divider(
-            //                   height: 0,
-            //                 ),
-            //                 BottomSheetButton(
-            //                   heroTag: "Payment history",
-            //                   label: "Payment history",
-            //                   icon: Icons.list_alt,
-            //                   onPressed: () {
-            //                     Get.back();
-            //                     // Get.to(() => const PaymentHistory());
-            //                   },
-            //                 ),
-            //                 Divider(
-            //                   height: 0,
-            //                 ),
-            //                 BottomSheetButton(
-            //                   heroTag: "Schedule a payment",
-            //                   label: "Schedule a payment",
-            //                   icon: Icons.north_east,
-            //                   onPressed: () {
-            //                     Get.back();
-            //                     Get.to(() => PayAccountSelector());
-            //                   },
-            //                 ),
-            //                 Divider(
-            //                   height: 0,
-            //                 ),
-            //                 Gap(60),
-            //               ],
-            //             ),
-            //           ),
-            //         ],
-            //       );
-            //     },
-            //   );
+            // onPressed: (){
+            //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Testing()));
             // },
+            onPressed: () {
+              showModalBottomSheet<dynamic>(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext bc) {
+                  return Wrap(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Make a payment",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Gap(20),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Pay a client",
+                              label: "Pay a client",
+                              icon: Icons.north_east,
+                              onPressed: () {
+                                Get.back();
+                                Get.to(() => Testing());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                                heroTag: "Pay an expense",
+                                label: "Pay an expense",
+                                icon: Icons.shopping_bag,
+                                onPressed: () =>
+                                    Get.to(() => ExpenseAccountSelector())),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Payment history",
+                              label: "Payment history",
+                              icon: Icons.list_alt,
+                              onPressed: () {
+                                Get.back();
+                                // Get.to(() => const PaymentHistory());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Schedule a payment",
+                              label: "Schedule a payment",
+                              icon: Icons.north_east,
+                              onPressed: () {
+                                Get.back();
+                                // Get.to(() => PayAccountSelectorScreen());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            Gap(60),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
 
           TopButton(
