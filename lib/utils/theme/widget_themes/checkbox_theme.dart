@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
@@ -22,7 +23,7 @@ class TCheckboxTheme {
     fillColor: WidgetStateProperty.resolveWith(
       (states) {
         if (states.contains(WidgetState.selected)) {
-          return Colors.green;
+          return CupertinoColors.systemBlue;
         } else {
           return Colors.transparent;
         }

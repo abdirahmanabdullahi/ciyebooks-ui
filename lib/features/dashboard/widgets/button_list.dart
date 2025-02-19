@@ -1,4 +1,3 @@
-
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -75,12 +74,7 @@ class ButtonList extends StatelessWidget {
                             Divider(
                               height: 0,
                             ),
-                            BottomSheetButton(
-                                heroTag: "Pay an expense",
-                                label: "Pay an expense",
-                                icon: Icons.shopping_bag,
-                                onPressed: () =>
-                                    Get.to(() => ExpenseAccountSelector())),
+                            BottomSheetButton(heroTag: "Pay an expense", label: "Pay an expense", icon: Icons.shopping_bag, onPressed: () => Get.to(() => ExpenseAccountSelector())),
                             Divider(
                               height: 0,
                             ),
@@ -164,7 +158,8 @@ class ButtonList extends StatelessWidget {
                             ),
                             Divider(
                               height: 0,
-                            ),Gap(60)
+                            ),
+                            Gap(60)
                           ],
                         ),
                       ),
@@ -281,8 +276,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Internal transfer",
                               label: "Internal transfer",
                               icon: Icons.north_east,
-                              onPressed: () => Get.to(
-                                  () => InternalTransferAccountSelector()),
+                              onPressed: () => Get.to(() => InternalTransferAccountSelector()),
                             ),
                             Divider(
                               height: 0,
@@ -315,93 +309,93 @@ class ButtonList extends StatelessWidget {
               );
             },
           ),
-          TopButton(
-            heroTag: "Forex",
-            icon: Icons.currency_exchange,
-            label: 'Forex',
-            onPressed: () {
-              showModalBottomSheet<dynamic>(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext bc) {
-                  return Wrap(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Buy and sell foreign currencies",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Gap(20),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "Buy",
-                              label: "Buy",
-                              icon: Icons.north_east,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => BuyAccountSelector());
-                              },
-                            ),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "sell",
-                              label: "sell",
-                              icon: Icons.shopping_bag,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => SellAccountSelector());
-                              },
-                            ),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "New currency",
-                              label: "New currency",
-                              icon: Icons.list_alt,
-                              onPressed: () {},
-                            ),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "Currency stock",
-                              label: "Currency stock",
-                              icon: Icons.list_alt,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => CurrencyStock());
-                              },
-                            ),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "Forex history",
-                              label: "Forex history",
-                              icon: Icons.list_alt,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => ForexHistory());
-                              },
-                            ),Divider(height: 0,),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+          // TopButton(
+          //   heroTag: "Forex",
+          //   icon: Icons.currency_exchange,
+          //   label: 'Forex',
+          //   onPressed: () {
+          //     showModalBottomSheet<dynamic>(
+          //       isScrollControlled: true,
+          //       context: context,
+          //       builder: (BuildContext bc) {
+          //         return Wrap(
+          //           children: <Widget>[
+          //             Padding(
+          //               padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
+          //               child: Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //                 children: [
+          //                   Text(
+          //                     "Buy and sell foreign currencies",
+          //                     style: Theme.of(context).textTheme.titleMedium,
+          //                   ),
+          //                   Gap(20),
+          //                   Divider(
+          //                     height: 0,
+          //                   ),
+          //                   BottomSheetButton(
+          //                     heroTag: "Buy",
+          //                     label: "Buy",
+          //                     icon: Icons.north_east,
+          //                     onPressed: () {
+          //                       Get.back();
+          //                       Get.to(() => BuyAccountSelector());
+          //                     },
+          //                   ),
+          //                   Divider(
+          //                     height: 0,
+          //                   ),
+          //                   BottomSheetButton(
+          //                     heroTag: "sell",
+          //                     label: "sell",
+          //                     icon: Icons.shopping_bag,
+          //                     onPressed: () {
+          //                       Get.back();
+          //                       Get.to(() => SellAccountSelector());
+          //                     },
+          //                   ),
+          //                   Divider(
+          //                     height: 0,
+          //                   ),
+          //                   BottomSheetButton(
+          //                     heroTag: "New currency",
+          //                     label: "New currency",
+          //                     icon: Icons.list_alt,
+          //                     onPressed: () {},
+          //                   ),
+          //                   Divider(
+          //                     height: 0,
+          //                   ),
+          //                   BottomSheetButton(
+          //                     heroTag: "Currency stock",
+          //                     label: "Currency stock",
+          //                     icon: Icons.list_alt,
+          //                     onPressed: () {
+          //                       Get.back();
+          //                       Get.to(() => CurrencyStock());
+          //                     },
+          //                   ),
+          //                   Divider(
+          //                     height: 0,
+          //                   ),
+          //                   BottomSheetButton(
+          //                     heroTag: "Forex history",
+          //                     label: "Forex history",
+          //                     icon: Icons.list_alt,
+          //                     onPressed: () {
+          //                       Get.back();
+          //                       Get.to(() => ForexHistory());
+          //                     },
+          //                   ),Divider(height: 0,),
+          //                 ],
+          //               ),
+          //             ),
+          //           ],
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
           TopButton(
             heroTag: "Accounts",
             icon: Icons.group_outlined,
@@ -414,44 +408,44 @@ class ButtonList extends StatelessWidget {
                 builder: (BuildContext bc) {
                   return Wrap(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Manage accounts",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Gap(20),
-                            Divider(
-                              height: 0,
-                            ),
-                            BottomSheetButton(
-                              heroTag: "Create accounts",
-                              label: "Create accounts",
-                              icon: Icons.north_east,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => CreateAccounts());
-                              },
-                            ),
-                            Divider(height: 0,),
-                            BottomSheetButton(
-                              heroTag: "View accounts",
-                              label: "View accounts",
-                              icon: Icons.shopping_bag,
-                              onPressed: () {
-                                Get.back();
-                                Get.to(() => AccountSearch());
-                              },
-                            ),
-                            Divider(
-                              height: 0,
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Text(
+                      //         "Manage accounts",
+                      //         style: Theme.of(context).textTheme.titleMedium,
+                      //       ),
+                      //       Gap(20),
+                      //       Divider(
+                      //         height: 0,
+                      //       ),
+                      //       BottomSheetButton(
+                      //         heroTag: "Create accounts",
+                      //         label: "Create accounts",
+                      //         icon: Icons.north_east,
+                      //         onPressed: () {
+                      //           Get.back();
+                      //           Get.to(() => CreateAccounts());
+                      //         },
+                      //       ),
+                      //       Divider(height: 0,),
+                      //       BottomSheetButton(
+                      //         heroTag: "View accounts",
+                      //         label: "View accounts",
+                      //         icon: Icons.shopping_bag,
+                      //         onPressed: () {
+                      //           Get.back();
+                      //           Get.to(() => AccountSearch());
+                      //         },
+                      //       ),
+                      //       Divider(
+                      //         height: 0,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   );
                 },

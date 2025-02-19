@@ -12,6 +12,10 @@ class PayClientController extends GetxController {
   final amount = TextEditingController();
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final accountName = TextEditingController();
+  final currencyList = {}.obs;
+  final paidToOwner = true.obs;
+  var amountText = ''.obs;
+
 
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
     locale: 'en_us',
@@ -52,6 +56,7 @@ if(amount.text.length>=12){
 
   @override
   void onInit() {
+    // amount.addListener(() => _formatInput());
 
     /// Stream for the accounts
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
@@ -66,6 +71,10 @@ if(amount.text.length>=12){
 
   }
 
+  // _formatInput(){
+  //   double? number = double.tryParse(amount.text.replaceAll(RegExp(r'[^\d]'), ''));if(number ==null)return;
+  //   amount.value =TextEditingValue(text: formatter.format(number));
+  // }
 
 
 }
