@@ -9,12 +9,10 @@ import 'package:get_storage/get_storage.dart';
 import 'app.dart';
 
 Future<void> main() async {debugPaintBaselinesEnabled:true;
-  final WidgetsBinding widgetsBinding =
-      WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((FirebaseApp value) => Get.put(AuthRepo));
-  /// Get local storage
+final WidgetsBinding widgetsBinding =
+      WidgetsFlutterBinding.ensureInitialized();
+/// Get local storage
   await GetStorage.init();
 
   /// Await native splash until other items load.

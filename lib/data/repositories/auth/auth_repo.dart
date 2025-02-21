@@ -28,6 +28,8 @@ class AuthRepo extends GetxController {
 // Called from main.dart on app launch
   @override
   void onReady() {
+    Get.offAll(() => Login());
+
     FlutterNativeSplash.remove();
     screenRedirect();
   }

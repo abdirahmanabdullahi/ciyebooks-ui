@@ -79,7 +79,7 @@ class SignInController extends GetxController {
       isLoading.value = false;
 
       /// Redirect
-      AuthRepo.instance.screenRedirect();
+      // AuthRepo.instance.screenRedirect();
       Get.snackbar(
         "Successfully logged in",
         "Welcome back $name",

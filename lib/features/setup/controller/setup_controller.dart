@@ -62,6 +62,7 @@ class SetupController extends GetxController {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         counters.value = totals.value.transactionCounters!;
+        print(counters);
         // currency.value = BalancesModel.fromJson()
       }
     });
@@ -141,7 +142,7 @@ class SetupController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        AuthRepo.instance.screenRedirect();
+        // AuthRepo.instance.screenRedirect();
       });
     } catch (e) {
       Get.snackbar("Oh snap!", e.toString(), backgroundColor: Color(0xffFF0033), colorText: Colors.white);

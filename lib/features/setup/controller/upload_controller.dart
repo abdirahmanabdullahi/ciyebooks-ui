@@ -145,8 +145,10 @@ class UploadController extends GetxController {
           return;
         }
         final newAccount = AccountModel(
-            usdBalance: double.tryParse(splitLine[4]) ?? 0.0,
-            kesBalance: double.tryParse(splitLine[5]) ?? 0.0,
+         currencies: {
+           'usdBalance': double.tryParse(splitLine[4]) ?? 0.0,
+           'kesBalance': double.tryParse(splitLine[5]) ?? 0.0,
+         },
             dateCreated: DateTime.now(),
             firstName: splitLine[0],
             lastName: splitLine[1],

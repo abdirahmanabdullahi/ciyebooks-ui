@@ -5,13 +5,16 @@ class AccountModel {
   final String accountNo;
   final String phoneNo;
   final String email;
-  final double usdBalance;
-  final double kesBalance;
+  final Map<String,dynamic>currencies;
+  // final double usdBalance;
+  // final double kesBalance;
 
   final DateTime dateCreated;
   AccountModel({
-    required this.accountName,  required this.usdBalance,
-    required this.kesBalance,
+    required this .currencies,
+    required this.accountName,
+    // required this.usdBalance,
+    // required this.kesBalance,
 
     required this.dateCreated,
     required this.firstName,
@@ -34,8 +37,10 @@ class AccountModel {
       'AccountNo': accountNo,
       'PhoneNo': phoneNo,
       'Email': email,
-      'UsdBalance': usdBalance,
-      'KesBalance': kesBalance,
+      'Currencies':currencies
+
+      // 'UsdBalance': usdBalance,
+      // 'KesBalance': kesBalance,
     };
   }
 
@@ -48,8 +53,9 @@ class AccountModel {
         accountNo: jsonData['AccountNo'] ?? '',
         phoneNo: jsonData['PhoneNo'] ?? '',
       email: jsonData['Email'] ?? '',
-      usdBalance: jsonData['UsdBalance'] ??0.0,
-      kesBalance: jsonData['KesBalance'] ??0.0,
+        currencies: Map<String, dynamic>.from(jsonData['Currencies'])
+      // usdBalance: jsonData['UsdBalance'] ??0.0,
+      // kesBalance: jsonData['KesBalance'] ??0.0,
 
     );
   }

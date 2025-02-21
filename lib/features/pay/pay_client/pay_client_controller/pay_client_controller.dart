@@ -12,7 +12,8 @@ class PayClientController extends GetxController {
   final amount = TextEditingController();
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final accountName = TextEditingController();
-  final currencyList = {}.obs;
+// final currencyList = [].obs;
+  final currency = [].obs;
   final paidToOwner = true.obs;
   var amountText = ''.obs;
 

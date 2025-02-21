@@ -48,8 +48,8 @@ class VerifyEmailController extends GetxController {
         Get.off(() => SuccessScreen(
             image: AppImages.staticSuccessIllustration,
             title: AppTexts.emailVerified,
-            subtitle: AppTexts.yourAccountCreatedSubTitle,
-            onPressed: () => AuthRepo.instance.screenRedirect()));
+            subtitle: AppTexts.yourAccountCreatedSubTitle,onPressed: (){}));
+            // onPressed: () => AuthRepo.instance.screenRedirect()));
       }
     });
   }
@@ -62,8 +62,8 @@ class VerifyEmailController extends GetxController {
         () => SuccessScreen(
             image: AppImages.staticSuccessIllustration,
             title: AppTexts.emailVerified,
-            subtitle: AppTexts.yourAccountCreatedSubTitle,
-            onPressed: ()=> AuthRepo.instance.screenRedirect()
+            subtitle: AppTexts.yourAccountCreatedSubTitle,onPressed: (){},
+            // onPressed: ()=> AuthRepo.instance.screenRedirect()
       ));
     }Get.snackbar('Verify your email first',
         'Please check your inbox and verify your email.',

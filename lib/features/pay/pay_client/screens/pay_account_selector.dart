@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
@@ -16,24 +17,19 @@ class Testing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits();
+    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+      locale: 'en_us',
+      decimalDigits: 2,
+    );
     final buttonValues = ['9', '8', '7', '6', '5', '4', '3', '2', '1', '.', '0', 'del'];
     final controller = Get.put(PayClientController());
+    var currencies = {};
 
     return Scaffold(
       backgroundColor: AppColors.quinary,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0),
         child: AppBar(
-          //   shape: RoundedRectangleBorder(
-          //   borderRadius:  BorderRadius.only(
-          // topLeft: Radius.circular(20),    // Adjust as needed
-          //   // Adjust as needed
-          //   bottomLeft: Radius.circular(-30), // Adjust as needed
-          //   bottomRight: Radius.circular(-15), // Adjust as needed
-          // ),
-          // ),
-          // leading: Icon(Icons.arrow_back),
           title: Text(
             'Paying a client',
             style: TextStyle(color: Colors.white),
@@ -81,14 +77,17 @@ class Testing extends StatelessWidget {
                           label: Text('Search account'),
                           selectedTrailingIcon: Icon(Icons.search),
                           width: double.maxFinite,
-                          onSelected: (value) {},
-                          dropdownMenuEntries: controller.accounts.map((account) {
-                            print(account.usdBalance);
-                            // controller.currencyList.value = Map<String, dynamic>.from(account.currencies);
-                            // print(controller.currencyList.values);
-                            return DropdownMenuEntry(
+                          onSelected: (value) {
+                            if (value != null) {
 
-                                ///THis is where I wanna change the width. Its width is wider than the menu
+                              final currencyMap = value[1] as Map<String, dynamic>;
+
+                              controller.currency.value = currencyMap.entries.map((entry) => [entry.key, entry.value]).toList();
+                              print(controller.currency);
+                            }
+                          },
+                          dropdownMenuEntries: controller.accounts.map((account) {
+                            return DropdownMenuEntry(
                                 labelWidget: Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: CustomContainer(
@@ -132,56 +131,32 @@ class Testing extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-                                                Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: 'USD: ',
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600], // Grey Label
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: account.currencies.entries.map((entry) {
+                                                    return RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: entry.key,
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.w600,
+                                                              fontSize: 13,
+                                                              color: Colors.blue,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '${account.usdBalance}'.toString(),
-                                                          style: TextStyle(
-                                                            color: account.usdBalance <= 0 ? CupertinoColors.destructiveRed : CupertinoColors.systemBlue,
-                                                            fontWeight: FontWeight.w700,
-                                                            fontSize: 12,
-                                                            // color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
-                                                            // Black Value
+                                                          TextSpan(
+                                                            text: '   ${formatter.format(entry.value)}',
+                                                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 11, color: entry.value <= 0 ? Colors.red : Colors.grey.shade600
+                                                                // Black Value
+                                                                ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: 'KES: ',
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600], // Grey Label
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '${account.kesBalance}'.toString(),
-                                                          style: TextStyle(
-                                                            color: account.kesBalance <= 0 ? CupertinoColors.destructiveRed : CupertinoColors.systemBlue,
-                                                            fontWeight: FontWeight.w700,
-                                                            fontSize: 12,
-                                                            // color: account.usdBalance < 0 ? Colors.redAccent : Colors.blue, // Grey Label
-                                                            // Black Value
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ]),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
                                               ],
                                             ),
                                             Divider(color: Colors.grey[400], thickness: 1),
@@ -218,8 +193,55 @@ class Testing extends StatelessWidget {
                                             ),
                                           ],
                                         ))),
-                                value: account.accountNo,
+                                value: [account.accountNo, account.currencies],
                                 label: account.fullName);
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    Gap(15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Obx(
+                        () => DropdownMenu(
+                          trailingIcon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: CupertinoColors.systemBlue,
+                            size: 30,
+                          ),
+                          inputDecorationTheme: InputDecorationTheme(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(50)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          enableFilter: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          ),
+                          label: Text('Select currency'),
+                          selectedTrailingIcon: Icon(Icons.search),
+                          width: double.maxFinite,
+                          onSelected: (value) {
+                            if (value != null) {
+
+
+                            }
+                          },
+                          dropdownMenuEntries:  controller.currency.map((currency) {
+                            // Ensure valid data structure
+
+                            // Convert first item to a proper currency string
+                            String currencyName = currency[0].toString().toUpperCase(); // Ensure consistency
+                            num balance = num.tryParse(currency[1].toString()) ?? 0;
+                            return DropdownMenuEntry(value: currencyName, label: '$currencyName  $balance');
+
                           }).toList(),
                         ),
                       ),
@@ -227,39 +249,62 @@ class Testing extends StatelessWidget {
 
                     SizedBox(height: 15),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: DropdownButtonFormField(
-                        iconEnabledColor: CupertinoColors.systemBlue,
-                        menuMaxHeight: 100,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                          // iconColor: Colors.red,
-                          constraints: BoxConstraints.tight(const Size.fromHeight(50)),
-                          fillColor: AppColors.quinary,
-                          filled: true,
-                          labelText: 'Select currency',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(width: 1, color: AppColors.grey),
-                          ),
-                        ),
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: [
-                          DropdownMenuItem(
-                            value: 'USD',
-                            child: Text('USD'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'KES',
-                            child: Text('KES'),
-                          ),
-                        ],
-                        onChanged: (value) {
-                          print(value);
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    //   child: Obx(
+                    //         () => DropdownButtonFormField(
+                    //       iconEnabledColor: CupertinoColors.systemBlue,
+                    //       menuMaxHeight: 200, // Increased for better visibility
+                    //       decoration: InputDecoration(
+                    //         contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                    //         constraints: BoxConstraints.tight(const Size.fromHeight(50)),
+                    //         fillColor: AppColors.quinary,
+                    //         filled: true,
+                    //         labelText: 'Select currency',
+                    //         border: OutlineInputBorder(
+                    //           borderRadius: BorderRadius.circular(10),
+                    //           borderSide: BorderSide(width: 1, color: AppColors.grey),
+                    //         ),
+                    //       ),
+                    //       icon: const Icon(Icons.keyboard_arrow_down),
+                    //       items: controller.currency.map((currency) {
+                    //         // Ensure valid data structure
+                    //
+                    //         // Convert first item to a proper currency string
+                    //         String currencyName = currency[0].toString().toUpperCase(); // Ensure consistency
+                    //         num balance = num.tryParse(currency[1].toString()) ?? 0;
+                    //
+                    //         return DropdownMenuItem<String>(
+                    //           value: currencyName,
+                    //           child: Row(
+                    //             children: [
+                    //               Text(
+                    //                 currencyName,
+                    //                 style: TextStyle(
+                    //                   fontWeight: FontWeight.w600,
+                    //                   fontSize: 13,
+                    //                   color: Colors.blue,
+                    //                 ),
+                    //               ),
+                    //               const SizedBox(width: 10),
+                    //               Text(
+                    //                 balance.toStringAsFixed(2), // Format balance
+                    //                 style: TextStyle(
+                    //                   fontWeight: FontWeight.w500,
+                    //                   fontSize: 11,
+                    //                   color: balance <= 0 ? Colors.red : Colors.grey.shade600,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         );
+                    //       }).toList(), // Ensure null items are removed
+                    //       onChanged: (value) {
+                    //         print('Selected value: $value');
+                    //       },
+                    //     ),
+                    //   ),
+                    // ),
 
                     SizedBox(height: 15),
                     Padding(
@@ -420,7 +465,7 @@ class Testing extends StatelessWidget {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             ),
                             onPressed: () {
-                              showReceiptDialog(context);
+                              showConfirmDialog(context);
                             },
                             child: const Text(
                               'Continue',
@@ -443,6 +488,155 @@ class Testing extends StatelessWidget {
   }
 }
 
+void showConfirmDialog(BuildContext context) {
+  // Dummy data
+  String accountName = "John Doe";
+  String accountNumber = "1234567890";
+  double amount = 2500.75;
+  String currency = "KES";
+  String reference = "INV-20250219";
+  String paymentMethod = "Mobile Money";
+  String dateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        titlePadding: EdgeInsets.zero,
+        insetPadding: EdgeInsets.all(8),
+        backgroundColor: AppColors.quinary,
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
+          width: double.maxFinite,
+          height: 70,
+          child: Center(
+              child: Text(
+            'Confirm payment',
+            style: TextStyle(color: AppColors.quinary, fontSize: 24),
+          )),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gap(10),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("From", style: TextStyle()),
+                      ),
+                      Text(accountName, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("Receiver", style: TextStyle()),
+                      ),
+                      Text(accountNumber, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("Currency", style: TextStyle()),
+                      ),
+                      Text("$currency ${amount.toStringAsFixed(2)}", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("Amount", style: TextStyle()),
+                      ),
+                      Text(paymentMethod, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("Date & Time", style: TextStyle(fontWeight: FontWeight.normal)),
+                      ),
+                      Text(dateTime, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Gap(5),
+                ],
+              ),
+            ),
+            Divider(
+              height: 0,
+            ),
+            Gap(15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TextFormField(
+                maxLines: 2,
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(),
+                  label: Text(
+                    'Add description',
+                  ),
+                ),
+              ),
+            ),
+            Gap(20)
+          ],
+        ),
+        actions: [
+          SizedBox(
+            width: 90,
+            height: 40,
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: CupertinoColors.systemBlue,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              onPressed: () {
+                Navigator.pop(context);
+                showReceiptDialog(context);
+              },
+              child: Text('Submit', style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.bold, fontSize: 15)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: SizedBox(
+              width: 90,
+              height: 40,
+              child: FloatingActionButton(
+                elevation: 0,
+                backgroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel', style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.bold, fontSize: 15)),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 void showReceiptDialog(BuildContext context) {
   // Dummy data
   String accountName = "John Doe";
@@ -463,109 +657,164 @@ void showReceiptDialog(BuildContext context) {
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
-            color: CupertinoColors.systemBlue
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
           width: double.maxFinite,
           height: 70,
-          child: Center(child: Text('Confirm payment',style: TextStyle(color: AppColors.quinary,fontSize: 24),)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.task_alt_outlined,
+                size: 40,
+                color: AppColors.quinary,
+              ),
+              Gap(20),
+              Text(
+                'Payment created',
+                style: TextStyle(color: AppColors.quinary, fontSize: 24),
+              ),
+            ],
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Gap(10),
+            Gap(10),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Row(
                     children: [
-
                       Expanded(
-                        child: Text("From", style: TextStyle()),
+                        child: Text("Transaction type", style: TextStyle()),
                       ),
-                      Text(accountName, style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)),
+                      Text(accountName, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   Gap(5),
-                  Divider(thickness: 1, color: Colors.grey[300]),  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
                   Row(
                     children: [
-
+                      Expanded(
+                        child: Text("Transaction id", style: TextStyle()),
+                      ),
+                      Text(accountName, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text("From", style: TextStyle()),
+                      ),
+                      Text(accountName, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
+                  Row(
+                    children: [
                       Expanded(
                         child: Text("Receiver", style: TextStyle()),
                       ),
-                      Text(accountNumber, style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)),
+                      Text(accountNumber, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                     ],
-                  ),  Gap(5),
-                  Divider(thickness: 1, color: Colors.grey[300]),  Gap(5),
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
                   Row(
                     children: [
-
                       Expanded(
                         child: Text("Currency", style: TextStyle()),
                       ),
-                      Text("$currency ${amount.toStringAsFixed(2)}", style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)),
+                      Text("$currency ${amount.toStringAsFixed(2)}", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                     ],
-                  ),  Gap(5),
-                  Divider(thickness: 1, color: Colors.grey[300]),  Gap(5),
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
                   Row(
                     children: [
-
                       Expanded(
                         child: Text("Amount", style: TextStyle()),
                       ),
-                      Text(paymentMethod, style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)),
+                      Text(paymentMethod, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                     ],
-                  ),  Gap(5),
-                  Divider(thickness: 1, color: Colors.grey[300]),  Gap(5),
-
+                  ),
+                  Gap(5),
+                  Divider(thickness: 1, color: Colors.grey[300]),
+                  Gap(5),
                   Row(
                     children: [
-
                       Expanded(
                         child: Text("Date & Time", style: TextStyle(fontWeight: FontWeight.normal)),
                       ),
-                      Text(dateTime, style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w600)),
+                      Text(dateTime, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                     ],
-                  ),Gap(5),
-                  Gap(5),
+                  ),
+                  Gap(10),
                 ],
               ),
             ),
-            Divider(height: 0,),
-            Gap(15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: TextFormField(maxLines: 2,
-                decoration: InputDecoration(labelStyle: TextStyle(),
-                  label: Text('Add description'
-                    ,),),),
-            ),Gap(20)
-          ],
-        ),
-        actions: [
-          SizedBox(width: 90,height: 40,
-            child: FloatingActionButton(elevation: 0,
-              backgroundColor: CupertinoColors.systemBlue,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              onPressed: () => Navigator.pop(context),
-              child: Text('Submit', style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.bold,fontSize: 15)),
+            Divider(
+              height: 0,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: SizedBox(width: 90,height: 40,
-              child: FloatingActionButton(elevation: 0,
-                backgroundColor: CupertinoColors.destructiveRed,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                onPressed: () => Navigator.pop(context),
-                child: Text('Cancel', style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.bold,fontSize: 15)),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image(
+                      height: 50, image: NetworkImage('https://media.istockphoto.com/id/828088276/vector/qr-code-illustration.jpg?s=612x612&w=0&k=20&c=FnA7agr57XpFi081ZT5sEmxhLytMBlK4vzdQxt8A70M=')),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                color: CupertinoColors.systemBlue,
+                                Icons.download_for_offline_outlined,
+                                size: 30,
+                              )),
+                          Text(
+                            'Download',
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
+                      Gap(30),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                color: CupertinoColors.systemBlue,
+                                Icons.share,
+                                size: 30,
+                              )),
+                          Text(
+                            'Share',
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
-          ),
-
-        ],
+          ],
+        ),
       );
     },
   );

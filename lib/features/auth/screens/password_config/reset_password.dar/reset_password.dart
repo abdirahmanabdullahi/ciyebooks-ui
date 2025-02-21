@@ -47,8 +47,8 @@ class ResetPassword extends StatelessWidget {
               width: double.infinity,
               child: FloatingActionButton(
                 backgroundColor: AppColors.prettyDark,
-                elevation: 2,
-                onPressed: () => AuthRepo.instance.screenRedirect(),
+                elevation: 2,onPressed: (){},
+                // onPressed: () => AuthRepo.instance.screenRedirect(),
                 child: Text(
                   AppTexts.done,
                   style: Theme.of(context)
