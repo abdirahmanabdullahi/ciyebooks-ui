@@ -3,6 +3,7 @@ import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/utils/constants/text_strings.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,8 @@ class SignupController extends GetxController {
   static SignupController get instance => Get.find();
 
   // Variables
+  // final _uid FirebaseAuth.instance.currentUser;?.uid;
+
   final isLoading = false.obs;
   final hidePassword = true.obs;
   final privacyPolicy = false.obs;
@@ -27,6 +30,8 @@ class SignupController extends GetxController {
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
   final setupRepo = Get.put(SetupRepo());
+  final userRepo = Get.put(UserRepo());
+  final controller = Get.put(VerifyEmailController());
 
   // SIGNUP
   // void recreatedBalances() async {
@@ -70,6 +75,7 @@ class SignupController extends GetxController {
         email.text.trim(),
         password.text.trim(),
       );
+      final _uid = userCredential.user?.uid;
 
       // Save authenticated data to the firestore.
       final newUser = UserModel(
@@ -82,19 +88,25 @@ class SignupController extends GetxController {
         accountIsSetup: false,
       );
 
-      ///Create empty setup data
+
+
       /// Save user data
-      final userRepo = Get.put(UserRepo());
+
+
       await userRepo.saveUserDate(newUser);
 
-      /// Save setup data
-      await setupRepo.saveSetupData(BalancesModel.empty());
+      ///Create empty setup data
+      await setupRepo.saveSetupData(BalancesModel.empty(),_uid).then((value) => Get.snackbar(
+        "Success!",
+        'Balances update complete',
+        backgroundColor: Colors.purple,
+        colorText: Colors.white,
+      ));;
 
       //Success message
       Get.snackbar('Congratulations', AppTexts.yourAccountCreatedTitle,
           backgroundColor: Colors.green, colorText: Colors.white);
 
-      final controller = Get.put(VerifyEmailController());
       // Send email verification
 
       try {

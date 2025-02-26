@@ -20,7 +20,6 @@ class AuthRepo extends GetxController {
   //Variables
   final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
-  // final uid = FirebaseAuth.instance.currentUser?.uid;
   Rx<UserModel> userData = UserModel.empty().obs;
   final accountIsSetUp = false.obs;
 
@@ -28,7 +27,6 @@ class AuthRepo extends GetxController {
 // Called from main.dart on app launch
   @override
   void onReady() {
-    Get.offAll(() => Login());
 
     FlutterNativeSplash.remove();
     screenRedirect();

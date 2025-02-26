@@ -20,8 +20,8 @@ class SetupController extends GetxController {
   static SetupController get instance => Get.find();
 
   final isLoading = false.obs;
-  GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final setupRepo = Get.put(SetupRepo());
 
@@ -33,26 +33,19 @@ class SetupController extends GetxController {
 
   final _uid = FirebaseAuth.instance.currentUser!.uid;
 
-  ///
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
 
-  ///
   RxList<ReceiveModel> receipts = <ReceiveModel>[].obs;
 
-  ///
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
 
-  ///
   RxList<WithdrawModel> withdrawals = <WithdrawModel>[].obs;
 
-  ///
   RxList<DepositModel> deposits = <DepositModel>[].obs;
 
-  ///
   RxList<TransferModel> transfers = <TransferModel>[].obs;
 
   /// fireStore instance
-  final _db = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -62,8 +55,6 @@ class SetupController extends GetxController {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         counters.value = totals.value.transactionCounters!;
-        print(counters);
-        // currency.value = BalancesModel.fromJson()
       }
     });
 
@@ -109,7 +100,6 @@ class SetupController extends GetxController {
     });
     super.onInit();
   }
-
 
   /// Update setup status
   Future<void> completeSetup() async {

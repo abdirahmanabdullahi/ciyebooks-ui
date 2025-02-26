@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants/colors.dart';
@@ -7,10 +8,11 @@ class BalanceTile extends StatelessWidget {
     super.key,
     required this.leading,
     required this.title,
-    required this.subtitle, required this.valueColor,
+ required this.valueColor,
 
   });
-  final String leading, title, subtitle;
+  final String leading, title;
+
   final Color valueColor;
 
   @override
@@ -18,7 +20,7 @@ class BalanceTile extends StatelessWidget {
     return ListTile(
       shape: RoundedRectangleBorder(
       side: BorderSide(color: Colors.grey, width: .3),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(10),
     ),
       trailing: Padding(
         padding: const EdgeInsets.only(right: (8.0)),
@@ -35,25 +37,24 @@ class BalanceTile extends StatelessWidget {
       dense: true,
       tileColor: AppColors.quinary,
       leading: CircleAvatar(
-        radius: 18,
+        radius: 15,
         backgroundColor: AppColors.prettyDark,
         child: Text(
           leading,
           style: const TextStyle(
               // fontFamily: "Oswald",
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w900,
               color: AppColors.quinary,
-              fontSize: 10),
+              fontSize: 8),
         ),
       ),
       title: Text(
         title,
-        style: TextStyle(fontSize: 22,fontWeight: FontWeight.w400,)
+        style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700,
+        color: CupertinoColors.systemBlue
+        )
       ),
-      subtitle: Text(
-        subtitle,
-        style:TextStyle(color: Colors.grey.shade400,fontWeight: FontWeight.w700,fontSize: 12)
-      ),
+
     );
   }
 }

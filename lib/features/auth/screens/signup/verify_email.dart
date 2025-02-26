@@ -15,14 +15,13 @@ class VerifyEmail extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(VerifyEmailController());
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.quarternary,
+      appBar: AppBar(
+        backgroundColor: AppColors.quarternary,
         automaticallyImplyLeading: false,
-
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(
-AppSizes.sm          ),
+          padding: const EdgeInsets.all(AppSizes.sm),
           child: SizedBox(
             width: double.infinity,
             child: Column(
@@ -30,8 +29,7 @@ AppSizes.sm          ),
                 const SizedBox(
                   width: double.infinity,
                 ),
-                const Image(
-                    image: AssetImage(AppImages.deliveredEmailIllustration)),
+                const Image(image: AssetImage(AppImages.deliveredEmailIllustration)),
                 const Gap(AppSizes.spaceBtwSections),
                 Text(
                   AppTexts.confirmEmail,
@@ -50,14 +48,19 @@ AppSizes.sm          ),
                   textAlign: TextAlign.center,
                 ),
                 const Gap(AppSizes.spaceBtwSections),
-                SizedBox(height: 50,
+                SizedBox(
+                  height: 50,
                   width: double.infinity,
-                  child: FloatingActionButton(elevation: 2,backgroundColor: AppColors.prettyDark,
-                    child:  Text(AppTexts.tContinue,style: Theme.of(context).textTheme.titleLarge!.apply(color: AppColors.quinary),),
+                  child: FloatingActionButton(
+                    elevation: 2,
+                    backgroundColor: AppColors.prettyDark,
+                    child: Text(
+                      AppTexts.tContinue,
+                      style: Theme.of(context).textTheme.titleLarge!.apply(color: AppColors.quinary),
+                    ),
                     onPressed: () => controller.checkEmailVerificationStatus(),
                   ),
                 ),
-
                 const Gap(AppSizes.spaceBtwItems),
                 SizedBox(
                   width: double.infinity,

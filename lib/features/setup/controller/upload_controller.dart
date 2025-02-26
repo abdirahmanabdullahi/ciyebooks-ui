@@ -82,14 +82,26 @@ class UploadController extends GetxController {
       final workingCapita =
           (parsedTotals['shillingAtBank'] + parsedTotals['shillingCashInHand'] + parsedTotals['shillingReceivable'] + parsedTotals['currenciesAtCost']) - parsedTotals['shillingPayable'];
       final totals = BalancesModel(
-        shillingAtBank: parsedTotals['shillingAtBank'],
-        shillingCashInHand: parsedTotals['shillingCashInHand'],
-        shillingReceivable: parsedTotals['shillingReceivable'],
-        shillingPayable: parsedTotals['shillingPayable'],
-        dollarAtBank: parsedTotals['dollarAtBank'],
-        dollarCashInHand: parsedTotals['dollarCashInHand'],
-        dollarReceivable: parsedTotals['dollarReceivable'],
-        dollarPayable: parsedTotals['dollarPayable'],
+        cashBalances: {
+          'USD': parsedTotals['dollarCashInHand'],
+          'KES': parsedTotals['shillingCashInHand'],
+        },
+        payable: {
+          'USD':parsedTotals['dollarPayable'],
+              'KES':parsedTotals['shillingPayable'],
+        },
+        receivable: {
+          'KES': parsedTotals['shillingReceivable'],
+          'USD': parsedTotals['dollarReceivable'],
+        },
+        // shillingAtBank: parsedTotals['shillingAtBank'],
+        // shillingCashInHand: parsedTotals['shillingCashInHand'],
+        // shillingReceivable: parsedTotals['shillingReceivable'],
+        // shillingPayable: parsedTotals['shillingPayable'],
+        // dollarAtBank: parsedTotals['dollarAtBank'],
+        // dollarCashInHand: parsedTotals['dollarCashInHand'],
+        // dollarReceivable: parsedTotals['dollarReceivable'],
+        // dollarPayable: parsedTotals['dollarPayable'],
         currenciesAtCost: parsedTotals['currenciesAtCost'],
         workingCapital: workingCapita,
         expenses: {'USD': 0.0, 'KES': 0.0},
@@ -98,8 +110,8 @@ class UploadController extends GetxController {
         withdrawals: {'USD': 0.0, 'KES': 0.0},
         payments: {'USD': 0.0, 'KES': 0.0},
         deposits: {'USD': 0.0, 'KES': 0.0},
-        inflows: {'USD': 0.0, 'KES': 0.0},
-        outflows: {'USD': 0.0, 'KES': 0.0},
+        // inflows: {'USD': 0.0, 'KES': 0.0},
+        // outflows: {'USD': 0.0, 'KES': 0.0},
         transactionCounters: {
           'paymentsCounter': 0,
           'receiptsCounter': 0,
@@ -113,11 +125,12 @@ class UploadController extends GetxController {
           'bankTransferCounter': 0,
           'internalTransferCounter': 0,
         },
+        bankBalances: {'KES': parsedTotals['shillingAtBank'], 'USD': parsedTotals['dollarAtBank']},
       );
 
       /// Save the data to firestore
       ///Todo: Upload the data to firestore
-      await _setupRepo.saveSetupData(totals);
+      // await _setupRepo.saveSetupData(totals);
     }
   }
 
@@ -145,10 +158,10 @@ class UploadController extends GetxController {
           return;
         }
         final newAccount = AccountModel(
-         currencies: {
-           'usdBalance': double.tryParse(splitLine[4]) ?? 0.0,
-           'kesBalance': double.tryParse(splitLine[5]) ?? 0.0,
-         },
+            currencies: {
+              'usdBalance': double.tryParse(splitLine[4]) ?? 0.0,
+              'kesBalance': double.tryParse(splitLine[5]) ?? 0.0,
+            },
             dateCreated: DateTime.now(),
             firstName: splitLine[0],
             lastName: splitLine[1],
@@ -224,7 +237,7 @@ class UploadController extends GetxController {
         ///Point where to create each new account
         final newPaymentRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('PAY-$paymentsCounter');
 
-        ///CREATE THE ACCOUNT
+        ///CREATE THE TRANSACTION
         batch.set(newPaymentRef, newPayment.toJson());
 
         ///UPDATE THE COUNTER

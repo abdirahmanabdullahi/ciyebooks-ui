@@ -16,11 +16,11 @@ class SetupRepo extends GetxController {
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   //Function to save data to firestore
-  Future<void> saveSetupData(BalancesModel balances) async {
+  Future<void> saveSetupData(BalancesModel balances,id) async {
     try {
       await _db
           .collection('Users')
-          .doc(uid)
+          .doc(id)
           .collection('Setup')
           .doc('Balances')
           .set(

@@ -51,6 +51,7 @@ class SignInController extends GetxController {
         isLoading.value = false;
         return;
       }
+      // if (_formKey.currentState!.validate()) {
 
       /// Save data if remember me is checked
       if (rememberMe.value) {

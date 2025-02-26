@@ -81,26 +81,24 @@ class Dashboard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Your wallet",
+                    "Cash balances",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Obx(
-                    () => BalanceTile(
-                      leading: "USD",
-                      title: formatter.format(controller.totals.value.dollarCashInHand),
-                      subtitle: 'USD cash in hand',
-                      valueColor: CupertinoColors.systemBlue,
-                    ),
+                    () => Column(children: controller.totals.value.cashBalances.entries.map((entry){
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3.0),
+                        child: BalanceTile(
+                          leading: entry.key,
+                          title: formatter.format(entry.value),
+                          // subtitle: entry.key,
+                          valueColor: CupertinoColors.activeGreen,
+                        ),
+                      );
+                    }).toList(),)
+                  
                   ),
-                  const Gap(6),
-                  Obx(
-                    () => BalanceTile(
-                      leading: "KES",
-                      title: formatter.format(controller.totals.value.shillingCashInHand),
-                      subtitle: 'KES cash in hand',
-                      valueColor: CupertinoColors.activeGreen,
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -109,34 +107,31 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(1.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Bank balances",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                children: [  Text(
+                  "Bank balances",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                   Obx(
-                    () => BalanceTile(
-                      leading: "USD",
-                      title: formatter.format(controller.totals.value.dollarAtBank),
-                      subtitle: 'USD at bank',
-                      valueColor: CupertinoColors.systemBlue,
-                    ),
+                          () => Column(children: controller.totals.value.bankBalances.entries.map((entry){
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.0),
+                          child: BalanceTile(
+                            leading: entry.key,
+                            title: formatter.format(entry.value),
+                            // subtitle: entry.key,
+                            valueColor: CupertinoColors.activeGreen,
+                          ),
+                        );
+                      }).toList(),)
+
                   ),
                   const Gap(6),
-                  Obx(
-                    () => BalanceTile(
-                      leading: "KES",
-                      title: formatter.format(controller.totals.value.shillingAtBank),
-                      subtitle: 'KES at bank',
-                      valueColor: CupertinoColors.activeGreen,
-                    ),
-                  ),
-                  const Gap(12),
-                  Text(
+
+                  controller.currencies.isEmpty?SizedBox():Text(
                     "Foreign currency stock",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  CustomContainer(
+                  controller.currencies.isEmpty?SizedBox():CustomContainer(
                     border: Border.all(color: Colors.grey, width: 0.3),
                     darkColor: AppColors.quinary,
                     width: double.infinity,
