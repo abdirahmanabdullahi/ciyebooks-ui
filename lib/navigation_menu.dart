@@ -18,7 +18,7 @@ import 'features/calculator/calculator_screen.dart';
 import 'features/common/widgets/acount_preview_tile.dart';
 import 'features/dashboard/home.dart';
 import 'features/notes/notes.dart';
-import 'features/pay/pay_client/screens/pay_account_selector.dart';
+import 'features/pay/pay_client/screens/pay_client_form.dart';
 import 'features/stats/stats.dart';
 import 'features/todos/todos.dart';
 

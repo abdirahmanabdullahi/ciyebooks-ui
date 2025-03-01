@@ -13,8 +13,8 @@ import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/acount_preview_tile.dart';
 import '../pay_client_controller/pay_client_controller.dart';
 
-class Testing extends StatelessWidget {
-  const Testing({super.key});
+class PayClientForm extends StatelessWidget {
+  const PayClientForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -248,6 +248,8 @@ class Testing extends StatelessWidget {
                     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                   ],
                   decoration: InputDecoration(
+                    // prefix: Text(controller.paidCurrency.value.text,style: TextStyle(
+                    //     color: AppColors.prettyDark,fontSize: 25,fontWeight: FontWeight.w300),),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     label: Center(
                       child: Text(
@@ -334,7 +336,7 @@ class Testing extends StatelessWidget {
                           child: Obx(
                             () => ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                disabledBackgroundColor: const Color(0xff35689FFF),
+                                disabledBackgroundColor: const Color(0xff35689fff),
                                 backgroundColor: CupertinoColors.systemBlue,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               ),
@@ -445,28 +447,38 @@ class Testing extends StatelessWidget {
                                                     mainAxisAlignment: MainAxisAlignment.end,
                                                     children: [
                                                       SizedBox(
-                                                        width: 70,
-                                                        height: 35,
-                                                        child: FloatingActionButton(
-                                                          elevation: 0,
-                                                          backgroundColor: CupertinoColors.systemBlue,
-                                                          onPressed: () => controller.createPayment(context),
-                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
-                                                          child: Text(
-                                                            'Pay',
-                                                            style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary, fontSize: 15),
-                                                          ),
+                                                        width: 100,
+                                                        height: 45,
+                                                        child: Obx(
+                                                          () => ElevatedButton(
+                                                              style: ElevatedButton.styleFrom(
+                                                                padding: EdgeInsets.zero,
+                                                                disabledBackgroundColor: const Color(0xff35689fff),
+                                                                backgroundColor: CupertinoColors.systemBlue,
+                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                              ),
+                                                              onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                                                              child: Text(
+                                                                'Pay',
+                                                                style: TextStyle(color: AppColors.quinary),
+                                                              )),
                                                         ),
                                                       ),
-                                                      Gap(20),
+                                                      Gap(10),
                                                       SizedBox(
                                                         width: 70,
-                                                        height: 35,
-                                                        child: FloatingActionButton(
-                                                          elevation: 0,
-                                                          backgroundColor: CupertinoColors.destructiveRed,
+                                                        height: 45,
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            padding: EdgeInsets.zero,
+                                                            foregroundColor: AppColors.quinary,
+                                                            backgroundColor: CupertinoColors.destructiveRed,
+                                                            disabledBackgroundColor: const Color(0xff35689fff),
+                                                          ),
+                                                          // elevation: 0,
+                                                          // backgroundColor: CupertinoColors.destructiveRed,
                                                           onPressed: () => Navigator.pop(context),
-                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                                                          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
                                                           child: Text(
                                                             'Cancel',
                                                             style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary, fontSize: 15),
@@ -502,5 +514,3 @@ class Testing extends StatelessWidget {
     );
   }
 }
-
-

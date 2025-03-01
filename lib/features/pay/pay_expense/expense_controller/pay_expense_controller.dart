@@ -23,13 +23,15 @@ import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../../accounts/model/model.dart';
 import '../../../setup/models/setup_model.dart';
+import '../expense_model/expense_model.dart';
 
-class PayClientController extends GetxController {
-  static PayClientController get instance => Get.find();
+class PayExpenseController extends GetxController {
+  static PayExpenseController get instance => Get.find();
 
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
+  final expenseCategories = {}.obs;
   final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -38,16 +40,13 @@ class PayClientController extends GetxController {
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
-  final paidToOwner = true.obs;
-  final payClientFormKey = GlobalKey<FormState>();
+  final payExpenseFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
 
   ///Controllers
-  final from = TextEditingController();
+  final category = TextEditingController();
   final amount = TextEditingController();
   final paidCurrency = TextEditingController();
-  final receiver = TextEditingController();
-  final accountNo = TextEditingController();
   final description = TextEditingController();
 
   ///
@@ -92,38 +91,36 @@ class PayClientController extends GetxController {
     fetchTotals();
 
     ///Add listeners to the controllers
-    from.addListener(updateButtonStatus);
-    accountNo.addListener(updateButtonStatus);
+    category.addListener(updateButtonStatus);
     amount.addListener(updateButtonStatus);
     paidCurrency.addListener(updateButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
 
-    /// Stream for the accounts
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
-      accounts.value = querySnapshot.docs.map((doc) {
-        return AccountModel.fromJson(doc.data());
-      }).toList();
-    });
     super.onInit();
   }
 
   void updateButtonStatus() {
-    isButtonEnabled.value = from.text.isNotEmpty && accountNo.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+
+    isButtonEnabled.value = category.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
+    DocumentSnapshot balances = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
+    DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
 
-    if (documentSnapshot.exists && documentSnapshot.data() != null) {
-      totals.value = BalancesModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    if(expenses.exists && expenses.data()!=null){
+      expenseCategories.value = expenses.data() as Map<String,dynamic>;
+
+    }
+    if (balances.exists && balances.data() != null) {
+      totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
       cashBalances.value = totals.value.cashBalances;
       counters.value = totals.value.transactionCounters;
       payments.value = totals.value.payments;
       transactionCounter.value = counters['paymentsCounter'];
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[$transactionCounter]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
     }
   }
 
@@ -164,7 +161,7 @@ class PayClientController extends GetxController {
                                 pw.Image(height: 60, pw.MemoryImage(imageData)),
                                 pw.SizedBox(width: 20),
                                 pw.Text(
-                                  'Payment receipt',
+                                  'Expense receipt',
                                   style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
                                 ),
                               ],
@@ -186,7 +183,7 @@ class PayClientController extends GetxController {
                                         "Transaction type",
                                       ),
                                     ),
-                                    pw.Text('Payment', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                                    pw.Text('Expense', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -204,7 +201,7 @@ class PayClientController extends GetxController {
                                         "Transaction id",
                                       ),
                                     ),
-                                    pw.Text('pymnt-${counters['paymentsCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                                    pw.Text('exp-${counters['expenseCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -219,28 +216,10 @@ class PayClientController extends GetxController {
                                     pw.Expanded(
                                       child: pw.Text(
                                         style: pw.TextStyle(font: ttf),
-                                        "From",
+                                        "Expense category",
                                       ),
                                     ),
-                                    pw.Text(from.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Receiver",
-                                      ),
-                                    ),
-                                    pw.Text(paidToOwner.value ? 'Account holder' : receiver.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                                    pw.Text(category.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -258,7 +237,7 @@ class PayClientController extends GetxController {
                                         "Currency",
                                       ),
                                     ),
-                                    pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                                    pw.Text(paidCurrency.text, style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -268,6 +247,7 @@ class PayClientController extends GetxController {
                                 pw.SizedBox(
                                   height: 10,
                                 ),
+
                                 pw.Row(
                                   children: [
                                     pw.Expanded(
@@ -277,6 +257,23 @@ class PayClientController extends GetxController {
                                       ),
                                     ),
                                     pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                                  ],
+                                ),
+                                pw.SizedBox(
+                                  height: 10,
+                                ),
+                                pw.Divider(thickness: 1, color: PdfColors.grey),
+                                pw.SizedBox(
+                                  height: 10,
+                                ), pw.Row(
+                                  children: [
+                                    pw.Expanded(
+                                      child: pw.Text(
+                                        style: pw.TextStyle(font: ttf),
+                                        "Description",
+                                      ),
+                                    ),
+                                    pw.Text(description.text, style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -313,7 +310,7 @@ class PayClientController extends GetxController {
       ///Share or download the receipt
       final directory = await getApplicationDocumentsDirectory();
       final path = directory.path;
-      final file = File('$path/pymnt-${counters['paymentsCounter']}.pdf');
+      final file = File('$path/EXP-${counters['expenseCounter']}.pdf');
       await file.writeAsBytes(await pdf.save());
       if (await file.exists()) {
         Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
@@ -342,7 +339,7 @@ class PayClientController extends GetxController {
     showDialog(
       context: context,
       builder: (context) {
-        Future.delayed(Duration(seconds: 5), () {
+        Future.delayed(Duration(seconds: 50), () {
           if(context.mounted){
             Navigator.of(context).pop();
           }// Close the dialog
@@ -371,7 +368,7 @@ class PayClientController extends GetxController {
                     ),
                     Gap(15),
                     Text(
-                      'Payment receipt',
+                      'Expense receipt',
                       style: TextStyle(color: AppColors.quinary, fontSize: 24),
                     ),
                   ],
@@ -387,7 +384,7 @@ class PayClientController extends GetxController {
                         Expanded(
                           child: Text("Transaction type", style: TextStyle()),
                         ),
-                        Text('Payment', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        Text('Expense', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
@@ -397,7 +394,7 @@ class PayClientController extends GetxController {
                         Expanded(
                           child: Text("Transaction id", style: TextStyle()),
                         ),
-                        Text('pymnt-${counters['paymentsCounter']}', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        Text('exp-${counters['expenseCounter']}', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
@@ -405,25 +402,15 @@ class PayClientController extends GetxController {
                     Row(
                       children: [
                         Expanded(
-                          child: Text("From", style: TextStyle()),
+                          child: Text("Category", style: TextStyle()),
                         ),
-                        Text(from.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        Text(category.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
                     Divider(thickness: 1, color: Colors.grey[300]),
                     Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Receiver", style: TextStyle()),
-                        ),
-                        Text(paidToOwner.value ? 'Account holder' : receiver.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
+
                     Row(
                       children: [
                         Expanded(
@@ -441,6 +428,17 @@ class PayClientController extends GetxController {
                           child: Text("Amount", style: TextStyle()),
                         ),
                         Text(formatter.format(double.parse(amount.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                    Gap(5),
+
+                    Divider(thickness: 1, color: Colors.grey[300]),
+                    Gap(5), Row(
+                      children: [
+                        Expanded(
+                          child: Text("Description", style: TextStyle()),
+                        ),
+                        Text(description.text, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
@@ -486,20 +484,11 @@ class PayClientController extends GetxController {
       },
     );
   }
-  void timer() {
-    Timer(const Duration(seconds: 5), handleTimeout);
-  }
 
-  void handleTimeout() {  // callback function
-  }
 
   Future createPayment(BuildContext context) async {
     isLoading.value = true;
-    if (!paidToOwner.value) {
-      if (!payClientFormKey.currentState!.validate()) {
-        return;
-      }
-    }
+
     try {
       ///Compare cash and amount to be paid
       cashBalance.value = double.tryParse(cashBalances[paidCurrency.text.trim()].toString()) ?? 0.0;
@@ -527,7 +516,7 @@ class PayClientController extends GetxController {
           ),
           shouldIconPulse: true,
           "Zero cash warning",
-          'If you make this payment, you will have to cash left',
+          'If you make this payment, you will have no cash left',
           backgroundColor: Colors.orangeAccent,
           colorText: Colors.white,
         );
@@ -539,36 +528,22 @@ class PayClientController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('pymnt-${counters['paymentsCounter']}');
+      final expenseRef = db.collection('Users').doc(_uid).collection('transactions').doc('exp-${counters['expenseCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc(accountNo.text.trim());
 
-      ///Get data from the controllers
-      final newPayment = PayClientModel(
-          transactionId: 'pymnt-${counters['paymentsCounter']}',
-          transactionType: 'payment',
-          accountFrom: from.text.trim(),
-          currency: paidCurrency.text.trim(),
-          amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
-          receiver: receiver.text.trim(),
-          dateCreated: DateTime.now(),
-          description: description.text.trim());
-
-      ///Update account
-      batch.update(accountRef, {'Currencies.${paidCurrency.text.trim()}': FieldValue.increment(-num.parse(amount.text.trim()))});
-
+      final newExpense = ExpenseModel(transactionId:'EXP-${counters['expenseCounter']}', category: category.text.trim(), description: description.text.trim(), dateCreated: DateTime.now(), currency: paidCurrency.text.trim(), amountPaid: double.tryParse(amount.text.trim())??0.0, transactionType: 'Expense');
       ///Create payment transaction
-      batch.set(paymentRef, newPayment.toJson());
+      batch.set(expenseRef, newExpense.toJson());
 
       ///update cash balance
       batch.update(cashRef, {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
-      ///update payments total
-      batch.update(cashRef, {"payments.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      ///update expense total
+      batch.update(cashRef, {"expense.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
-      ///Update payment counter
-      batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
+      ///Update expense counter
+      batch.update(counterRef, {"transactionCounters.expenseCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
         Get.snackbar(
@@ -578,7 +553,7 @@ class PayClientController extends GetxController {
           ),
           shouldIconPulse: true,
           "Success",
-          'payment created successfully',
+          'expense created successfully',
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );

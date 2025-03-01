@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -13,12 +14,11 @@ import '../../common/screens/account_selector_screen.dart';
 import '../../forex/buy/buy_account_selector.dart';
 import '../../forex/forex_history.dart';
 import '../../forex/sell/sell_account_selector.dart';
-import '../../pay/pay_client/screens/pay_account_selector.dart';
+import '../../pay/pay_client/screens/pay_client_form.dart';
 import '../../receive/screens/receive_account_selector.dart';
 import '../../search/transaction_history.dart';
 import '../../forex/currency_stock.dart';
 import '../../internal_transfer/internal_transfer_account_selector.dart';
-import '../../pay/pay_expense/screens/expense_account_selector.dart';
 import 'bottom_sheet_button.dart';
 import 'top_button.dart';
 
@@ -68,13 +68,13 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.north_east,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => Testing());
+                                Get.to(() => PayClientForm());
                               },
                             ),
                             Divider(
                               height: 0,
                             ),
-                            BottomSheetButton(heroTag: "Pay an expense", label: "Pay an expense", icon: Icons.shopping_bag, onPressed: () => Get.to(() => ExpenseAccountSelector())),
+                            BottomSheetButton(heroTag: "Pay an expense", label: "Pay an expense", icon: Icons.shopping_bag, onPressed: () => Get.to(() => PayExpenseForm())),
                             Divider(
                               height: 0,
                             ),
