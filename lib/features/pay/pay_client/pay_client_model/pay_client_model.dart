@@ -33,14 +33,14 @@ class PayClientModel {
 
   factory PayClientModel.fromJson(Map<String, dynamic> jsonData) {
     return PayClientModel(
-      transactionId: jsonData['TransactionId'],
+      transactionId: jsonData['TransactionId']??'',
       transactionType: jsonData['transactionType'],
-      accountFrom: jsonData['AccountFrom'],
-      currency: jsonData['Currency'],
+      accountFrom: jsonData['AccountFrom']??'',
+      currency: jsonData['Currency']??'',
       amountPaid: jsonData['AmountPaid'] ?? 0.0,
-      receiver: jsonData['Receiver'],
-      description: jsonData['Description'],
-      dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+      receiver: jsonData['Receiver']??'',
+      description: jsonData['Description']??'',
+      dateCreated: DateTime.tryParse(jsonData['DateCreated'].toDate().toString())??DateTime.now(),
     );
   }
 }

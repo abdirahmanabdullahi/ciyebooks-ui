@@ -50,7 +50,8 @@ class PayClientController extends GetxController {
   final accountNo = TextEditingController();
   final description = TextEditingController();
 
-  ///
+  ///Sort criteria
+  final sortCriteria = 'DateCreated'.obs;
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
@@ -123,7 +124,6 @@ class PayClientController extends GetxController {
       counters.value = totals.value.transactionCounters;
       payments.value = totals.value.payments;
       transactionCounter.value = counters['paymentsCounter'];
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[$transactionCounter]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
     }
   }
 
@@ -343,9 +343,9 @@ class PayClientController extends GetxController {
       context: context,
       builder: (context) {
         Future.delayed(Duration(seconds: 5), () {
-          if(context.mounted){
+          if (context.mounted) {
             Navigator.of(context).pop();
-          }// Close the dialog
+          } // Close the dialog
         });
         return AlertDialog(
           titlePadding: EdgeInsets.zero,
@@ -461,20 +461,31 @@ class PayClientController extends GetxController {
               Divider(
                 height: 0,
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.end,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                    child: Column(mainAxisSize: MainAxisSize.min,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton.outlined(onPressed: () =>createPdf(),icon:
-                            Icon(Icons.share,color:CupertinoColors.systemBlue,)
-                            
-                        
-                          // backgroundColor: AppColors.prettyDark,
-                          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
-                          // ),
-                        ),Text('Share',style: TextStyle(fontWeight: FontWeight.w500,),)
+                        IconButton.outlined(
+                            onPressed: () => createPdf(),
+                            icon: Icon(
+                              Icons.share,
+                              color: CupertinoColors.systemBlue,
+                            )
+
+                            // backgroundColor: AppColors.prettyDark,
+                            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
+                            // ),
+                            ),
+                        Text(
+                          'Share',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -486,11 +497,13 @@ class PayClientController extends GetxController {
       },
     );
   }
+
   void timer() {
     Timer(const Duration(seconds: 5), handleTimeout);
   }
 
-  void handleTimeout() {  // callback function
+  void handleTimeout() {
+    // callback function
   }
 
   Future createPayment(BuildContext context) async {
@@ -542,7 +555,7 @@ class PayClientController extends GetxController {
       final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('pymnt-${counters['paymentsCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc(accountNo.text.trim());
+      final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc('PA-${accountNo.text.trim()}');
 
       ///Get data from the controllers
       final newPayment = PayClientModel(

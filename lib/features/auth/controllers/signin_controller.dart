@@ -62,6 +62,13 @@ class SignInController extends GetxController {
       /// Login user with email and password
       final userCredentials = await AuthRepo.instance
           .login(email.text.trim(), password.text.trim()).then((_) {
+
+        /// Stop loading
+        isLoading.value = false;
+
+        /// Redirect
+        AuthRepo.instance.screenRedirect();
+
         Get.snackbar(
           "Successfully logged in",
           "Welcome back",
@@ -73,24 +80,7 @@ class SignInController extends GetxController {
           ),
         );
       });
-      final name = userCredentials.user?.email.toString();
-      ///Success message
 
-      /// Stop loading
-      isLoading.value = false;
-
-      /// Redirect
-      // AuthRepo.instance.screenRedirect();
-      Get.snackbar(
-        "Successfully logged in",
-        "Welcome back $name",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        icon: Icon(
-          Icons.verified_user,
-          color: Colors.white,
-        ),
-      );
     } catch (e) {
       isLoading.value = false;
       Get.snackbar("There was an error during sign in!", e.toString(),

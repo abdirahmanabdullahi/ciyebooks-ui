@@ -6,15 +6,11 @@ class AccountModel {
   final String phoneNo;
   final String email;
   final Map<String,dynamic>currencies;
-  // final double usdBalance;
-  // final double kesBalance;
 
   final DateTime dateCreated;
   AccountModel({
     required this .currencies,
     required this.accountName,
-    // required this.usdBalance,
-    // required this.kesBalance,
 
     required this.dateCreated,
     required this.firstName,
@@ -39,8 +35,7 @@ class AccountModel {
       'Email': email,
       'Currencies':currencies
 
-      // 'UsdBalance': usdBalance,
-      // 'KesBalance': kesBalance,
+
     };
   }
 
@@ -54,8 +49,6 @@ class AccountModel {
         phoneNo: jsonData['PhoneNo'] ?? '',
       email: jsonData['Email'] ?? '',
         currencies: Map<String, dynamic>.from(jsonData['Currencies'])
-      // usdBalance: jsonData['UsdBalance'] ??0.0,
-      // kesBalance: jsonData['KesBalance'] ??0.0,
 
     );
   }

@@ -386,20 +386,20 @@ class SetupScreen extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                            RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: DateFormat("dd MMM yyyy HH:mm").format(
-                                                      account.dateCreated,
-                                                    ),
-                                                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                        // Black Value
-                                                        ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            // RichText(
+                                            //   text: TextSpan(
+                                            //     children: [
+                                            //       TextSpan(
+                                            //         text: DateFormat("dd MMM yyyy HH:mm").format(
+                                            //           account.dateCreated,
+                                            //         ),
+                                            //         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
+                                            //             // Black Value
+                                            //             ),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ],
@@ -3863,25 +3863,6 @@ void createNewAccountBottom(BuildContext? context) {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Obx(
-                        () => SizedBox(
-                          height: 20,
-                          width: 30,
-                          child: Checkbox(
-                            activeColor: Colors.red,
-                            value: controller.usdIsNegative.value,
-                            onChanged: (value) => controller.usdIsNegative.value = !controller.usdIsNegative.value,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Overdrawn?',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
                 ],
               ),
               const Gap(10),
@@ -3898,25 +3879,6 @@ void createNewAccountBottom(BuildContext? context) {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Obx(
-                        () => SizedBox(
-                          height: 20,
-                          width: 30,
-                          child: Checkbox(
-                            activeColor: Colors.red,
-                            value: controller.kesIsNegative.value,
-                            onChanged: (value) => controller.kesIsNegative.value = !controller.kesIsNegative.value,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Overdrawn?',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
                 ],
               ),
               Gap(10),
@@ -3925,7 +3887,7 @@ void createNewAccountBottom(BuildContext? context) {
                 child: ElevatedButton(
                   onPressed: () {
                     // controller.makeItNegative.value = true;
-                    controller.createAccount();
+                    controller.createAccount(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.secondary,

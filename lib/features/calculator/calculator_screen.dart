@@ -1,5 +1,6 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -12,97 +13,117 @@ class CalculatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final screenSize = MediaQuery.of(context).size;
     final CalculatorController controller = Get.put(CalculatorController());
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.quarternary,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 26.0, 0, 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Output display
+          Obx(
+            () {
+              String display = "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
+              return Padding(
+                padding: const EdgeInsets.fromLTRB( 0.0,0,20,0),
+                child: Row(
+                  children: [
+                    Expanded(flex:2,
+                        child: IconButton(
+                            onPressed: () async{
+                          await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
 
-          onPressed: () {
-            Scaffold.of(context).openDrawer(); // Correct context for drawer
-          },
-          icon: Icon(
-            Icons.sort,
-            color: AppColors.prettyDark,size: 30,
-          ),
-        ),
-      ),
-      backgroundColor: AppColors.quarternary,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Output display
-            Expanded(
-              child: Obx(
-                () {
-                  String display =
-                      "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
-                  return SingleChildScrollView(
-                    reverse: true,
-                    child: Container(
-                      alignment: Alignment.bottomRight,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0),
-                      child: Text(
-                        display.isEmpty ? '0.0' : display,
-                        style: const TextStyle(
-                          color: AppColors.prettyDark,
-                          fontSize: 38,
-                          fontWeight: FontWeight.w400,
+                        }, icon: Icon(Icons.copy,color: AppColors.prettyDark,))),
+                    Expanded(
+                      flex: 10,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        reverse: true,
+                        child: Text(
+                          (display.isEmpty || display == '∞') ? '0.0' : display,
+                          style: TextStyle(
+                            color: AppColors.prettyDark,
+                            fontSize: display.length > 14
+                                ? 25
+                                : display.length > 30
+                                    ? 20
+                                    : 35,
+                            fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.end,
                         ),
-                        textAlign: TextAlign.end,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            Divider(
-              color: Colors.grey.shade800,
-              indent: 10,
-              endIndent: 10,
-            ),
-            // Buttons
-            Wrap(
-              children: Btn.buttonValues
-                  .map(
-                    (value) => SizedBox(
-                      width: value == Btn.n0
-                          ? screenSize.width / 2
-                          : screenSize.width / 4,
-                      height: screenSize.width / 5,
-                      child: _buildButton(value, controller),
-                    ),
-                  )
-                  .toList(),
-            ),
-            Gap(AppSizes.defaultSpace)
-          ],
-        ),
+                  ],
+                ),
+              );
+            },
+          ),
+          Divider(
+            color: Colors.grey.shade500,
+            indent: 20,
+            endIndent: 20,
+          ),
+          // Buttons
+          Wrap(
+            children: Btn.buttonValues
+                .map(
+                  (value) => SizedBox(
+                    width: value == Btn.calculate ? 160 : 80,
+                    height: 65,
+                    child: _buildButton(value, controller),
+                  ),
+                )
+                .toList(),
+          ),
+          // Gap(AppSizes.defaultSpace)
+        ],
       ),
     );
   }
 
-  Widget _buildButton(String value, CalculatorController controller) {
+  Widget _buildButton(String value, CalculatorController controller) {    Future<void> vibrate() async {
+    await SystemChannels.platform.invokeMethod<void>(
+      'HapticFeedback.vibrate',
+      'HapticFeedbackType.lightImpact',
+    );
+  }
     return Padding(
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.all(4.0),
       child: Material(
+        elevation: 2,
         color: _getBtnColor(value),
         clipBehavior: Clip.hardEdge,
         shape: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black),
+          borderSide: const BorderSide(
+            color: AppColors.quinary,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: InkWell(
-          onTap: () => controller.onBtnTap(value),
+          onTap: ()  {vibrate();
+            controller.onBtnTap(value);},
           child: Center(
             child: Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
+                color: [
+                  '%',
+                  '×',
+                  '+',
+                  '-',
+                  '÷',
+                  '=',
+                  'D',
+                  'C',
+                ].contains(value)
+                    ? AppColors.quinary
+                    : AppColors.prettyDark,
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
               ),
@@ -115,16 +136,18 @@ class CalculatorScreen extends StatelessWidget {
 
   Color _getBtnColor(String value) {
     return [Btn.del, Btn.clr].contains(value)
-        ? Colors.orange
+        ? CupertinoColors.systemBlue
         : [
             Btn.per,
             Btn.multiply,
             Btn.add,
             Btn.subtract,
             Btn.divide,
-            Btn.calculate
+            Btn.calculate,
+            Btn.calculate,
+            Btn.calculate,
           ].contains(value)
-            ? AppColors.primary
+            ? CupertinoColors.systemBlue
             : AppColors.quinary;
   }
 }

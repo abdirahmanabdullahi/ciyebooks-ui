@@ -23,7 +23,8 @@ class SignInForm extends StatelessWidget {
       key: controller.signInFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [TextFormField(keyboardType: TextInputType.emailAddress,
+        children: [
+          TextFormField(keyboardType: TextInputType.emailAddress,
           controller: controller.email,
           validator: (value) =>
               Validator.validateEmptyText('Email', value),

@@ -1,24 +1,32 @@
+import 'package:ciyebooks/features/accounts/controller/accounts_controller.dart';
+import 'package:ciyebooks/features/accounts/screens/accounts.dart';
+import 'package:ciyebooks/features/bank/deposit/deposit_form.dart';
+import 'package:ciyebooks/features/bank/deposit_for_client/screens/deposit_for_client_form.dart';
+import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_history.dart';
+import 'package:ciyebooks/features/forex/ui/forex_form.dart';
 import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
+import 'package:ciyebooks/features/transafers/internal_transfer/screens/internal_transfer_form.dart';
 import 'package:ciyebooks/navigation_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/constants/colors.dart';
-import '../../accounts/account_search.dart';
-import '../../accounts/create_accounts.dart';
-import '../../bank/deposit/screens/bank_deposit_account_selector.dart';
-import '../../bank/deposit_for_client/client_deposit_account_selector.dart';
-import '../../bank/withdraw/screens/withdraw_account_selector.dart';
+
+import '../../bank/deposit/screens/deposit_history_screen.dart';
+import '../../bank/withdraw/screens/withdraw_form.dart';
 import '../../common/screens/account_selector_screen.dart';
-import '../../forex/buy/buy_account_selector.dart';
-import '../../forex/forex_history.dart';
-import '../../forex/sell/sell_account_selector.dart';
+
+import '../../forex/ui/forex_history.dart';
 import '../../pay/pay_client/screens/pay_client_form.dart';
-import '../../receive/screens/receive_account_selector.dart';
+import '../../pay/pay_client/screens/payment_history.dart';
+import '../../pay/pay_expense/screens/expense_history.dart';
+import '../../receive/screens/receipts_history.dart';
+import '../../receive/screens/receive_from_client_form.dart';
 import '../../search/transaction_history.dart';
-import '../../forex/currency_stock.dart';
-import '../../internal_transfer/internal_transfer_account_selector.dart';
+import '../../transafers/bank_transfer/screens/bank_transfer_form.dart';
+import '../../transafers/internal_transfer/screens/transfer_history.dart';
 import 'bottom_sheet_button.dart';
 import 'top_button.dart';
 
@@ -74,7 +82,14 @@ class ButtonList extends StatelessWidget {
                             Divider(
                               height: 0,
                             ),
-                            BottomSheetButton(heroTag: "Pay an expense", label: "Pay an expense", icon: Icons.shopping_bag, onPressed: () => Get.to(() => PayExpenseForm())),
+                            BottomSheetButton(
+                                heroTag: "Pay an expense",
+                                label: "Pay an expense",
+                                icon: Icons.shopping_bag,
+                                onPressed: () {
+                                  Get.back();
+                                  Get.to(() => PayExpenseForm());
+                                }),
                             Divider(
                               height: 0,
                             ),
@@ -84,19 +99,19 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.list_alt,
                               onPressed: () {
                                 Get.back();
-                                // Get.to(() => const PaymentHistory());
+                                Get.to(() => const PaymentHistory());
                               },
                             ),
                             Divider(
                               height: 0,
                             ),
                             BottomSheetButton(
-                              heroTag: "Schedule a payment",
-                              label: "Schedule a payment",
+                              heroTag: "Expense History",
+                              label: "Expense history",
                               icon: Icons.north_east,
                               onPressed: () {
                                 Get.back();
-                                // Get.to(() => PayAccountSelectorScreen());
+                                Get.to(() => ExpenseHistory());
                               },
                             ),
                             Divider(
@@ -144,7 +159,7 @@ class ButtonList extends StatelessWidget {
                                 onPressed: () {
                                   Get.back();
                                   Get.to(
-                                    () => const ReceiveAccountSelector(),
+                                    () => const ReceiveFromClientForm(),
                                   );
                                 }),
                             Divider(
@@ -154,7 +169,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Receipt history",
                               label: "Receipt history",
                               icon: Icons.list_alt,
-                              onPressed: () {},
+                              onPressed: () => Get.offAll(() => ReceiptsHistory()),
                             ),
                             Divider(
                               height: 0,
@@ -199,7 +214,7 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.arrow_downward,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => BankDepositAccountSelector());
+                                Get.to(() => DepositForm());
                               },
                             ),
                             Divider(
@@ -211,7 +226,7 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.list_alt,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => WithdrawAccountSelector());
+                                Get.to(() => WithdrawForm());
                               },
                             ),
                             Divider(
@@ -223,7 +238,7 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.list_alt,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => ClientDepositAccountSelector());
+                                Get.to(() => DepositForClientForm());
                               },
                             ),
                             Divider(
@@ -233,7 +248,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Bank history",
                               label: "Bank history",
                               icon: Icons.list_alt,
-                              onPressed: () {},
+                              onPressed: () => Get.to(() => WithdrawHistory()),
                             ),
                             Divider(
                               height: 0,
@@ -276,7 +291,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Internal transfer",
                               label: "Internal transfer",
                               icon: Icons.north_east,
-                              onPressed: () => Get.to(() => InternalTransferAccountSelector()),
+                              onPressed: () => Get.to(() => InternalTransferForm()),
                             ),
                             Divider(
                               height: 0,
@@ -285,7 +300,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Bank transfer",
                               label: "Bank transfer",
                               icon: Icons.shopping_bag,
-                              onPressed: () {},
+                              onPressed: () => Get.offAll(() => BankTransferForm()),
                             ),
                             Divider(
                               height: 0,
@@ -294,7 +309,7 @@ class ButtonList extends StatelessWidget {
                               heroTag: "Transfer history",
                               label: "Transfer history",
                               icon: Icons.list_alt,
-                              onPressed: () {},
+                              onPressed: () => Get.offAll(() => TransferHistory()),
                             ),
                             Divider(
                               height: 0,
@@ -309,148 +324,101 @@ class ButtonList extends StatelessWidget {
               );
             },
           ),
-          // TopButton(
-          //   heroTag: "Forex",
-          //   icon: Icons.currency_exchange,
-          //   label: 'Forex',
-          //   onPressed: () {
-          //     showModalBottomSheet<dynamic>(
-          //       isScrollControlled: true,
-          //       context: context,
-          //       builder: (BuildContext bc) {
-          //         return Wrap(
-          //           children: <Widget>[
-          //             Padding(
-          //               padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Text(
-          //                     "Buy and sell foreign currencies",
-          //                     style: Theme.of(context).textTheme.titleMedium,
-          //                   ),
-          //                   Gap(20),
-          //                   Divider(
-          //                     height: 0,
-          //                   ),
-          //                   BottomSheetButton(
-          //                     heroTag: "Buy",
-          //                     label: "Buy",
-          //                     icon: Icons.north_east,
-          //                     onPressed: () {
-          //                       Get.back();
-          //                       Get.to(() => BuyAccountSelector());
-          //                     },
-          //                   ),
-          //                   Divider(
-          //                     height: 0,
-          //                   ),
-          //                   BottomSheetButton(
-          //                     heroTag: "sell",
-          //                     label: "sell",
-          //                     icon: Icons.shopping_bag,
-          //                     onPressed: () {
-          //                       Get.back();
-          //                       Get.to(() => SellAccountSelector());
-          //                     },
-          //                   ),
-          //                   Divider(
-          //                     height: 0,
-          //                   ),
-          //                   BottomSheetButton(
-          //                     heroTag: "New currency",
-          //                     label: "New currency",
-          //                     icon: Icons.list_alt,
-          //                     onPressed: () {},
-          //                   ),
-          //                   Divider(
-          //                     height: 0,
-          //                   ),
-          //                   BottomSheetButton(
-          //                     heroTag: "Currency stock",
-          //                     label: "Currency stock",
-          //                     icon: Icons.list_alt,
-          //                     onPressed: () {
-          //                       Get.back();
-          //                       Get.to(() => CurrencyStock());
-          //                     },
-          //                   ),
-          //                   Divider(
-          //                     height: 0,
-          //                   ),
-          //                   BottomSheetButton(
-          //                     heroTag: "Forex history",
-          //                     label: "Forex history",
-          //                     icon: Icons.list_alt,
-          //                     onPressed: () {
-          //                       Get.back();
-          //                       Get.to(() => ForexHistory());
-          //                     },
-          //                   ),Divider(height: 0,),
-          //                 ],
-          //               ),
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
           TopButton(
-            heroTag: "Accounts",
-            icon: Icons.group_outlined,
-            label: 'Accounts',
+            heroTag: "Forex",
+            icon: Icons.currency_exchange,
+            label: 'Forex',
             onPressed: () {
               showModalBottomSheet<dynamic>(
-                backgroundColor: AppColors.quinary,
                 isScrollControlled: true,
                 context: context,
                 builder: (BuildContext bc) {
                   return Wrap(
                     children: <Widget>[
-                      // Padding(
-                      //   padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Text(
-                      //         "Manage accounts",
-                      //         style: Theme.of(context).textTheme.titleMedium,
-                      //       ),
-                      //       Gap(20),
-                      //       Divider(
-                      //         height: 0,
-                      //       ),
-                      //       BottomSheetButton(
-                      //         heroTag: "Create accounts",
-                      //         label: "Create accounts",
-                      //         icon: Icons.north_east,
-                      //         onPressed: () {
-                      //           Get.back();
-                      //           Get.to(() => CreateAccounts());
-                      //         },
-                      //       ),
-                      //       Divider(height: 0,),
-                      //       BottomSheetButton(
-                      //         heroTag: "View accounts",
-                      //         label: "View accounts",
-                      //         icon: Icons.shopping_bag,
-                      //         onPressed: () {
-                      //           Get.back();
-                      //           Get.to(() => AccountSearch());
-                      //         },
-                      //       ),
-                      //       Divider(
-                      //         height: 0,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 8, 8, 60),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Buy and sell foreign currencies",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Gap(20),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Buy",
+                              label: "Buy",
+                              icon: Icons.north_east,
+                              onPressed: () {
+                                Get.back();
+                                Get.to(() => ForexForm());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "sell",
+                              label: "sell",
+                              icon: Icons.shopping_bag,
+                              onPressed: () {
+                                Get.back();
+                                Get.to(() => ForexForm());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "New currency",
+                              label: "New currency",
+                              icon: Icons.list_alt,
+                              onPressed: () {},
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Currency stock",
+                              label: "Currency stock",
+                              icon: Icons.list_alt,
+                              onPressed: () {
+                                Get.back();
+                                // Get.to(() => CurrencyStock());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                            BottomSheetButton(
+                              heroTag: "Forex history",
+                              label: "Forex history",
+                              icon: Icons.list_alt,
+                              onPressed: () {
+                                Get.back();
+                                Get.to(() => ForexHistory());
+                              },
+                            ),
+                            Divider(
+                              height: 0,
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   );
                 },
               );
             },
+          ),
+          TopButton(
+            heroTag: "Accounts",
+            icon: Icons.group_outlined,
+            label: 'Accounts',
+            onPressed: () => Get.offAll(()=>Accounts()),
           ),
           TopButton(
             heroTag: "Search",
@@ -467,4 +435,5 @@ class ButtonList extends StatelessWidget {
       ),
     );
   }
+
 }

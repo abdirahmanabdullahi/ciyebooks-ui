@@ -1,6 +1,7 @@
 
 class DepositModel {
   final String transactionType;
+  final String description;
   final String transactionId;
   final String currency;
   final double amount;
@@ -8,6 +9,7 @@ class DepositModel {
   final String? depositedBy;
   DepositModel({
     required this.depositedBy,
+    required this.description,
     required this.transactionType,
     required this.transactionId,
     required this.currency,
@@ -22,12 +24,14 @@ class DepositModel {
       'amount': amount,
       'dateCreated': dateCreated,
       'depositedBy': depositedBy,
+      'description': description,
     };
   }
 
   factory DepositModel.fromJson(Map<String, dynamic> jsonData) {
     return DepositModel(
       transactionType: jsonData['transactionType'],
+      description: jsonData['description']??'',
       transactionId: jsonData['transactionId'],
       currency: jsonData['currency'],
       amount: (jsonData['amount'] as num?)?.toDouble() ?? 0.0,

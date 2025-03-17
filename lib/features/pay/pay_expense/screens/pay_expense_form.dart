@@ -1,4 +1,7 @@
+import 'package:ciyebooks/features/pay/pay_client/screens/testing.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_controller/pay_expense_controller.dart';
+import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
+import 'package:ciyebooks/navigation_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,25 +25,37 @@ class PayExpenseForm extends StatelessWidget {
     final controller = Get.put(PayExpenseController());
 
     return Scaffold(
-      backgroundColor: AppColors.quarternary,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: AppBar(
-          title: Text(
-            'Paying an expense',
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          iconTheme: IconThemeData(color: CupertinoColors.white),
+      floatingActionButton: FloatingActionButton(
+          elevation: 0,
           backgroundColor: CupertinoColors.systemBlue,
-          scrolledUnderElevation: 6,
+          shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quarternary,width: 2),
+              borderRadius: BorderRadius.circular(20)),
+          onPressed: () => Get.to(() => ExpenseHistory()),
+          child: Icon(
+            Icons.manage_search_rounded,
+            color: CupertinoColors.white,
+            size: 35,
+          )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      backgroundColor: AppColors.quarternary,
+      appBar: AppBar(
+        leading: IconButton(onPressed: ()=>Get.offAll(NavigationMenu( )), icon: Icon(Icons.arrow_back)),
+        automaticallyImplyLeading: true,
+
+        title: Text(
+          'Paying an expense',
+          style: TextStyle(color: Colors.white),
         ),
+        // centerTitle: true,
+        iconTheme: IconThemeData(color: CupertinoColors.white),
+        backgroundColor: CupertinoColors.systemBlue,
+        scrolledUnderElevation: 6,
       ),
-      body: SafeArea(
+      body: SafeArea(bottom: false,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Gap(20),
+              Gap(35),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
@@ -75,12 +90,28 @@ class PayExpenseForm extends StatelessWidget {
                         selectedTrailingIcon: Icon(Icons.search),
                         width: double.maxFinite,
                         onSelected: (value) {
-                          if (value != null) {
-                            }
+                          if (value != null && value == 'AddNew') {
+                            showAddExpenseCategoryDialog(context);
+                          } else {}
                         },
                         dropdownMenuEntries: controller.expenseCategories.entries.map((entry) {
                           return DropdownMenuEntry(
-                            labelWidget: Text(entry.value,style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12,color: Colors.black54),),
+                              labelWidget: entry.value == 'AddNew'
+                                  ? Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add_circle_outline,
+                                          color: Colors.black54,
+                                          size: 20,
+                                        ),
+                                        Gap(5),
+                                        Text(
+                                          'Add new category',
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                                        )
+                                      ],
+                                    )
+                                  : Text(entry.value, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor: WidgetStateProperty.all(AppColors.quinary),
                                   side: WidgetStateProperty.all(
@@ -90,10 +121,7 @@ class PayExpenseForm extends StatelessWidget {
                                     borderRadius: BorderRadius.all(Radius.circular(0)),
                                   ))),
                               value: entry.value,
-                              label: '${entry.value}'
-                              
-                          );
-                          
+                              label: entry.value == 'AddNew' ? '' : '${entry.value}');
                         }).toList(),
                       ),
                     ),
@@ -150,23 +178,12 @@ class PayExpenseForm extends StatelessWidget {
                               labelWidget: Text(
                                 '${currency.key}  ${formatter.format(currency.value)}',
                                 style: TextStyle(color: currency.value == 0 ? Colors.red : null),
-                              )
-                          );
+                              ));
                         }).toList(),
-
                       ),
                     ),
                     SizedBox(height: 20),
-                    TextFormField(
-                      maxLines: 2,
-                      controller: controller.description,
-                      decoration: InputDecoration(
-                        labelText: "Description",
-                        // constraints: BoxConstraints.tight(
-                        // const Size.fromHeight(50),
-                        // ),
-                      ),
-                    ),
+                    TextFormField(maxLines: 2,)
                   ],
                 ),
               ),
@@ -235,7 +252,7 @@ class PayExpenseForm extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6),
-                child: Card(
+                child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
                   elevation: 2,
                   color: AppColors.quinary,
                   child: Column(
@@ -355,13 +372,11 @@ class PayExpenseForm extends StatelessWidget {
                                                           Expanded(
                                                             child: Text("Currency", style: TextStyle()),
                                                           ),
-                                                          Text(controller.paidCurrency.text,
-                                                              style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                                                          Text(controller.paidCurrency.text, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                                                         ],
                                                       ),
                                                       Gap(5),
                                                       Divider(thickness: 1, color: Colors.grey[300]),
-
                                                       Gap(5),
                                                       Row(
                                                         children: [
@@ -373,7 +388,8 @@ class PayExpenseForm extends StatelessWidget {
                                                       ),
                                                       Gap(5),
                                                       Divider(thickness: 1, color: Colors.grey[300]),
-                                                      Gap(5), Row(
+                                                      Gap(5),
+                                                      Row(
                                                         children: [
                                                           Expanded(
                                                             child: Text("Description", style: TextStyle()),
@@ -471,4 +487,44 @@ class PayExpenseForm extends StatelessWidget {
       ),
     );
   }
+}
+
+void showAddExpenseCategoryDialog(context) {
+  showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      final controller = Get.put(PayExpenseController());
+      return AlertDialog(
+        backgroundColor: AppColors.quarternary,
+        insetPadding: EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        title: Column(
+          children: [const Text('Add new expense category'), Gap(5), Divider()],
+        ),
+        content: SizedBox(
+            width: double.maxFinite,
+            child: TextFormField(
+              controller: controller.category,
+              decoration: InputDecoration(labelText: 'Category name'),
+            )),
+        actions: <Widget>[
+          OutlinedButton.icon(
+            icon: Icon(
+              Icons.add_circle_outline,
+              color: AppColors.quinary,
+            ),
+            style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(CupertinoColors.systemBlue), padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10))),
+            label: const Text(
+              'Add',
+              style: TextStyle(color: AppColors.quinary),
+            ),
+            onPressed: () {
+              controller.addNewExpenseCategory();
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

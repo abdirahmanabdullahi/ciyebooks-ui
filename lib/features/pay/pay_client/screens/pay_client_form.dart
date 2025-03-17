@@ -1,4 +1,5 @@
 import 'package:ciyebooks/common/widgets/dropdown_menu_formfield.dart';
+import 'package:ciyebooks/features/pay/pay_client/screens/payment_history.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,18 @@ class PayClientForm extends StatelessWidget {
     final controller = Get.put(PayClientController());
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+      elevation: 0,
+      backgroundColor: CupertinoColors.systemBlue,
+      shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quarternary, width: 2), borderRadius: BorderRadius.circular(20)),
+      onPressed: () => Get.offAll(() => PaymentHistory()),
+      child: Icon(Icons.manage_search_rounded,
+        // Icons.add_circle_outline,
+        color: AppColors.quinary,
+        size: 35,
+      ),
+    ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       backgroundColor: AppColors.quarternary,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0),
@@ -97,7 +110,7 @@ class PayClientForm extends StatelessWidget {
                                 borderRadius: BorderRadius.all(Radius.circular(0)),
                               ))),
                           value: [account.accountNo, account.currencies, account.accountName],
-                          label: '${account.fullName} ${account.accountNo}');
+                          label: '${account.fullName} Account no: ${account.accountNo}');
                     }).toList(),
                   ),
                 ),
@@ -277,7 +290,7 @@ class PayClientForm extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6),
-                child: Card(
+                child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
                   elevation: 2,
                   color: AppColors.quinary,
                   child: Column(

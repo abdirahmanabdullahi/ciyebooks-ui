@@ -1,21 +1,26 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/accounts/screens/accounts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../repo/repo.dart';
+import '../../../navigation_menu.dart';
+import '../../../utils/exceptions/firebase_auth_exceptions.dart';
+import '../../../utils/exceptions/firebase_exceptions.dart';
+import '../../../utils/exceptions/format_exceptions.dart';
+import '../../../utils/exceptions/platform_exceptions.dart';
+import '../../setup/models/setup_model.dart';
 
 class AccountsController extends GetxController {
   static AccountsController get instance => Get.find();
 
-  final accountRepo = Get.put(AccountsRepo());
+  final counters = {}.obs;
+  final isLoading = false.obs;
+  Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
-  /// Tried using bool ie true or false but it kept on being reset to true in the save data method.
-  /// Now using 0 and 1.
-  /// 0== negative;
-  /// 1==positive
-// final changeToNegative = 0.obs;
-  final usdIsNegative = true.obs;
-  final kesIsNegative = true.obs;
+  final db = FirebaseFirestore.instance;
+  final uid = FirebaseAuth.instance.currentUser?.uid;
 
   final firstName = TextEditingController();
   final lastName = TextEditingController();
@@ -23,64 +28,106 @@ class AccountsController extends GetxController {
   final email = TextEditingController();
   final usd = TextEditingController();
   final kes = TextEditingController();
-  final amount = TextEditingController();
 
   GlobalKey<FormState> accountsFormKey = GlobalKey<FormState>();
 
-/// Create accounts
-  Future<void> createAccount() async {
+  @override
+  void onInit() {
+    fetchTotals();
 
-    try {
-      if (!accountsFormKey.currentState!.validate()) {
-        return;
-      }
-      final Map<String, double> newCurrency = {
-        'USD': 0,'KES':0,
-      };
-      final date = DateTime.now();
-      print('Value in the saveData method');
-      final accountNo =
-          '${date.millisecond}${date.second}${date.minute}-${date.hour}${date.day}${date.month}${date.year}';
-      final newAccount = AccountModel(
-        currencies: {},
-       
-          // usdBalance: usdIsNegative.value
-          //     ? -(double.tryParse(usd.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
-          //     : (double.tryParse(usd.text.trim()) ?? 0.0),
-          // kesBalance: kesIsNegative.value
-          //     ? -(double.tryParse(kes.text.trim()) ?? 0.0) // Negate the value if `makeItNegative` is true
-          //     : (double.tryParse(kes.text.trim()) ?? 0.0),
-          firstName: firstName.text.trim(),
-          lastName: lastName.text.trim(),
-          accountNo: accountNo,
-          phoneNo: phoneNo.text.trim(),
-          email: email.text.trim(),
-          dateCreated: date,  accountName: '${firstName.text.trim()}  ${lastName.text.trim()}',
-          // usdBalance: 0.0,
-          // kesBalance: 0.0
-      )
-      ;
+  super.onInit();
+  }
 
-      await accountRepo.savaAccountData(
-        newAccount,
-      );
-      Get.snackbar(
-        "Success!",
-        "Capital has been updated successfully.",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+  fetchTotals() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Users').doc(uid).collection('Setup').doc('Balances').get();
 
-      Get.back();
-    } catch (e) {
-      Get.snackbar(
-        "Issues!",
-        e.toString(),
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+    if (documentSnapshot.exists && documentSnapshot.data() != null) {
+      final data = documentSnapshot.data() as Map<String, dynamic>;
+      totals.value = BalancesModel.fromJson(data);
+      print('OnInit');
+      print('PA-${totals.value.transactionCounters['accountsCounter']}')
+;
     }
   }
-}
 
-/// Update totals
+  /// Create accounts
+  Future<void> createAccount(BuildContext context) async {
+    print('Start');
+    print('PA-${totals.value.transactionCounters['accountsCounter']}')
+;    isLoading.value = true;
+    try {
+      if (!accountsFormKey.currentState!.validate()) {
+        isLoading.value = false;
+
+        return;
+      }
+
+      final newAccount = AccountModel(
+        currencies: {'USD':double.tryParse( usd.text.trim()), 'KES':double.tryParse( kes.text.trim())},
+
+        firstName: firstName.text.trim(),
+        lastName: lastName.text.trim(),
+        accountNo: '${totals.value.transactionCounters['accountsCounter']}',
+        phoneNo: phoneNo.text.trim(),
+        email: email.text.trim(),
+        // dateCreated: DateTime.now(),
+        accountName: '${firstName.text.trim()}${lastName.text.trim()}', dateCreated: DateTime.now(),
+        // usdBalance: 0.0,
+        // kesBalance: 0.0
+      );
+
+      final batch = db.batch();
+      final newAccountRef = db.collection('Users').doc(uid).collection("accounts").doc('PA-${totals.value.transactionCounters['accountsCounter']}');
+      final accountNoRef = db.collection('Users').doc(uid).collection("Setup").doc('Balances');
+
+      ///Create new account
+      batch.set(newAccountRef, newAccount.toJson());
+
+      ///Update the account number counter
+      batch.update(accountNoRef, {"transactionCounters.accountsCounter": FieldValue.increment(1)});
+print('End');
+      print('PA-${totals.value.transactionCounters['accountsCounter']}');
+
+
+      await batch.commit().then((_) {
+        isLoading.value = false;
+
+        if(context.mounted){
+          Navigator.pop(context);
+
+        }Get.offAll(()=>Accounts());
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success",
+          'Account created successfully',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+   });
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on TPlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      isLoading.value = false;
+
+      throw 'Something went wrong. Please try again';
+    }
+    Get.snackbar(
+      "Success!",
+      "Account has been created.",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+
+    Get.back();
+  }
+
+  /// Update totals
+}

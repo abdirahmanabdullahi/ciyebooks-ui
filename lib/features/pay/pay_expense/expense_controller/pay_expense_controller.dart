@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
+import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
+import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,11 +34,17 @@ class PayExpenseController extends GetxController {
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
   final expenseCategories = {}.obs;
-  final payments = {}.obs;
+  // final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
+
+  ///Sort by date
+  final sortCriteria = 'DateCreated'.obs;
+  // sortExpenses(){
+  //
+  // }
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
@@ -52,6 +60,11 @@ class PayExpenseController extends GetxController {
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
+
+  /// Compare dates to display the divider conditionally
+  bool isSameDate(DateTime date1, DateTime date2) {
+    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+  }
 
   /// *-----------------------------Start keypad--------------------------------------------*
 
@@ -101,8 +114,35 @@ class PayExpenseController extends GetxController {
     super.onInit();
   }
 
-  void updateButtonStatus() {
+  /// *-----------------------------Add new expense category----------------------------------*
+  addNewExpenseCategory() {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
 
+      ///Initialize Firestore
+      final db = FirebaseFirestore.instance;
+      final docReference = db.collection('Users').doc(uid).collection('expenses').doc('expense categories');
+
+      docReference.set({
+        category.text.trim(): category.text.trim(),
+      }, SetOptions(merge: true));
+      Get.back();
+    } on FirebaseAuthException catch (e) {
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e) {
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_) {
+      throw const TFormatException();
+    } on TPlatformException catch (e) {
+      throw TPlatformException(e.code).message;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  /// *-----------------------------Enable or disable the continue button----------------------------------*
+
+  updateButtonStatus() {
     isButtonEnabled.value = category.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
   }
 
@@ -111,22 +151,24 @@ class PayExpenseController extends GetxController {
     DocumentSnapshot balances = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
     DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
 
-    if(expenses.exists && expenses.data()!=null){
-      expenseCategories.value = expenses.data() as Map<String,dynamic>;
+    if (expenses.exists && expenses.data() != null) {
+      expenseCategories.value = expenses.data() as Map<String, dynamic>;
 
+      ///Add the last entry of the map to enable users to add a new category
+      expenseCategories['AddNew'] = 'AddNew';
     }
     if (balances.exists && balances.data() != null) {
       totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
       cashBalances.value = totals.value.cashBalances;
       counters.value = totals.value.transactionCounters;
-      payments.value = totals.value.payments;
+      // payments.value = totals.value.payments;
       transactionCounter.value = counters['paymentsCounter'];
     }
   }
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-  Future<void> createPdf() async {
+  createPdf() async {
     try {
       /// Create the receipt.
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -247,7 +289,6 @@ class PayExpenseController extends GetxController {
                                 pw.SizedBox(
                                   height: 10,
                                 ),
-
                                 pw.Row(
                                   children: [
                                     pw.Expanded(
@@ -265,7 +306,8 @@ class PayExpenseController extends GetxController {
                                 pw.Divider(thickness: 1, color: PdfColors.grey),
                                 pw.SizedBox(
                                   height: 10,
-                                ), pw.Row(
+                                ),
+                                pw.Row(
                                   children: [
                                     pw.Expanded(
                                       child: pw.Text(
@@ -330,7 +372,9 @@ class PayExpenseController extends GetxController {
     }
   }
 
-  void showReceiptDialog(BuildContext context) {
+  /// *-----------------------------Show receipt preview----------------------------------*
+
+  showReceiptDialog(BuildContext context) {
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
       locale: 'en_us',
       decimalDigits: 2,
@@ -339,10 +383,10 @@ class PayExpenseController extends GetxController {
     showDialog(
       context: context,
       builder: (context) {
-        Future.delayed(Duration(seconds: 50), () {
-          if(context.mounted){
+        Future.delayed(Duration(seconds: 5), () {
+          if (context.mounted) {
             Navigator.of(context).pop();
-          }// Close the dialog
+          } // Close the dialog
         });
         return AlertDialog(
           titlePadding: EdgeInsets.zero,
@@ -410,7 +454,6 @@ class PayExpenseController extends GetxController {
                     Gap(5),
                     Divider(thickness: 1, color: Colors.grey[300]),
                     Gap(5),
-
                     Row(
                       children: [
                         Expanded(
@@ -431,14 +474,14 @@ class PayExpenseController extends GetxController {
                       ],
                     ),
                     Gap(5),
-
                     Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5), Row(
+                    Gap(5),
+                    Row(
                       children: [
                         Expanded(
                           child: Text("Description", style: TextStyle()),
                         ),
-                        Text(description.text, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        Text(description.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
@@ -459,20 +502,31 @@ class PayExpenseController extends GetxController {
               Divider(
                 height: 0,
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.end,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                    child: Column(mainAxisSize: MainAxisSize.min,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton.outlined(onPressed: () =>createPdf(),icon:
-                            Icon(Icons.share,color:CupertinoColors.systemBlue,)
-                            
-                        
-                          // backgroundColor: AppColors.prettyDark,
-                          // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
-                          // ),
-                        ),Text('Share',style: TextStyle(fontWeight: FontWeight.w500,),)
+                        IconButton.outlined(
+                            onPressed: () => createPdf(),
+                            icon: Icon(
+                              Icons.share,
+                              color: CupertinoColors.systemBlue,
+                            )
+
+                            // backgroundColor: AppColors.prettyDark,
+                            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
+                            // ),
+                            ),
+                        Text(
+                          'Share',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -485,6 +539,7 @@ class PayExpenseController extends GetxController {
     );
   }
 
+  /// *-----------------------------Create the payment----------------------------------*
 
   Future createPayment(BuildContext context) async {
     isLoading.value = true;
@@ -506,6 +561,8 @@ class PayExpenseController extends GetxController {
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
+        isLoading.value = false;
+
         return;
       }
       if (paidAmount == cashBalance) {
@@ -532,7 +589,15 @@ class PayExpenseController extends GetxController {
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
-      final newExpense = ExpenseModel(transactionId:'EXP-${counters['expenseCounter']}', category: category.text.trim(), description: description.text.trim(), dateCreated: DateTime.now(), currency: paidCurrency.text.trim(), amountPaid: double.tryParse(amount.text.trim())??0.0, transactionType: 'Expense');
+      final newExpense = ExpenseModel(
+          transactionId: 'exp-${counters['expenseCounter']}',
+          category: category.text.trim(),
+          description: description.text.trim(),
+          dateCreated: DateTime.now(),
+          currency: paidCurrency.text.trim(),
+          amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
+          transactionType: 'expense');
+
       ///Create payment transaction
       batch.set(expenseRef, newExpense.toJson());
 
@@ -557,12 +622,15 @@ class PayExpenseController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        Get.offAll(() => NavigationMenu());
-        if (context.mounted) {
-          showReceiptDialog(context);
-        }
-        isLoading.value = false;
       });
+      isLoading.value = false;
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        createPdf();
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const ExpenseHistory()),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

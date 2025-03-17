@@ -54,7 +54,7 @@ class SetupController extends GetxController {
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
-        counters.value = totals.value.transactionCounters!;
+        counters.value = totals.value.transactionCounters;
       }
     });
 

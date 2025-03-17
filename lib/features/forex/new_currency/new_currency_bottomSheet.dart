@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/forex/controller/currency_controller.dart';
+import 'package:ciyebooks/features/forex/controller/new_currency_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +8,7 @@ import '../../../utils/constants/colors.dart';
 import '../../../utils/validators/validation.dart';
 
 void showAddNewCurrencyBottomSheet(BuildContext context) {
-  final controller = Get.put(CurrencyController());
+  final controller = Get.put(NewCurrencyController());
   showDialog(
     context: context,
     // isScrollControlled: true,

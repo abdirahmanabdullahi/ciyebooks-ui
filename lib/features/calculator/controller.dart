@@ -28,6 +28,9 @@ class CalculatorController extends GetxController {
 
     final double num1 = double.parse(number1.value);
     final double num2 = double.parse(number2.value);
+    if (num2 == 0) {
+      return;
+    }
 
     double result = 0.0;
     switch (operand.value) {
@@ -112,6 +115,7 @@ class CalculatorController extends GetxController {
     }
   }
 }
+
 String formatNumber(String value) {
   if (value.isEmpty) return "";
   final number = double.tryParse(value);
