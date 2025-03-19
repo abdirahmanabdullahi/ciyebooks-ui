@@ -3332,9 +3332,9 @@ class SetupScreen extends StatelessWidget {
                                   rows: controller.currencies.map((currency) {
                                     return DataRow(cells: [
                                       DataCell(Text(currency.currencyCode)),
-                                      DataCell(Text(formatter.format(currency.amount))),
-                                      DataCell(Text(formatter.format(currency.totalCost / currency.amount))),
-                                      DataCell(Text(formatter.format(currency.totalCost))),
+                                      DataCell(Text('formatter.format(currency.amount')),
+                                      DataCell(Text('formatter.format(currency.totalCost / currency.amount)')),
+                                      DataCell(Text('formatter.format(currency.totalCost)')),
                                     ]);
                                   }).toList()),
                             );

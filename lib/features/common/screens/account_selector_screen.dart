@@ -1,13 +1,9 @@
-import 'package:ciyebooks/features/pay/pay_client/pay_client_controller/pay_client_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import '../../../common/custom_appbar.dart';
-import '../../../common/styles/custom_container.dart';
 import '../../../navigation_menu.dart';
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
-import '../widgets/acounts_tile.dart';
 
 class AccountSelectorScreen extends StatelessWidget {
   const AccountSelectorScreen({

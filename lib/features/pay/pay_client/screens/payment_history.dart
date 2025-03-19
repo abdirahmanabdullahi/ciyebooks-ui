@@ -8,12 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../pay_expense/screens/pay_expense_form.dart';
 
 class PaymentHistory extends StatelessWidget {
   const PaymentHistory({super.key});

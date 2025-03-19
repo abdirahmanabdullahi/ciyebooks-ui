@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,14 +16,11 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../navigation_menu.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
-import '../../../accounts/model/model.dart';
-import '../../../pay/pay_expense/expense_model/expense_model.dart';
 import '../../../setup/models/setup_model.dart';
 
 class WithdrawCashController extends GetxController {
@@ -113,7 +107,7 @@ class WithdrawCashController extends GetxController {
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
     DocumentSnapshot balances = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
-    DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
+    // DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
 
     if (balances.exists && balances.data() != null) {
       totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);

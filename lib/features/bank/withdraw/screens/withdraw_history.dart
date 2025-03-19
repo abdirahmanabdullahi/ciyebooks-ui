@@ -1,12 +1,4 @@
 import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_form.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/screens/pay_client_form.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_controller/pay_expense_controller.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +25,7 @@ class WithdrawHistory extends StatelessWidget {
       locale: 'en_us',
       decimalDigits: 2,
     );
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    // final uid = FirebaseAuth.instance.currentUser?.uid;
     // final usersQuery =
     return Scaffold(
       floatingActionButton: FloatingActionButton(

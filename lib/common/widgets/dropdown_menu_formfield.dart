@@ -74,11 +74,6 @@ class _DropdownMenuFormFieldState<T> extends FormFieldState<T> {
   DropdownMenuFormField<T> get _dropdownMenuFormField =>
       widget as DropdownMenuFormField<T>;
 
-  @override
-  void didChange(T? value) {
-    super.didChange(value);
-    // _dropdownMenuFormField.onSelected!(value);
-  }
 
   @override
   void didUpdateWidget(DropdownMenuFormField<T> oldWidget) {

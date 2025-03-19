@@ -1,4 +1,3 @@
-import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';

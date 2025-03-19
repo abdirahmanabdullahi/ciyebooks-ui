@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../utils/constants/colors.dart';
-import '../../utils/constants/sizes.dart';
 import 'controller.dart';
 
 class CalculatorScreen extends StatelessWidget {
@@ -14,7 +12,7 @@ class CalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final screenSize = MediaQuery.of(context).size;
+    // final screenSize = MediaQuery.of(context).size;
     final CalculatorController controller = Get.put(CalculatorController());
 
     return Padding(
@@ -73,7 +71,7 @@ class CalculatorScreen extends StatelessWidget {
             children: Btn.buttonValues
                 .map(
                   (value) => SizedBox(
-                    width: value == Btn.calculate ? 160 : 80,
+                    width: value == Btn.n0 ? 160 : 80,
                     height: 65,
                     child: _buildButton(value, controller),
                   ),

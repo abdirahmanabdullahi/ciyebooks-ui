@@ -125,7 +125,7 @@ class UploadController extends GetxController {
           'bankTransferCounter': 0,
           'internalTransferCounter': 0,
         },
-        bankBalances: {'KES': parsedTotals['shillingAtBank'], 'USD': parsedTotals['dollarAtBank']},
+        bankBalances: {'KES': parsedTotals['shillingAtBank'], 'USD': parsedTotals['dollarAtBank']}, baseCurrency: '',
       );
 
       /// Save the data to firestore
@@ -609,7 +609,7 @@ class UploadController extends GetxController {
             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
             transactionType: 'Fx-Buy',
             transactionId: 'FXBY-$buyFxCounter');
-        final newCurrencyAccount = CurrencyModel(totalCost: double.parse(splitLine[5]), amount: double.parse(splitLine[4]), currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase());
+        final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
 
         ///Point where to create each new currency account
         final buyFxTransactionRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('FXBY-$buyFxCounter');

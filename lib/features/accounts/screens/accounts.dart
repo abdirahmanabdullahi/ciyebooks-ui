@@ -7,12 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/styles/custom_container.dart';
 import '../../../utils/constants/colors.dart';
-import '../../receive/model/receive_model.dart';
 import '../controller/accounts_controller.dart';
 
 class Accounts extends StatelessWidget {
@@ -25,7 +23,7 @@ class Accounts extends StatelessWidget {
       decimalDigits: 2,
     );
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    final controller = Get.put(AccountsController());
+    // final controller = Get.put(AccountsController());
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           elevation: 0,

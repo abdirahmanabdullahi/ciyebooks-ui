@@ -57,7 +57,8 @@ RxList<AccountModel> accounts = <AccountModel>[].obs;
 
 
   /// Stream for currency stock
-  FirebaseFirestore.instance.collection('Users').doc(_uid).collection('currencyStock').snapshots().listen((querySnapshot) {
+  FirebaseFirestore.instance.collection('Users').doc(_uid).collection('CurrencyStock').orderBy('totalCost',descending: true).
+  snapshots().listen((querySnapshot) {
     currencies.clear();
     currencies.value = querySnapshot.docs.map((doc) {
       return CurrencyModel.fromJson(doc.data());

@@ -1,6 +1,5 @@
 import 'package:ciyebooks/features/pay/pay_client/pay_client_controller/pay_client_controller.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/screens/pay_client_form.dart';
 import 'package:ciyebooks/features/transafers/internal_transfer/screens/internal_transfer_form.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';

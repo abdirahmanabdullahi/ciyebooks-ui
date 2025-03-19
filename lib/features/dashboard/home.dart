@@ -50,7 +50,8 @@ class Dashboard extends StatelessWidget {
               onPressed: () {
                 Scaffold.of(context).openDrawer(); // Correct context for drawer
               },
-              icon: Icon(color: AppColors.quinary,
+              icon: Icon(
+                color: AppColors.quinary,
                 Icons.sort,
               ),
             ),
@@ -66,12 +67,13 @@ class Dashboard extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea( bottom: false,
+      body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           scrollDirection: Axis.vertical,
           // primary: true,
-        
+
           child: Column(
             children: [
               Padding(
@@ -88,21 +90,19 @@ class Dashboard extends StatelessWidget {
                       "Cash balances",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    Obx(
-                      () => Column(children: controller.totals.value.cashBalances.entries.map((entry){
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0),
-                          child: BalanceTile(
-                            leading: entry.key,
-                            title: formatter.format(entry.value),
-                            // subtitle: entry.key,
-                            valueColor: CupertinoColors.activeGreen,
-                          ),
-                        );
-                      }).toList(),)
-                    
-                    ),
-        
+                    Obx(() => Column(
+                          children: controller.totals.value.cashBalances.entries.map((entry) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              child: BalanceTile(
+                                leading: entry.key,
+                                title: formatter.format(entry.value),
+                                // subtitle: entry.key,
+                                valueColor: CupertinoColors.activeGreen,
+                              ),
+                            );
+                          }).toList(),
+                        )),
                   ],
                 ),
               ),
@@ -111,64 +111,71 @@ class Dashboard extends StatelessWidget {
                 padding: const EdgeInsets.all(1.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [  Text(
-                    "Bank balances",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                    Obx(
-                            () => Column(children: controller.totals.value.bankBalances.entries.map((entry){
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 3.0),
-                            child: BalanceTile(
-                              leading: entry.key,
-                              title: formatter.format(entry.value),
-                              // subtitle: entry.key,
-                              valueColor: CupertinoColors.activeGreen,
-                            ),
-                          );
-                        }).toList(),)
-        
+                  children: [
+                    Text(
+                      "Bank balances",
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
+                    Obx(() => Column(
+                          children: controller.totals.value.bankBalances.entries.map((entry) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              child: BalanceTile(
+                                leading: entry.key,
+                                title: formatter.format(entry.value),
+                                // subtitle: entry.key,
+                                valueColor: CupertinoColors.activeGreen,
+                              ),
+                            );
+                          }).toList(),
+                        )),
                     const Gap(6),
-        
-                    controller.currencies.isEmpty?SizedBox():Text(
+                    Text(
                       "Foreign currency stock",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    controller.currencies.isEmpty?SizedBox():CustomContainer(
-                      border: Border.all(color: Colors.grey, width: 0.3),
-                      darkColor: AppColors.quinary,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(0),
-                      child: Obx(
-                        () {
-                          if (controller.currencies.isEmpty) {
-                            return Text('');
-                          }
-                          return CustomContainer(
-                            darkColor: AppColors.quinary,
-                            width: double.maxFinite,
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: DataTable(
-                                headingRowHeight: 40,
-                                horizontalMargin: 6,
-                                headingTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                                columns: [
-                                  DataColumn(label: Text('Code')),
-                                  DataColumn(label: Text('Amount')),
-                                  DataColumn(label: Text('Rate')),
-                                  DataColumn(label: Text('Total cost')),
-                                ],
-                                rows: controller.currencies.map((currency) {
-                                  return DataRow(cells: [
-                                    DataCell(Text(currency.currencyCode)),
-                                    DataCell(Text(formatter.format(currency.amount))),
-                                    DataCell(Text(formatter.format(currency.totalCost / currency.amount))),
-                                    DataCell(Text(formatter.format(currency.totalCost))),
-                                  ]);
-                                }).toList()),
-                          );
-                        },
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: CustomContainer(
+                        border: Border.all(color: Colors.grey, width: 0.3),
+                        darkColor: AppColors.quinary,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(6),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          physics: ClampingScrollPhysics(),
+                          child: Obx(
+                            () {
+                              return DataTable(
+                                  columnSpacing: 35,
+                                  headingRowHeight: 40,
+                                  horizontalMargin: 0,
+                                  headingTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                  columns: [
+                                    DataColumn(label: Text('Code')),
+                                    DataColumn(label: Text('Amount')),
+                                    DataColumn(label: Text('Rate')),
+                                    DataColumn(label: Text('Total cost')),
+                                  ],
+                                  rows: controller.currencies.map((currency) {
+                                    return DataRow(cells: [
+                                      DataCell(Text(
+                                        currency.currencyCode,
+                                        style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.bold, fontSize: 15),
+                                      )),
+                                      DataCell(Text(
+                                        formatter.format(
+                                          currency.amount,
+                                        ),
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                      )),
+                                      DataCell(Text(currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount), style: TextStyle(fontWeight: FontWeight.bold))),
+                                      DataCell(Text(formatter.format(currency.totalCost), style: TextStyle(fontWeight: FontWeight.bold))),
+                                    ]);
+                                  }).toList());
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const Gap(12),
@@ -522,7 +529,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -561,7 +568,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -865,7 +872,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -904,7 +911,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -1192,7 +1199,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -1231,7 +1238,7 @@ class Dashboard extends StatelessWidget {
                                               //                                 foregroundColor:
                                               //                                 Colors
                                               //                                     .grey
-        
+
                                               //                                 textStyle:
                                               //                                 TextStyle(
                                               //                                     fontSize:
@@ -1323,7 +1330,7 @@ class Dashboard extends StatelessWidget {
                                                                       fontWeight: FontWeight.w500,
                                                                       fontSize: 12,
                                                                       color: Colors.blue,
-        // Grey Label
+                                                                      // Grey Label
                                                                       // Black Value
                                                                     ),
                                                                   ),
@@ -1361,9 +1368,9 @@ class Dashboard extends StatelessWidget {
                                                         ),
                                                       ],
                                                     ),
-        
+
                                                     Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                     // Second Row (Transaction ID, Type, Date)
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1558,9 +1565,9 @@ class Dashboard extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-        
+
                                                   Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                   // Second Row (Transaction ID, type, Date)
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1713,30 +1720,30 @@ class Dashboard extends StatelessWidget {
                                                                         ),
                                                                       ),
                                                                       Gap(3),
-        //                                                   RichText(
-        //                                                     text: TextSpan(
-        //                                                       children: [
-        //                                                         TextSpan(
-        //                                                           text: 'Receiver: ',
-        //                                                           style: TextStyle(
-        //                                                             fontWeight: FontWeight.w500,
-        //                                                             fontSize: 10,
-        //                                                             color: Colors.grey[600], // Grey Label
-        //                                                           ),
-        //                                                         ),
-        //                                                         TextSpan(
-        //                                                           text: payment.receiver,
-        //                                                           style: TextStyle(
-        //                                                             fontWeight: FontWeight.w500,
-        //                                                             fontSize: 12,
-        //                                                             color: Colors.blue,
-        // // Grey Label
-        //                                                             // Black Value
-        //                                                           ),
-        //                                                         ),
-        //                                                       ],
-        //                                                     ),
-        //                                                   ),
+                                                                      //                                                   RichText(
+                                                                      //                                                     text: TextSpan(
+                                                                      //                                                       children: [
+                                                                      //                                                         TextSpan(
+                                                                      //                                                           text: 'Receiver: ',
+                                                                      //                                                           style: TextStyle(
+                                                                      //                                                             fontWeight: FontWeight.w500,
+                                                                      //                                                             fontSize: 10,
+                                                                      //                                                             color: Colors.grey[600], // Grey Label
+                                                                      //                                                           ),
+                                                                      //                                                         ),
+                                                                      //                                                         TextSpan(
+                                                                      //                                                           text: payment.receiver,
+                                                                      //                                                           style: TextStyle(
+                                                                      //                                                             fontWeight: FontWeight.w500,
+                                                                      //                                                             fontSize: 12,
+                                                                      //                                                             color: Colors.blue,
+                                                                      // // Grey Label
+                                                                      //                                                             // Black Value
+                                                                      //                                                           ),
+                                                                      //                                                         ),
+                                                                      //                                                       ],
+                                                                      //                                                     ),
+                                                                      //                                                   ),
                                                                     ],
                                                                   ),
                                                                   RichText(
@@ -1768,9 +1775,9 @@ class Dashboard extends StatelessWidget {
                                                                   ),
                                                                 ],
                                                               ),
-        
+
                                                               Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                               // Second Row (Transaction ID, Type, Date)
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1917,7 +1924,7 @@ class Dashboard extends StatelessWidget {
                                                                                 fontWeight: FontWeight.w500,
                                                                                 fontSize: 12,
                                                                                 color: Colors.blue,
-        // Grey Label
+                                                                                // Grey Label
                                                                                 // Black Value
                                                                               ),
                                                                             ),
@@ -1955,9 +1962,9 @@ class Dashboard extends StatelessWidget {
                                                                   ),
                                                                 ],
                                                               ),
-        
+
                                                               Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                               // Second Row (Transaction ID, Type, Date)
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2100,30 +2107,30 @@ class Dashboard extends StatelessWidget {
                                                                         ),
                                                                       ),
                                                                       Gap(3),
-        //                                                   RichText(
-        //                                                     text: TextSpan(
-        //                                                       children: [
-        //                                                         TextSpan(
-        //                                                           text: 'Receiver: ',
-        //                                                           style: TextStyle(
-        //                                                             fontWeight: FontWeight.w500,
-        //                                                             fontSize: 10,
-        //                                                             color: Colors.grey[600], // Grey Label
-        //                                                           ),
-        //                                                         ),
-        //                                                         TextSpan(
-        //                                                           text: payment.receiver,
-        //                                                           style: TextStyle(
-        //                                                             fontWeight: FontWeight.w500,
-        //                                                             fontSize: 12,
-        //                                                             color: Colors.blue,
-        // // Grey Label
-        //                                                             // Black Value
-        //                                                           ),
-        //                                                         ),
-        //                                                       ],
-        //                                                     ),
-        //                                                   ),
+                                                                      //                                                   RichText(
+                                                                      //                                                     text: TextSpan(
+                                                                      //                                                       children: [
+                                                                      //                                                         TextSpan(
+                                                                      //                                                           text: 'Receiver: ',
+                                                                      //                                                           style: TextStyle(
+                                                                      //                                                             fontWeight: FontWeight.w500,
+                                                                      //                                                             fontSize: 10,
+                                                                      //                                                             color: Colors.grey[600], // Grey Label
+                                                                      //                                                           ),
+                                                                      //                                                         ),
+                                                                      //                                                         TextSpan(
+                                                                      //                                                           text: payment.receiver,
+                                                                      //                                                           style: TextStyle(
+                                                                      //                                                             fontWeight: FontWeight.w500,
+                                                                      //                                                             fontSize: 12,
+                                                                      //                                                             color: Colors.blue,
+                                                                      // // Grey Label
+                                                                      //                                                             // Black Value
+                                                                      //                                                           ),
+                                                                      //                                                         ),
+                                                                      //                                                       ],
+                                                                      //                                                     ),
+                                                                      //                                                   ),
                                                                     ],
                                                                   ),
                                                                   RichText(
@@ -2155,9 +2162,9 @@ class Dashboard extends StatelessWidget {
                                                                   ),
                                                                 ],
                                                               ),
-        
+
                                                               Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                               // Second Row (Transaction ID, Type, Date)
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2358,9 +2365,9 @@ class Dashboard extends StatelessWidget {
                                                       ),
                                                     ],
                                                   ),
-        
+
                                                   Divider(color: Colors.grey[400], thickness: 1),
-        
+
                                                   // Second Row (Transaction ID, Type, Date)
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2453,17 +2460,14 @@ class Dashboard extends StatelessWidget {
                       "Client accounts",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    FirestoreListView<AccountModel>(reverse: true,
+                    FirestoreListView<AccountModel>(
+                      reverse: true,
                       shrinkWrap: true,
                       // physics: ClampingScrollPhysics(),
-                      query: FirebaseFirestore.instance
-                          .collection('Users')
-                          .doc(FirebaseAuth.instance.currentUser?.uid)
-                          .collection('accounts')
-                          .withConverter<AccountModel>(
-                        fromFirestore: (snapshot, _) => AccountModel.fromJson(snapshot.data()!),
-                        toFirestore: (account, _) => account.toJson(),
-                      ),
+                      query: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').withConverter<AccountModel>(
+                            fromFirestore: (snapshot, _) => AccountModel.fromJson(snapshot.data()!),
+                            toFirestore: (account, _) => account.toJson(),
+                          ),
                       itemBuilder: (context, snapshot) {
                         // Data is now typed!
                         AccountModel account = snapshot.data();
@@ -2504,33 +2508,34 @@ class Dashboard extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    Column(crossAxisAlignment: CrossAxisAlignment.end,
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
                                       children: account.currencies.entries.map((entry) {
                                         return RichText(
                                             text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: '${entry.key}: ',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    // fontSize: 12,
-                                                    fontSize: 10,
-                                                    color: Colors.grey[600], // Grey Label
+                                          children: [
+                                            TextSpan(
+                                              text: '${entry.key}: ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                // fontSize: 12,
+                                                fontSize: 10,
+                                                color: Colors.grey[600], // Grey Label
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: formatter.format(
+                                                double.tryParse(entry.value.toString()) ?? 0.0,
+                                              ),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  // fontSize: 12,
+                                                  fontSize: 10,
+                                                  color: (double.tryParse(entry.value.toString()) ?? 0.0) <= 0 ? CupertinoColors.destructiveRed : CupertinoColors.systemBlue // Grey Label
                                                   ),
-                                                ),
-                                                TextSpan(
-                                                  text: formatter.format(
-                                                    double.tryParse(entry.value.toString())??0.0,
-                                                  ),
-                                                  style: TextStyle(
-                                                      fontWeight: FontWeight.w500,
-                                                      // fontSize: 12,
-                                                      fontSize: 10,
-                                                      color: (double.tryParse(entry.value.toString())??0.0)<=0?CupertinoColors.destructiveRed:CupertinoColors.systemBlue // Grey Label
-                                                  ),
-                                                ),
-                                              ],
-                                            ));
+                                            ),
+                                          ],
+                                        ));
                                       }).toList(),
                                     ),
                                   ],
@@ -2556,8 +2561,8 @@ class Dashboard extends StatelessWidget {
                                           TextSpan(
                                             text: account.accountNo,
                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                              // Black Value
-                                            ),
+                                                // Black Value
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -2578,8 +2583,8 @@ class Dashboard extends StatelessWidget {
                                               account.dateCreated,
                                             ),
                                             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                              // Black Value
-                                            ),
+                                                // Black Value
+                                                ),
                                           ),
                                         ],
                                       ),

@@ -102,6 +102,8 @@ class PayClientController extends GetxController {
     fetchTotals();
 
     /// Stream for the accounts
+    RxList<AccountModel> accounts = <AccountModel>[].obs;
+
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());

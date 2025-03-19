@@ -1,4 +1,3 @@
-import 'package:ciyebooks/features/accounts/controller/accounts_controller.dart';
 import 'package:ciyebooks/features/accounts/screens/accounts.dart';
 import 'package:ciyebooks/features/bank/deposit/deposit_form.dart';
 import 'package:ciyebooks/features/bank/deposit_for_client/screens/deposit_for_client_form.dart';
@@ -6,19 +5,15 @@ import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_history.dart';
 import 'package:ciyebooks/features/forex/ui/forex_form.dart';
 import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:ciyebooks/features/transafers/internal_transfer/screens/internal_transfer_form.dart';
-import 'package:ciyebooks/navigation_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/constants/colors.dart';
 
-import '../../bank/deposit/screens/deposit_history_screen.dart';
 import '../../bank/withdraw/screens/withdraw_form.dart';
-import '../../common/screens/account_selector_screen.dart';
 
 import '../../forex/ui/forex_history.dart';
+import '../../forex/ui/test.dart';
 import '../../pay/pay_client/screens/pay_client_form.dart';
 import '../../pay/pay_client/screens/payment_history.dart';
 import '../../pay/pay_expense/screens/expense_history.dart';
@@ -354,7 +349,7 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.north_east,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => ForexForm());
+                               showForexForm(context);
                               },
                             ),
                             Divider(
@@ -366,7 +361,7 @@ class ButtonList extends StatelessWidget {
                               icon: Icons.shopping_bag,
                               onPressed: () {
                                 Get.back();
-                                Get.to(() => ForexForm());
+                               showForexForm(context);
                               },
                             ),
                             Divider(

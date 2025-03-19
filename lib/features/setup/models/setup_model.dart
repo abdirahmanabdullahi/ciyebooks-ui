@@ -1,4 +1,5 @@
 class BalancesModel {
+  final String baseCurrency;
   // final double shillingReceivable;
   // final double shillingPayable;
   // final double dollarCashInHand;
@@ -22,6 +23,7 @@ class BalancesModel {
 
   BalancesModel(  {
     required this.expenses,
+    required this.baseCurrency,
     required this.bankBalances,
     required this.payable,
     required this.receivable,
@@ -49,7 +51,9 @@ class BalancesModel {
   /// Convert `BalancesModel` to JSON structure for storing data in Firestore
   Map<String, dynamic> toJson() {
     return {
+
       'bankBalances': bankBalances,
+      'baseCurrency': baseCurrency,
       // 'shillingCashInHand': shillingCashInHand,
       // 'shillingReceivable': shillingReceivable,
       // 'shillingPayable': shillingPayable,
@@ -82,6 +86,7 @@ class BalancesModel {
         // dollarReceivable: 0.0,
         // dollarPayable: 0.0,
         workingCapital: 0.0,
+    baseCurrency: '',
     expenses: {'USD': 0.0, 'KES': 0.0},
     payable: {'USD': 0.0, 'KES': 0.0},
     receivable: {'USD': 0.0, 'KES': 0.0},
@@ -130,6 +135,7 @@ class BalancesModel {
       // inflows: Map<String, dynamic>.from(jsonData['inflows'] ?? {}),
       // outflows: Map<String, dynamic>.from(jsonData['outflows'] ?? {}),
       currenciesAtCost: (jsonData['currenciesAtCost'] as num?)?.toDouble() ?? 0.0,
+      baseCurrency: jsonData['baseCurrency'] ,
       transactionCounters: Map<String, dynamic>.from(jsonData['transactionCounters']),
     );
   }

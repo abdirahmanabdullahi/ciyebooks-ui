@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
+import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,21 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../navigation_menu.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
+import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
-import '../ui/forex_form.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -38,7 +35,6 @@ class ForexController extends GetxController {
   final counters = {}.obs;
   final selectedField = ''.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final enableOverlayButton = true.obs;
 
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
@@ -48,30 +44,31 @@ class ForexController extends GetxController {
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
-  // sortExpenses(){
-  //
-  // }
+  RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
 
-  // final currency = [].obs;
-  // final withCashFormKey = GlobalKey<FormState>();
+
   final transactionCounter = 0.obs;
 
   ///Controllers
-  TextEditingController currency = TextEditingController();
-  TextEditingController transactionType = TextEditingController();
-  TextEditingController rate = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  TextEditingController total = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
+  TextEditingController transactionTypeController = TextEditingController();
+  TextEditingController rateController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController totalController = TextEditingController();
 
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
+
   /// *-----------------------------Start keypad--------------------------------------------*
 
   void addCharacter(buttonValue) {
-    final target = selectedField.value == 'rate' ? rate :selectedField.value=='total'?total: amount;
-
+    final target = selectedField.value == 'rate'
+        ? rateController
+        : selectedField.value == 'total'
+            ? totalController
+            : amountController;
 
     ///Limit the number of decimals
     if (buttonValue == '.' && target.text.contains('.')) {
@@ -96,9 +93,12 @@ class ForexController extends GetxController {
   }
 
   ///Remove characters
-  void removeCharacter() {    final target = selectedField.value == 'rate' ? rate :selectedField.value=='total'?total: amount;
-
-
+  void removeCharacter() {
+    final target = selectedField.value == 'rate'
+        ? rateController
+        : selectedField.value == 'total'
+            ? totalController
+            : amountController;
     if (target.text.isNotEmpty) {
       target.text = target.text.substring(0, target.text.length - 1);
     }
@@ -108,20 +108,26 @@ class ForexController extends GetxController {
 
   @override
   onInit() {
-
-
     fetchTotals();
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('CurrencyStock').snapshots().listen((querySnapshot) {
 
+      currencyStock.value = querySnapshot.docs.map((doc) {
+
+        return CurrencyModel.fromJson(doc.data() );
+
+      }).toList();
+    });
     ///Add listeners to the controllers
-    rate.addListener(updateButtonStatus);
-    amount.addListener(updateButtonStatus);
-    total.addListener(updateButtonStatus);
+    rateController.addListener(updateButtonStatus);
+    amountController.addListener(updateButtonStatus);
+    totalController.addListener(updateButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
 
     super.onInit();
   }
+
   // void _updateFromTotal() {
   //   // if (_isManualUpdate) return; // prevent loops
   //   // _isManualUpdate = true;
@@ -133,23 +139,25 @@ class ForexController extends GetxController {
 
   /// *-----------------------------Enable or disable the continue button----------------------------------*
 
+  ///Calculate the fields
+  onAmountChanged(String? value) {
+    totalController.text = formatter.format(((double.tryParse(amountController.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(rateController.text.trim()) ?? 0.0)));
+  }
+
+  onTotalChanged(String? value) {
+    if ((double.tryParse(rateController.text.trim().replaceAll(',', '').removeAllWhitespace) ?? 0.0) <= 0) {
+      return;
+    }
+
+    amountController.text = formatter.format(((double.tryParse(totalController.text.trim()) ?? 0.0) / (double.tryParse(rateController.text.trim()) ?? 0.0)));
+  }
+
   updateButtonStatus() {
-    isButtonEnabled.value =
-        rate.text.isNotEmpty && amount.text.isNotEmpty && total.text.isNotEmpty && (num.parse(rate.text) > 0 && (num.parse(amount.text) > 0 && (num.parse(total.text.replaceAll(',', '')) > 0)));
-    double rateVal = double.tryParse(rate.text) ?? 0;
-    double amountVal = double.tryParse(amount.text) ?? 0;
-    double totalVal = double.tryParse(total.text) ?? 0;
-
-
-    // if (selectedField.value == 'amount' && rateVal > 0) {
-
-      total.text = formatter.format(amountVal *rateVal);
-    // }
-    // if (selectedField.value == 'total' && rateVal > 0) {
-    //
-    //   amount.text = (totalVal / rateVal).toStringAsFixed(2);
-    // }
-     }
+    isButtonEnabled.value = rateController.text.isNotEmpty &&
+        amountController.text.isNotEmpty &&
+        totalController.text.isNotEmpty &&
+        ((num.tryParse(rateController.text) ?? 0) > 0 && (num.tryParse(amountController.text) ?? 0) > 0 && (num.tryParse(totalController.text.replaceAll(',', '')) ?? 0) > 0);
+  }
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
@@ -157,6 +165,9 @@ class ForexController extends GetxController {
     DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
 
     if (balances.exists && balances.data() != null) {
+      final baseCurrency = ''.obs;
+
+      baseCurrency.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>).baseCurrency;
       totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
       cashBalances.value = totals.value.cashBalances;
       counters.value = totals.value.transactionCounters;
@@ -164,6 +175,8 @@ class ForexController extends GetxController {
       transactionCounter.value = counters['bankWithdrawCounter'];
     }
   }
+
+  ///Get currencies for the new currency popup form
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
@@ -296,7 +309,7 @@ class ForexController extends GetxController {
                                         "Amount",
                                       ),
                                     ),
-                                    pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                                    pw.Text(double.parse(amountController.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -469,7 +482,7 @@ class ForexController extends GetxController {
                         Expanded(
                           child: Text("Amount", style: TextStyle()),
                         ),
-                        Text(formatter.format(double.parse(amount.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                        Text(formatter.format(double.parse(amountController.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                       ],
                     ),
                     Gap(5),
@@ -541,6 +554,7 @@ class ForexController extends GetxController {
   /// *-----------------------------Create the payment----------------------------------*
 
   Future createPayment(BuildContext context) async {
+
     isLoading.value = true;
 
     try {
@@ -554,23 +568,23 @@ class ForexController extends GetxController {
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
       final newDeposit = DepositModel(
-        depositedBy: rate.text.trim(),
+        depositedBy: rateController.text.trim(),
         transactionType: 'deposit',
         transactionId: 'DPST-${counters['bankDepositCounter']}',
-        currency: amount.text.trim(),
-        amount: double.tryParse(amount.text.trim()) ?? 0.0,
+        currency: amountController.text.trim(),
+        amount: double.tryParse(amountController.text.trim()) ?? 0.0,
         dateCreated: DateTime.now(),
-        description: rate.text.trim(),
+        description: rateController.text.trim(),
       );
 
       ///Create payment transaction
       batch.set(depositRef, newDeposit.toJson());
 
       ///update cash balance
-      batch.update(cashRef, {"cashBalances.${rate.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
+      batch.update(cashRef, {"cashBalances.${rateController.text.trim()}": FieldValue.increment(-num.parse(amountController.text.trim()))});
 
       ///update expense total
-      batch.update(cashRef, {"deposits.${rate.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      batch.update(cashRef, {"deposits.${rateController.text.trim()}": FieldValue.increment(num.parse(amountController.text.trim()))});
 
       ///Update expense counter
       batch.update(counterRef, {"transactionCounters.bankDepositCounter": FieldValue.increment(1)});
@@ -610,8 +624,4 @@ class ForexController extends GetxController {
   }
 
   /// *-----------------------------End data submission----------------------------------*
-
-
-
-
 }

@@ -1,24 +1,13 @@
-import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_controller/pay_client_controller.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:ciyebooks/utils/constants/image_strings.dart';
-import 'package:ciyebooks/utils/constants/sizes.dart';
-import 'package:ciyebooks/utils/device/device_utility.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 
 import 'features/calculator/calculator_screen.dart';
-import 'features/common/widgets/acount_preview_tile.dart';
 import 'features/dashboard/home.dart';
 import 'features/notes/notes.dart';
-import 'features/pay/pay_client/screens/pay_client_form.dart';
 import 'features/stats/stats.dart';
 import 'features/todos/todos.dart';
 
