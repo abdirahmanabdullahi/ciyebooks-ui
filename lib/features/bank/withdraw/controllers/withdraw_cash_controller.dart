@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -581,9 +580,7 @@ class WithdrawCashController extends GetxController {
       if (context.mounted) {
         Navigator.of(context).pop();
         createPdf();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const ExpenseHistory()),
-        );
+
       }
     } on FirebaseAuthException catch (e) {
       print('[[[[[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]]]]]]');

@@ -1,6 +1,5 @@
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_controller/pay_expense_controller.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +29,7 @@ class DepositForm extends StatelessWidget {
           backgroundColor: CupertinoColors.systemBlue,
           shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quarternary,width: 2),
               borderRadius: BorderRadius.circular(20)),
-          onPressed: () => Get.to(() => ExpenseHistory()),
-          child: Icon(
+onPressed: (){},          child: Icon(
             Icons.manage_search_rounded,
             color: CupertinoColors.white,
             size: 35,
@@ -225,7 +223,6 @@ class DepositForm extends StatelessWidget {
                                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, color: CupertinoColors.darkBackgroundGray),
                                 ),
                                 onPressed: () {
-                                  value == 'del' ? controller.removeCharacter() : controller.addCharacter(value);
                                 },
                               ),
                             );
@@ -371,7 +368,7 @@ class DepositForm extends StatelessWidget {
                                                         backgroundColor: CupertinoColors.systemBlue,
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                                       ),
-                                                      onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                                                      onPressed: controller.isLoading.value ? null : () => controller.createBankDeposit(context),
                                                       child: Text(
                                                         'Pay',
                                                         style: TextStyle(color: AppColors.quinary),

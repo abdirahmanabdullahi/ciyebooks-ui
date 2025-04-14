@@ -59,8 +59,8 @@ class SignInController extends GetxController {
         localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
 
-      /// Login user with email and password
-      final userCredentials = await AuthRepo.instance
+      /// Login user with email and password.
+      await AuthRepo.instance
           .login(email.text.trim(), password.text.trim()).then((_) {
 
         /// Stop loading

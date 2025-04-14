@@ -30,15 +30,20 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
-    return AppBar(
-      scrolledUnderElevation: 0,
-      backgroundColor: dark ? AppColors.dark : AppColors.quinary,
-      leading: showBackArrow
-          ? IconButton(
-              onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios))
-          : null,
-      actions: actions,
-      title: title,
+    return Column(spacing: 0,mainAxisSize: MainAxisSize.min,
+      children: [
+        AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: dark ? AppColors.dark : AppColors.quinary,
+          leading: showBackArrow
+              ? IconButton(
+                  onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back_ios))
+              : null,
+          actions: actions,
+          title: title,
+        ),Divider(height: 0,thickness: 1,color: Color(0xff9AA6B2),)
+
+      ],
     );
   }
 

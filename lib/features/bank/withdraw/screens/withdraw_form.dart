@@ -1,5 +1,5 @@
 import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
-import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_history.dart';
+import 'package:ciyebooks/features/bank/withdraw/screens/bank_home.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_controller/pay_expense_controller.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:flutter/cupertino.dart';
@@ -462,6 +462,9 @@ class WithdrawForm extends StatelessWidget {
       ),
     );
   }
+}
+
+class WithdrawHistory {
 }
 
 void showAddExpenseCategoryDialog(context) {

@@ -59,118 +59,6 @@ class TransferHistory extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'DateCreated',
-                          child: Text(
-                            'Sort by date',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'AccountFrom',
-                          child: Text(
-                            'Sort by payee',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'Receiver',
-                          child: Text(
-                            'Sort by receiver',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'AmountPaid',
-                          child: Text(
-                            'Sort by amount',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'Currency',
-                          child: Text(
-                            'Sort by Currency',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                      child: SizedBox(
-                        height: 30,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: AppColors.quinary,
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                              padding: EdgeInsets.symmetric(horizontal: 10)),
-                          onPressed: () => controller.sortCriteria.value = 'TransactionId',
-                          child: Text(
-                            'Sort by transactionId',
-                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Divider(),
             Expanded(
               child: Obx(
@@ -182,7 +70,6 @@ class TransferHistory extends StatelessWidget {
                       .doc(uid)
                       .collection('transactions')
                       .where('transactionType', isEqualTo: 'payment')
-                      .orderBy(controller.sortCriteria.value, descending: true)
                       .withConverter<PayClientModel>(
                         fromFirestore: (snapshot, _) => PayClientModel.fromJson(snapshot.data()!),
                         toFirestore: (payment, _) => payment.toJson(),

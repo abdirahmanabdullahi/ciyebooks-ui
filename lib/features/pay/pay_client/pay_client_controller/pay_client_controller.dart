@@ -26,6 +26,7 @@ import '../../../setup/models/setup_model.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
+  final _uid = FirebaseAuth.instance.currentUser?.uid;
 
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
@@ -50,44 +51,6 @@ class PayClientController extends GetxController {
   final accountNo = TextEditingController();
   final description = TextEditingController();
 
-  ///Sort criteria
-  final sortCriteria = 'DateCreated'.obs;
-
-  final _uid = FirebaseAuth.instance.currentUser?.uid;
-
-  /// *-----------------------------Start keypad--------------------------------------------*
-
-  void addCharacter(buttonValue) {
-    ///Limit the number of decimals
-    if (buttonValue == '.' && amount.text.contains('.')) {
-      return;
-    }
-
-    ///Limit the number of decimal places
-    if (amount.text.contains('.')) {
-      if (amount.text.split('.')[1].length < 2) {
-        amount.text += buttonValue;
-      }
-      return;
-    }
-
-    if (amount.text.length >= 12) {
-      return;
-    }
-
-    ///Add other values
-    amount.text += buttonValue;
-  }
-
-  ///Remove characters
-  void removeCharacter() {
-    if (amount.text.isNotEmpty) {
-      amount.text = amount.text.substring(0, amount.text.length - 1);
-    }
-  }
-
-  /// *-----------------------------End keypad--------------------------------------------*
-
   @override
   onInit() {
     fetchTotals();
@@ -102,7 +65,6 @@ class PayClientController extends GetxController {
     fetchTotals();
 
     /// Stream for the accounts
-    RxList<AccountModel> accounts = <AccountModel>[].obs;
 
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
@@ -112,213 +74,236 @@ class PayClientController extends GetxController {
     super.onInit();
   }
 
+  ///Dispose off controllers
+  disposeControllers() {
+    from.dispose();
+    paidCurrency.dispose();
+    receiver.dispose();
+    amount.dispose();
+    description.dispose();
+  }
+
   void updateButtonStatus() {
     isButtonEnabled.value = from.text.isNotEmpty && accountNo.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
-
-    if (documentSnapshot.exists && documentSnapshot.data() != null) {
-      totals.value = BalancesModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
-      cashBalances.value = totals.value.cashBalances;
-      counters.value = totals.value.transactionCounters;
-      payments.value = totals.value.payments;
-      transactionCounter.value = counters['paymentsCounter'];
-    }
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        totals.value = BalancesModel.fromJson(snapshot.data()!);
+        cashBalances.value = totals.value.cashBalances;
+        counters.value = totals.value.transactionCounters;
+        transactionCounter.value = counters['paymentsCounter'];
+      }
+    });
   }
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-  Future<void> createPdf() async {
+createPdf() async {
     try {
       /// Create the receipt.
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
       final ttf = pw.Font.ttf(font);
       final pdf = pw.Document();
-      final ByteData image = await rootBundle.load('assets/images/icons/checkMark.png');
 
-      Uint8List imageData = (image).buffer.asUint8List();
-
-      pdf.addPage(
-        pw.Page(
-            build: (pw.Context context) => pw.Column(
-                  children: [
-                    pw.Container(
-                      decoration: pw.BoxDecoration(
-                          border: pw.Border.all(
-                            width: 1,
-                            color: PdfColors.black,
-                          ),
-                          borderRadius: pw.BorderRadius.circular(12)),
-                      child: pw.Column(
-                        mainAxisSize: pw.MainAxisSize.min,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Container(
-                            decoration: pw.BoxDecoration(borderRadius: pw.BorderRadius.only(topLeft: pw.Radius.circular(12), topRight: pw.Radius.circular(12)), color: PdfColors.blue),
-                            width: double.maxFinite,
-                            height: 70,
-                            child: pw.Row(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              children: [
-                                pw.Image(height: 60, pw.MemoryImage(imageData)),
-                                pw.SizedBox(width: 20),
-                                pw.Text(
-                                  'Payment receipt',
-                                  style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Gap(10),
-                          pw.Padding(
-                            padding: pw.EdgeInsets.all(8.0),
-                            child: pw.Column(
-                              children: [
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Transaction type",
-                                      ),
-                                    ),
-                                    pw.Text('Payment', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Transaction id",
-                                      ),
-                                    ),
-                                    pw.Text('pymnt-${counters['paymentsCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "From",
-                                      ),
-                                    ),
-                                    pw.Text(from.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Receiver",
-                                      ),
-                                    ),
-                                    pw.Text(paidToOwner.value ? 'Account holder' : receiver.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Currency",
-                                      ),
-                                    ),
-                                    pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Amount",
-                                      ),
-                                    ),
-                                    pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.normal)),
-                                    ),
-                                    pw.Text(
-                                      DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
-                                      style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+      pdf.addPage(pw.Page(
+          margin: pw.EdgeInsets.fromLTRB(
+            10,
+            30,
+            10,
+            20,
+          ),
+          build: (pw.Context context) => pw.Container(
+              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black), borderRadius: pw.BorderRadius.all(pw.Radius.circular(12))),
+              child: pw.Column(
+                mainAxisSize: pw.MainAxisSize.min,
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Container(
+                    decoration: pw.BoxDecoration(
+                        borderRadius: pw.BorderRadius.only(
+                          topLeft: pw.Radius.circular(12),
+                          topRight: pw.Radius.circular(12),
+                        ),
+                        color: PdfColors.blue),
+                    width: double.maxFinite,
+                    height: 70,
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                      children: [
+                        pw.Text(
+                          'Payment receipt',
+                          style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
+                        ),
+                      ],
                     ),
-                  ],
-                )),
-      );
+                  ),
+                  // Gap(10),
+                  pw.Padding(
+                    padding: pw.EdgeInsets.all(8.0),
+                    child: pw.Column(
+                      children: [
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Transaction type",
+                              ),
+                            ),
+                            pw.Text('Payment', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Transaction id",
+                              ),
+                            ),
+                            pw.Text('PAY-${counters['paymentsCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "From",
+                              ),
+                            ),
+                            pw.Text(from.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Receiver",
+                              ),
+                            ),
+                            pw.Text(paidToOwner.value ? from.text.trim() : receiver.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Currency",
+                              ),
+                            ),
+                            pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Amount",
+                              ),
+                            ),
+                            pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),  pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text(
+                                style: pw.TextStyle(font: ttf),
+                                "Description",
+                              ),
+                            ),
+                            pw.Text(double.parse(description.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                        pw.Row(
+                          children: [
+                            pw.Expanded(
+                              child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.normal)),
+                            ),
+                            pw.Text(
+                              DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
+                              style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        pw.SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ))));
 
       ///Share or download the receipt
-      final directory = await getApplicationDocumentsDirectory();
+      final directory = await getTemporaryDirectory();
       final path = directory.path;
-      final file = File('$path/pymnt-${counters['paymentsCounter']}.pdf');
+      final file = File('$path/PAY-${counters['paymentsCounter']}.pdf');
       await file.writeAsBytes(await pdf.save());
       if (await file.exists()) {
-        Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
+        await Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
       } else {}
     } catch (e) {
       Get.snackbar(
@@ -335,180 +320,9 @@ class PayClientController extends GetxController {
     }
   }
 
-  void showReceiptDialog(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        Future.delayed(Duration(seconds: 5), () {
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          } // Close the dialog
-        });
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.all(8),
-          backgroundColor: AppColors.quinary,
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
-                width: double.maxFinite,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.task_alt_outlined,
-                      size: 40,
-                      color: AppColors.quinary,
-                    ),
-                    Gap(15),
-                    Text(
-                      'Payment receipt',
-                      style: TextStyle(color: AppColors.quinary, fontSize: 24),
-                    ),
-                  ],
-                ),
-              ),
-              Gap(10),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction type", style: TextStyle()),
-                        ),
-                        Text('Payment', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction id", style: TextStyle()),
-                        ),
-                        Text('pymnt-${counters['paymentsCounter']}', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("From", style: TextStyle()),
-                        ),
-                        Text(from.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Receiver", style: TextStyle()),
-                        ),
-                        Text(paidToOwner.value ? 'Account holder' : receiver.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Currency", style: TextStyle()),
-                        ),
-                        Text(paidCurrency.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Amount", style: TextStyle()),
-                        ),
-                        Text(formatter.format(double.parse(amount.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Date & Time", style: TextStyle(fontWeight: FontWeight.normal)),
-                        ),
-                        Text(DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(10),
-                  ],
-                ),
-              ),
-              Divider(
-                height: 0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton.outlined(
-                            onPressed: () => createPdf(),
-                            icon: Icon(
-                              Icons.share,
-                              color: CupertinoColors.systemBlue,
-                            )
-
-                            // backgroundColor: AppColors.prettyDark,
-                            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
-                            // ),
-                            ),
-                        Text(
-                          'Share',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void timer() {
-    Timer(const Duration(seconds: 5), handleTimeout);
-  }
-
-  void handleTimeout() {
-    // callback function
-  }
-
-  Future createPayment(BuildContext context) async {
+  Future createPayment(
+    BuildContext context,
+  ) async {
     isLoading.value = true;
     if (!paidToOwner.value) {
       if (!payClientFormKey.currentState!.validate()) {
@@ -554,19 +368,19 @@ class PayClientController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('pymnt-${counters['paymentsCounter']}');
+      final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('PAY-${counters['paymentsCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc('PA-${accountNo.text.trim()}');
 
       ///Get data from the controllers
       final newPayment = PayClientModel(
-          transactionId: 'pymnt-${counters['paymentsCounter']}',
+          transactionId: 'PAY-${counters['paymentsCounter']}',
           transactionType: 'payment',
           accountFrom: from.text.trim(),
           currency: paidCurrency.text.trim(),
           amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
-          receiver: receiver.text.trim(),
+          receiver: paidToOwner.value ? from.text.trim() : receiver.text.trim(),
           dateCreated: DateTime.now(),
           description: description.text.trim());
 
@@ -597,10 +411,9 @@ class PayClientController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        Get.offAll(() => NavigationMenu());
-        if (context.mounted) {
-          showReceiptDialog(context);
-        }
+        disposeControllers();
+        createPdf();
+
         isLoading.value = false;
       });
     } on FirebaseAuthException catch (e) {
@@ -618,3 +431,4 @@ class PayClientController extends GetxController {
 
   /// *-----------------------------End data submission----------------------------------*
 }
+

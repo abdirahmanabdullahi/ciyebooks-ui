@@ -35,7 +35,7 @@ class Dashboard extends StatelessWidget {
     // final dark = HelperFunctions.isDarkMode(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CupertinoColors.systemBlue,
+        backgroundColor: AppColors.quinary,
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
         centerTitle: true,
@@ -51,7 +51,7 @@ class Dashboard extends StatelessWidget {
                 Scaffold.of(context).openDrawer(); // Correct context for drawer
               },
               icon: Icon(
-                color: AppColors.quinary,
+                color: AppColors.prettyDark,
                 Icons.sort,
               ),
             ),
@@ -62,7 +62,7 @@ class Dashboard extends StatelessWidget {
             onPressed: () => Get.to(() => Profile()),
             icon: Icon(
               Icons.person_outline,
-              color: AppColors.quinary,
+              color: AppColors.prettyDark,
             ),
           ),
         ],
@@ -76,6 +76,10 @@ class Dashboard extends StatelessWidget {
 
           child: Column(
             children: [
+              Divider(
+                height: 0,
+                color: AppColors.prettyDark,
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
                 child: Container(color: AppColors.quinary, height: 100, width: double.infinity, padding: const EdgeInsets.all(6), child: ButtonList()),

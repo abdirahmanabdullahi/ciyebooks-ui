@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,8 +20,6 @@ import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
-import '../../accounts/model/model.dart';
-import '../../setup/models/setup_model.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -34,8 +30,8 @@ class ForexController extends GetxController {
   final selectedTransaction = 'Buy'.obs;
   final counters = {}.obs;
   final selectedField = ''.obs;
-  Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
+  final currencyStock = {}.obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
   final selectedTransactionType = ''.obs;
@@ -44,8 +40,6 @@ class ForexController extends GetxController {
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
-  RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
-
 
   final transactionCounter = 0.obs;
 
@@ -59,7 +53,6 @@ class ForexController extends GetxController {
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
 
   /// *-----------------------------Start keypad--------------------------------------------*
 
@@ -107,16 +100,9 @@ class ForexController extends GetxController {
   /// *-----------------------------End keypad--------------------------------------------*
 
   @override
-  onInit() {
+  onInit() async {
     fetchTotals();
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('CurrencyStock').snapshots().listen((querySnapshot) {
 
-      currencyStock.value = querySnapshot.docs.map((doc) {
-
-        return CurrencyModel.fromJson(doc.data() );
-
-      }).toList();
-    });
     ///Add listeners to the controllers
     rateController.addListener(updateButtonStatus);
     amountController.addListener(updateButtonStatus);
@@ -141,6 +127,7 @@ class ForexController extends GetxController {
 
   ///Calculate the fields
   onAmountChanged(String? value) {
+    print(amountController.text);
     totalController.text = formatter.format(((double.tryParse(amountController.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(rateController.text.trim()) ?? 0.0)));
   }
 
@@ -161,19 +148,18 @@ class ForexController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    DocumentSnapshot balances = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
-    DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
-
-    if (balances.exists && balances.data() != null) {
-      final baseCurrency = ''.obs;
-
-      baseCurrency.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>).baseCurrency;
-      totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
-      cashBalances.value = totals.value.cashBalances;
-      counters.value = totals.value.transactionCounters;
-      bankBalances.value = totals.value.bankBalances;
-      transactionCounter.value = counters['bankWithdrawCounter'];
-    }
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Balances').doc('Currency stock').snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        currencyStock.value = snapshot.data() as Map<String, dynamic>;
+        // currency.value = BalancesModel.fromJson()
+      }
+    });
+    // DocumentSnapshot currencyStockSnapshot = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Balances').doc('Currency stock').get();
+    //
+    // if (currencyStockSnapshot.exists && currencyStockSnapshot.data() != null) {
+    //   currencyStock.value =currencyStockSnapshot.data() as Map<String, dynamic>;
+    //
+    // }
   }
 
   ///Get currencies for the new currency popup form
@@ -554,7 +540,6 @@ class ForexController extends GetxController {
   /// *-----------------------------Create the payment----------------------------------*
 
   Future createPayment(BuildContext context) async {
-
     isLoading.value = true;
 
     try {
@@ -606,9 +591,7 @@ class ForexController extends GetxController {
       if (context.mounted) {
         Navigator.of(context).pop();
         createPdf();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const ExpenseHistory()),
-        );
+
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

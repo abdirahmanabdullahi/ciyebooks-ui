@@ -1,6 +1,5 @@
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
@@ -31,8 +30,7 @@ class DepositHistoryScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: CupertinoColors.systemBlue,
         shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quarternary, width: 2), borderRadius: BorderRadius.circular(20)),
-        onPressed: () => Get.offAll(() => PayExpenseForm()),
-        child: Icon(
+onPressed: (){},        child: Icon(
           Icons.add_circle_outline,
           // Icons.add_circle_outline,
           color: AppColors.quinary,

@@ -1,4 +1,3 @@
-import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/forex/repo/currency_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,21 +61,22 @@ class NewCurrencyController extends GetxController {
       }
 
       /// Check if the currency already is in the currency stock
-      final existingCurrency = await FirebaseFirestore.instance.collection('Users').doc(uid).collection('CurrencyStock').doc(currencyCode.text.trim()).get();
+      // final existingCurrency = await FirebaseFirestore.instance.collection('Users').doc(uid).collection('CurrencyStock').doc(currencyCode.text.trim()).get();
+      //
+      // if (existingCurrency.exists) {
+      //   Get.snackbar('Currency already exists!', 'Please select a new currency and try again', backgroundColor: Colors.orange, colorText: Colors.white);
+      //
+      //   return;
+      // }
 
-      if (existingCurrency.exists) {
-        Get.snackbar('Currency already exists!', 'Please select a new currency and try again', backgroundColor: Colors.orange, colorText: Colors.white);
-
-        return;
-      }
-
-      final newCurrency = CurrencyModel(
-        currencyName: currencyName.text.trim(),
-        currencyCode: currencyCode.text.trim(),
-        symbol: symbol.text.trim(),
-        amount: 0,
-        totalCost: 0,
-      );
+      // final newCurrency = CurrencyModel(
+      //   currencyName: currencyName.text.trim(),
+      //   currencyCode: currencyCode.text.trim(),
+      //   symbol: symbol.text.trim(),
+      //   amount: 0,
+      //   totalCost: 0,
+      // );
+      final newCurrency = {currencyCode.text.trim():0.0};
       await _currencyRepo.createCurrency(newCurrency).then((_) {
         if (context.mounted) {
           Navigator.of(context).pop();
@@ -92,6 +92,7 @@ class NewCurrencyController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      print(e.toString());
       throw 'Something went wrong. Please try again';
     } catch (e) {
       Get.snackbar('Shit', e.toString(), backgroundColor: Colors.red, colorText: Colors.white);

@@ -257,7 +257,6 @@ class ForexForm extends StatelessWidget {
                           width: double.maxFinite,
                           onSelected: (value) {
                             if (value != null && value == 'AddNew') {
-                              showAddExpenseCategoryDialog(context);
                             } else {}
                           },
                           dropdownMenuEntries: []
@@ -705,70 +704,5 @@ class ForexForm extends StatelessWidget {
   }
 }
 
-void showAddExpenseCategoryDialog(context) {
-  showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      final controller = Get.put(PayExpenseController());
-      return AlertDialog(
-        backgroundColor: AppColors.quarternary,
-        insetPadding: EdgeInsets.all(20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Column(
-          children: [const Text('Add new expense category'), Gap(5), Divider()],
-        ),
-        content: SizedBox(
-            width: double.maxFinite,
-            child: TextFormField(
-              controller: controller.category,
-              decoration: InputDecoration(labelText: 'Category name'),
-            )),
-        actions: <Widget>[
-          OutlinedButton.icon(
-            icon: Icon(
-              Icons.add_circle_outline,
-              color: AppColors.quinary,
-            ),
-            style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(CupertinoColors.systemBlue), padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 10))),
-            label: const Text(
-              'Add',
-              style: TextStyle(color: AppColors.quinary),
-            ),
-            onPressed: () {
-              controller.addNewExpenseCategory();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
 
-showCalculator(BuildContext context) {
-  final controller = Get.put(ForexController());
-  // final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-  //   locale: 'en_us',
-  //   decimalDigits: 2,
-  // );
 
-  showDialog(
-    context: context,
-    builder: (context) {
-      // Future.delayed(Duration(seconds: 5), () {
-      //   if (context.mounted) {
-      //     Navigator.of(context).pop();
-      //   } // Close the dialog
-      // });
-      return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.fromLTRB(25, MediaQuery.sizeOf(context).height / 7, 25, 0),
-          backgroundColor: AppColors.quarternary,
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          content: CalculatorScreen());
-    },
-  ).then((value) {
-    // controller.enableOverlayButton.value = true;
-  });
-}

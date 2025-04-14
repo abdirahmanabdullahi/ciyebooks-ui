@@ -11,85 +11,86 @@ class CalculatorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // final screenSize = MediaQuery.of(context).size;
     final CalculatorController controller = Get.put(CalculatorController());
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 26.0, 0, 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Output display
-          Obx(
-            () {
-              String display = "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
-              return Padding(
-                padding: const EdgeInsets.fromLTRB( 0.0,0,20,0),
-                child: Row(
-                  children: [
-                    Expanded(flex:2,
-                        child: IconButton(
-                            onPressed: () async{
-                          await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
-
-                        }, icon: Icon(Icons.copy,color: AppColors.prettyDark,))),
-                    Expanded(
-                      flex: 10,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        reverse: true,
-                        child: Text(
-                          (display.isEmpty || display == '∞') ? '0.0' : display,
-                          style: TextStyle(
-                            color: AppColors.prettyDark,
-                            fontSize: display.length > 14
-                                ? 25
-                                : display.length > 30
-                                    ? 20
-                                    : 35,
-                            fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.end,
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        // Output display
+        Obx(
+          () {
+            String display = "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 0, 20, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 2,
+                      child: IconButton(
+                          onPressed: () async {
+                            await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
+                          },
+                          icon: Icon(Icons.copy, color: Colors.black38))),
+                  Expanded(
+                    flex: 10,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      reverse: true,
+                      child: Text(
+                        display,
+                        style: TextStyle(
+                          color: AppColors.prettyDark,
+                          fontSize: display.length > 14
+                              ? 25
+                              : display.length > 30
+                                  ? 20
+                                  : 35,
+                          fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
                         ),
+                        textAlign: TextAlign.end,
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          ),
-          Divider(
-            color: Colors.grey.shade500,
-            indent: 20,
-            endIndent: 20,
-          ),
-          // Buttons
-          Wrap(
-            children: Btn.buttonValues
-                .map(
-                  (value) => SizedBox(
-                    width: value == Btn.n0 ? 160 : 80,
-                    height: 65,
-                    child: _buildButton(value, controller),
                   ),
-                )
-                .toList(),
-          ),
-          // Gap(AppSizes.defaultSpace)
-        ],
-      ),
+                ],
+              ),
+            );
+          },
+        ),
+        Divider(
+          color: Colors.grey.shade500,
+          // indent: 20,
+          // endIndent: 20,
+        ),
+        // Buttons
+        Wrap(
+          spacing: 3,
+          runSpacing: 3,
+          children: Btn.buttonValues
+              .map(
+                (value) => SizedBox(
+                  width: value == Btn.calculate ? screenWidth / 3 + 3: screenWidth / 6,
+                  height: 55,
+                  child: _buildButton(value, controller),
+                ),
+              )
+              .toList(),
+        ),
+        // Gap(AppSizes.defaultSpace)
+      ],
     );
   }
 
-  Widget _buildButton(String value, CalculatorController controller) {    Future<void> vibrate() async {
-    await SystemChannels.platform.invokeMethod<void>(
-      'HapticFeedback.vibrate',
-      'HapticFeedbackType.lightImpact',
-    );
-  }
+  Widget _buildButton(String value, CalculatorController controller) {
+    Future<void> vibrate() async {
+      await SystemChannels.platform.invokeMethod<void>(
+        'HapticFeedback.vibrate',
+        'HapticFeedbackType.lightImpact',
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Material(
@@ -101,11 +102,13 @@ class CalculatorScreen extends StatelessWidget {
             color: AppColors.quinary,
             width: 1,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: InkWell(
-          onTap: ()  {vibrate();
-            controller.onBtnTap(value);},
+          onTap: () {
+            vibrate();
+            controller.onBtnTap(value);
+          },
           child: Center(
             child: Text(
               value,
@@ -133,20 +136,18 @@ class CalculatorScreen extends StatelessWidget {
   }
 
   Color _getBtnColor(String value) {
-    return [Btn.del, Btn.clr].contains(value)
+    return [
+      Btn.del,
+      Btn.clr,
+      Btn.per,
+      Btn.multiply,
+      Btn.add,
+      Btn.subtract,
+      Btn.divide,
+      Btn.calculate,
+    ].contains(value)
         ? CupertinoColors.systemBlue
-        : [
-            Btn.per,
-            Btn.multiply,
-            Btn.add,
-            Btn.subtract,
-            Btn.divide,
-            Btn.calculate,
-            Btn.calculate,
-            Btn.calculate,
-          ].contains(value)
-            ? CupertinoColors.systemBlue
-            : AppColors.quinary;
+        : AppColors.quinary;
   }
 }
 

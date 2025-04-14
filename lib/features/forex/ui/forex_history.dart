@@ -1,6 +1,6 @@
+import 'package:ciyebooks/common/custom_appbar.dart';
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/pay_expense_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
@@ -30,38 +30,40 @@ class ForexHistory extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         backgroundColor: CupertinoColors.systemBlue,
-        shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quarternary, width: 2), borderRadius: BorderRadius.circular(20)),
-        onPressed: () => Get.offAll(() => PayExpenseForm()),
+        shape: RoundedRectangleBorder(side: BorderSide(color:  Color(0xff9AA6B2), width: 1), borderRadius: BorderRadius.circular(20)),
+   onPressed: (){},
         child: Icon(
-          Icons.add_circle_outline,
+          Icons.add,
           // Icons.add_circle_outline,
-          color: AppColors.quinary,
-          size: 35,
+          color:  AppColors.quinary,
+          size: 30,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      appBar: AppBar(
-        foregroundColor: AppColors.quinary,
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-              Icons.arrow_back,
-              color: AppColors.quinary,
-            )),
-        actions: [],
-        backgroundColor: CupertinoColors.systemBlue,
-        title: Text(
-          'Forex history',
-          style: TextStyle(color: AppColors.quinary),
-        ),
-      ),
+      // appBar: AppBar(
+      //   // foregroundColor: AppColors.quinary,
+      //   automaticallyImplyLeading: true,
+      //   leading: IconButton(
+      //       onPressed: () => Get.back(),
+      //       icon: Icon(
+      //         Icons.arrow_back,
+      //         color: AppColors.prettyDark
+      //       )),
+      //   actions: [],
+      //   backgroundColor: AppColors.quarternary,
+      //   title: Text(
+      //     'Forex history',
+      //     style: TextStyle(color: AppColors.prettyDark),
+      //   ),
+      // ),
+      appBar: CustomAppbar(title: Text('Forex history'),),
       body: Obx(
             () => SafeArea(
           bottom: false,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Divider(height: 0,thickness: 2,color: AppColors.prettyDark,),
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(12.0, 40, 12, 6),
               //   child: SingleChildScrollView(

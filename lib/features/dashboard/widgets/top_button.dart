@@ -26,7 +26,7 @@ class TopButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 35,
+          height: 40,
           width: 50,
           child: FloatingActionButton(elevation: 0,
             heroTag: heroTag,

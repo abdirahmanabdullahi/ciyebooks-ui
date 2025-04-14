@@ -1,4 +1,3 @@
-import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -14,14 +13,15 @@ class CurrencyRepo extends GetxController {
   final _db = FirebaseFirestore.instance;
   final _uid = FirebaseAuth.instance.currentUser!.uid;
 
-  Future<void> createCurrency(CurrencyModel currencyModel) async {
+  Future<void> createCurrency(newCurrency) async {
+    ///FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Balances').doc('Currency stock').
     try {
       await _db
           .collection('Users')
           .doc(_uid)
-          .collection('CurrencyStock')
-          .doc(currencyModel.currencyCode)
-          .set(currencyModel.toJson());
+          .collection('Balances')
+          .doc('Currency stock')
+          .update(newCurrency);
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

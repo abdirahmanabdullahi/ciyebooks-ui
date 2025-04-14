@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/screens/expense_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +32,7 @@ class DepositCashController extends GetxController {
   final isLoading = false.obs;
   final bankBalances = {}.obs;
   final cashBalances = {}.obs;
+  final depositedByOwner = true.obs;
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
@@ -53,39 +53,6 @@ class DepositCashController extends GetxController {
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
-  /// *-----------------------------Start keypad--------------------------------------------*
-
-  void addCharacter(buttonValue) {
-    ///Limit the number of decimals
-    if (buttonValue == '.' && amount.text.contains('.')) {
-      return;
-    }
-
-    ///Limit the number of decimal places
-    if (amount.text.contains('.')) {
-      if (amount.text.split('.')[1].length < 2) {
-        amount.text += buttonValue;
-      }
-      return;
-    }
-
-    if (amount.text.length >= 12) {
-      return;
-    }
-
-    ///Add other values
-    amount.text += buttonValue;
-  }
-
-  ///Remove characters
-  void removeCharacter() {
-    if (amount.text.isNotEmpty) {
-      amount.text = amount.text.substring(0, amount.text.length - 1);
-    }
-  }
-
-  /// *-----------------------------End keypad--------------------------------------------*
 
   @override
   onInit() {
@@ -111,16 +78,16 @@ class DepositCashController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    DocumentSnapshot balances = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').get();
-    // DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        totals.value = BalancesModel.fromJson(snapshot.data()!);
+        cashBalances.value = totals.value.cashBalances;
+        counters.value = totals.value.transactionCounters;
 
-    if (balances.exists && balances.data() != null) {
-      totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
-      cashBalances.value = totals.value.cashBalances;
-      counters.value = totals.value.transactionCounters;
-      bankBalances.value = totals.value.bankBalances;
-      transactionCounter.value = counters['bankWithdrawCounter'];
-    }
+        transactionCounter.value = counters['bankDepositCounter'];
+      }
+    });
+
   }
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
@@ -331,174 +298,10 @@ class DepositCashController extends GetxController {
 
   /// *-----------------------------Show receipt preview----------------------------------*
 
-  showReceiptDialog(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        Future.delayed(Duration(seconds: 5), () {
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          } // Close the dialog
-        });
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.all(8),
-          backgroundColor: AppColors.quinary,
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
-                width: double.maxFinite,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.task_alt_outlined,
-                      size: 40,
-                      color: AppColors.quinary,
-                    ),
-                    Gap(15),
-                    Text(
-                      'Expense receipt',
-                      style: TextStyle(color: AppColors.quinary, fontSize: 24),
-                    ),
-                  ],
-                ),
-              ),
-              Gap(10),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction type", style: TextStyle()),
-                        ),
-                        Text('Expense', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction id", style: TextStyle()),
-                        ),
-                        Text('exp-${counters['expenseCounter']}', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Category", style: TextStyle()),
-                        ),
-                        Text('category.text.trim()', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Currency", style: TextStyle()),
-                        ),
-                        Text(depositedCurrency.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Amount", style: TextStyle()),
-                        ),
-                        Text(formatter.format(double.parse(amount.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Description", style: TextStyle()),
-                        ),
-                        Text(description.text.trim(), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Date & Time", style: TextStyle(fontWeight: FontWeight.normal)),
-                        ),
-                        Text(DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(10),
-                  ],
-                ),
-              ),
-              Divider(
-                height: 0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton.outlined(
-                            onPressed: () => createPdf(),
-                            icon: Icon(
-                              Icons.share,
-                              color: CupertinoColors.systemBlue,
-                            )
-
-                            // backgroundColor: AppColors.prettyDark,
-                            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
-                            // ),
-                            ),
-                        Text(
-                          'Share',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   /// *-----------------------------Create the payment----------------------------------*
 
-  Future createPayment(BuildContext context) async {
+  Future createBankDeposit(BuildContext context) async {
     isLoading.value = true;
 
     try {
@@ -512,8 +315,8 @@ class DepositCashController extends GetxController {
             color: Colors.white,
           ),
           shouldIconPulse: true,
-          "Payment failed",
-          'Amount to be paid cannot be more than cash in hand',
+          "Bank deposit failed",
+          'Amount to be deposited cannot be more than cash in hand',
           backgroundColor: Colors.red,
           colorText: Colors.white,
         );
@@ -541,7 +344,7 @@ class DepositCashController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('DPST-${counters['bankDepositCounter']}');
+      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('BKDP-${counters['bankDepositCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
@@ -579,14 +382,13 @@ class DepositCashController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+        createPdf();
       });
       isLoading.value = false;
       if (context.mounted) {
         Navigator.of(context).pop();
         createPdf();
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const ExpenseHistory()),
-        );
+
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
