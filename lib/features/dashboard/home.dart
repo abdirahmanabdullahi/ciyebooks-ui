@@ -7,6 +7,7 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -72,9 +73,11 @@ class Dashboard extends StatelessWidget {
 
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-                child: Container(margin: EdgeInsets.zero, color: AppColors.quarternary, height: 100, width: double.infinity, padding: const EdgeInsets.all(0), child: ButtonList()),
+              SingleChildScrollView(scrollDirection: Axis.horizontal,physics: ClampingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 20),
+                  child: ButtonList(),
+                ),
               ),
               // Cash balances
               Column(

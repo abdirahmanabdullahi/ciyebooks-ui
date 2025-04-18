@@ -26,12 +26,11 @@ class TopButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 50,
-          width: 60,
+          height: 55,
+          width: 55,
           child: FloatingActionButton(elevation: 3,
             heroTag: heroTag,
             backgroundColor: backgroundColor,
-
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100)),
             onPressed: onPressed,

@@ -22,7 +22,7 @@ class ButtonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center,
-      children: [Gap(15),
+      children: [
         TopButton(
           heroTag: "Payment",
           icon: Icons.arrow_outward,
@@ -56,7 +56,7 @@ class ButtonList extends StatelessWidget {
           icon: Icons.group_outlined,
           label: 'Accounts',
           onPressed: () => Get.offAll(() => Accounts()),
-        ),Gap(15),
+        ),
         // TopButton(
         //   heroTag: "History",
         //   icon: Icons.manage_search_outlined,
