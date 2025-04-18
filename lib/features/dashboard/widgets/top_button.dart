@@ -22,12 +22,12 @@ class TopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final dark = HelperFunctions.isDarkMode(context);
-    return Column(
+    return Column(mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 55,
-          width: 55,
+          height: 50,
+          width: 60,
           child: FloatingActionButton(elevation: 3,
             heroTag: heroTag,
             backgroundColor: backgroundColor,
