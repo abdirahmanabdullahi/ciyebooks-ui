@@ -201,52 +201,51 @@ class Dashboard extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(3.0),
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: ClampingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              Obx(
-                                () {
-                                  return SizedBox(width: MediaQuery.sizeOf(context).width,
-                                    child: DataTable(dataRowMaxHeight: 40,dataRowMinHeight: 40,
-                                        showBottomBorder: true,
-                                        headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
-                                        columnSpacing: 30,
-                                        headingRowHeight: 40,
-                                        horizontalMargin: 0,
-                                        columns: [
-                                          DataColumn(label: Text(' Name')),
-                                          DataColumn(label: Text('Amount')),
-                                          DataColumn(label: Text('Rate')),
-                                          DataColumn(label: Text('Total ')),
-                                        ],
-                                        rows: controller.currencies.map((currency) {
-                                          return DataRow(cells: [
-                                            DataCell(Text(
-                                              currency.currencyCode,
-                                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
-                                            )),
-                                            DataCell(
-                                              Text(
-                                                formatter.format(
-                                                  currency.amount,
-                                                ),
+                      child: Column(
+                        children: [
+                          Obx(
+                            () {
+                              return SizedBox(width: MediaQuery.sizeOf(context).width,
+                                child: SingleChildScrollView(
+                                  child: DataTable(dataRowMaxHeight: 40,dataRowMinHeight: 40,
+                                      showBottomBorder: true,
+                                      headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                      columnSpacing: 30,
+                                      headingRowHeight: 40,
+                                      horizontalMargin: 0,
+                                      columns: [
+                                        DataColumn(label: Text(' Name')),
+                                        DataColumn(label: Text('Amount')),
+                                        DataColumn(label: Text('Rate')),
+                                        DataColumn(label: Text('Total ')),
+                                      ],
+                                      rows: controller.currencies.map((currency) {
+                                        return DataRow(cells: [
+                                          DataCell(Text(
+                                            currency.currencyCode,
+                                            style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                          )),
+                                          DataCell(
+                                            Text(
+                                              formatter.format(
+                                                currency.amount,
                                               ),
                                             ),
-                                            DataCell(Text(
-                                              currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
-                                            )),
-                                            DataCell(Text(
-                                              formatter.format(currency.totalCost),
-                                            )),
-                                          ]);
-                                        }).toList()),
-                                  );
-                                },
-                              ),
-                            ],
-                          )),
+                                          ),
+                                          DataCell(Text(
+                                            currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
+                                          )),
+                                          DataCell(Text(
+                                            formatter.format(currency.totalCost),
+                                          )),
+                                        ]);
+                                      }).toList()),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Gap(20),
                     Text(
