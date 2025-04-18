@@ -68,26 +68,22 @@ class DepositCashController extends GetxController {
     super.onInit();
   }
 
-  /// *-----------------------------Add new expense category----------------------------------*
-
-  /// *-----------------------------Enable or disable the continue button----------------------------------*
-
   updateButtonStatus() {
     isButtonEnabled.value = depositedCurrency.text.isNotEmpty && amount.text.isNotEmpty && (num.parse(amount.text) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
-      if (snapshot.exists) {
-        totals.value = BalancesModel.fromJson(snapshot.data()!);
-        cashBalances.value = totals.value.cashBalances;
-        counters.value = totals.value.transactionCounters;
-
-        transactionCounter.value = counters['bankDepositCounter'];
-      }
-    });
-
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen(
+      (snapshot) {
+        if (snapshot.exists) {
+          totals.value = BalancesModel.fromJson(snapshot.data()!);
+          cashBalances.value = totals.value.cashBalances;
+          counters.value = totals.value.transactionCounters;
+          transactionCounter.value = counters['bankDepositCounter'];
+        }
+      },
+    );
   }
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
@@ -296,11 +292,6 @@ class DepositCashController extends GetxController {
     }
   }
 
-  /// *-----------------------------Show receipt preview----------------------------------*
-
-
-  /// *-----------------------------Create the payment----------------------------------*
-
   Future createBankDeposit(BuildContext context) async {
     isLoading.value = true;
 
@@ -388,7 +379,6 @@ class DepositCashController extends GetxController {
       if (context.mounted) {
         Navigator.of(context).pop();
         createPdf();
-
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

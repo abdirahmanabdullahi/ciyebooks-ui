@@ -29,7 +29,7 @@ class ForexModel {
       'Rate': rate,
       'Amount': amount,
       'TotalCost': totalCost,
-      'DateCreated': dateCreated,
+      'dateCreated': dateCreated,
     };
   }
 
@@ -39,7 +39,7 @@ class ForexModel {
       transactionId: jsonData['transactionId'] ?? '',
       currencyName: jsonData['CurrencyName'] ?? '',
       currencyCode: jsonData['CurrencyCode'] ?? '',
-      dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+      dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
       rate: jsonData['Rate'],
       amount: jsonData['Amount'],
       totalCost: jsonData['TotalCost'],

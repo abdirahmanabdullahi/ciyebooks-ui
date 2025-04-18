@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/forex/repo/currency_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,9 +7,10 @@ import 'package:get/get.dart';
 
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
+import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
-import '../ui/test.dart';
+import '../ui/forex_home.dart';
 
 class NewCurrencyController extends GetxController {
   static NewCurrencyController get instance => Get.find();
@@ -20,19 +22,15 @@ class NewCurrencyController extends GetxController {
 
   final currencyList = {}.obs;
 
-
   final enableOverlayButton = true.obs;
   final baseCurrency = ''.obs;
 
-  final _currencyRepo = Get.put(CurrencyRepo());
   final _db = FirebaseFirestore.instance;
-
 
   @override
   void onInit() {
     super.onInit();
     fetchTotals();
-
   }
 
   fetchTotals() async {
@@ -46,56 +44,45 @@ class NewCurrencyController extends GetxController {
   /// Now create new currency
   addNewCurrency(BuildContext context) async {
     try {
-      /// Check if currency is base currency
+      // Check if currency is base currency
       if (currencyCode.text.trim() == baseCurrency.value) {
-        Get.snackbar("Can't add base currency!", 'Please select a new currency and try again', backgroundColor: Colors.orange, colorText: Colors.white);
-
+        Get.snackbar(
+          "Can't add base currency!",
+          'Please select a new currency and try again',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
         return;
       }
 
-      /// Check if currency is selected
+      // Check if currency is selected
       if (currencyCode.text.isEmpty) {
-        Get.snackbar('No currency selected!', 'Please select a new currency and try again', backgroundColor: Colors.orange, colorText: Colors.white);
-
+        Get.snackbar(
+          'No currency selected!',
+          'Please select a new currency and try again',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
         return;
       }
 
-      /// Check if the currency already is in the currency stock
-      // final existingCurrency = await FirebaseFirestore.instance.collection('Users').doc(uid).collection('CurrencyStock').doc(currencyCode.text.trim()).get();
-      //
-      // if (existingCurrency.exists) {
-      //   Get.snackbar('Currency already exists!', 'Please select a new currency and try again', backgroundColor: Colors.orange, colorText: Colors.white);
-      //
-      //   return;
-      // }
+      // Create new currency
+      final newCurrency = CurrencyModel(currencyName: currencyName.text.trim(), amount: 0, totalCost: 0, symbol: symbol.text.trim(), currencyCode: currencyCode.text.trim());
 
-      // final newCurrency = CurrencyModel(
-      //   currencyName: currencyName.text.trim(),
-      //   currencyCode: currencyCode.text.trim(),
-      //   symbol: symbol.text.trim(),
-      //   amount: 0,
-      //   totalCost: 0,
-      // );
-      final newCurrency = {currencyCode.text.trim():0.0};
-      await _currencyRepo.createCurrency(newCurrency).then((_) {
+       await _db
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+
+          .collection('Currency stock').doc(currencyCode.text.trim().toUpperCase())
+          .set(newCurrency.toJson()).then((_) {
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           showForexForm(context);
         }
-        Get.snackbar('Success', 'Currency stock updated', backgroundColor: Colors.green, colorText: Colors.white);
       });
-    } on FirebaseAuthException catch (e) {
-      throw TFirebaseAuthException(e.code).message;
-    } on FirebaseException catch (e) {
-      throw TFirebaseException(e.code).message;
-    } on TPlatformException catch (e) {
-      throw TPlatformException(e.code).message;
+
     } catch (e) {
-      print(e.toString());
-      throw 'Something went wrong. Please try again';
-    } catch (e) {
-      Get.snackbar('Shit', e.toString(), backgroundColor: Colors.red, colorText: Colors.white);
       throw e.toString();
     }
   }

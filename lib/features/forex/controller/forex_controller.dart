@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
+import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +21,8 @@ import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
+import '../../setup/models/setup_model.dart';
+import '../model/new_currency_model.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -27,16 +30,17 @@ class ForexController extends GetxController {
     locale: 'en_us',
     decimalDigits: 2,
   );
-  final selectedTransaction = 'Buy'.obs;
+  final selectedTransaction = 'buyFx'.obs;
   final counters = {}.obs;
   final selectedField = ''.obs;
 
-  final currencyStock = {}.obs;
+  RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
-  final selectedTransactionType = ''.obs;
   final bankBalances = {}.obs;
   final cashBalances = {}.obs;
+  Rx<BalancesModel> totals = BalancesModel.empty().obs;
+
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
@@ -44,69 +48,25 @@ class ForexController extends GetxController {
   final transactionCounter = 0.obs;
 
   ///Controllers
-  TextEditingController currencyController = TextEditingController();
-  TextEditingController transactionTypeController = TextEditingController();
-  TextEditingController rateController = TextEditingController();
-  TextEditingController amountController = TextEditingController();
-  TextEditingController totalController = TextEditingController();
+  TextEditingController currency = TextEditingController();
+  TextEditingController transactionType = TextEditingController();
+  TextEditingController rate = TextEditingController();
+  TextEditingController amount = TextEditingController();
+  TextEditingController total = TextEditingController();
+  TextEditingController description = TextEditingController();
 
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
-  /// *-----------------------------Start keypad--------------------------------------------*
-
-  void addCharacter(buttonValue) {
-    final target = selectedField.value == 'rate'
-        ? rateController
-        : selectedField.value == 'total'
-            ? totalController
-            : amountController;
-
-    ///Limit the number of decimals
-    if (buttonValue == '.' && target.text.contains('.')) {
-      return;
-    }
-
-    ///Limit the number of decimal places
-
-    if (target.text.contains('.')) {
-      if (target.text.split('.')[1].length < 2) {
-        target.text += buttonValue;
-      }
-      return;
-    }
-
-    if (target.text.length >= 12) {
-      return;
-    }
-
-    ///Add other values
-    target.text += buttonValue;
-  }
-
-  ///Remove characters
-  void removeCharacter() {
-    final target = selectedField.value == 'rate'
-        ? rateController
-        : selectedField.value == 'total'
-            ? totalController
-            : amountController;
-    if (target.text.isNotEmpty) {
-      target.text = target.text.substring(0, target.text.length - 1);
-    }
-  }
-
-  /// *-----------------------------End keypad--------------------------------------------*
 
   @override
   onInit() async {
     fetchTotals();
 
     ///Add listeners to the controllers
-    rateController.addListener(updateButtonStatus);
-    amountController.addListener(updateButtonStatus);
-    totalController.addListener(updateButtonStatus);
+    rate.addListener(updateButtonStatus);
+    amount.addListener(updateButtonStatus);
+    total.addListener(updateButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
@@ -114,53 +74,43 @@ class ForexController extends GetxController {
     super.onInit();
   }
 
-  // void _updateFromTotal() {
-  //   // if (_isManualUpdate) return; // prevent loops
-  //   // _isManualUpdate = true;
-  //
-  //
-  //   // _isManualUpdate = false;
-  // }
-  /// *-----------------------------Add new expense category----------------------------------*
-
-  /// *-----------------------------Enable or disable the continue button----------------------------------*
-
   ///Calculate the fields
   onAmountChanged(String? value) {
-    print(amountController.text);
-    totalController.text = formatter.format(((double.tryParse(amountController.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(rateController.text.trim()) ?? 0.0)));
+    total.text = formatter.format(((double.tryParse(amount.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(rate.text.trim()) ?? 0.0)));
   }
 
   onTotalChanged(String? value) {
-    if ((double.tryParse(rateController.text.trim().replaceAll(',', '').removeAllWhitespace) ?? 0.0) <= 0) {
+    if ((double.tryParse(rate.text.trim().replaceAll(',', '').removeAllWhitespace) ?? 0.0) <= 0) {
       return;
     }
 
-    amountController.text = formatter.format(((double.tryParse(totalController.text.trim()) ?? 0.0) / (double.tryParse(rateController.text.trim()) ?? 0.0)));
+    amount.text = formatter.format(((double.tryParse(total.text.trim()) ?? 0.0) / (double.tryParse(rate.text.trim()) ?? 0.0)));
   }
 
   updateButtonStatus() {
-    isButtonEnabled.value = rateController.text.isNotEmpty &&
-        amountController.text.isNotEmpty &&
-        totalController.text.isNotEmpty &&
-        ((num.tryParse(rateController.text) ?? 0) > 0 && (num.tryParse(amountController.text) ?? 0) > 0 && (num.tryParse(totalController.text.replaceAll(',', '')) ?? 0) > 0);
+    isButtonEnabled.value = rate.text.isNotEmpty &&
+        amount.text.isNotEmpty &&
+        total.text.isNotEmpty &&
+        ((num.tryParse(rate.text) ?? 0) > 0 && (num.tryParse(amount.text) ?? 0) > 0 && (num.tryParse(total.text.replaceAll(',', '')) ?? 0) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Balances').doc('Currency stock').snapshots().listen((snapshot) {
-      if (snapshot.exists) {
-        currencyStock.value = snapshot.data() as Map<String, dynamic>;
-        // currency.value = BalancesModel.fromJson()
-      }
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(_uid)
+        .collection('Currency stock')
+        // .where('transactionType', isEqualTo: 'payment')
+
+        .snapshots()
+        .listen((querySnapshot) {
+      currencyStock.clear();
+      currencyStock.value = querySnapshot.docs.map((doc) {
+        return CurrencyModel.fromJson(doc.data());
+      }).toList();
     });
-    // DocumentSnapshot currencyStockSnapshot = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Balances').doc('Currency stock').get();
-    //
-    // if (currencyStockSnapshot.exists && currencyStockSnapshot.data() != null) {
-    //   currencyStock.value =currencyStockSnapshot.data() as Map<String, dynamic>;
-    //
-    // }
   }
+
 
   ///Get currencies for the new currency popup form
 
@@ -295,7 +245,7 @@ class ForexController extends GetxController {
                                         "Amount",
                                       ),
                                     ),
-                                    pw.Text(double.parse(amountController.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                                    pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
                                   ],
                                 ),
                                 pw.SizedBox(
@@ -372,174 +322,10 @@ class ForexController extends GetxController {
 
   /// *-----------------------------Show receipt preview----------------------------------*
 
-  showReceiptDialog(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        Future.delayed(Duration(seconds: 5), () {
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          } // Close the dialog
-        });
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.all(8),
-          backgroundColor: AppColors.quinary,
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
-                width: double.maxFinite,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.task_alt_outlined,
-                      size: 40,
-                      color: AppColors.quinary,
-                    ),
-                    Gap(15),
-                    Text(
-                      'Expense receipt',
-                      style: TextStyle(color: AppColors.quinary, fontSize: 24),
-                    ),
-                  ],
-                ),
-              ),
-              Gap(10),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction type", style: TextStyle()),
-                        ),
-                        Text('Expense', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Transaction id", style: TextStyle()),
-                        ),
-                        Text('exp-${counters['expenseCounter']}', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Category", style: TextStyle()),
-                        ),
-                        Text('category.text.trim()', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Currency", style: TextStyle()),
-                        ),
-                        Text('depositedCurrency.text' '.trim()', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Amount", style: TextStyle()),
-                        ),
-                        Text(formatter.format(double.parse(amountController.text)), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Description", style: TextStyle()),
-                        ),
-                        Text('description.text.trim()', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(5),
-                    Divider(thickness: 1, color: Colors.grey[300]),
-                    Gap(5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("Date & Time", style: TextStyle(fontWeight: FontWeight.normal)),
-                        ),
-                        Text(DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()), style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                      ],
-                    ),
-                    Gap(10),
-                  ],
-                ),
-              ),
-              Divider(
-                height: 0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton.outlined(
-                            onPressed: () => createPdf(),
-                            icon: Icon(
-                              Icons.share,
-                              color: CupertinoColors.systemBlue,
-                            )
-
-                            // backgroundColor: AppColors.prettyDark,
-                            // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100),
-                            // ),
-                            ),
-                        Text(
-                          'Share',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   /// *-----------------------------Create the payment----------------------------------*
 
-  Future createPayment(BuildContext context) async {
+  Future createForexTransaction(BuildContext context) async {
     isLoading.value = true;
 
     try {
@@ -548,28 +334,25 @@ class ForexController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('DPST-${counters['bankDepositCounter']}');
+      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('selectedTransaction.value-${counters['bankDepositCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
-      final newDeposit = DepositModel(
-        depositedBy: rateController.text.trim(),
-        transactionType: 'deposit',
-        transactionId: 'DPST-${counters['bankDepositCounter']}',
-        currency: amountController.text.trim(),
-        amount: double.tryParse(amountController.text.trim()) ?? 0.0,
-        dateCreated: DateTime.now(),
-        description: rateController.text.trim(),
+      final newDeposit = ForexModel(
+        transactionType: selectedTransaction.value,
+        transactionId: 'selectedTransaction.value-${counters['bankDepositCounter']}',
+        amount: double.tryParse(amount.text.trim()) ?? 0.0,
+        dateCreated: DateTime.now(), currencyName: currency.text.trim(), currencyCode: '', rate: double.tryParse(rate.text.trim())??0.0, totalCost: double.tryParse(total.text.trim())??0.0,
       );
 
       ///Create payment transaction
       batch.set(depositRef, newDeposit.toJson());
 
       ///update cash balance
-      batch.update(cashRef, {"cashBalances.${rateController.text.trim()}": FieldValue.increment(-num.parse(amountController.text.trim()))});
+      batch.update(cashRef, {"cashBalances.${rate.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///update expense total
-      batch.update(cashRef, {"deposits.${rateController.text.trim()}": FieldValue.increment(num.parse(amountController.text.trim()))});
+      batch.update(cashRef, {"deposits.${rate.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update expense counter
       batch.update(counterRef, {"transactionCounters.bankDepositCounter": FieldValue.increment(1)});

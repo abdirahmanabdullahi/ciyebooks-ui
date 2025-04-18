@@ -25,7 +25,9 @@ class CurrencyRepo extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
+      print(e.code);
       throw TFirebaseException(e.code).message;
+
     } on FormatException catch (_) {
       throw const TFormatException();
     } on TPlatformException catch (e) {

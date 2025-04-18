@@ -8,21 +8,23 @@ class BalancesModel {
   final double workingCapital;
   final double currenciesAtCost;
   final Map<String, dynamic> cashBalances;
+  final Map<String, dynamic> currencyStock;
   final Map<String, dynamic> bankBalances;
   final Map<String, dynamic> payable;
   final Map<String, dynamic> receivable;
   Map<String, dynamic> expenses;
   Map<String, dynamic> payments;
-  Map<String, dynamic>receipts;
-  Map<String, dynamic>withdrawals;
-  Map<String, dynamic>deposits;
-  Map<String, dynamic>transfers;
+  Map<String, dynamic> receipts;
+  Map<String, dynamic> withdrawals;
+  Map<String, dynamic> deposits;
+  Map<String, dynamic> transfers;
   // Map<String, dynamic>? inflows;
   // Map<String, dynamic>? outflows;
   final Map<String, dynamic> transactionCounters;
 
-  BalancesModel(  {
+  BalancesModel({
     required this.expenses,
+    required this.currencyStock,
     required this.baseCurrency,
     required this.bankBalances,
     required this.payable,
@@ -38,10 +40,10 @@ class BalancesModel {
     // required this.dollarPayable,
     required this.workingCapital,
     required this.payments,
-    required  this.deposits,
-    required  this.receipts,
-    required  this.transfers,
-    required  this.withdrawals,
+    required this.deposits,
+    required this.receipts,
+    required this.transfers,
+    required this.withdrawals,
     required this.currenciesAtCost,
     // this.inflows,
     // this.outflows,
@@ -51,9 +53,9 @@ class BalancesModel {
   /// Convert `BalancesModel` to JSON structure for storing data in Firestore
   Map<String, dynamic> toJson() {
     return {
-
       'bankBalances': bankBalances,
       'baseCurrency': baseCurrency,
+      'currencyStock': currencyStock,
       // 'shillingCashInHand': shillingCashInHand,
       // 'shillingReceivable': shillingReceivable,
       // 'shillingPayable': shillingPayable,
@@ -86,13 +88,14 @@ class BalancesModel {
         // dollarReceivable: 0.0,
         // dollarPayable: 0.0,
         workingCapital: 0.0,
-    baseCurrency: '',
-    expenses: {'USD': 0.0, 'KES': 0.0},
-    payable: {'USD': 0.0, 'KES': 0.0},
-    receivable: {'USD': 0.0, 'KES': 0.0},
+        baseCurrency: '',
+        expenses: {'USD': 0.0, 'KES': 0.0},
+        payable: {'USD': 0.0, 'KES': 0.0},
+        receivable: {'USD': 0.0, 'KES': 0.0},
         receipts: {'USD': 0.0, 'KES': 0.0},
         transfers: {'USD': 0.0, 'KES': 0.0},
         withdrawals: {'USD': 0.0, 'KES': 0.0},
+        currencyStock: {},
         payments: {'USD': 0.0, 'KES': 0.0},
         deposits: {'USD': 0.0, 'KES': 0.0},
         currenciesAtCost: 0.0,
@@ -101,18 +104,19 @@ class BalancesModel {
         cashBalances: {'USD': 0.0, 'KES': 0.0},
 
         transactionCounters: {
-          'paymentsCounter': 0,
-          'receiptsCounter': 0,
-          'transfersCounter': 0,
-          'expenseCounter': 0,
-          'buyFxCounter': 0,
-          'sellFxCounter': 0,
-          'accountsCounter': 0,
-          'bankDepositCounter': 0,
-          'bankWithdrawCounter': 0,
-          'bankTransferCounter': 0,
-          'internalTransferCounter': 0,
-        }, bankBalances: {'USD':0.0,'KES':0.0},
+          'paymentsCounter': 1000,
+          'receiptsCounter': 1000,
+          'transfersCounter': 1000,
+          'expenseCounter': 1000,
+          'buyFx': 1000,
+          'sellFx': 1000,
+          'accountsCounter': 1000,
+          'bankDepositCounter': 1000,
+          'bankWithdrawCounter': 1000,
+          'bankTransferCounter': 1000,
+          'internalTransferCounter': 1000,
+        },
+        bankBalances: {'USD': 0.0, 'KES': 0.0},
       );
 
   factory BalancesModel.fromJson(Map<String, dynamic> jsonData) {
@@ -135,8 +139,9 @@ class BalancesModel {
       // inflows: Map<String, dynamic>.from(jsonData['inflows'] ?? {}),
       // outflows: Map<String, dynamic>.from(jsonData['outflows'] ?? {}),
       currenciesAtCost: (jsonData['currenciesAtCost'] as num?)?.toDouble() ?? 0.0,
-      baseCurrency: jsonData['baseCurrency'] ,
+      baseCurrency: jsonData['baseCurrency'],
       transactionCounters: Map<String, dynamic>.from(jsonData['transactionCounters']),
+      currencyStock: Map<String, dynamic>.from(jsonData['currencyStock']),
     );
   }
 

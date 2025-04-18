@@ -1,7 +1,6 @@
 import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
@@ -1606,7 +1605,7 @@ class SetupScreen extends StatelessWidget {
                         //           .collection('Users')
                         //           .doc(FirebaseAuth.instance.currentUser!.uid)
                         //           .collection('Accounts')
-                        //           .orderBy('DateCreated', descending: true)
+                        //           .orderBy('dateCreated', descending: true)
                         //           .snapshots(),
                         //       builder: (context, snapshot) {
                         //         if (!snapshot.hasData || snapshot.hasError) {
@@ -1948,7 +1947,7 @@ class SetupScreen extends StatelessWidget {
                         //           .collection('Users')
                         //           .doc(FirebaseAuth.instance.currentUser!.uid)
                         //           .collection('Accounts')
-                        //           .orderBy('DateCreated', descending: true)
+                        //           .orderBy('dateCreated', descending: true)
                         //           .snapshots(),
                         //       builder: (context, snapshot) {
                         //         if (!snapshot.hasData || snapshot.hasError) {
@@ -2287,7 +2286,7 @@ class SetupScreen extends StatelessWidget {
                         //           .collection('Users')
                         //           .doc(FirebaseAuth.instance.currentUser!.uid)
                         //           .collection('Accounts')
-                        //           .orderBy('DateCreated', descending: true)
+                        //           .orderBy('dateCreated', descending: true)
                         //           .snapshots(),
                         //       builder: (context, snapshot) {
                         //         if (!snapshot.hasData || snapshot.hasError) {
@@ -3085,196 +3084,12 @@ class SetupScreen extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w600, fontFamily: 'Poppins'),
                       ),
                       children: [
-                        Obx(
-                          () {
-                            if (controller.transfers.isEmpty) {
-                              return Text('Once created, Transfers will appear here');
-                            }
-                            return ListView.builder(
-                              physics: ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.transfers.length,
-                              itemBuilder: (context, index) {
-                                final TransferModel transfer = controller.transfers[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: GestureDetector(
-                                    dragStartBehavior: DragStartBehavior.start,
-                                    child: CustomContainer(
-                                      darkColor: AppColors.quinary,
-                                      width: double.infinity,
-                                      padding: EdgeInsets.all(8),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          // First Row (From, Receiver, Amount)
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: 'Transferred to: ',
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600],
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: transfer.receiver,
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 12,
-                                                            color: Colors.blue,
-                                                            // Black Value
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Gap(3),
-//                                                   RichText(
-//                                                     text: TextSpan(
-//                                                       children: [
-//                                                         TextSpan(
-//                                                           text: 'Receiver: ',
-//                                                           style: TextStyle(
-//                                                             fontWeight: FontWeight.w500,
-//                                                             fontSize: 10,
-//                                                             color: Colors.grey[600], // Grey Label
-//                                                           ),
-//                                                         ),
-//                                                         TextSpan(
-//                                                           text: payment.receiver,
-//                                                           style: TextStyle(
-//                                                             fontWeight: FontWeight.w500,
-//                                                             fontSize: 12,
-//                                                             color: Colors.blue,
-// // Grey Label
-//                                                             // Black Value
-//                                                           ),
-//                                                         ),
-//                                                       ],
-//                                                     ),
-//                                                   ),
-                                                ],
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: '${transfer.currency}: ',
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.w500,
-                                                        // fontSize: 12,
-                                                        fontSize: 10,
-                                                        color: Colors.grey[600], // Grey Label
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: formatter
-                                                          .format(transfer.amount)
-                                                          // text: payment.amountPaid
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontWeight: FontWeight.w700,
-                                                        fontSize: 12,
-                                                        color: Colors.redAccent, // Grey Label
-                                                        // Black Value
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-
-                                          Divider(color: Colors.grey[400], thickness: 1),
-
-                                          // Second Row (Transaction ID, Type, Date)
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: 'type: ',
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600], // Grey Label
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: transfer.transactionType,
-                                                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                              // Black Value
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Gap(10),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      children: [
-                                                        TextSpan(
-                                                          text: '# ',
-                                                          style: TextStyle(
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 10,
-                                                            color: Colors.grey[600], // Grey Label
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: transfer.transactionId,
-                                                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                              // Black Value
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: DateFormat("dd MMM yyyy HH:mm").format(transfer.dateCreated),
-                                                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                          // Black Value
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        ),
                         Divider(),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadTransfers(context);
+                              // uploadController.uploadTransfers(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(

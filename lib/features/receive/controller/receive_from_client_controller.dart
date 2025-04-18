@@ -53,7 +53,7 @@ class ReceiveFromClientController extends GetxController {
   final description = TextEditingController();
 
   ///Sort criteria
-  final sortCriteria = 'DateCreated'.obs;
+  final sortCriteria = 'dateCreated'.obs;
 
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;

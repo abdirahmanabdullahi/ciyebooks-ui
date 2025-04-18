@@ -24,7 +24,7 @@ final String transactionType;
       'transactionId': transactionId,
       'category': category,
       'description': description,
-      'DateCreated': dateCreated,
+      'dateCreated': dateCreated,
       'currency': currency,
       'amountPaid': amountPaid
     };
@@ -35,7 +35,7 @@ final String transactionType;
       transactionId: jsonData['transactionId'],
       category: jsonData['category'],
       description: jsonData['description'],
-      dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+      dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
       currency: jsonData['currency'],
       amountPaid: jsonData['amountPaid'],
       transactionType: jsonData['transactionType'],

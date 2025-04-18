@@ -1,4 +1,3 @@
-
 class UserModel {
   final String accountId;
   String firstName;
@@ -8,14 +7,15 @@ class UserModel {
   String phoneNumber;
   final bool accountIsSetup;
 
-  UserModel(
-      {required this.firstName,required this.accountIsSetup,
-        required this.lastName,
-      required this.accountId,
-      required this.userName,
-      required this.email,
-      required this.phoneNumber,
-     });
+  UserModel({
+    required this.firstName,
+    required this.accountIsSetup,
+    required this.lastName,
+    required this.accountId,
+    required this.userName,
+    required this.email,
+    required this.phoneNumber,
+  });
 
   String get fullName => '$firstName $lastName';
 
@@ -23,7 +23,7 @@ class UserModel {
   static UserModel empty() => UserModel(
         firstName: '',
         lastName: '',
-    accountId: '',
+        accountId: '',
         userName: '',
         email: '',
         phoneNumber: '',
@@ -39,22 +39,19 @@ class UserModel {
       'Email': email,
       'PhoneNumber': phoneNumber,
       'AccountIsSetup': accountIsSetup,
-      'accountId':accountId,
-
+      'accountId': accountId,
     };
   }
 
   factory UserModel.fromJson(Map<String, dynamic> jsonData) {
-
-      return UserModel(
-          firstName: jsonData['FirstName'] ?? '',
-          lastName: jsonData['LastName'] ?? '',
-          accountId: jsonData['id'] ?? '',
-          userName: jsonData['UserName'] ?? '',
-          email: jsonData['Email'] ?? '',
-          phoneNumber: jsonData['phoneNumber'] ?? '',
-         accountIsSetup: jsonData['AccountIsSetup'],
-         );
-
+    return UserModel(
+      firstName: jsonData['FirstName'] ?? '',
+      lastName: jsonData['LastName'] ?? '',
+      accountId: jsonData['id'] ?? '',
+      userName: jsonData['UserName'] ?? '',
+      email: jsonData['Email'] ?? '',
+      phoneNumber: jsonData['phoneNumber'] ?? '',
+      accountIsSetup: jsonData['AccountIsSetup'],
+    );
   }
 }

@@ -173,7 +173,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: DateFormat("dd MMM yyyy HH:mm").format(data['DateCreated'].toDate()),
+                                text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()),
                                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                   // Black Value
                                 ),

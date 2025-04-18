@@ -25,7 +25,7 @@ class PayClientModel {
       'Currency': currency,
       'AmountPaid': amountPaid,
       'Receiver': receiver,
-      'DateCreated': dateCreated,
+      'dateCreated': dateCreated,
       'Description': description,
       'transactionType': transactionType
     };
@@ -40,7 +40,7 @@ class PayClientModel {
       amountPaid: jsonData['AmountPaid'] ?? 0.0,
       receiver: jsonData['Receiver']??'',
       description: jsonData['Description']??'',
-      dateCreated: DateTime.tryParse(jsonData['DateCreated'].toDate().toString())??DateTime.now(),
+      dateCreated: DateTime.tryParse(jsonData['dateCreated'].toDate().toString())??DateTime.now(),
     );
   }
 }

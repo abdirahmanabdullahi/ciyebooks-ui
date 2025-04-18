@@ -25,7 +25,7 @@ class TransfersState extends State<Transfers> {
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
-      .where('transactionType', isEqualTo: 'payment')
+      .where('transactionType', isEqualTo: 'transfer')
       .snapshots();
 
   @override
@@ -200,7 +200,7 @@ class TransfersState extends State<Transfers> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: DateFormat("dd MMM yyyy HH:mm").format(data['DateCreated'].toDate()),
+                                text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()),
                                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                   // Black Value
                                 ),

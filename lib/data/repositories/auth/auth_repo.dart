@@ -1,4 +1,5 @@
 import 'package:ciyebooks/features/auth/models/user_model.dart';
+import 'package:ciyebooks/features/auth/screens/signup/signup.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_exceptions.dart';

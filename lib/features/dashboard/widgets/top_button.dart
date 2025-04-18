@@ -27,7 +27,7 @@ class TopButton extends StatelessWidget {
       children: [
         SizedBox(
           height: 40,
-          width: 50,
+          width: 55,
           child: FloatingActionButton(elevation: 0,
             heroTag: heroTag,
             backgroundColor: backgroundColor,

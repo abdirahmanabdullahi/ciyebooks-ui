@@ -25,7 +25,7 @@ class WithdrawalsState extends State<Withdrawals> {
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
-      .where('transactionType', isEqualTo: 'payment')
+      .where('transactionType', isEqualTo: 'withdrawal')
       .snapshots();
 
   @override
@@ -62,64 +62,35 @@ class WithdrawalsState extends State<Withdrawals> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Payee: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: data['AccountFrom'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Colors.blue,
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Gap(3),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Receiver: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 10,
-                                      color: Colors.grey[600], // Grey Label
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: data['Receiver'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      color: Colors.blue,
-                                      // Grey Label
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
                         RichText(
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: '${data['Currency']}: ',
+                                text: 'Withdrawn by: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                              TextSpan(
+                                text: data['withdrawnBy'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                  // Black Value
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${data['currency']}: ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   // fontSize: 12,
@@ -129,7 +100,7 @@ class WithdrawalsState extends State<Withdrawals> {
                               ),
                               TextSpan(
                                 text: formatter
-                                    .format(data['AmountPaid'])
+                                    .format(data['amount'])
                                 // text: payment.amountPaid
                                     .toString(),
                                 style: TextStyle(
@@ -186,7 +157,7 @@ class WithdrawalsState extends State<Withdrawals> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: data['TransactionId'],
+                                    text: data['transactionId'],
                                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                       // Black Value
                                     ),
@@ -200,7 +171,7 @@ class WithdrawalsState extends State<Withdrawals> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: DateFormat("dd MMM yyyy HH:mm").format(data['DateCreated'].toDate()),
+                                text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()),
                                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                   // Black Value
                                 ),

@@ -6,7 +6,6 @@ import 'package:ciyebooks/features/pay/widgets/expenses.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ import 'package:intl/intl.dart';
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../dashboard/widgets/bottom_sheet_button.dart';
-import '../../forex/ui/test.dart';
+import '../../forex/ui/forex_home.dart';
 import '../widgets/payments.dart';
 
 class PaymentHistory extends StatelessWidget {

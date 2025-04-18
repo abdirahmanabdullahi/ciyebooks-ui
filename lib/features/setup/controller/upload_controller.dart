@@ -2,7 +2,6 @@ import 'dart:core';
 
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
@@ -125,7 +124,7 @@ class UploadController extends GetxController {
           'bankTransferCounter': 0,
           'internalTransferCounter': 0,
         },
-        bankBalances: {'KES': parsedTotals['shillingAtBank'], 'USD': parsedTotals['dollarAtBank']}, baseCurrency: '',
+        bankBalances: {'KES': parsedTotals['shillingAtBank'], 'USD': parsedTotals['dollarAtBank']}, baseCurrency: '', currencyStock: {},
       );
 
       /// Save the data to firestore
@@ -514,66 +513,6 @@ class UploadController extends GetxController {
     }
   }
 
-  Future<void> uploadTransfers(BuildContext context) async {
-    //     // ///Upload the file
-    final List? lines = await uploadRepo.uploadData(context: context, checkList: transfersCheckList, fileName: 'Transfers template');
-
-    ///Todo: Check if all required fields are there.
-    if (lines != null && lines.isNotEmpty) {
-      /// Remove the headers
-      lines.removeAt(0);
-
-      ///Process the content
-
-      int bankTransferCounter = 1000;
-
-      ///PROCESSING
-      final batch = _db.batch();
-
-      ///Reference to the counter
-      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
-      for (var line in lines) {
-        final splitLine = line.split(',');
-        if (splitLine.length < 5) {
-          return;
-        }
-        final newTransfer = TransferModel(
-          transactionType: 'transfer',
-          transactionId: 'TRF-$bankTransferCounter',
-          receiver: splitLine[2],
-          currency: splitLine[1],
-          amount: double.tryParse(splitLine[3]) ?? 0.0,
-          dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-        );
-
-        ///Point where to create each new transfer
-        final newTransferRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('TRF-$bankTransferCounter');
-
-        ///CREATE THE ACCOUNT
-        batch.set(newTransferRef, newTransfer.toJson());
-
-        ///UPDATE THE COUNTER
-        bankTransferCounter++;
-      }
-
-      ///After accounts are created, update the firestore counter
-      batch.update(counterRef, {"transactionCounters.bankTransferCounter": bankTransferCounter});
-
-      await batch.commit().then((_) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Success!",
-          '${bankTransferCounter - 1000} transfers uploaded',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      });
-    }
-  }
 
   ///Todo: upload currency stock
 

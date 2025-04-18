@@ -32,9 +32,11 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
     return StreamBuilder<QuerySnapshot>(
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Something went wrong');
-        }
+          print(snapshot.error);
+
+        // if (snapshot.hasError) {
+        //   return const Text('Something went wrong');
+        // }
         if (!snapshot.hasData) {
           return const Text('No data available');
         }
@@ -199,7 +201,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: DateFormat("dd MMM yyyy HH:mm").format(data['DateCreated'].toDate()),
+                                text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()),
                                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                   // Black Value
                                 ),

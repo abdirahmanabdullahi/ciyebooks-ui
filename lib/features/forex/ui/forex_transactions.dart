@@ -9,18 +9,18 @@ import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
 
 
-class Deposits extends StatefulWidget {
-  const Deposits({super.key});
+class ForexTransactions extends StatefulWidget {
+  const ForexTransactions({super.key});
 
   @override
-  DepositsState createState() => DepositsState();
+  ForexTransactionsState createState() => ForexTransactionsState();
 }
 final NumberFormat formatter = NumberFormat.decimalPatternDigits(
   locale: 'en_us',
   decimalDigits: 2,
 );
 
-class DepositsState extends State<Deposits> {
+class ForexTransactionsState extends State<ForexTransactions> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -34,7 +34,6 @@ class DepositsState extends State<Deposits> {
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          print(snapshot.error);
           return const Text('Something went wrong');
         }
         if (!snapshot.hasData) {

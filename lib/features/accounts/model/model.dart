@@ -26,7 +26,7 @@ class AccountModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'DateCreated': dateCreated,
+      'dateCreated': dateCreated,
       'AccountName': fullName,
       'FirstName': firstName,
       'LastName': lastName,
@@ -42,7 +42,7 @@ class AccountModel {
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
     return AccountModel(
         accountName: jsonData['AccountName'] ?? '',
-        dateCreated: DateTime.parse(jsonData['DateCreated'].toDate().toString()),
+        dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
         firstName: jsonData['FirstName'] ?? '',
         lastName: jsonData['LastName'] ?? '',
         accountNo: jsonData['AccountNo'] ?? '',

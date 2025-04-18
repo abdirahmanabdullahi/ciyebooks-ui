@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../forex/ui/test.dart';
+import '../../forex/ui/forex_home.dart';
 import '../controller/receive_from_client_controller.dart';
 import '../model/receive_model.dart';
 

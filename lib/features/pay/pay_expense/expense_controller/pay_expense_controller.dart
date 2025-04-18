@@ -38,7 +38,7 @@ class PayExpenseController extends GetxController {
   final isLoading = false.obs;
 
   ///Sort by date
-  final sortCriteria = 'DateCreated'.obs;
+  final sortCriteria = 'dateCreated'.obs;
   // sortExpenses(){
   //
   // }

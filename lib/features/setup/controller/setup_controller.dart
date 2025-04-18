@@ -1,6 +1,5 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/transfers/model/transfer_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
@@ -42,7 +41,6 @@ class SetupController extends GetxController {
 
   RxList<DepositModel> deposits = <DepositModel>[].obs;
 
-  RxList<TransferModel> transfers = <TransferModel>[].obs;
 
   /// fireStore instance
 
@@ -72,31 +70,7 @@ class SetupController extends GetxController {
       }).toList();
     });
 
-    /// Stream for transactions
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('transactions').snapshots().listen((querySnapshot) {
-      expenses.clear();
-      payments.clear();
-      receipts.clear();
-      withdrawals.clear();
-      deposits.clear();
-      // Filter only expenses
-      for (var doc in querySnapshot.docs) {
-        final transactionType = doc.data()['transactionType'];
-        if (doc.exists && transactionType == 'expense') {
-          expenses.add(ExpenseModel.fromJson(doc.data()));
-        } else if (transactionType == 'payment') {
-          payments.add(PayClientModel.fromJson(doc.data()));
-        } else if (transactionType == 'receipt') {
-          receipts.add(ReceiveModel.fromJson(doc.data()));
-        } else if (transactionType == 'withdraw') {
-          withdrawals.add(WithdrawModel.fromJson(doc.data()));
-        } else if (transactionType == 'deposit') {
-          deposits.add(DepositModel.fromJson(doc.data()));
-        } else if (transactionType == 'transfer') {
-          transfers.add(TransferModel.fromJson(doc.data()));
-        }
-      }
-    });
+
     super.onInit();
   }
 
