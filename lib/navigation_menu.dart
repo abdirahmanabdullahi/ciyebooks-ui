@@ -488,136 +488,137 @@ class NavigationMenu extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Obx(
-        () => NavigationBarTheme(
-          data: NavigationBarThemeData(
-            labelTextStyle: WidgetStatePropertyAll(
-              TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: AppColors.prettyDark,
-              ),
-            ),
-          ),
-          child: BottomNavigationBar(
-            useLegacyColorScheme: false,
-
-            // animationDuration: Duration.zero,
-            // indicatorColor: Colors.transparent,
-            // backgroundColor: AppColors.quinary,
-            // height: 60,
-            currentIndex: controller.selectedIndex.value,
-            onTap: (index) => controller.selectedIndex.value = index,
-            elevation: 3,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.prettyDark,
-                ),
-                label: 'Home',
-                // selectedIcon: Icon(
-                //   Icons.home,
-                //   color: AppColors.prettyDark,
-                // ),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.prettyDark,
-                ),
-                label: 'Home',
-                // selectedIcon: Icon(
-                //   Icons.home,
-                //   color: AppColors.prettyDark,
-                // ),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.prettyDark,
-                ),
-                label: 'Home',
-                // selectedIcon: Icon(
-                //   Icons.home,
-                //   color: AppColors.prettyDark,
-                // ),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.prettyDark,
-                ),
-                label: 'Home',
-                // selectedIcon: Icon(
-                //   Icons.home,
-                //   color: AppColors.prettyDark,
-                // ),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_outlined,
-                  color: AppColors.prettyDark,
-                ),
-                label: 'Home',
-                // selectedIcon: Icon(
-                //   Icons.home,
-                //   color: AppColors.prettyDark,
-                // ),
-              ),
-              // NavigationDestination(
-              //   icon: Icon(
-              //     Icons.description_outlined,
-              //     color: AppColors.prettyDark,
-              //   ),
-              //   label: 'Notes',
-              //   selectedIcon: Icon(
-              //     Icons.description,
-              //     color: AppColors.prettyDark,
-              //   ),
-              // ),
-              // NavigationDestination(
-              //   icon: Icon(
-              //     Icons.fact_check_outlined,
-              //     color: AppColors.prettyDark,
-              //   ),
-              //   label: 'Todos',
-              //   selectedIcon: Icon(
-              //     Icons.fact_check,
-              //     color: AppColors.prettyDark,
-              //   ),
-              // ),
-              // NavigationDestination(
-              //   icon: Icon(
-              //     Icons.calculate_outlined,
-              //     color: AppColors.prettyDark,
-              //   ),
-              //   label: 'Calc',
-              //   selectedIcon: Icon(
-              //     Icons.calculate,
-              //     color: AppColors.prettyDark,
-              //   ),
-              // ),
-              // NavigationDestination(
-              //   icon: Icon(
-              //     Icons.leaderboard_outlined,
-              //     color: AppColors.prettyDark,
-              //   ),
-              //   label: 'Stats',
-              //   selectedIcon: Icon(
-              //     Icons.leaderboard,
-              //     color: AppColors.prettyDark,
-              //   ),
-              // ),
-            ],
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Obx(
+      //   () => NavigationBarTheme(
+      //     data: NavigationBarThemeData(
+      //       labelTextStyle: WidgetStatePropertyAll(
+      //         TextStyle(
+      //           fontSize: 10,
+      //           fontWeight: FontWeight.w600,
+      //           color: AppColors.prettyDark,
+      //         ),
+      //       ),
+      //     ),
+      //     child: BottomNavigationBar(
+      //       useLegacyColorScheme: false,
+      //
+      //       // animationDuration: Duration.zero,
+      //       // indicatorColor: Colors.transparent,
+      //       // backgroundColor: AppColors.quinary,
+      //       // height: 60,
+      //       currentIndex: controller.selectedIndex.value,
+      //       onTap: (index) => controller.selectedIndex.value = index,
+      //       elevation: 3,
+      //       items: [
+      //         BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home_outlined,
+      //             color: AppColors.prettyDark,
+      //           ),
+      //           label: 'Home',
+      //           // selectedIcon: Icon(
+      //           //   Icons.home,
+      //           //   color: AppColors.prettyDark,
+      //           // ),
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home_outlined,
+      //             color: AppColors.prettyDark,
+      //           ),
+      //           label: 'Home',
+      //           // selectedIcon: Icon(
+      //           //   Icons.home,
+      //           //   color: AppColors.prettyDark,
+      //           // ),
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home_outlined,
+      //             color: AppColors.prettyDark,
+      //           ),
+      //           label: 'Home',
+      //           // selectedIcon: Icon(
+      //           //   Icons.home,
+      //           //   color: AppColors.prettyDark,
+      //           // ),
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home_outlined,
+      //             color: AppColors.prettyDark,
+      //           ),
+      //           label: 'Home',
+      //           // selectedIcon: Icon(
+      //           //   Icons.home,
+      //           //   color: AppColors.prettyDark,
+      //           // ),
+      //         ),
+      //         BottomNavigationBarItem(
+      //           icon: Icon(
+      //             Icons.home_outlined,
+      //             color: AppColors.prettyDark,
+      //           ),
+      //           label: 'Home',
+      //           // selectedIcon: Icon(
+      //           //   Icons.home,
+      //           //   color: AppColors.prettyDark,
+      //           // ),
+      //         ),
+      //         // NavigationDestination(
+      //         //   icon: Icon(
+      //         //     Icons.description_outlined,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         //   label: 'Notes',
+      //         //   selectedIcon: Icon(
+      //         //     Icons.description,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         // ),
+      //         // NavigationDestination(
+      //         //   icon: Icon(
+      //         //     Icons.fact_check_outlined,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         //   label: 'Todos',
+      //         //   selectedIcon: Icon(
+      //         //     Icons.fact_check,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         // ),
+      //         // NavigationDestination(
+      //         //   icon: Icon(
+      //         //     Icons.calculate_outlined,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         //   label: 'Calc',
+      //         //   selectedIcon: Icon(
+      //         //     Icons.calculate,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         // ),
+      //         // NavigationDestination(
+      //         //   icon: Icon(
+      //         //     Icons.leaderboard_outlined,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         //   label: 'Stats',
+      //         //   selectedIcon: Icon(
+      //         //     Icons.leaderboard,
+      //         //     color: AppColors.prettyDark,
+      //         //   ),
+      //         // ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
 
-      body: Obx(
-        () => controller.screens[controller.selectedIndex.value],
-      ),
+      body: Dashboard()
+      // Obx(
+      //   () => controller.screens[controller.selectedIndex.value],
+      // ),
     );
   }
 }

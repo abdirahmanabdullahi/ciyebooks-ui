@@ -26,9 +26,9 @@ class TopButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          height: 40,
+          height: 55,
           width: 55,
-          child: FloatingActionButton(elevation: 0,
+          child: FloatingActionButton(elevation: 3,
             heroTag: heroTag,
             backgroundColor: backgroundColor,
 
@@ -44,7 +44,8 @@ class TopButton extends StatelessWidget {
         ),
         Gap(AppSizes.sm / 2),
         Text(
-          label, style: TextStyle(fontSize: 12,color: AppColors.prettyDark),
+          label, style: TextStyle(fontSize: 12,
+            fontWeight:FontWeight.w500,color: AppColors.prettyDark),
         )
       ],
     );

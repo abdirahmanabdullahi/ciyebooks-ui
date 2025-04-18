@@ -43,10 +43,6 @@ class Dashboard extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0),
           child: SizedBox(
             child: IconButton(
-              // backgroundColor: AppColors.quarternary.withOpacity(.9),
-              // shape:  CircleBorder(
-              //   side: BorderSide(width: 1, color: AppColors.quarternary.withOpacity(.2)),
-              // ),
               onPressed: () {
                 Scaffold.of(context).openDrawer(); // Correct context for drawer
               },
@@ -68,7 +64,7 @@ class Dashboard extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        bottom: false,
+        // bottom: false,
         child: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           scrollDirection: Axis.vertical,
@@ -76,13 +72,9 @@ class Dashboard extends StatelessWidget {
 
           child: Column(
             children: [
-              Divider(
-                height: 0,
-                color: AppColors.prettyDark,
-              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-                child: Container(color: AppColors.quarternary, height: 100, width: double.infinity, padding: const EdgeInsets.all(6), child: ButtonList()),
+                child: Container(margin: EdgeInsets.zero, color: AppColors.quarternary, height: 100, width: double.infinity, padding: const EdgeInsets.all(0), child: ButtonList()),
               ),
               // Cash balances
               Column(
@@ -94,7 +86,11 @@ class Dashboard extends StatelessWidget {
                       "Cash balances",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),Divider(height: 2,color: AppColors.prettyDark,),
+                  ),
+                  Divider(
+                    height: 2,
+                    color: AppColors.prettyDark,
+                  ),
                   Gap(10),
                   Obx(() => Column(
                         children: controller.totals.value.cashBalances.entries.map((entry) {
@@ -132,7 +128,8 @@ class Dashboard extends StatelessWidget {
                         }).toList(),
                       )),
                 ],
-              ),Gap(10),
+              ),
+              Gap(10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -142,7 +139,11 @@ class Dashboard extends StatelessWidget {
                       "Bank balances",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                  ),Divider(height: 2,color: AppColors.prettyDark,),
+                  ),
+                  Divider(
+                    height: 2,
+                    color: AppColors.prettyDark,
+                  ),
                   Gap(10),
                   Obx(() => Column(
                         children: controller.totals.value.bankBalances.entries.map((entry) {
@@ -180,7 +181,8 @@ class Dashboard extends StatelessWidget {
                         }).toList(),
                       )),
                 ],
-              ),Gap(10),
+              ),
+              Gap(10),
               Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Column(
@@ -189,52 +191,67 @@ class Dashboard extends StatelessWidget {
                     Text(
                       "Foreign currency stock",
                       style: Theme.of(context).textTheme.titleMedium,
-                    ),Divider(height: 2,color: AppColors.prettyDark,),
+                    ),
+                    Divider(
+                      height: 2,
+                      color: AppColors.prettyDark,
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(3.0),
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        physics: ClampingScrollPhysics(),
-                        child: Obx(
-                          () {
-                            return DataTable(
-                                headingTextStyle: TextStyle(
-                                color: CupertinoColors.systemBlue,fontWeight: FontWeight.w700),
-                                columnSpacing: 35,
-                                headingRowHeight: 40,
-                                horizontalMargin: 0,
-                                columns: [
-                                  DataColumn(label: Text('Currency code')),
-                                  DataColumn(label: Text('Amount')),
-                                  DataColumn(label: Text('Rate')),
-                                  DataColumn(label: Text('Total cost')),
-                                ],
-                                rows: controller.currencies.map((currency) {
-                                  return DataRow(
-                                      cells: [
-                                    DataCell(Text(
-                                      currency.currencyName,
-                                      style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.bold, fontSize: 15),
-                                    )),
-                                    DataCell(Text(
-                                      formatter.format(
-                                        currency.amount,
-                                      ),
-
-                                    ),),
-                                    DataCell(Text(currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount), )),
-                                    DataCell(Text(formatter.format(currency.totalCost), )),
-                                  ]);
-                                }).toList());
-                          },
-                        ),
-                      ),
+                          scrollDirection: Axis.horizontal,
+                          physics: ClampingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              Obx(
+                                () {
+                                  return DataTable(dataRowMaxHeight: 40,dataRowMinHeight: 40,
+                                      showBottomBorder: true,
+                                      headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                      columnSpacing: 40,
+                                      headingRowHeight: 40,
+                                      horizontalMargin: 0,
+                                      columns: [
+                                        DataColumn(label: Text(' Name')),
+                                        DataColumn(label: Text('Amount')),
+                                        DataColumn(label: Text('Rate')),
+                                        DataColumn(label: Text('Total ')),
+                                      ],
+                                      rows: controller.currencies.map((currency) {
+                                        return DataRow(cells: [
+                                          DataCell(Text(
+                                            currency.currencyName,
+                                            style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                          )),
+                                          DataCell(
+                                            Text(
+                                              formatter.format(
+                                                currency.amount,
+                                              ),
+                                            ),
+                                          ),
+                                          DataCell(Text(
+                                            currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
+                                          )),
+                                          DataCell(Text(
+                                            formatter.format(currency.totalCost),
+                                          )),
+                                        ]);
+                                      }).toList());
+                                },
+                              ),
+                            ],
+                          )),
                     ),
-
+                    Gap(20),
                     Text(
                       "Recent transactions",
                       style: Theme.of(context).textTheme.titleMedium,
-                    ),Divider(height: 0,color: Colors.black,),
+                    ),
+                    Divider(
+                      height: 0,
+                      color: Colors.black,
+                    ),
                     DefaultTabController(
                         length: 5,
                         child: Column(children: [
@@ -242,7 +259,7 @@ class Dashboard extends StatelessWidget {
                             padding: EdgeInsets.zero,
                             indicatorColor: AppColors.prettyDark,
                             labelPadding: EdgeInsets.zero,
-                            labelStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.bold),
+                            labelStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w500),
                             tabs: [
                               Tab(
                                 child: Text(
@@ -282,1218 +299,177 @@ class Dashboard extends StatelessWidget {
                                         final PayClientModel payment = controller.payments[index];
                                         return Padding(
                                           padding: const EdgeInsets.only(top: 4.0),
-                                          child: GestureDetector(
-                                            dragStartBehavior: DragStartBehavior.start,
-                                            // onTapDown: (details) {
-                                            //   final offset = details.globalPosition;
-                                            //
-                                            //   showMenu(
-                                            //       color: AppColors.quinary,
-                                            //       constraints: BoxConstraints.expand(
-                                            //           width: 200, height: 200),
-                                            //       context: context,
-                                            //       position: RelativeRect.fromLTRB(
-                                            //         offset.dx,
-                                            //         offset.dy,
-                                            //         MediaQuery.of(context).size.width -
-                                            //             offset.dx,
-                                            //         MediaQuery.of(context).size.height -
-                                            //             offset.dy,
-                                            //       ),
-                                            //       items: [
-                                            //         PopupMenuItem(
-                                            //           ///Todo: implement pay client popup
-                                            //           onTap: () {
-                                            //             showDialog(
-                                            //               context: context,
-                                            //               builder: (context) {
-                                            //                 return Dialog(
-                                            //                   backgroundColor:
-                                            //                   AppColors.quarternary,
-                                            //                   insetPadding:
-                                            //                   EdgeInsets.symmetric(
-                                            //                       horizontal: 15,
-                                            //                       vertical: 10),
-                                            //                   shape: RoundedRectangleBorder(
-                                            //                     borderRadius:
-                                            //                     BorderRadius.circular(
-                                            //                         15),
-                                            //                   ),
-                                            //                   child: Padding(
-                                            //                     padding:
-                                            //                     EdgeInsets.all(15.0),
-                                            //                     child: Column(
-                                            //                       mainAxisSize:
-                                            //                       MainAxisSize.min,
-                                            //                       crossAxisAlignment:
-                                            //                       CrossAxisAlignment
-                                            //                           .start,
-                                            //                       children: [
-                                            //                         // Dialog Title
-                                            //                         Text(
-                                            //                           "Pay Client",
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 22,
-                                            //                             fontWeight:
-                                            //                             FontWeight.w600,
-                                            //                             color: Colors
-                                            //                                 .blueAccent,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 8),
-                                            //                         Divider(
-                                            //                             thickness: 1,
-                                            //                             color:
-                                            //                             Colors.black12),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         // Account Details
-                                            //                         Text(
-                                            //                           account.fullName,
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 18,
-                                            //                             fontWeight:
-                                            //                             FontWeight.bold,
-                                            //                             color:
-                                            //                             Colors.black87,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 12),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Account No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .accountNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text: 'Email: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .email,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Phone No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .phoneNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         DropdownMenu(
-                                            //                           onSelected: (v) {},
-                                            //                           expandedInsets:
-                                            //                           EdgeInsets.zero,
-                                            //                           requestFocusOnTap:
-                                            //                           false,
-                                            //                           label: Text(
-                                            //                               'Select currency to pay'),
-                                            //                           enableFilter: true,
-                                            //                           enableSearch: true,
-                                            //                           menuHeight: 150,
-                                            //                           inputDecorationTheme:
-                                            //                           InputDecorationTheme(
-                                            //                             fillColor: AppColors
-                                            //                                 .quinary,
-                                            //                             filled: true,
-                                            //                             contentPadding:
-                                            //                             const EdgeInsets
-                                            //                                 .only(
-                                            //                                 left: 10),
-                                            //                             border:
-                                            //                             const OutlineInputBorder(
-                                            //                               borderRadius:
-                                            //                               BorderRadius
-                                            //                                   .all(Radius
-                                            //                                   .circular(
-                                            //                                   5)),
-                                            //                             ),
-                                            //                           ),
-                                            //                           menuStyle: MenuStyle(
-                                            //                             // backgroundColor:
-                                            //                             //     WidgetStateProperty
-                                            //                             //         .all<Color>(
-                                            //                             //   AppColors
-                                            //                             //       .quarternary,
-                                            //                             // ),
-                                            //                           ),
-                                            //                           dropdownMenuEntries:
-                                            //                           account.currencies
-                                            //                               .entries
-                                            //                               .map((entry) {
-                                            //                             return DropdownMenuEntry<
-                                            //                                 String>(
-                                            //                               style:
-                                            //                               ButtonStyle(
-                                            //                                 textStyle: WidgetStatePropertyAll(TextStyle(
-                                            //                                     fontSize:
-                                            //                                     15,
-                                            //                                     fontWeight:
-                                            //                                     FontWeight
-                                            //                                         .w500)),
-                                            //                                 padding: WidgetStateProperty
-                                            //                                     .all(EdgeInsets
-                                            //                                     .all(
-                                            //                                     10)),
-                                            //                                 foregroundColor:
-                                            //                                 WidgetStatePropertyAll((entry.value
-                                            //                                 as num) <
-                                            //                                     0
-                                            //                                     ? Colors
-                                            //                                     .red
-                                            //                                     : CupertinoColors
-                                            //                                     .systemBlue),
-                                            //                                 backgroundColor:
-                                            //                                 WidgetStateProperty.all(
-                                            //                                     AppColors
-                                            //                                         .quinary),
-                                            //                               ),
-                                            //                               value: entry.key,
-                                            //                               label: entry.key,
-                                            //                             );
-                                            //                           }).toList(),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         TextFormField(
-                                            //                           decoration:
-                                            //                           InputDecoration(
-                                            //                             hintText:
-                                            //                             "Enter Amount",
-                                            //                             border:
-                                            //                             OutlineInputBorder(
-                                            //                               borderRadius:
-                                            //                               BorderRadius
-                                            //                                   .circular(
-                                            //                                   8),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 30),
-                                            //
-                                            //                         // Action Buttons: Cancel and Submit
-                                            //                         Row(
-                                            //                           mainAxisAlignment:
-                                            //                           MainAxisAlignment
-                                            //                               .end,
-                                            //                           children: [
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "Cancel"),
-                                            //                             ),
-                                            //                             SizedBox(width: 10),
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "  Add  "),
-                                            //                             ),
-                                            //                           ],
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                   ),
-                                            //                 );
-                                            //               },
-                                            //             );
-                                            //           },
-                                            //           child: Text(
-                                            //             "Pay",
-                                            //             style: TextStyle(fontSize: 15),
-                                            //           ),
-                                            //         ),
-                                            //         PopupMenuItem(
-                                            //           ///Todo: implement New receive backend
-                                            //
-                                            //           onTap: () {
-                                            //             showDialog(
-                                            //               context: context,
-                                            //               builder: (context) {
-                                            //                 return Dialog(
-                                            //                   backgroundColor:
-                                            //                   AppColors.quarternary,
-                                            //                   insetPadding:
-                                            //                   EdgeInsets.symmetric(
-                                            //                       horizontal: 15,
-                                            //                       vertical: 10),
-                                            //                   shape: RoundedRectangleBorder(
-                                            //                     borderRadius:
-                                            //                     BorderRadius.circular(
-                                            //                         15),
-                                            //                   ),
-                                            //                   child: Padding(
-                                            //                     padding:
-                                            //                     EdgeInsets.all(15.0),
-                                            //                     child: Column(
-                                            //                       mainAxisSize:
-                                            //                       MainAxisSize.min,
-                                            //                       crossAxisAlignment:
-                                            //                       CrossAxisAlignment
-                                            //                           .start,
-                                            //                       children: [
-                                            //                         // Dialog Title
-                                            //                         Text(
-                                            //                           "Receive deposit",
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 22,
-                                            //                             fontWeight:
-                                            //                             FontWeight.w600,
-                                            //                             color: Colors
-                                            //                                 .blueAccent,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 8),
-                                            //                         Divider(
-                                            //                             thickness: 1,
-                                            //                             color:
-                                            //                             Colors.black12),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         // Account Details
-                                            //                         Text(
-                                            //                           account.fullName,
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 18,
-                                            //                             fontWeight:
-                                            //                             FontWeight.bold,
-                                            //                             color:
-                                            //                             Colors.black87,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 12),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Account No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .accountNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text: 'Email: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .email,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Phone No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .phoneNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         DropdownMenu(
-                                            //                           onSelected: (v) {},
-                                            //                           expandedInsets:
-                                            //                           EdgeInsets.zero,
-                                            //                           requestFocusOnTap:
-                                            //                           false,
-                                            //                           label: Text(
-                                            //                               'Select currency to pay'),
-                                            //                           enableFilter: true,
-                                            //                           enableSearch: true,
-                                            //                           menuHeight: 150,
-                                            //                           inputDecorationTheme:
-                                            //                           InputDecorationTheme(
-                                            //                             fillColor: AppColors
-                                            //                                 .quinary,
-                                            //                             filled: true,
-                                            //                             contentPadding:
-                                            //                             const EdgeInsets
-                                            //                                 .only(
-                                            //                                 left: 10),
-                                            //                             border:
-                                            //                             const OutlineInputBorder(
-                                            //                               borderRadius:
-                                            //                               BorderRadius
-                                            //                                   .all(Radius
-                                            //                                   .circular(
-                                            //                                   5)),
-                                            //                             ),
-                                            //                           ),
-                                            //                           menuStyle: MenuStyle(
-                                            //                             // backgroundColor:
-                                            //                             //     WidgetStateProperty
-                                            //                             //         .all<Color>(
-                                            //                             //   AppColors
-                                            //                             //       .quarternary,
-                                            //                             // ),
-                                            //                           ),
-                                            //                           dropdownMenuEntries:
-                                            //                           account.currencies
-                                            //                               .entries
-                                            //                               .map((entry) {
-                                            //                             return DropdownMenuEntry<
-                                            //                                 String>(
-                                            //                               style:
-                                            //                               ButtonStyle(
-                                            //                                 textStyle: WidgetStatePropertyAll(TextStyle(
-                                            //                                     fontSize:
-                                            //                                     15,
-                                            //                                     fontWeight:
-                                            //                                     FontWeight
-                                            //                                         .w500)),
-                                            //                                 padding: WidgetStateProperty
-                                            //                                     .all(EdgeInsets
-                                            //                                     .all(
-                                            //                                     10)),
-                                            //                                 foregroundColor:
-                                            //                                 WidgetStatePropertyAll((entry.value
-                                            //                                 as num) <
-                                            //                                     0
-                                            //                                     ? Colors
-                                            //                                     .red
-                                            //                                     : CupertinoColors
-                                            //                                     .systemBlue),
-                                            //                                 backgroundColor:
-                                            //                                 WidgetStateProperty.all(
-                                            //                                     AppColors
-                                            //                                         .quinary),
-                                            //                               ),
-                                            //                               value: entry.key,
-                                            //                               label: entry.key,
-                                            //                             );
-                                            //                           }).toList(),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         TextFormField(
-                                            //                           decoration:
-                                            //                           InputDecoration(
-                                            //                             hintText:
-                                            //                             "Enter Amount",
-                                            //                             border:
-                                            //                             OutlineInputBorder(
-                                            //                               borderRadius:
-                                            //                               BorderRadius
-                                            //                                   .circular(
-                                            //                                   8),
-                                            //                             ),
-                                            //                           ),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 30),
-                                            //
-                                            //                         // Action Buttons: Cancel and Submit
-                                            //                         Row(
-                                            //                           mainAxisAlignment:
-                                            //                           MainAxisAlignment
-                                            //                               .end,
-                                            //                           children: [
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "Cancel"),
-                                            //                             ),
-                                            //                             SizedBox(width: 10),
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "  Add  "),
-                                            //                             ),
-                                            //                           ],
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                   ),
-                                            //                 );
-                                            //               },
-                                            //             );
-                                            //           },
-                                            //
-                                            //           child: Text(
-                                            //             "Receive",
-                                            //             style: TextStyle(fontSize: 15),
-                                            //           ),
-                                            //         ),
-                                            //         PopupMenuItem(
-                                            //           ///Todo: implement New currency popup
-                                            //           onTap: () {
-                                            //             showDialog(
-                                            //               context: context,
-                                            //               builder: (context) {
-                                            //                 return Dialog(
-                                            //                   backgroundColor:
-                                            //                   AppColors.quarternary,
-                                            //                   insetPadding:
-                                            //                   EdgeInsets.symmetric(
-                                            //                       horizontal: 15,
-                                            //                       vertical: 10),
-                                            //                   shape: RoundedRectangleBorder(
-                                            //                     borderRadius:
-                                            //                     BorderRadius.circular(
-                                            //                         15),
-                                            //                   ),
-                                            //                   child: Padding(
-                                            //                     padding:
-                                            //                     EdgeInsets.all(15.0),
-                                            //                     child: Column(
-                                            //                       mainAxisSize:
-                                            //                       MainAxisSize.min,
-                                            //                       crossAxisAlignment:
-                                            //                       CrossAxisAlignment
-                                            //                           .start,
-                                            //                       children: [
-                                            //                         // Dialog Title
-                                            //                         Text(
-                                            //                           "Add new currency",
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 22,
-                                            //                             fontWeight:
-                                            //                             FontWeight.w600,
-                                            //                             color: Colors
-                                            //                                 .blueAccent,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 8),
-                                            //                         Divider(
-                                            //                             thickness: 1,
-                                            //                             color:
-                                            //                             Colors.black12),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         // Account Details
-                                            //                         Text(
-                                            //                           account.fullName,
-                                            //                           style: TextStyle(
-                                            //                             fontSize: 18,
-                                            //                             fontWeight:
-                                            //                             FontWeight.bold,
-                                            //                             color:
-                                            //                             Colors.black87,
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 12),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Account No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .accountNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text: 'Email: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .email,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //                         SizedBox(height: 6),
-                                            //
-                                            //                         RichText(
-                                            //                           text: TextSpan(
-                                            //                             children: [
-                                            //                               TextSpan(
-                                            //                                 text:
-                                            //                                 'Phone No: ',
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   fontWeight:
-                                            //                                   FontWeight
-                                            //                                       .bold,
-                                            //                                   color: Colors
-                                            //                                       .black87,
-                                            //                                 ),
-                                            //                               ),
-                                            //                               TextSpan(
-                                            //                                 text: account
-                                            //                                     .phoneNo,
-                                            //                                 style:
-                                            //                                 TextStyle(
-                                            //                                   fontSize: 14,
-                                            //                                   color: Colors
-                                            //                                       .black54,
-                                            //                                 ),
-                                            //                               ),
-                                            //                             ],
-                                            //                           ),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 20),
-                                            //
-                                            //                         DropdownMenu(
-                                            //                           onSelected: (v) {},
-                                            //                           expandedInsets:
-                                            //                           EdgeInsets.zero,
-                                            //                           requestFocusOnTap:
-                                            //                           false,
-                                            //                           label: Text(
-                                            //                               'Select currency to pay'),
-                                            //                           enableFilter: true,
-                                            //                           enableSearch: true,
-                                            //                           menuHeight: 150,
-                                            //                           inputDecorationTheme:
-                                            //                           InputDecorationTheme(
-                                            //                             fillColor: AppColors
-                                            //                                 .quinary,
-                                            //                             filled: true,
-                                            //                             contentPadding:
-                                            //                             const EdgeInsets
-                                            //                                 .only(
-                                            //                                 left: 10),
-                                            //                             border:
-                                            //                             const OutlineInputBorder(
-                                            //                               borderRadius:
-                                            //                               BorderRadius
-                                            //                                   .all(Radius
-                                            //                                   .circular(
-                                            //                                   5)),
-                                            //                             ),
-                                            //                           ),
-                                            //                           menuStyle: MenuStyle(
-                                            //                             // backgroundColor:
-                                            //                             //     WidgetStateProperty
-                                            //                             //         .all<Color>(
-                                            //                             //   AppColors
-                                            //                             //       .quarternary,
-                                            //                             // ),
-                                            //                           ),
-                                            //                           dropdownMenuEntries:
-                                            //                           account.currencies
-                                            //                               .entries
-                                            //                               .map((entry) {
-                                            //                             return DropdownMenuEntry<
-                                            //                                 String>(
-                                            //                               style:
-                                            //                               ButtonStyle(
-                                            //                                 textStyle: WidgetStatePropertyAll(TextStyle(
-                                            //                                     fontSize:
-                                            //                                     15,
-                                            //                                     fontWeight:
-                                            //                                     FontWeight
-                                            //                                         .w500)),
-                                            //                                 padding: WidgetStateProperty
-                                            //                                     .all(EdgeInsets
-                                            //                                     .all(
-                                            //                                     10)),
-                                            //                                 foregroundColor:
-                                            //                                 WidgetStatePropertyAll((entry.value
-                                            //                                 as num) <
-                                            //                                     0
-                                            //                                     ? Colors
-                                            //                                     .red
-                                            //                                     : CupertinoColors
-                                            //                                     .systemBlue),
-                                            //                                 backgroundColor:
-                                            //                                 WidgetStateProperty.all(
-                                            //                                     AppColors
-                                            //                                         .quinary),
-                                            //                               ),
-                                            //                               value: entry.key,
-                                            //                               label: entry.key,
-                                            //                             );
-                                            //                           }).toList(),
-                                            //                         ),
-                                            //
-                                            //                         SizedBox(height: 30),
-                                            //
-                                            //                         // Action Buttons: Cancel and Submit
-                                            //                         Row(
-                                            //                           mainAxisAlignment:
-                                            //                           MainAxisAlignment
-                                            //                               .end,
-                                            //                           children: [
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "Cancel"),
-                                            //                             ),
-                                            //                             SizedBox(width: 10),
-                                            //                             ElevatedButton(
-                                            //                               style:
-                                            //                               ElevatedButton
-                                            //                                   .styleFrom(
-                                            //                                 backgroundColor:
-                                            //                                 AppColors
-                                            //                                     .prettyDark,
-                                            //                                 padding:
-                                            //                                 const EdgeInsets
-                                            //                                     .symmetric(
-                                            //                                   horizontal:
-                                            //                                   20,
-                                            //                                   vertical: 12,
-                                            //                                 ),
-                                            //                                 shape:
-                                            //                                 RoundedRectangleBorder(
-                                            //                                   borderRadius:
-                                            //                                   BorderRadius
-                                            //                                       .circular(
-                                            //                                       12),
-                                            //                                 ),
-                                            //                                 foregroundColor:
-                                            //                                 Colors
-                                            //                                     .grey
-
-                                            //                                 textStyle:
-                                            //                                 TextStyle(
-                                            //                                     fontSize:
-                                            //                                     16),
-                                            //                               ),
-                                            //                               onPressed: () {
-                                            //                                 Navigator.of(
-                                            //                                     context)
-                                            //                                     .pop(); // Close dialog
-                                            //                               },
-                                            //                               child: Text(
-                                            //                                   "  Add  "),
-                                            //                             ),
-                                            //                           ],
-                                            //                         ),
-                                            //                       ],
-                                            //                     ),
-                                            //                   ),
-                                            //                 );
-                                            //               },
-                                            //             );
-                                            //           },
-                                            //
-                                            //           child: Text(
-                                            //             "New currency",
-                                            //             style: TextStyle(fontSize: 15),
-                                            //           ),
-                                            //         ),
-                                            //         PopupMenuItem(
-                                            //           child: Text(
-                                            //             "Edit info",
-                                            //             style: TextStyle(fontSize: 15),
-                                            //           ),
-                                            //         ),
-                                            //       ]);
-                                            // },
-                                            child: CustomContainer(
-                                              darkColor: AppColors.quinary,
-                                              width: double.infinity,
-                                              padding: EdgeInsets.all(8),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  // First Row (From, Receiver, Amount)
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: 'From: ',
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 10,
-                                                                    color: Colors.grey[600],
-                                                                  ),
+                                          child: CustomContainer(
+                                            darkColor: AppColors.quinary,
+                                            width: double.infinity,
+                                            padding: EdgeInsets.all(8),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                // First Row (From, Receiver, Amount)
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'From: ',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 10,
+                                                                  color: Colors.grey[600],
                                                                 ),
-                                                                TextSpan(
-                                                                  text: payment.accountFrom,
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 12,
-                                                                    color: Colors.blue,
-                                                                    // Black Value
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Gap(3),
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: 'Receiver: ',
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 10,
-                                                                    color: Colors.grey[600], // Grey Label
-                                                                  ),
-                                                                ),
-                                                                TextSpan(
-                                                                  text: payment.receiver,
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 12,
-                                                                    color: Colors.blue,
-                                                                    // Grey Label
-                                                                    // Black Value
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            TextSpan(
-                                                              text: '${payment.currency}: ',
-                                                              style: TextStyle(
-                                                                fontWeight: FontWeight.w500,
-                                                                // fontSize: 12,
-                                                                fontSize: 10,
-                                                                color: Colors.grey[600], // Grey Label
                                                               ),
-                                                            ),
-                                                            TextSpan(
-                                                              text: formatter
-                                                                  .format(payment.amountPaid)
-                                                                  // text: payment.amountPaid
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                fontWeight: FontWeight.w700,
-                                                                fontSize: 12,
-                                                                color: Colors.redAccent, // Grey Label
-                                                                // Black Value
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-
-                                                  Divider(color: Colors.grey[400], thickness: 1),
-
-                                                  // Second Row (Transaction ID, Type, Date)
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: [
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: 'Type: ',
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 10,
-                                                                    color: Colors.grey[600], // Grey Label
-                                                                  ),
-                                                                ),
-                                                                TextSpan(
-                                                                  text: payment.transactionType,
-                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                      // Black Value
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Gap(10),
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              children: [
-                                                                TextSpan(
-                                                                  text: '# ',
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontSize: 10,
-                                                                    color: Colors.grey[600], // Grey Label
-                                                                  ),
-                                                                ),
-                                                                TextSpan(
-                                                                  text: payment.transactionId,
-                                                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                                                      // Black Value
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          children: [
-                                                            // TextSpan(
-                                                            //   text: 'Date: ',
-                                                            //   style: TextStyle(
-                                                            //     fontWeight:
-                                                            //     FontWeight.w500,
-                                                            //     fontSize: 12,
-                                                            //     color: Colors
-                                                            //         .blue, // Grey Label
-                                                            //   ),
-                                                            // ),
-                                                            TextSpan(
-                                                              text: DateFormat("dd MMM yyyy HH:mm").format(payment.dateCreated),
-                                                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
+                                                              TextSpan(
+                                                                text: payment.accountFrom,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 10,
+                                                                  color: Colors.blue,
                                                                   // Black Value
-                                                                  ),
-                                                            ),
-                                                          ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
+                                                        Gap(3),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'Receiver: ',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 10,
+                                                                  color: Colors.grey[600], // Grey Label
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: payment.receiver,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w500,
+                                                                  fontSize: 10,
+                                                                  color: Colors.blue,
+                                                                  // Grey Label
+                                                                  // Black Value
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text: '${payment.currency}: ',
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.w500,
+                                                              // fontSize: 12,
+                                                              fontSize: 10,
+                                                              color: Colors.grey[600], // Grey Label
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                            text: formatter
+                                                                .format(payment.amountPaid)
+                                                                // text: payment.amountPaid
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontWeight: FontWeight.w600,
+                                                              fontSize: 10,
+                                                              color: Colors.redAccent, // Grey Label
+                                                              // Black Value
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                Divider(color: Colors.grey[400], thickness: 1),
+
+                                                // Second Row (Transaction ID, Type, Date)
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: 'Type: ',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w300,
+                                                                  fontSize: 10,
+                                                                  color: Colors.grey[600], // Grey Label
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: payment.transactionType,
+                                                                style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: Colors.blue // Grey Label
+                                                                    // Black Value
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Gap(10),
+                                                        RichText(
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text: '# ',
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.w300,
+                                                                  fontSize: 10,
+                                                                  color: Colors.grey[600], // Grey Label
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text: payment.transactionId,
+                                                                style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: Colors.blue // Grey Label
+                                                                    // Black Value
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    RichText(
+                                                      text: TextSpan(
+                                                        children: [
+                                                          // TextSpan(
+                                                          //   text: 'Date: ',
+                                                          //   style: TextStyle(
+                                                          //     fontWeight:
+                                                          //     FontWeight.w500,
+                                                          //     fontSize: 12,
+                                                          //     color: Colors
+                                                          //         .blue, // Grey Label
+                                                          //   ),
+                                                          // ),
+                                                          TextSpan(
+                                                            text: DateFormat("dd MMM yyyy HH:mm").format(payment.dateCreated),
+                                                            style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10, color: Colors.blue // Grey Label
+                                                                // Black Value
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         );
@@ -1703,7 +679,6 @@ class Dashboard extends StatelessWidget {
                                         Tab(
                                           child: Text('Withdrawals'),
                                         ),
-
                                       ],
                                     ),
                                     Container(
@@ -2312,8 +1287,6 @@ class Dashboard extends StatelessWidget {
                             ]),
                           )
                         ])),
-
-
                   ],
                 ),
               ),

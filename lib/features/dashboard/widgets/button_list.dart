@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 
-
 import '../../bank/withdraw/screens/withdraw_form.dart';
 
 import '../../forex/ui/forex_home.dart';
@@ -22,57 +21,54 @@ class ButtonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          TopButton(
-            heroTag: "Payment",
-            icon: Icons.arrow_outward,
-            label: 'Pay',
-            // onPressed: (){
-            //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Testing()));
-            // },
-onPressed: ()=>Get.offAll(PaymentHistory()),          ),
+    return Row(mainAxisAlignment: MainAxisAlignment.center,
+      children: [Gap(15),
+        TopButton(
+          heroTag: "Payment",
+          icon: Icons.arrow_outward,
+          label: 'Pay',
+          // onPressed: (){
+          //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Testing()));
+          // },
+          onPressed: () => Get.offAll(PaymentHistory()),
+        ),Gap(15),
 
-          TopButton(
-            heroTag: "Receive",
-            icon: Icons.arrow_downward,
-            label: 'Receive',
-onPressed: ()=>Get.offAll(()=>ReceiptsHistory()),       ),
-          TopButton(
-            heroTag: "Bank",
-            icon: Icons.account_balance_outlined,
-            label: 'Bank',
-              onPressed: ()=>Get.offAll(()=>BankHistory()),
-          ),
-          TopButton(
-            heroTag: "Forex",
-            icon: Icons.currency_exchange,
-            label: 'Forex',
-onPressed: ()=>Get.offAll(()=>ForexHome()),          ),
-          TopButton(
-            heroTag: "Accounts",
-            icon: Icons.group_outlined,
-            label: 'Accounts',
-            onPressed: () => Get.offAll(()=>Accounts()),
-          ),
-          TopButton(
-            heroTag: "History",
-            icon: Icons.manage_search_outlined,
-            label: 'History',
-            onPressed: () => Get.to(() => const TransactionHistoryPage()),
-          ),
-          // TopButton(
-          //     icon: Icons.search,
-          //     label: "Search all",
-          //     onPressed: () {},
-          //     heroTag: "Search all")
-        ],
-      ),
+        TopButton(
+          heroTag: "Receive",
+          icon: Icons.arrow_downward,
+          label: 'Receive',
+          onPressed: () => Get.offAll(() => ReceiptsHistory()),
+        ),Gap(15),
+        TopButton(
+          heroTag: "Bank",
+          icon: Icons.account_balance_outlined,
+          label: 'Bank',
+          onPressed: () => Get.offAll(() => BankHistory()),
+        ),Gap(15),
+        TopButton(
+          heroTag: "Forex",
+          icon: Icons.currency_exchange,
+          label: 'Forex',
+          onPressed: () => Get.offAll(() => ForexHome()),
+        ),Gap(15),
+        TopButton(
+          heroTag: "Accounts",
+          icon: Icons.group_outlined,
+          label: 'Accounts',
+          onPressed: () => Get.offAll(() => Accounts()),
+        ),Gap(15),
+        // TopButton(
+        //   heroTag: "History",
+        //   icon: Icons.manage_search_outlined,
+        //   label: 'History',
+        //   onPressed: () => Get.to(() => const TransactionHistoryPage()),
+        // ),
+        // TopButton(
+        //     icon: Icons.search,
+        //     label: "Search all",
+        //     onPressed: () {},
+        //     heroTag: "Search all")
+      ],
     );
   }
-
 }
