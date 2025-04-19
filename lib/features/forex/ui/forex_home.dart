@@ -1,6 +1,7 @@
 import 'package:ciyebooks/common/custom_appbar.dart';
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
+import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +31,7 @@ class ForexHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ForexController());
+    final dashboardController = Get.put(DashboardController());
     final newCurrencyController = Get.put(NewCurrencyController());
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
       locale: 'en_us',
@@ -41,13 +43,14 @@ class ForexHome extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.prettyDark,
         shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.prettyDark, width: 2), borderRadius: BorderRadius.circular(100)),
-onPressed: ()=>showForexForm(context),        child: Icon(
+        onPressed: () => showForexForm(context),
+        child: Icon(
           Icons.add,
           color: AppColors.quinary,
           // size: 35,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
         elevation: 0,
         actions: [
@@ -61,7 +64,7 @@ onPressed: ()=>showForexForm(context),        child: Icon(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.quarternary,
         title: Text(
-          'Bank history',
+          'Forex',
           style: TextStyle(color: AppColors.prettyDark),
         ),
       ),
@@ -99,8 +102,56 @@ onPressed: ()=>showForexForm(context),        child: Icon(
               Expanded(
                 child: TabBarView(
                   children: [
-                    Deposits(),
-                    ForexTransactions()                  ],
+                    Obx(
+                      () {
+                        return SizedBox(
+                          width: MediaQuery.sizeOf(context).width,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                                dataRowMaxHeight: 40,
+                                dataRowMinHeight: 40,
+                                showBottomBorder: true,
+                                headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                columnSpacing: 30,
+                                headingRowHeight: 40,
+                                horizontalMargin: 0,
+                                columns: [
+                                  DataColumn(label: Text(' Name')),
+                                  DataColumn(label: Text('Amount')),
+                                  DataColumn(label: Text('Rate')),
+                                  DataColumn(label: Text('Total ')),
+                                ],
+                                rows: dashboardController.currencies.map((currency) {
+                                  return DataRow(cells: [
+                                    DataCell(Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: Text(
+                                        currency.currencyCode,
+                                        style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                      ),
+                                    )),
+                                    DataCell(
+                                      Text(
+                                        formatter.format(
+                                          currency.amount,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(Text(
+                                      currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
+                                    )),
+                                    DataCell(Text(
+                                      formatter.format(currency.totalCost),
+                                    )),
+                                  ]);
+                                }).toList()),
+                          ),
+                        );
+                      },
+                    ),
+                    ForexTransactions()
+                  ],
                 ),
               )
             ],
@@ -197,7 +248,6 @@ showForexForm(BuildContext context) {
                               onPressed: () {
                                 controller.selectedTransaction.value = 'buyFx';
                                 // controller.transactionType.text = 'buyFx';
-
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -295,24 +345,24 @@ showForexForm(BuildContext context) {
                     selectedTrailingIcon: Icon(Icons.search),
                     width: double.maxFinite,
                     onSelected: (value) {
-                    // controller.currency.text = value;
+                      // controller.currency.text = value;
                     },
-                   dropdownMenuEntries: controller.currencyStock.map((currency){
-                     return DropdownMenuEntry(
-                         style: ButtonStyle(
-                           backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                           side: WidgetStateProperty.all(
-                             BorderSide(width: 2, color: AppColors.quarternary),
-                           ),
-                           shape: WidgetStateProperty.all(
-                             RoundedRectangleBorder(
-                               borderRadius: BorderRadius.all(Radius.circular(0)),
-                             ),
-                           ),
-                         ),
-                         value: currency.currencyCode,
-                         label: '${currency.currencyCode}  ${currency.amount}');
-                   }).toList(),
+                    dropdownMenuEntries: controller.currencyStock.map((currency) {
+                      return DropdownMenuEntry(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(0)),
+                              ),
+                            ),
+                          ),
+                          value: currency.currencyCode,
+                          label: '${currency.currencyCode}  ${currency.amount}');
+                    }).toList(),
                   ),
                   Gap(6),
 
@@ -686,16 +736,15 @@ showConfirmForexDialog(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
-             Padding(
-               padding: const EdgeInsets.only(left: 15.0),
-               child: Obx(()=>
-                 Text(
-                      ' Confirm ${controller.selectedTransaction.value}ing ${controller.currency.text.trim()}',
-                      style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
-                    ),
-               ),
-             ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Obx(
+                  () => Text(
+                    ' Confirm ${controller.selectedTransaction.value}ing ${controller.currency.text.trim()}',
+                    style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ),
               IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: Icon(
@@ -719,12 +768,11 @@ showConfirmForexDialog(BuildContext context) {
                       Expanded(
                         child: Text("Transaction type", style: TextStyle()),
                       ),
-                      Obx(()=>
-                        Text(
-                            controller.selectedTransaction.value,
-                          ),
+                      Obx(
+                        () => Text(
+                          controller.selectedTransaction.value,
+                        ),
                       ),
-
                     ],
                   ),
                   Gap(5),

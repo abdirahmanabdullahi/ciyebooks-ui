@@ -432,7 +432,6 @@ class PayExpenseController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      print(e.toString());
 
       throw 'Something went wrong. Please try again';
     }

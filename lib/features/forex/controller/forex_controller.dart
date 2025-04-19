@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -37,18 +38,15 @@ class ForexController extends GetxController {
   RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
-  final bankBalances = {}.obs;
-  final cashBalances = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
-
   ///Sort by date for the history screen
-  final sortCriteria = 'dateCreated'.obs;
 
   final transactionCounter = 0.obs;
 
   ///Controllers
   TextEditingController currency = TextEditingController();
+  TextEditingController currencyCode = TextEditingController();
   TextEditingController transactionType = TextEditingController();
   TextEditingController rate = TextEditingController();
   TextEditingController amount = TextEditingController();
@@ -94,23 +92,22 @@ class ForexController extends GetxController {
         ((num.tryParse(rate.text) ?? 0) > 0 && (num.tryParse(amount.text) ?? 0) > 0 && (num.tryParse(total.text.replaceAll(',', '')) ?? 0) > 0);
   }
 
-  /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('Currency stock')
-        // .where('transactionType', isEqualTo: 'payment')
-
-        .snapshots()
-        .listen((querySnapshot) {
-      currencyStock.clear();
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Currency stock').snapshots().listen((querySnapshot) {
       currencyStock.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());
       }).toList();
     });
-  }
 
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        totals.value = BalancesModel.fromJson(snapshot.data()!);
+        counters.value = totals.value.transactionCounters;
+        transactionCounter.value = counters[selectedTransaction.value];
+
+      }
+    });
+  }
 
   ///Get currencies for the new currency popup form
 
@@ -322,7 +319,6 @@ class ForexController extends GetxController {
 
   /// *-----------------------------Show receipt preview----------------------------------*
 
-
   /// *-----------------------------Create the payment----------------------------------*
 
   Future createForexTransaction(BuildContext context) async {
@@ -334,15 +330,19 @@ class ForexController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('selectedTransaction.value-${counters['bankDepositCounter']}');
+      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
       final newDeposit = ForexModel(
         transactionType: selectedTransaction.value,
-        transactionId: 'selectedTransaction.value-${counters['bankDepositCounter']}',
+        transactionId: '${selectedTransaction.value}-${counters[selectedTransaction.value]}',
         amount: double.tryParse(amount.text.trim()) ?? 0.0,
-        dateCreated: DateTime.now(), currencyName: currency.text.trim(), currencyCode: '', rate: double.tryParse(rate.text.trim())??0.0, totalCost: double.tryParse(total.text.trim())??0.0,
+        dateCreated: DateTime.now(),
+        // currencyName: currency.text.trim(),
+        currencyCode: currency.text.trim(),
+        rate: double.tryParse(rate.text.trim()) ?? 0.0,
+        totalCost: double.tryParse(total.text.trim()) ?? 0.0,
       );
 
       ///Create payment transaction
@@ -355,7 +355,7 @@ class ForexController extends GetxController {
       batch.update(cashRef, {"deposits.${rate.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update expense counter
-      batch.update(counterRef, {"transactionCounters.bankDepositCounter": FieldValue.increment(1)});
+      batch.update(counterRef, {"transactionCounters.${selectedTransaction.value}": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
         Get.snackbar(
@@ -374,13 +374,15 @@ class ForexController extends GetxController {
       if (context.mounted) {
         Navigator.of(context).pop();
         createPdf();
-
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (_) {
+    } on FormatException catch (e) {
+      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[error]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+      print(e.toString());
+
       throw const TFormatException();
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;

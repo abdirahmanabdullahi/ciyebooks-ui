@@ -96,7 +96,7 @@ class PaymentHistory extends StatelessWidget {
           // size: 35,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
         elevation: 0,
         actions: [
@@ -151,10 +151,8 @@ class PaymentHistory extends StatelessWidget {
       ),
     );
   }
-
-
-
 }
+
 showExpenseForm(BuildContext context) {
   return showDialog(
       context: context,
@@ -188,14 +186,14 @@ showExpenseForm(BuildContext context) {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
-              title: Container(padding: EdgeInsets.only(left: 15),
+              title: Container(
+                padding: EdgeInsets.only(left: 15),
                 decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
                 width: double.maxFinite,
                 // height: 30,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     Text(
                       'Paying an expense',
                       style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
@@ -216,7 +214,7 @@ showExpenseForm(BuildContext context) {
                   children: [
                     Gap(15),
                     Obx(
-                          () => DropdownMenu(
+                      () => DropdownMenu(
                         controller: controller.category,
                         trailingIcon: Icon(
                           Icons.search,
@@ -253,19 +251,19 @@ showExpenseForm(BuildContext context) {
                           return DropdownMenuEntry(
                               labelWidget: entry.value == 'AddNew'
                                   ? Row(
-                                children: [
-                                  Icon(
-                                    Icons.add_circle_outline,
-                                    color: Colors.black54,
-                                    size: 20,
-                                  ),
-                                  Gap(5),
-                                  Text(
-                                    'Add new category',
-                                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
-                                  )
-                                ],
-                              )
+                                      children: [
+                                        Icon(
+                                          Icons.add_circle_outline,
+                                          color: Colors.black54,
+                                          size: 20,
+                                        ),
+                                        Gap(5),
+                                        Text(
+                                          'Add new category',
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                                        )
+                                      ],
+                                    )
                                   : Text(entry.value, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: Colors.black)),
                               style: ButtonStyle(
                                   backgroundColor: WidgetStateProperty.all(AppColors.quinary),
@@ -282,7 +280,7 @@ showExpenseForm(BuildContext context) {
                     ),
                     Gap(10),
                     Obx(
-                          () => DropdownMenu(
+                      () => DropdownMenu(
                         controller: controller.paidCurrency,
                         trailingIcon: Icon(
                           Icons.keyboard_arrow_down_rounded,
@@ -339,7 +337,7 @@ showExpenseForm(BuildContext context) {
                     SizedBox(
                       height: 45,
                       child: TextFormField(
-                        onChanged: (val){
+                        onChanged: (val) {
                           print(val);
                         },
                         validator: (value) {
@@ -358,7 +356,6 @@ showExpenseForm(BuildContext context) {
                       ),
                     ),
                     Gap(10),
-
                     TextFormField(
                       maxLength: 40,
                       maxLines: 2,
@@ -407,6 +404,7 @@ showExpenseForm(BuildContext context) {
         );
       });
 }
+
 showAddExpenseCategoryDialog(context) {
   showDialog<void>(
     context: context,
@@ -446,6 +444,7 @@ showAddExpenseCategoryDialog(context) {
     },
   );
 }
+
 showConfirmExpenseDialog(BuildContext context) {
   return showDialog(
     context: context,
@@ -461,7 +460,8 @@ showConfirmExpenseDialog(BuildContext context) {
         backgroundColor: AppColors.quinary,
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Container(padding: EdgeInsets.only(left: 15),
+        title: Container(
+          padding: EdgeInsets.only(left: 15),
           decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
           width: double.maxFinite,
           // height: 30,
@@ -520,10 +520,10 @@ showConfirmExpenseDialog(BuildContext context) {
                     children: [
                       Text(
                         'Currency',
-                      ), Text(
+                      ),
+                      Text(
                         controller.paidCurrency.text.trim(),
                       ),
-
                     ],
                   ),
                   Gap(5),
@@ -540,7 +540,6 @@ showConfirmExpenseDialog(BuildContext context) {
                     ],
                   ),
                   Gap(5),
-
                   Divider(thickness: 1, color: Colors.grey[300]),
                   Gap(5),
                   Row(
@@ -588,7 +587,6 @@ showConfirmExpenseDialog(BuildContext context) {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     // ),
                     onPressed: () {
-
                       controller.createExpense(context);
                     },
 
@@ -605,6 +603,7 @@ showConfirmExpenseDialog(BuildContext context) {
     },
   );
 }
+
 showPaymentForm(BuildContext context) {
   return showDialog(
     context: context,
@@ -676,7 +675,7 @@ showPaymentForm(BuildContext context) {
                 children: [
                   Gap(10),
                   Obx(
-                        () => SizedBox(
+                    () => SizedBox(
                       height: 45,
                       child: DropdownMenu(
                         controller: controller.from,
@@ -734,7 +733,7 @@ showPaymentForm(BuildContext context) {
                   ),
                   Gap(10),
                   Obx(
-                        () => SizedBox(
+                    () => SizedBox(
                       height: 45,
                       child: DropdownMenu(
                         controller: controller.paidCurrency,
@@ -795,45 +794,117 @@ showPaymentForm(BuildContext context) {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15),
-                  Obx(
-                        () => Row(
-                      children: [
-                        SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: Checkbox(value: controller.paidToOwner.value, onChanged: (value) => controller.paidToOwner.value = !controller.paidToOwner.value),
-                        ),
-                        Gap(10),
-                        controller.paidToOwner.value ? Text('Paid to owner') : Text('Paid to a other')
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Obx(
-                        () => controller.paidToOwner.value
-                        ? SizedBox()
-                        : Form(
-                      key: controller.payClientFormKey,
-                      child: SizedBox(
-                        height: 45,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Receiver's name is required";
-                            }
-                            return null;
-                          },
-                          controller: controller.receiver,
-                          decoration: InputDecoration(
-                            labelText: "Receiver's name",
-                            // constraints: BoxConstraints.tight(
-                            // const Size.fromHeight(50),
-                            // ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Obx(
+                          () => Row(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Checkbox(value: controller.paidToOwner.value, onChanged: (value) => controller.paidToOwner.value = !controller.paidToOwner.value),
+                              ),
+                              Gap(10),
+                              controller.paidToOwner.value ? Text('Paid to owner') : Text('Paid to a other')
+                            ],
                           ),
                         ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 2,
+                        child: DropdownMenu(
+                            controller: controller.paymentType,
+                            trailingIcon: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: CupertinoColors.systemBlue,
+                              size: 30,
+                            ),
+                            inputDecorationTheme: InputDecorationTheme(
+                              fillColor: AppColors.quinary,
+                              filled: true,
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                              constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            enableSearch: true,
+                            requestFocusOnTap: true,
+                            enableFilter: true,
+                            menuStyle: MenuStyle(
+                              padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                              backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            ),
+                            label: Text('Select payment type'),
+                            selectedTrailingIcon: Icon(Icons.search),
+                            width: double.maxFinite,
+                            onSelected: (value) {},
+                            dropdownMenuEntries: [
+                              DropdownMenuEntry(
+                                  style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                      side: WidgetStateProperty.all(
+                                        BorderSide(width: 2, color: AppColors.quarternary),
+                                      ),
+                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                                      ))),
+                                  value: 'Cash',
+                                  label: 'cash'), DropdownMenuEntry(
+                                  style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                      side: WidgetStateProperty.all(
+                                        BorderSide(width: 2, color: AppColors.quarternary),
+                                      ),
+                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                                      ))),
+                                  value: 'Mobile money',
+                                  label: 'Mobile money'), DropdownMenuEntry(
+                                  style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                      side: WidgetStateProperty.all(
+                                        BorderSide(width: 2, color: AppColors.quarternary),
+                                      ),
+                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                                      ))),
+                                  value: 'Bank transfer',
+                                  label: 'Bank transfer'),
+                            ]),
+                      ),
+                    ],
+                  ),
+                  // SizedBox(height: 15),
+                  Obx(
+                    () => controller.paidToOwner.value
+                        ? SizedBox()
+                        : Form(
+                            key: controller.payClientFormKey,
+                            child: SizedBox(
+                              height: 45,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Receiver's name is required";
+                                  }
+                                  return null;
+                                },
+                                controller: controller.receiver,
+                                decoration: InputDecoration(
+                                  labelText: "Receiver's name",
+                                  // constraints: BoxConstraints.tight(
+                                  // const Size.fromHeight(50),
+                                  // ),
+                                ),
+                              ),
+                            ),
+                          ),
                   ),
                   Gap(10),
                   SizedBox(
@@ -992,13 +1063,13 @@ showConfirmPayment(BuildContext context) {
                         'Receiver',
                       ),
                       Obx(
-                            () => controller.paidToOwner.value
+                        () => controller.paidToOwner.value
                             ? Text(
-                          "Account holder",
-                        )
+                                "Account holder",
+                              )
                             : Text(
-                          controller.receiver.text,
-                        ),
+                                controller.receiver.text,
+                              ),
                       ),
                     ],
                   ),
@@ -1087,6 +1158,59 @@ showConfirmPayment(BuildContext context) {
                     )),
               ),
             ),
+          ],
+        ),
+      );
+    },
+  );
+}
+showErrorDialog(BuildContext context,String errorText) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+        locale: 'en_us',
+        decimalDigits: 2,
+      );
+      final controller = Get.put(PayClientController());
+      return AlertDialog(
+        titlePadding: EdgeInsets.zero,
+        // insetPadding: EdgeInsets.all(8),
+        backgroundColor: AppColors.quinary,
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.destructiveRed),
+          width: double.maxFinite,
+          // height: 30,
+          child: Row(mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0),
+                child: Text(
+                  'Error!',
+                  style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
+                ),
+              ),
+              IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(
+                    Icons.close,
+                    color: AppColors.quinary,
+                  ))
+            ],
+          ),
+        ),
+        content: Column(mainAxisSize: MainAxisSize.min,mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Gap(20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(errorText,textAlign: TextAlign.center,),
+            ),
+            Gap(30),Divider(height: 0,),TextButton(onPressed: ()=>Navigator.of(context).pop(), child: Text('Ok'))
           ],
         ),
       );

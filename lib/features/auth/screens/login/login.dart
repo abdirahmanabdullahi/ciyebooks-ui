@@ -14,32 +14,29 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-                AppSizes.defaultSpace / 4, 20, AppSizes.defaultSpace / 4, 0),
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomHeader(
-                    height: 100,
-                    title: AppTexts.loginTitle,
-                    subtitle: AppTexts.goToSignupTitle,
-                    label: AppTexts.goToSignupLabel,
-                  ),
-                  Gap(AppSizes.spaceBtwSections/2),
-                  SignInForm(),
-                  Gap(AppSizes.spaceBtwSections),
-                  const CustomDivider(
-                    label: AppTexts.orSignInWith,
-                  ),
-                  Gap(AppSizes.spaceBtwItems),
-                  const SocialIcons()
-                ],
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(physics: ClampingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  AppSizes.defaultSpace / 4, 20, AppSizes.defaultSpace / 4, 0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomHeader(
+                      height: 100,
+                      title: AppTexts.loginTitle,
+                      subtitle: AppTexts.goToSignupTitle,
+                      label: AppTexts.goToSignupLabel,
+                    ),
+                    Gap(AppSizes.spaceBtwSections/2),
+                    SignInForm(),
+                    
+                  ],
+                ),
               ),
             ),
           ),

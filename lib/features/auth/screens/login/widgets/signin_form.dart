@@ -1,4 +1,5 @@
 import 'package:ciyebooks/utils/validators/validation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -24,22 +25,22 @@ class SignInForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextFormField(keyboardType: TextInputType.emailAddress,
-          controller: controller.email,
-          validator: (value) =>
-              Validator.validateEmptyText('Email', value),
-          decoration: InputDecoration(
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            controller: controller.email,
+            validator: (value) => Validator.validateEmptyText('Email', value),
+            decoration: InputDecoration(
               label: const Text(AppTexts.email),
-             ),
-        ),
+            ),
+          ),
 
-          Gap(AppSizes.spaceBtwInputFields/2),
+          Gap(AppSizes.spaceBtwInputFields / 2),
           Obx(
-            () => TextFormField(keyboardType: TextInputType.emailAddress,
+            () => TextFormField(
+              keyboardType: TextInputType.emailAddress,
               obscureText: controller.hidePassword.value,
               controller: controller.password,
-              validator: (value) =>
-                  Validator.validateEmptyText('Password', value),
+              validator: (value) => Validator.validateEmptyText('Password', value),
               decoration: InputDecoration(
                   label: const Text(AppTexts.password),
                   suffixIcon: IconButton(
@@ -50,74 +51,41 @@ class SignInForm extends StatelessWidget {
                         : Icon(
                             Icons.visibility_off_outlined,
                           ),
-                    onPressed: () => controller.hidePassword.value =
-                        !controller.hidePassword.value,
+                    onPressed: () => controller.hidePassword.value = !controller.hidePassword.value,
                   )),
             ),
           ),
-          const Gap(AppSizes.spaceBtwItems / 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: Obx(() => Checkbox(
-                          value: controller.rememberMe.value,
-                          onChanged: (value) => controller.rememberMe.value =
-                              !controller.rememberMe.value))),
-                  Gap(6),
-                  const Text(AppTexts.rememberMe),
-                ],
-              ),
-              TextButton(
-                onPressed: () => Get.to(() => const ForgotPassword()),
-                child: Text(
-                  AppTexts.forgetPassword,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ],
-          ),
+
           const Gap(AppSizes.spaceBtwSections / 2),
           SizedBox(
-            height: 50,
+            height: 45,
             width: double.infinity,
-            child:  Obx(
+            child: Obx(
               () => FloatingActionButton(
-      elevation: 0,
-      isExtended: true,
-      enableFeedback: true,
-      backgroundColor: controller.isLoading.value
-          ? AppColors.prettyDark.withValues(alpha: .9)
-          : AppColors.prettyDark,
-      onPressed: controller.isLoading.value
-          ? null // Disable button when loading
-          : () => controller.signIn(),
-      child: controller.isLoading.value == true
-          ? SizedBox(
-          height: 25,
-          width: 25,
-          child: CircularProgressIndicator(
-            color: Colors.white,
-          ))
-          : Text(
-        AppTexts.signIn,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium!
-            .apply(color: AppColors.quinary),
-      ),
-    ),
-    ),
+                elevation: 0,
+                isExtended: true,
+                enableFeedback: true,
+                backgroundColor: CupertinoColors.systemBlue,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                onPressed: controller.isLoading.value
+                    ? null // Disable button when loading
+                    : () => controller.signIn(),
+                child: controller.isLoading.value == true
+                    ? SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ))
+                    : Text(
+                        AppTexts.signIn,
+                        style: Theme.of(context).textTheme.titleMedium!.apply(color: AppColors.quinary),
+                      ),
+              ),
+            ),
           ),
           const Gap(AppSizes.spaceBtwItems),
-          SwitchScreens(
-              title: AppTexts.goToSignupTitle,
-              label: AppTexts.goToSignupLabel,
-              onPressed: () => Get.to(() => const Signup()))
+          SwitchScreens(title: AppTexts.goToSignupTitle, label: AppTexts.goToSignupLabel, onPressed: () => Get.to(() => const Signup()))
           // SizedBox(
           //   width: double.infinity,
           //   child: OutlinedButton(

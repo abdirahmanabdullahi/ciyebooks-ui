@@ -1,6 +1,7 @@
 
 class PayClientModel {
   final String transactionId;
+  final String paymentType;
   final String accountFrom;
   final String currency;
   final double amountPaid;
@@ -10,6 +11,7 @@ class PayClientModel {
   final String transactionType;
   PayClientModel({
     required this.transactionId,
+    required this.paymentType,
     required this.transactionType,
     required this.accountFrom,
     required this.currency,
@@ -21,6 +23,7 @@ class PayClientModel {
   Map<String, dynamic> toJson() {
     return {
       'TransactionId': transactionId,
+      'paymentType': paymentType,
       'AccountFrom': accountFrom,
       'Currency': currency,
       'AmountPaid': amountPaid,
@@ -34,6 +37,7 @@ class PayClientModel {
   factory PayClientModel.fromJson(Map<String, dynamic> jsonData) {
     return PayClientModel(
       transactionId: jsonData['TransactionId']??'',
+      paymentType: jsonData['paymentType']??'',
       transactionType: jsonData['transactionType'],
       accountFrom: jsonData['AccountFrom']??'',
       currency: jsonData['Currency']??'',

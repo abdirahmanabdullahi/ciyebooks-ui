@@ -105,7 +105,7 @@ class BankHistory extends StatelessWidget {
           // size: 35,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
         elevation: 0,
         actions: [

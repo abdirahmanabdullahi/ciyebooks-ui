@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -30,9 +31,7 @@ class SwitchScreens extends StatelessWidget {
           onTap: onPressed,
           child: Text(
             label,
-            style: Theme.of(context).textTheme.headlineSmall!.apply(
-                  color: Colors.blue,
-                ),
+          style: TextStyle(color: CupertinoColors.systemBlue,fontWeight: FontWeight.w600),
           ),
         ),
         Gap(AppSizes.defaultSpace)

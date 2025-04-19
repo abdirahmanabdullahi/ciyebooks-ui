@@ -225,6 +225,7 @@ class UploadController extends GetxController {
         final newPayment = PayClientModel(
           transactionId: 'PAY-$paymentsCounter',
           accountFrom: splitLine[1],
+          paymentType: '',
           currency: splitLine[3],
           amountPaid: double.tryParse(splitLine[4]) ?? 0.0,
           receiver: splitLine[2],
@@ -535,18 +536,16 @@ class UploadController extends GetxController {
       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
       for (var line in lines) {
         final splitLine = line.split(',');
-        print(splitLine);
         if (splitLine.length != 6) {
           return;
         }
         final buyCurrency = ForexModel(
-            currencyName: splitLine[1],
             currencyCode: splitLine[2].toUpperCase(),
             rate: double.parse(splitLine[3]),
             amount: double.parse(splitLine[4]),
             totalCost: double.parse(splitLine[5]),
             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-            transactionType: 'Fx-Buy',
+            transactionType: 'forex',
             transactionId: 'FXBY-$buyFxCounter');
         final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
 

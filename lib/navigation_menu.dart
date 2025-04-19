@@ -613,7 +613,7 @@ class NavigationMenu extends StatelessWidget {
       //     ),
       //   ),
       // ),
-      // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+      // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
       body: Dashboard()
       // Obx(

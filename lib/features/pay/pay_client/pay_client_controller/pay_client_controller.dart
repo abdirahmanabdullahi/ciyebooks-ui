@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
 import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +24,7 @@ import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../../accounts/model/model.dart';
 import '../../../setup/models/setup_model.dart';
+import '../../screens/payment_home.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
@@ -31,6 +33,7 @@ class PayClientController extends GetxController {
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
+  final bankBalances = {}.obs;
   final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -45,6 +48,7 @@ class PayClientController extends GetxController {
 
   ///Controllers
   final from = TextEditingController();
+  final paymentType = TextEditingController();
   final amount = TextEditingController();
   final paidCurrency = TextEditingController();
   final receiver = TextEditingController();
@@ -53,8 +57,6 @@ class PayClientController extends GetxController {
 
   @override
   onInit() {
-    fetchTotals();
-
     ///Add listeners to the controllers
     from.addListener(updateButtonStatus);
     accountNo.addListener(updateButtonStatus);
@@ -93,6 +95,16 @@ class PayClientController extends GetxController {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
+        bankBalances.value = totals.value.bankBalances;
+        print(bankBalances);
+
+        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[Cash balances]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+        print(cashBalances);
+        if (cashBalances.containsKey('KES')) {
+          print('Oh yeah');
+        } else {
+          print('Nobe');
+        }
         counters.value = totals.value.transactionCounters;
         transactionCounter.value = counters['paymentsCounter'];
       }
@@ -101,7 +113,7 @@ class PayClientController extends GetxController {
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-createPdf() async {
+  createPdf() async {
     try {
       /// Create the receipt.
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
@@ -255,7 +267,8 @@ createPdf() async {
                         pw.Divider(thickness: 1, color: PdfColors.grey),
                         pw.SizedBox(
                           height: 10,
-                        ),  pw.Divider(thickness: 1, color: PdfColors.grey),
+                        ),
+                        pw.Divider(thickness: 1, color: PdfColors.grey),
                         pw.SizedBox(
                           height: 10,
                         ),
@@ -324,30 +337,70 @@ createPdf() async {
     BuildContext context,
   ) async {
     isLoading.value = true;
-    if (!paidToOwner.value) {
-      if (!payClientFormKey.currentState!.validate()) {
+
+    /// Check if currency is at bank and amount is enough to pay amount requested
+    if (paymentType.text.trim() == 'Bank transfer') {
+      final currencyKey = paidCurrency.text.trim();
+
+      if (!bankBalances.containsKey(currencyKey)) {
+        showErrorDialog(context, 'You do not have $currencyKey at bank. Please check your balances and try again.');
         return;
       }
-    }
-    try {
-      ///Compare cash and amount to be paid
-      cashBalance.value = double.tryParse(cashBalances[paidCurrency.text.trim()].toString()) ?? 0.0;
-      paidAmount.value = double.tryParse(amount.text.trim()) ?? 0.0;
 
-      if (paidAmount.value > cashBalance.value) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Payment failed",
-          'Amount to be paid cannot be more than cash in hand',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+      final availableAmount = double.parse('${bankBalances[currencyKey]}')  ;
+      final requestedAmount = double.parse(amount.text.trim()) ;
+
+      if (requestedAmount > availableAmount) {
+        showErrorDialog(
+          context,
+          'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
         );
         return;
       }
+
+    }
+
+    /// Check if currency is in cash and amount is enough to pay amount requested
+    if (paymentType.text.trim() != 'Bank transfer') {
+      final currencyKey = paidCurrency.text.trim();
+
+      if (!cashBalances.containsKey(currencyKey)) {
+        showErrorDialog(context, 'You do not have $currencyKey in cash. Please check your balances and try again.');
+        return;
+      }
+
+      final availableAmount = double.parse('${cashBalances[currencyKey]}')  ;
+      final requestedAmount = double.parse(amount.text.trim()) ;
+
+      if (requestedAmount > availableAmount) {
+        showErrorDialog(
+          context,
+          'You only have $currencyKey ${formatter.format(availableAmount)} in cash and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+        );
+        return;
+      }
+
+    }
+
+    try {
+      ///Compare cash and amount to be paid
+      cashBalance.value = double.tryParse('${cashBalances[paidCurrency.text.trim()]}') ?? 0.0;
+      paidAmount.value = double.tryParse(amount.text.trim()) ?? 0.0;
+
+      // if (paidAmount.value > cashBalance.value) {
+      //   Get.snackbar(
+      //     icon: Icon(
+      //       Icons.cloud_done,
+      //       color: Colors.white,
+      //     ),
+      //     shouldIconPulse: true,
+      //     "Payment failed",
+      //     'Amount to be paid cannot be more than cash in hand',
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white,
+      //   );
+      //   return;
+      // }
       if (paidAmount == cashBalance) {
         Get.snackbar(
           icon: Icon(
@@ -377,6 +430,7 @@ createPdf() async {
       final newPayment = PayClientModel(
           transactionId: 'PAY-${counters['paymentsCounter']}',
           transactionType: 'payment',
+          paymentType: paymentType.text.trim(),
           accountFrom: from.text.trim(),
           currency: paidCurrency.text.trim(),
           amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
@@ -391,7 +445,11 @@ createPdf() async {
       batch.set(paymentRef, newPayment.toJson());
 
       ///update cash balance
-      batch.update(cashRef, {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
+      batch.update(
+          cashRef,
+          paymentType.text.trim() == 'Bank transfer'
+              ? {"bankBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))}
+              : {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///update payments total
       batch.update(cashRef, {"payments.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
@@ -411,7 +469,7 @@ createPdf() async {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        disposeControllers();
+        // disposeControllers();
         createPdf();
 
         isLoading.value = false;
@@ -431,4 +489,3 @@ createPdf() async {
 
   /// *-----------------------------End data submission----------------------------------*
 }
-

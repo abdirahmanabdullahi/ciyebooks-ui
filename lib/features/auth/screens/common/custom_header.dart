@@ -27,14 +27,14 @@ class CustomHeader extends StatelessWidget {
           height: height,
           image: const AssetImage(AppImages.logoDark),
         ),
-        const Gap(AppSizes.spaceBtwSections  *1.5),
+        const Gap(15),
         Text(
           title,
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: TextStyle(fontWeight: FontWeight.bold)
         ),
         Text(
           AppTexts.loginSubTitle,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: TextStyle(),
         ),
       ],
     );
