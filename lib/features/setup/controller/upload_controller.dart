@@ -541,6 +541,7 @@ class UploadController extends GetxController {
         }
         final buyCurrency = ForexModel(
             currencyCode: splitLine[2].toUpperCase(),
+            forexType: '',
             rate: double.parse(splitLine[3]),
             amount: double.parse(splitLine[4]),
             totalCost: double.parse(splitLine[5]),

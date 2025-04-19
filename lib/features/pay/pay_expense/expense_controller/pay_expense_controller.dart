@@ -15,6 +15,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../common/widgets/error_dialog.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
@@ -30,6 +31,7 @@ class PayExpenseController extends GetxController {
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
+  final bankBalances = {}.obs;
   final expenseCategories = {}.obs;
   // final payments = {}.obs;
   final cashBalance = 0.0.obs;
@@ -47,9 +49,11 @@ class PayExpenseController extends GetxController {
   final currency = [].obs;
   final payExpenseFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
+  final paymentType = ''.obs;
 
   ///Controllers
   final category = TextEditingController();
+  // final paymentType = TextEditingController();
   final amount = TextEditingController();
   final paidCurrency = TextEditingController();
   final description = TextEditingController();
@@ -60,7 +64,6 @@ class PayExpenseController extends GetxController {
 
   @override
   onInit() {
-    fetchTotals();
 
     ///Add listeners to the controllers
     category.addListener(updateButtonStatus);
@@ -111,6 +114,7 @@ class PayExpenseController extends GetxController {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
+        bankBalances.value = totals.value.bankBalances;
         counters.value = totals.value.transactionCounters;
         transactionCounter.value = counters['paymentsCounter'];      }
     });
@@ -337,42 +341,40 @@ class PayExpenseController extends GetxController {
   }
   Future createExpense(BuildContext context) async {
     isLoading.value = true;
+    if (paymentType.value == 'Bank') {
+      final currencyKey = paidCurrency.text.trim();
 
-    try {
-      ///Compare cash and amount to be paid
-      cashBalance.value = double.tryParse(cashBalances[paidCurrency.text.trim()].toString()) ?? 0.0;
-      paidAmount.value = double.tryParse(amount.text.trim()) ?? 0.0;
 
-      if (paidAmount.value > cashBalance.value) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Payment failed",
-          'Amount to be paid cannot be more than cash in hand',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+      final availableAmount = double.parse('${bankBalances[currencyKey]}')  ;
+      final requestedAmount = double.parse(amount.text.trim()) ;
+
+      if (requestedAmount > availableAmount) {
+        showErrorDialog(
+          context,
+          'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
         );
-        isLoading.value = false;
-
         return;
       }
-      if (paidAmount == cashBalance) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Zero cash warning",
-          'If you make this payment, you will have no cash left',
-          backgroundColor: Colors.orangeAccent,
-          colorText: Colors.white,
+
+    }
+    if (paymentType.value != 'Bank') {
+      final currencyKey = paidCurrency.text.trim();
+
+
+      final availableAmount = double.parse('${cashBalances[currencyKey]}')  ;
+      final requestedAmount = double.parse(amount.text.trim()) ;
+
+      if (requestedAmount > availableAmount) {
+        showErrorDialog(
+          context,
+          'You only have $currencyKey ${formatter.format(availableAmount)} in cash and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
         );
-        // return;
+        return;
       }
+
+    }
+    try {
+
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -396,7 +398,11 @@ class PayExpenseController extends GetxController {
       batch.set(expenseRef, newExpense.toJson());
 
       ///update cash balance
-      batch.update(cashRef, {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
+      batch.update(
+          cashRef,
+          paymentType.value == 'Bank'
+              ? {"bankBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))}
+              : {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///update expense total
       batch.update(cashRef, {"expense.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});

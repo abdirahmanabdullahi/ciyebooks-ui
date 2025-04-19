@@ -1,6 +1,7 @@
 
 class ForexModel {
   final String transactionId;
+  final String forexType;
   final String transactionType;
   // final String currencyName;
   final String currencyCode;
@@ -10,6 +11,7 @@ class ForexModel {
   final DateTime dateCreated;
   ForexModel({
     required this.transactionId,
+    required this.forexType,
     required this.transactionType,
     // required this.currencyName,
     required this.currencyCode,
@@ -23,6 +25,7 @@ class ForexModel {
   Map<String, dynamic> toJson() {
     return {
       'transactionType': transactionType,
+      'forexType': forexType,
       'transactionId': transactionId,
       // 'CurrencyName': currencyName,
       'CurrencyCode': currencyCode,
@@ -37,6 +40,7 @@ class ForexModel {
   factory ForexModel.fromJson(Map<String, dynamic> jsonData) {
     return ForexModel(
       transactionId: jsonData['transactionId'] ?? '',
+      forexType: jsonData['forexType'] ?? '',
       // currencyName: jsonData['CurrencyName'] ?? '',
       currencyCode: jsonData['CurrencyCode'] ?? '',
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),

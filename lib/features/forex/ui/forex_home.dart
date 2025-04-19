@@ -311,58 +311,131 @@ showForexForm(BuildContext context) {
                     ),
                   ),
                   Gap(6),
-                  DropdownMenu(
-                    enableFilter: true,
-                    controller: controller.currency,
-                    trailingIcon: Icon(
-                      Icons.search,
-                      color: CupertinoColors.systemBlue,
-                      size: 25,
-                    ),
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: AppColors.quinary,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    menuStyle: MenuStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
-                    ),
-                    label: Text(
-                      'Select currency',
-                      style: const TextStyle(
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    selectedTrailingIcon: Icon(Icons.search),
-                    width: double.maxFinite,
-                    onSelected: (value) {
-                      // controller.currency.text = value;
-                    },
-                    dropdownMenuEntries: controller.currencyStock.map((currency) {
-                      return DropdownMenuEntry(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                            side: WidgetStateProperty.all(
-                              BorderSide(width: 2, color: AppColors.quarternary),
-                            ),
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownMenu(
+                          enableFilter: true,
+                          controller: controller.currency,
+                          trailingIcon: Icon(
+                            Icons.search,
+                            color: CupertinoColors.systemBlue,
+                            size: 25,
+                          ),
+                          inputDecorationTheme: InputDecorationTheme(
+                            fillColor: AppColors.quinary,
+                            filled: true,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          value: currency.currencyCode,
-                          label: '${currency.currencyCode}  ${currency.amount}');
-                    }).toList(),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
+                          ),
+                          label: Text(
+                            'Currency',
+                            style: const TextStyle(
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          selectedTrailingIcon: Icon(Icons.search),
+                          width: double.maxFinite,
+                          onSelected: (value) {
+                            if(value!=null){
+                              controller.currency.text = value;
+                            }
+                          },
+                          dropdownMenuEntries: controller.currencyStock.map((currency) {
+                            return DropdownMenuEntry(
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                  side: WidgetStateProperty.all(
+                                    BorderSide(width: 2, color: AppColors.quarternary),
+                                  ),
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ),
+                                  ),
+                                ),
+                                value: currency.currencyCode,
+                                label: '${currency.currencyCode}  ${currency.amount}');
+                          }).toList(),
+                        ),
+                      ),Gap(10),                        Expanded(
+                        child: DropdownMenu(
+                            controller: controller.type,
+                            trailingIcon: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: CupertinoColors.systemBlue,
+                            ),
+                            inputDecorationTheme: InputDecorationTheme(
+                              fillColor: AppColors.quinary,
+                              filled: true,
+                              isDense: true,
+                              // contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                              constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            enableSearch: true,
+                            requestFocusOnTap: true,
+                            enableFilter: true,
+                            menuStyle: MenuStyle(
+                              padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                              backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            ),
+                            label: Text(' Type'),
+                            selectedTrailingIcon: Icon(Icons.search),
+                            width: double.maxFinite,
+                            onSelected: (value) {},
+                            dropdownMenuEntries: [
+                              DropdownMenuEntry(
+                                  style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                      side: WidgetStateProperty.all(
+                                        BorderSide(width: 2, color: AppColors.quarternary),
+                                      ),
+                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                                      ))),
+                                  value: 'Cash',
+                                  label: 'Cash'),
+                              // DropdownMenuEntry(
+                              //     style: ButtonStyle(
+                              //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                              //         side: WidgetStateProperty.all(
+                              //           BorderSide(width: 2, color: AppColors.quarternary),
+                              //         ),
+                              //         shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              //           borderRadius: BorderRadius.all(Radius.circular(0)),
+                              //         ))),
+                              //     value: 'Mobile money',
+                              //     label: 'Mobile money'),
+                              DropdownMenuEntry(
+                                  style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                      side: WidgetStateProperty.all(
+                                        BorderSide(width: 2, color: AppColors.quarternary),
+                                      ),
+                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(0)),
+                                      ))),
+                                  value: 'Bank transfer',
+                                  label: 'Bank transfer'),
+                            ]),
+                      )
+
+                    ],
                   ),
                   Gap(6),
 

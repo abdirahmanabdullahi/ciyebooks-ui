@@ -46,6 +46,7 @@ class ForexController extends GetxController {
 
   ///Controllers
   TextEditingController currency = TextEditingController();
+  TextEditingController type = TextEditingController();
   TextEditingController currencyCode = TextEditingController();
   TextEditingController transactionType = TextEditingController();
   TextEditingController rate = TextEditingController();
@@ -330,12 +331,15 @@ class ForexController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
+      final currencyRef = db.collection('Users').doc(_uid).collection('Currency stock').doc(currency.text.trim().toUpperCase());
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
+      final transactionRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
 
-      final newDeposit = ForexModel(
-        transactionType: selectedTransaction.value,
+      final newForexTransaction = ForexModel(
+
+        forexType: selectedTransaction.value,
+        transactionType: 'forex',
         transactionId: '${selectedTransaction.value}-${counters[selectedTransaction.value]}',
         amount: double.tryParse(amount.text.trim()) ?? 0.0,
         dateCreated: DateTime.now(),
@@ -346,15 +350,39 @@ class ForexController extends GetxController {
       );
 
       ///Create payment transaction
-      batch.set(depositRef, newDeposit.toJson());
+      batch.set(transactionRef, newForexTransaction.toJson());
 
-      ///update cash balance
-      batch.update(cashRef, {"cashBalances.${rate.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
+      ///update cash and currency balances when buying currencies
+     if(selectedTransaction.value=='buyFx'){
+       /// Update currency amount
+       batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(amount.text.trim().replaceAll(',', '')))});
+       ///Update total cost
+       batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(total.text.trim()))});
 
-      ///update expense total
-      batch.update(cashRef, {"deposits.${rate.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+       batch.update(
+           cashRef,
+           type.text.trim() == 'Bank transfer'
+               ? {"bankBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))}
+               : {"cashBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))});
+  
+     }
+      ///update cash balance when selling currencies
 
-      ///Update expense counter
+      if(selectedTransaction.value=='sellFx'){
+        /// Update currency amount
+        batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(amount.text.trim().replaceAll(',', '')))});
+        ///Update total cost
+        batch.update(currencyRef, {"totalCost": FieldValue.increment(-double.parse(total.text.trim().replaceAll(',', '')))});
+
+        batch.update(
+           cashRef,
+           type.text.trim() == 'Bank transfer'  
+               ? {"bankBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))}
+               : {"cashBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))});
+
+     }  
+
+      ///Update forex counter
       batch.update(counterRef, {"transactionCounters.${selectedTransaction.value}": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
@@ -378,15 +406,13 @@ class ForexController extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
+      print(e.code);
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[error]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-      print(e.toString());
 
-      throw const TFormatException();
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      print(e.toString());
       throw 'Something went wrong. Please try again';
     }
   }

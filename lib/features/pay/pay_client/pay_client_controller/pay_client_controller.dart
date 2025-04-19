@@ -16,6 +16,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
+import '../../../../common/widgets/error_dialog.dart';
 import '../../../../navigation_menu.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
@@ -65,6 +66,8 @@ class PayClientController extends GetxController {
 
     ///Get the totals and balances
     fetchTotals();
+    print('[[[[[[[[[[[[[[[[[[[[[[[[[width]]]]]]]]]]]]]]]]]]]]]]]]]');
+
 
     /// Stream for the accounts
 
@@ -98,10 +101,8 @@ class PayClientController extends GetxController {
         bankBalances.value = totals.value.bankBalances;
         print(bankBalances);
 
-        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[Cash balances]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-        print(cashBalances);
+
         if (cashBalances.containsKey('KES')) {
-          print('Oh yeah');
         } else {
           print('Nobe');
         }
@@ -444,7 +445,7 @@ class PayClientController extends GetxController {
       ///Create payment transaction
       batch.set(paymentRef, newPayment.toJson());
 
-      ///update cash balance
+      ///update cash / bank balance
       batch.update(
           cashRef,
           paymentType.text.trim() == 'Bank transfer'

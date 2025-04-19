@@ -355,7 +355,10 @@ class DepositCashController extends GetxController {
       ///update cash balance
       batch.update(cashRef, {"cashBalances.${depositedCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
-      ///update expense total
+      ///update bank balance
+      batch.update(cashRef, {"bankBalances.${depositedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+
+      ///update deposit total
       batch.update(cashRef, {"deposits.${depositedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update expense counter

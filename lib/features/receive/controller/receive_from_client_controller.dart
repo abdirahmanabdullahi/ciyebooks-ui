@@ -46,6 +46,7 @@ class ReceiveFromClientController extends GetxController {
 
   ///Controllers
   final depositorName = TextEditingController();
+  final receiptType = TextEditingController();
   final amount = TextEditingController();
   final receivedCurrency = TextEditingController();
   final receivingAccountName = TextEditingController();
@@ -348,7 +349,12 @@ class ReceiveFromClientController extends GetxController {
       batch.set(paymentRef, newPayment.toJson());
 
       ///update cash balance
-      batch.update(cashRef, {"cashBalances.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      ///update cash balance
+      batch.update(
+          cashRef,
+          receiptType.text.trim() == 'Bank transfer'
+              ? {"bankBalances.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))}
+              : {"cashBalances.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///update payments total
       batch.update(cashRef, {"payments.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
