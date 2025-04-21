@@ -1,9 +1,6 @@
 import 'package:ciyebooks/common/styles/custom_container.dart';
-import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/setup/controller/upload_controller.dart';
 
@@ -20,6 +17,8 @@ import 'package:intl/intl.dart';
 import '../../utils/validators/validation.dart';
 import '../accounts/controller/accounts_controller.dart';
 import '../accounts/model/model.dart';
+import '../pay/models/expense_model.dart';
+import '../pay/models/pay_client_model.dart';
 import 'controller/setup_controller.dart';
 
 class SetupScreen extends StatelessWidget {
@@ -27,7 +26,6 @@ class SetupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final signUpController = Get.put(SignupController());
     final uploadController = Get.put(UploadController());
     final controller = Get.put(SetupController());
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -76,7 +74,7 @@ class SetupScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () => InfoRow(
-                            valueColor: CupertinoColors.systemBlue,
+                            valueColor: CupertinoColors.black,
                             title: 'Shilling at bank',
                             value: ('controller.totals.value.shillingAtBank'),
                           ),

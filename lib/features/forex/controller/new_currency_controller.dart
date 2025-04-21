@@ -1,14 +1,9 @@
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/forex/repo/currency_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/exceptions/firebase_auth_exceptions.dart';
-import '../../../utils/exceptions/firebase_exceptions.dart';
-import '../../../utils/exceptions/format_exceptions.dart';
-import '../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
 import '../ui/forex_home.dart';
 

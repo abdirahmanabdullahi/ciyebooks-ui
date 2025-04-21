@@ -8,7 +8,6 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../controllers/signin_controller.dart';
-import '../../password_config/reset_password.dar/forgot_password.dart';
 import '../../signup/signup.dart';
 import '../../signup/widgets/switch_screens.dart';
 

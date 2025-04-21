@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/styles/custom_container.dart';
-import '../../../utils/constants/colors.dart';
+import '../../../../common/styles/custom_container.dart';
+import '../../../../utils/constants/colors.dart';
+
 
 class PaymentsHistory extends StatefulWidget {
   const PaymentsHistory({super.key});
@@ -24,7 +24,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
-      .where('transactionType', isEqualTo: 'payment')
+      .where('transactionType', isEqualTo: 'payment').orderBy('dateCreated',descending: true)
       .snapshots();
 
   @override
@@ -32,17 +32,16 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
     return StreamBuilder<QuerySnapshot>(
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print(snapshot.error);
 
-        // if (snapshot.hasError) {
-        //   return const Text('Something went wrong');
-        // }
+        if (snapshot.hasError) {
+          return Center(child: const Text('Something went wrong'));
+        }
         if (!snapshot.hasData) {
-          return const Text('No data available');
+          return Center(child: const Text('No data available'));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
+          return Center(child: const Text("Loading"));
         }
 
         return ListView(
@@ -50,10 +49,9 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
               .map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
             return Padding(
-              padding: const EdgeInsets.fromLTRB(3.0,3,3,0),
+              padding: const EdgeInsets.only(top: 5),
               child: CustomContainer(
-                border: Border.all(color: AppColors.grey, width: .5),
-                darkColor: AppColors.quinary,
+                darkColor: Colors.white,
                 width: double.infinity,
                 padding: EdgeInsets.all(8),
                 child: Column(
@@ -134,7 +132,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                                 // text: payment.amountPaid
                                     .toString(),
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   color: Colors.redAccent, // Grey Label
                                   // Black Value
@@ -146,7 +144,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                       ],
                     ),
 
-                    Divider(color: Colors.grey[400], thickness: 1),
+                    Divider(color: Colors.black, thickness: .11),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

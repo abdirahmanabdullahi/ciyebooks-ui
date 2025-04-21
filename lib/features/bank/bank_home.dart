@@ -1,31 +1,20 @@
 import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
-import 'package:ciyebooks/features/bank/withdraw/screens/transfers.dart';
-import 'package:ciyebooks/features/bank/withdraw/screens/withdraw_form.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/withdrawals.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_controller/pay_client_controller.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_controller/pay_expense_controller.dart';
-import 'package:ciyebooks/features/pay/widgets/expenses.dart';
+
 import 'package:ciyebooks/navigation_menu.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import 'package:intl/intl.dart';
 
-import '../../common/styles/custom_container.dart';
 import '../../utils/constants/colors.dart';
+import '../common/widgets/calculator.dart';
 import '../dashboard/widgets/bottom_sheet_button.dart';
-import '../forex/ui/forex_home.dart';
-import '../pay/widgets/payments.dart';
+
 import 'deposit/controller/deposit_cash_controller.dart';
 
 class BankHistory extends StatelessWidget {
@@ -33,11 +22,7 @@ class BankHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(PayClientController());
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
+
 
     return Scaffold(
       backgroundColor: AppColors.quarternary,
@@ -675,7 +660,6 @@ showWithdrawalForm(BuildContext context) {
                       }
                     },
                     dropdownMenuEntries: controller.bankBalances.entries.map((currency) {
-                      print('${currency.key}${currency.value}');
                       return DropdownMenuEntry(
                           style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all(AppColors.quinary),

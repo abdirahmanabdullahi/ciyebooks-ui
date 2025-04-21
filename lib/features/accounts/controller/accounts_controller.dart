@@ -42,17 +42,13 @@ class AccountsController extends GetxController {
     if (documentSnapshot.exists && documentSnapshot.data() != null) {
       final data = documentSnapshot.data() as Map<String, dynamic>;
       totals.value = BalancesModel.fromJson(data);
-      print('OnInit');
-      print('PA-${totals.value.transactionCounters['accountsCounter']}')
-;
+
     }
   }
 
   /// Create accounts
   Future<void> createAccount(BuildContext context) async {
-    print('Start');
-    print('PA-${totals.value.transactionCounters['accountsCounter']}')
-;    isLoading.value = true;
+     isLoading.value = true;
     try {
       if (!accountsFormKey.currentState!.validate()) {
         isLoading.value = false;
@@ -83,8 +79,6 @@ class AccountsController extends GetxController {
 
       ///Update the account number counter
       batch.update(accountNoRef, {"transactionCounters.accountsCounter": FieldValue.increment(1)});
-print('End');
-      print('PA-${totals.value.transactionCounters['accountsCounter']}');
 
 
       await batch.commit().then((_) {

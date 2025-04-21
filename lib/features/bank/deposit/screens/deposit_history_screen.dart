@@ -154,7 +154,6 @@ onPressed: (){},        child: Icon(
                       ),
                   itemBuilder: (context, snapshot) {
                     DepositModel deposit = snapshot.data();
-                    print(deposit.amount);
 
                     return Padding(
                       padding: const EdgeInsets.only(top: 4.0),

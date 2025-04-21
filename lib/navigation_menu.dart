@@ -16,10 +16,8 @@ class NavigationMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final dark = HelperFunctions.isDarkMode(context);
     final controller = Get.put(NavigationController());
     final authController = Get.put(AuthRepo());
-    final no = controller.selectedIndex.value;
     return Scaffold(
       // Add the Drawer here
       drawer: Drawer(

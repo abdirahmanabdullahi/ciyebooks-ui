@@ -1,8 +1,6 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/pay/pay_client/pay_client_model/pay_client_model.dart';
-import 'package:ciyebooks/features/pay/pay_expense/expense_model/expense_model.dart';
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
@@ -13,6 +11,8 @@ import 'package:get/get.dart';
 
 import '../../../utils/helpers/network_manager.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
+import '../../pay/models/expense_model.dart';
+import '../../pay/models/pay_client_model.dart';
 
 class SetupController extends GetxController {
   static SetupController get instance => Get.find();

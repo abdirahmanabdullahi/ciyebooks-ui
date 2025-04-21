@@ -24,7 +24,7 @@ filled: true,fillColor: AppColors.quinary,
         .copyWith(fontSize: AppSizes.fontSizeSm, color: AppColors.dark),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
     floatingLabelStyle:
-        const TextStyle().copyWith(color: AppColors.dark.withOpacity(0.8)),
+        const TextStyle().copyWith(color: AppColors.dark),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(AppSizes.inputFieldRadius),
       borderSide: const BorderSide(width: 1, color: AppColors.grey),
@@ -57,7 +57,7 @@ filled: true,fillColor: AppColors.quinary,
     hintStyle: const TextStyle()
         .copyWith(fontSize: AppSizes.fontSizeSm, color: AppColors.quinary),
     floatingLabelStyle:
-        const TextStyle().copyWith(color: AppColors.quinary.withOpacity(0.8)),
+        const TextStyle().copyWith(color: AppColors.quinary),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(AppSizes.inputFieldRadius),
       borderSide: const BorderSide(width: 1, color: Colors.grey),

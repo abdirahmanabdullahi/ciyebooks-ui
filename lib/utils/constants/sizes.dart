@@ -20,8 +20,15 @@ class AppSizes {
   static const double fontSizeMd = 16.0;
   static const double fontSizeLg = 18.0;
 
+  ///
+  static const double padding = 6.0;
+  static const double buttonHeight = 45.0;
+  static const double receiptFontSize = 18.0;
+
+  ///
+
   // Button sizes
-  static const double buttonHeight = 18.0;
+  // static const double buttonHeight = 18.0;
   static const double buttonRadius = 10.0;
   static const double buttonWidth = 120.0;
   static const double buttonElevation = 4.0;
@@ -34,7 +41,7 @@ class AppSizes {
 
   // Default spacing between sections
   static const double defaultSpace = 24.0;
-  static const double spaceBtwItems = 16.0;
+  static const double spaceBtwItems = 6.0;
   static const double spaceBtwSections = 32.0;
 
   // Border radius

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFFE2F2DF);
+  static const Color primary = Color(0xFFE2EBED);
   static const Color secondary = Color(0xFF0C150A);
   static const Color tertiary = Color(0xFF3F463E);
-  static const Color quarternary = Color(0xFFF9F9F9);
-  static const Color quinary = Color(0xFFFFFFFF);
+  static const Color quarternary = Color(0xffEEEEEE);
+  static const Color quinary = Color(0xFFF9F9F9);
   static const Color dark = Color(0xFF000000);
   static const Color grey = Color(0xFFDDDDDD);
   static const Color darkGrey = Color(0xff5b5c5e);

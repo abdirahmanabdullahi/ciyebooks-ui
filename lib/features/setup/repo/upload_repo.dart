@@ -39,9 +39,7 @@ class UploadRepo extends GetxController {
       ///Todo: Check if all headers exist in the file.
       final lines = file.readAsLinesSync(encoding: utf8);
       final List headers = lines.isNotEmpty ? lines[0].split(',').map((e) => e.replaceAll('"', '').trim()).toList() : [];
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[checklist down]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-      print(headers);
-      print(checkList);
+
       if (!listEquals(headers, checkList)) {
         if (context.mounted) {
           showErrorDialog(context, "Oops! Unsupported data format!.", 'Column headers mismatch or missing. Please use the provided "$fileName" to upload your data');

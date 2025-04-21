@@ -2,7 +2,6 @@
 import 'package:ciyebooks/utils/theme/widget_themes/appbar_theme.dart';
 import 'package:ciyebooks/utils/theme/widget_themes/bottom_sheet_theme.dart';
 import 'package:ciyebooks/utils/theme/widget_themes/checkbox_theme.dart';
-import 'package:ciyebooks/utils/theme/widget_themes/chip_theme.dart';
 import 'package:ciyebooks/utils/theme/widget_themes/elevated_button_theme.dart';
 import 'package:ciyebooks/utils/theme/widget_themes/outlined_button_theme.dart';
 import 'package:ciyebooks/utils/theme/widget_themes/text_field_theme.dart';
@@ -20,7 +19,7 @@ class AppTheme {
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     textTheme: AppTextTheme.lightTextTheme,
-    chipTheme: AppChipTheme.lightChipTheme,
+    // chipTheme: AppChipTheme.lightChipTheme,
     scaffoldBackgroundColor: AppColors.quarternary,
     appBarTheme: CustomAppBarTheme.lightAppBarTheme,
     checkboxTheme: TCheckboxTheme.lightCheckboxTheme,
@@ -37,7 +36,7 @@ class AppTheme {
     brightness: Brightness.dark,  
     primaryColor: AppColors.primary,
     textTheme: AppTextTheme.darkTextTheme,
-    chipTheme: AppChipTheme.darkChipTheme,
+    // chipTheme: AppChipTheme.darkChipTheme,
     scaffoldBackgroundColor: Color(0xff373A40),
     appBarTheme: CustomAppBarTheme.darkAppBarTheme,
     checkboxTheme: TCheckboxTheme.darkCheckboxTheme,

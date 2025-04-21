@@ -6,8 +6,9 @@ import '../../accounts/model/model.dart';
 import '../../bank/deposit/model/deposit_model.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
 import '../../forex/model/new_currency_model.dart';
-import '../../pay/pay_client/pay_client_model/pay_client_model.dart';
-import '../../pay/pay_expense/expense_model/expense_model.dart';
+import '../../pay/models/expense_model.dart';
+import '../../pay/models/pay_client_model.dart';
+
 import '../../receive/model/receive_model.dart';
 import '../../setup/models/setup_model.dart';
 

@@ -1,11 +1,5 @@
-import 'package:ciyebooks/common/custom_appbar.dart';
-import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
-import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,14 +8,9 @@ import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
 
-import '../../../../../common/styles/custom_container.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../navigation_menu.dart';
-import '../../../utils/formatters/formatter.dart';
-import '../../bank/withdraw/screens/deposits.dart';
-import '../../bank/withdraw/screens/withdrawals.dart';
-import '../../calculator/calculator_screen.dart';
-import '../../dashboard/widgets/bottom_sheet_button.dart';
+import '../../common/widgets/calculator.dart';
 import '../controller/new_currency_controller.dart';
 import 'forex_transactions.dart';
 
@@ -30,9 +19,7 @@ class ForexHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ForexController());
     final dashboardController = Get.put(DashboardController());
-    final newCurrencyController = Get.put(NewCurrencyController());
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
       locale: 'en_us',
       decimalDigits: 2,
@@ -167,10 +154,7 @@ showForexForm(BuildContext context) {
     context: context,
     builder: (context) {
       final controller = Get.put(ForexController());
-      final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-        locale: 'en_us',
-        decimalDigits: 2,
-      );
+
       Future<void> vibrate() async {
         await SystemChannels.platform.invokeMethod<void>(
           'HapticFeedback.vibrate',
@@ -465,9 +449,9 @@ showForexForm(BuildContext context) {
                             controller: controller.rate,
 
                             inputFormatters: [
-                              CustomFormatter()
-                              // LengthLimitingTextInputFormatter(10),
-                              // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                              // CustomFormatter()
+                              LengthLimitingTextInputFormatter(10),
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -509,9 +493,9 @@ showForexForm(BuildContext context) {
                                 fontSize: 15,
                               ),
                               inputFormatters: [
-                                CustomFormatter()
-                                // LengthLimitingTextInputFormatter(10),
-                                // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                                // CustomFormatter()
+                                LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                               ],
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -962,24 +946,3 @@ showConfirmForexDialog(BuildContext context) {
   );
 }
 
-showCalculator(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.fromLTRB(70, 0, 30, 0),
-          backgroundColor: AppColors.quarternary,
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          content: SizedBox(
-              width: double.maxFinite,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 16),
-                child: CalculatorScreen(),
-              )));
-    },
-  ).then((value) {
-    // controller.enableOverlayButton.value = true;
-  });
-}

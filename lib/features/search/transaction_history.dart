@@ -10,10 +10,10 @@ class TransactionHistoryPage extends StatefulWidget {
   const TransactionHistoryPage({super.key});
 
   @override
-  _TransactionHistoryPageState createState() => _TransactionHistoryPageState();
+  TransactionHistoryPageState createState() => TransactionHistoryPageState();
 }
 
-class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
+class TransactionHistoryPageState extends State<TransactionHistoryPage> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 

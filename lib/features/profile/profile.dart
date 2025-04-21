@@ -19,7 +19,7 @@ class Profile extends StatelessWidget {
               onPressed: () => Get.offAll(() => const NavigationMenu()),
               icon: const Icon(Icons.clear))
         ],
-        title: const Text("Profile"),
+        title: const Text("Profile"), backgroundColor: Colors.red,
         // showBackArrow: true,
       ),
       body: SingleChildScrollView(

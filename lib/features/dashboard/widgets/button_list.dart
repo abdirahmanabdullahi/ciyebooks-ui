@@ -3,15 +3,11 @@ import 'package:ciyebooks/features/bank/bank_home.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
 
-import '../../bank/withdraw/screens/withdraw_form.dart';
 
 import '../../forex/ui/forex_home.dart';
 import '../../pay/screens/payment_home.dart';
 import '../../receive/screens/receipts_history.dart';
-import '../../search/transaction_history.dart';
-import 'bottom_sheet_button.dart';
 import 'top_button.dart';
 
 class ButtonList extends StatelessWidget {
@@ -27,10 +23,13 @@ class ButtonList extends StatelessWidget {
           heroTag: "Payment",
           icon: Icons.arrow_outward,
           label: 'Pay',
-          // onPressed: (){
-          //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Testing()));
-          // },
-          onPressed: () => Get.offAll(PaymentHistory()),
+         
+          onPressed: () {
+             Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const PaymentHome()),
+          );
+
+          }
         ),Gap(15),
 
         TopButton(

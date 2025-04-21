@@ -26,13 +26,13 @@ class AppTextTheme {
     bodySmall: const TextStyle().copyWith(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
-        color: AppColors.dark.withOpacity(0.5)),
+        color: AppColors.dark),
     labelLarge: const TextStyle().copyWith(
         fontSize: 12.0, fontWeight: FontWeight.normal, color: AppColors.dark),
     labelMedium: const TextStyle().copyWith(
         fontSize: 12.0,
         fontWeight: FontWeight.normal,
-        color: AppColors.dark.withOpacity(0.5)),
+        color: AppColors.dark),
   );
 
   /// Customizable Dark Text Theme
@@ -58,7 +58,7 @@ class AppTextTheme {
     bodySmall: const TextStyle().copyWith(
         fontSize: 14.0,
         fontWeight: FontWeight.w500,
-        color: AppColors.quinary.withOpacity(0.5)),
+        color: AppColors.quinary),
     labelLarge: const TextStyle().copyWith(
         fontSize: 12.0,
         fontWeight: FontWeight.normal,
@@ -66,6 +66,6 @@ class AppTextTheme {
     labelMedium: const TextStyle().copyWith(
         fontSize: 12.0,
         fontWeight: FontWeight.normal,
-        color: AppColors.quinary.withOpacity(0.5)),
+        color: AppColors.quinary),
   );
 }

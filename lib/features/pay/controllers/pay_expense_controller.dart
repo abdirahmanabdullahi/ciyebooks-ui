@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/pay/widgets/expenses.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/confirm_expense.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,25 +13,27 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../common/widgets/error_dialog.dart';
-import '../../../../utils/constants/colors.dart';
-import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
-import '../../../../utils/exceptions/firebase_exceptions.dart';
-import '../../../../utils/exceptions/format_exceptions.dart';
-import '../../../../utils/exceptions/platform_exceptions.dart';
-import '../../../accounts/model/model.dart';
-import '../../../setup/models/setup_model.dart';
-import '../expense_model/expense_model.dart';
+import '../../../common/widgets/error_dialog.dart';
+import '../../../utils/constants/sizes.dart';
+import '../../../utils/exceptions/firebase_auth_exceptions.dart';
+import '../../../utils/exceptions/firebase_exceptions.dart';
+import '../../../utils/exceptions/format_exceptions.dart';
+import '../../../utils/exceptions/platform_exceptions.dart';
+import '../../accounts/model/model.dart';
+import '../../setup/models/setup_model.dart';
+import '../models/expense_model.dart';
 
 class PayExpenseController extends GetxController {
   static PayExpenseController get instance => Get.find();
-
+  final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_us',
+    decimalDigits: 2,
+  );
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
   final bankBalances = {}.obs;
   final expenseCategories = {}.obs;
-  // final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
@@ -64,7 +64,6 @@ class PayExpenseController extends GetxController {
 
   @override
   onInit() {
-
     ///Add listeners to the controllers
     category.addListener(updateButtonStatus);
     amount.addListener(updateButtonStatus);
@@ -116,17 +115,18 @@ class PayExpenseController extends GetxController {
         cashBalances.value = totals.value.cashBalances;
         bankBalances.value = totals.value.bankBalances;
         counters.value = totals.value.transactionCounters;
-        transactionCounter.value = counters['paymentsCounter'];      }
+        transactionCounter.value = counters['expenseCounter'];
+      }
     });
 
-    DocumentSnapshot expenses = await FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').get();
+    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        expenseCategories.value = snapshot.data() as Map<String,dynamic>;
+        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+        print(expenseCategories);
 
-    if (expenses.exists && expenses.data() != null) {
-      expenseCategories.value = expenses.data() as Map<String, dynamic>;
-
-      ///Add the last entry of the map to enable users to add a new category
-      expenseCategories['AddNew'] = 'AddNew';
-    }
+      }
+    });
     // if (balances.exists && balances.data() != null) {
     //   totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
     //   cashBalances.value = totals.value.cashBalances;
@@ -138,13 +138,13 @@ class PayExpenseController extends GetxController {
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-  Future<void> createPdf() async {
-    // try {
+  ///Dispose Controllers
+  createReceiptPdf() async {
+    try {
       /// Create the receipt.
       final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
       final ttf = pw.Font.ttf(font);
       final pdf = pw.Document();
-
 
       pdf.addPage(pw.Page(
           margin: pw.EdgeInsets.fromLTRB(
@@ -154,19 +154,18 @@ class PayExpenseController extends GetxController {
             20,
           ),
           build: (pw.Context context) => pw.Container(
-              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black),
-                  borderRadius: pw.BorderRadius.all(
-                      pw.Radius.circular(12))),
-              child: pw.Column(mainAxisSize: pw.MainAxisSize.min,
+              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black), borderRadius: pw.BorderRadius.all(pw.Radius.circular(12))),
+              child: pw.Column(
+                mainAxisSize: pw.MainAxisSize.min,
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
                   pw.Container(
                     decoration: pw.BoxDecoration(
-                        borderRadius: pw.BorderRadius.only(
-                          topLeft: pw.Radius.circular(12),
-                          topRight: pw.Radius.circular(12),
-                        ),
-                        color: PdfColors.blue),
+                      borderRadius: pw.BorderRadius.only(
+                        topLeft: pw.Radius.circular(12),
+                        topRight: pw.Radius.circular(12),
+                      ),
+                    ),
                     width: double.maxFinite,
                     height: 70,
                     child: pw.Row(
@@ -174,12 +173,15 @@ class PayExpenseController extends GetxController {
                       children: [
                         pw.Text(
                           'Expense receipt',
-                          style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
+                          style: pw.TextStyle(color: PdfColors.black, fontSize: 26, font: ttf),
                         ),
                       ],
                     ),
                   ),
-                  // Gap(10),
+                  pw.Divider(
+                    thickness: 1,
+                    color: PdfColors.black,
+                  ),
                   pw.Padding(
                     padding: pw.EdgeInsets.all(8.0),
                     child: pw.Column(
@@ -191,17 +193,20 @@ class PayExpenseController extends GetxController {
                           children: [
                             pw.Expanded(
                               child: pw.Text(
-                                style: pw.TextStyle(font: ttf),
+                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
                                 "Transaction type",
                               ),
                             ),
-                            pw.Text('Expense', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                            pw.Text('Expense', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontSize: AppSizes.receiptFontSize)),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
                         pw.SizedBox(
                           height: 10,
                         ),
@@ -209,17 +214,20 @@ class PayExpenseController extends GetxController {
                           children: [
                             pw.Expanded(
                               child: pw.Text(
-                                style: pw.TextStyle(font: ttf),
+                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
                                 "Transaction id",
                               ),
                             ),
-                            pw.Text('EXP-${counters['expenseCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                            pw.Text('EXP-${counters['expenseCounter'] - 1}', style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, color: PdfColors.black, font: ttf)),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
                         pw.SizedBox(
                           height: 10,
                         ),
@@ -227,17 +235,22 @@ class PayExpenseController extends GetxController {
                           children: [
                             pw.Expanded(
                               child: pw.Text(
-                                style: pw.TextStyle(font: ttf),
+                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
                                 "Category",
                               ),
                             ),
-                            pw.Text(category.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                            pw.Text(category.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontSize: AppSizes.receiptFontSize, font: ttf)),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
+
+
                         pw.SizedBox(
                           height: 10,
                         ),
@@ -245,17 +258,20 @@ class PayExpenseController extends GetxController {
                           children: [
                             pw.Expanded(
                               child: pw.Text(
-                                style: pw.TextStyle(font: ttf),
+                                style: pw.TextStyle(font: ttf, fontSize: AppSizes.receiptFontSize),
                                 "Currency paid",
                               ),
                             ),
-                            pw.Text(amount.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                            pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontSize: AppSizes.receiptFontSize, font: ttf)),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
                         pw.SizedBox(
                           height: 10,
                         ),
@@ -263,48 +279,62 @@ class PayExpenseController extends GetxController {
                           children: [
                             pw.Expanded(
                               child: pw.Text(
-                                style: pw.TextStyle(font: ttf),
+                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
                                 "Amount",
                               ),
                             ),
-                            pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
+                            pw.Text(formatter.format(double.parse(amount.text.trim())),
+                                style: pw.TextStyle(
+                                  fontSize: AppSizes.receiptFontSize,
+                                  font: ttf,
+                                  color: PdfColors.black,
+                                )),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
                         pw.SizedBox(
                           height: 10,
                         ),
                         pw.Row(
                           children: [
                             pw.Expanded(
-                              child: pw.Text(maxLines: 1,
-                                overflow: pw.TextOverflow.clip,
-                                style: pw.TextStyle(
-                                    font: ttf),
+                              child: pw.Text(
+                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
                                 "Description",
                               ),
                             ),
-                            pw.Text(description.text.trim(),overflow: pw.TextOverflow.clip, style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
+                            pw.Text(description.text.trim(),
+                                style: pw.TextStyle(
+                                  font: ttf,
+                                  fontSize: AppSizes.receiptFontSize,
+                                  color: PdfColors.black,
+                                )),
                           ],
                         ),
                         pw.SizedBox(
                           height: 10,
                         ),
-                        pw.Divider(thickness: 1, color: PdfColors.grey),
+                        pw.Divider(
+                          thickness: 0.11,
+                          color: PdfColors.black,
+                        ),
                         pw.SizedBox(
                           height: 10,
                         ),
                         pw.Row(
                           children: [
                             pw.Expanded(
-                              child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.normal)),
+                              child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontSize: AppSizes.receiptFontSize)),
                             ),
                             pw.Text(
                               DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
-                              style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold),
+                              style: pw.TextStyle(font: ttf, color: PdfColors.black, fontSize: AppSizes.receiptFontSize),
                             ),
                           ],
                         ),
@@ -324,58 +354,62 @@ class PayExpenseController extends GetxController {
       await file.writeAsBytes(await pdf.save());
       if (await file.exists()) {
         await Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
-
-      }
-    // } catch (e) {
-
-     // print(e.toString());
-    // }
+      } else {}
+    } catch (e) {
+      Get.snackbar(
+        icon: Icon(
+          Icons.cloud_done,
+          color: Colors.white,
+        ),
+        shouldIconPulse: true,
+        "There was an error",
+        e.toString(),
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    }
   }
 
-///Dispose Controllers
-  clearControllers(){
-    category.clear();
-    paidCurrency.clear();
-    amount.clear();
-    description.clear();
-  }
-  Future createExpense(BuildContext context) async {
-    isLoading.value = true;
+  checkBalances(BuildContext context) {
     if (paymentType.value == 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-
-      final availableAmount = double.parse('${bankBalances[currencyKey]}')  ;
-      final requestedAmount = double.parse(amount.text.trim()) ;
+      final availableAmount = double.parse('${bankBalances[currencyKey]}');
+      final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
         showErrorDialog(
-          context,
-          'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+          context: context,
+          errorTitle: 'Balance at bank not enough',
+          errorText: 'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
         );
         return;
       }
-
     }
     if (paymentType.value != 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-
-      final availableAmount = double.parse('${cashBalances[currencyKey]}')  ;
-      final requestedAmount = double.parse(amount.text.trim()) ;
+      final availableAmount = double.parse('${cashBalances[currencyKey]}');
+      final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
         showErrorDialog(
-          context,
-          'You only have $currencyKey ${formatter.format(availableAmount)} in cash and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+          context: context,
+          errorTitle: 'Not enough cash in hand:',
+          errorText: 'You only have $currencyKey ${formatter.format(availableAmount)} in cash and cannot pay ${formatter.format(requestedAmount)}. Please check your balances and try again.',
         );
         return;
       }
-
     }
+    showConfirmExpenseDialog(context);
+  }
+
+  Future createExpense(BuildContext context) async {
+    Navigator.of(context).pop();
+
+    isLoading.value = true;
+    //
     try {
-
-
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
@@ -424,21 +458,15 @@ class PayExpenseController extends GetxController {
         );
       });
       isLoading.value = false;
-      createPdf();
-      if (context.mounted) {
-        Navigator.of(context).pop();
+      createReceiptPdf();
 
-
-      }
     } on FirebaseAuthException catch (e) {
-
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-
       throw 'Something went wrong. Please try again';
     }
   }

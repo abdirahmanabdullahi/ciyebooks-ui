@@ -31,7 +31,7 @@ class TopButton extends StatelessWidget {
           child: FloatingActionButton(elevation: 3,
             heroTag: heroTag,
             backgroundColor: backgroundColor,
-            shape: RoundedRectangleBorder(
+            shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary,width: 1.5),
                 borderRadius: BorderRadius.circular(100)),
             onPressed: onPressed,
             child: Icon(

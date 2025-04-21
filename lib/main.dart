@@ -8,7 +8,8 @@ import 'package:get_storage/get_storage.dart';
 
 import 'app.dart';
 
-Future<void> main() async {debugPaintBaselinesEnabled:true;
+Future<void> main() async {
+
 
 final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();

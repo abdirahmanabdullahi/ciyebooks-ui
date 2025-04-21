@@ -11,7 +11,7 @@ class CustomContainer extends StatelessWidget {
       required this.width,
       required this.child,
       required this.padding,
-      this.borderRadius = AppSizes.sm + 2, this.border});
+      this.borderRadius = 0, this.border});
   final Color? darkColor, lightColor;
   final double? height;
   final double width;

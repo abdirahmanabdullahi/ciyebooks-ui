@@ -1,3 +1,5 @@
+import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,8 @@ class VerifyEmail extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.quarternary,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,leading: IconButton(onPressed: (){FirebaseAuth.instance.signOut();
+          AuthRepo.instance.screenRedirect();}, icon: Icon(Icons.arrow_back_ios)),
       ),
       body: SingleChildScrollView(
         child: Padding(

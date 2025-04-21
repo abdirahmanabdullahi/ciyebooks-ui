@@ -1,26 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../utils/constants/colors.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
-import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
 import '../model/new_currency_model.dart';
@@ -406,16 +400,46 @@ class ForexController extends GetxController {
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
-      print(e.code);
       throw TFirebaseException(e.code).message;
 
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      print(e.toString());
       throw 'Something went wrong. Please try again';
     }
   }
 
   /// *-----------------------------End data submission----------------------------------*
+}
+
+class GradientScaffold extends StatelessWidget {
+  final Widget body;
+  final AppBar? appBar;
+  final Widget? floatingActionButton;
+
+  const GradientScaffold({
+    super.key,
+    required this.body,
+    this.appBar,
+    this.floatingActionButton,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF6D0EB5), Color(0xFF4059F1)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: body,
+      ),
+      floatingActionButton: floatingActionButton,
+      backgroundColor: Colors.transparent, // Important!
+    );
+  }
 }
