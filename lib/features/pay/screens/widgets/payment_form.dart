@@ -44,7 +44,7 @@ showPaymentForm(BuildContext context) {
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
           title: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.secondary),
             width: double.maxFinite,
             // height: 30,
             child: Column(
@@ -55,7 +55,7 @@ showPaymentForm(BuildContext context) {
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Text(
                         'Paying a client',
-                        style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w500 ),
+                        style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w200 ),
                       ),
                     ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.quinary,))
                   ],

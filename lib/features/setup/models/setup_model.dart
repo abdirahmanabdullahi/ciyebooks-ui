@@ -56,10 +56,6 @@ class BalancesModel {
       'bankBalances': bankBalances,
       'baseCurrency': baseCurrency,
       'currencyStock': currencyStock,
-      // 'shillingCashInHand': shillingCashInHand,
-      // 'shillingReceivable': shillingReceivable,
-      // 'shillingPayable': shillingPayable,
-      // 'dollarCashInHand': dollarCashInHand,
       'payable': payable,
       'receivable': receivable,
       'workingCapital': workingCapital,
@@ -71,8 +67,6 @@ class BalancesModel {
       'transfers': transfers,
       'withdrawals': withdrawals,
       'currenciesAtCost': currenciesAtCost,
-      // 'inflows': inflows,
-      // 'outflows': outflows,
       'transactionCounters': transactionCounters
     };
   }

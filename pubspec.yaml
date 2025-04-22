@@ -85,6 +85,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/fonts/OpenSans-VariableFont_wdth,wght.ttf
+    - assets/fonts/
     - assets/logos/
     - assets/images/
     - assets/images/animations/
@@ -110,6 +112,9 @@ flutter:
             weight: 600
           - asset: assets/fonts/Poppins-Bold.ttf
             weight: 800
+      - family: Roboto
+        fonts:
+          - asset: assets/fonts/Roboto-VariableFont_wdth,wght.ttf
       - family: Oswald
         fonts:
           - asset: assets/fonts/Oswald-VariableFont_wght.ttf
@@ -119,3 +124,5 @@ flutter:
             weight: 200
           - asset: assets/fonts/Oswald-Light.ttf
             weight: 300
+assets/fonts/OpenSans-VariableFont_wdth,wght:
+  ttf:

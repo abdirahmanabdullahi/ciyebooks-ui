@@ -58,7 +58,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // First Row (From, Receiver, Amount)
-                    Row(
+                    Row(crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
@@ -68,17 +68,17 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Payee: ',
+                                    text: 'Receiver: ',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 10,
                                       color: Colors.grey[600],
                                     ),
                                   ),
                                   TextSpan(
-                                    text: data['AccountFrom'],
+                                    text: data['Receiver'],
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.w600,
                                       fontSize: 12,
                                       color: Colors.blue,
                                       // Black Value
@@ -92,18 +92,18 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: 'Receiver: ',
+                                    text: 'Payee: ',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 10,
                                       color: Colors.grey[600], // Grey Label
                                     ),
                                   ),
                                   TextSpan(
-                                    text: data['Receiver'],
+                                    text: data['AccountFrom'],
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 12,
+                                      fontSize: 10,
                                       color: Colors.blue,
                                       // Grey Label
                                       // Black Value
@@ -120,10 +120,9 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                               TextSpan(
                                 text: '${data['Currency']}: ',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  // fontSize: 12,
+                                  fontWeight: FontWeight.w400,
                                   fontSize: 10,
-                                  color: Colors.grey[600], // Grey Label
+                                  color: Colors.grey[600],// Grey Label
                                 ),
                               ),
                               TextSpan(
@@ -164,7 +163,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: data['transactionType'],
+                                    text: data['paymentType'],
                                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
                                       // Black Value
                                     ),

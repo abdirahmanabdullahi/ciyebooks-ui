@@ -1578,7 +1578,7 @@ class SetupScreen extends StatelessWidget {
                               uploadController.uploadAccounts(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -1920,7 +1920,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -2259,7 +2259,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -2587,7 +2587,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -2825,7 +2825,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -3050,7 +3050,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -3091,7 +3091,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -3162,7 +3162,7 @@ class SetupScreen extends StatelessWidget {
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
-                            //   backgroundColor: AppColors.secondary,
+                            //   backgroundColor: CupertinoColors.systemBlue,
                             //   padding: const EdgeInsets.symmetric(
                             //     horizontal: 20,
                             //     vertical: 12,
@@ -3397,7 +3397,7 @@ class SetupScreen extends StatelessWidget {
 //                               // createNewAccountBottom(context);
 //                             },
 //                             style: ElevatedButton.styleFrom(
-//                               backgroundColor: AppColors.secondary,
+//                               backgroundColor: CupertinoColors.systemBlue,
 //                               padding: const EdgeInsets.symmetric(
 //                                 horizontal: 20,
 //                                 vertical: 12,
@@ -3703,7 +3703,7 @@ void createNewAccountBottom(BuildContext? context) {
                     controller.createAccount(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.secondary,
+                    backgroundColor: CupertinoColors.systemBlue,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
                       vertical: 12,

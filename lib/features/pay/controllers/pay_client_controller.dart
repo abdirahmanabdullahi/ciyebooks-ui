@@ -108,229 +108,155 @@ class PayClientController extends GetxController {
   createReceiptPdf() async {
     try {
       /// Create the receipt.
-      final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-      final ttf = pw.Font.ttf(font);
+      final font = await rootBundle.load('assets/fonts/OpenSans-VariableFont_wdth,wght.ttf');
+      final customFont = pw.Font.ttf(font);
       final pdf = pw.Document();
 
-      pdf.addPage(pw.Page(
-          margin: pw.EdgeInsets.fromLTRB(
-            10,
-            30,
-            10,
-            20,
-          ),
-          build: (pw.Context context) => pw.Container(
-              decoration: pw.BoxDecoration(border: pw.Border.all(color: PdfColors.black), borderRadius: pw.BorderRadius.all(pw.Radius.circular(12))),
-              child: pw.Column(
-                mainAxisSize: pw.MainAxisSize.min,
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
-                  pw.Container(
-                    decoration: pw.BoxDecoration(
-                      borderRadius: pw.BorderRadius.only(
-                        topLeft: pw.Radius.circular(12),
-                        topRight: pw.Radius.circular(12),
+      pdf.addPage(
+        pw.Page(
+          margin: pw.EdgeInsets.all(16),
+          build: (pw.Context context) => pw.Column(
+            children: [
+              // Top success box
+              pw.Container(width: double.maxFinite,
+                padding: const pw.EdgeInsets.all(24),
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.white,
+                  borderRadius: pw.BorderRadius.circular(20),
+                  boxShadow: [
+                    pw.BoxShadow(
+                      color: PdfColors.black,
+                      blurRadius: 10,
+                      // offset: const pw.Offset(0, 4),
+                    )
+                  ],
+                ),
+                child: pw.Column(
+                  children: [
+                    // const pw.Icon(Icons.task_alt, color: Colors.green, size:68),
+                     pw.SizedBox(height: 16),
+                    pw. Text(
+                      "Payment Success!",
+                      style:   pw.TextStyle(fontSize: 18,font: customFont,
+                   //        fontWeight:
+                   // pw.FontWeight.w500
                       ),
                     ),
-                    width: double.maxFinite,
-                    height: 70,
-                    child: pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.center,
+                    pw.SizedBox(height: 8),
+                    pw. Text(
+                      "IDR 1,000,000",
+                      style:   pw.TextStyle(font: customFont,
+                        fontSize: 24,
+                        // fontWeight: FontWeight.bold,
+                        color: PdfColors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              pw. SizedBox(height: 20),
+
+              // Payment Details box
+              pw.  Container(
+                width: double.infinity,
+                padding:   pw. EdgeInsets.all(24),
+                decoration:   pw.BoxDecoration(
+                  color: PdfColors.white,
+                  borderRadius:   pw.BorderRadius.circular(20),
+                  boxShadow: [
+                    pw.  BoxShadow(
+                      color: PdfColors.black
+                          // .withOpacity(0.05),
+                      // pw.blurRadius: 10,
+                      // offset: const Offset(0, 4),
+                    )
+                  ],
+                ),
+                child:  pw. Column(
+                  crossAxisAlignment:   pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.  Text(
+                      "Payment Details",
+                      style:  pw. TextStyle(font: customFont,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    pw. SizedBox(height: 16),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
                       children: [
-                        pw.Text(
-                          'Payment receipt',
-                          style: pw.TextStyle(color: PdfColors.black, fontSize: 26, font: ttf),
+                        pw. Text("Ref Number",style: pw.TextStyle(font: customFont,)),
+                        pw. Text("000085752257",style: pw.TextStyle(font: customFont,)),
+                      ],
+                    ),
+                    pw. SizedBox(height: 12),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.  Text("Payment Status",style: pw.TextStyle(font: customFont,)),
+                        pw.  Row(
+                          children: [
+                            // Icon(Icons.check_circle, size: 16, color: Colors.green),
+                            pw. SizedBox(width: 4),
+                            pw.Text("Success",style: pw.TextStyle(font: customFont,)),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  pw.Divider(
-                    thickness: 1,
-                    color: PdfColors.black,
-                  ),
-                  pw.Padding(
-                    padding: pw.EdgeInsets.all(8.0),
-                    child: pw.Column(
+                    pw. SizedBox(height: 12),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
                       children: [
-                        pw.SizedBox(
-                          height: 10,
+                        pw.  Text("Payee",style: pw.TextStyle(font: customFont,)),
+                        pw.  Text("John Doe",style: pw.TextStyle(font: customFont,)),
+                      ],
+                    ),
+                    pw. SizedBox(height: 12),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw. Text("Receiver",style: pw.TextStyle(font: customFont,)),
+                        pw. Text("Acme Corp.",style: pw.TextStyle(font: customFont,)),
+                      ],
+                    ),
+                    pw. SizedBox(height: 12),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw. Text("Description",style: pw.TextStyle(font: customFont,)),
+                        pw. Text("Invoice #4567",style: pw.TextStyle(font: customFont,)),
+                      ],
+                    ),
+                    pw. SizedBox(height: 12),
+                    pw. Row(
+                      mainAxisAlignment:   pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw. Text("Payment Time",style: pw.TextStyle(font: customFont,)),
+                        pw. Text("25-02-2023, 13:22:16",style: pw.TextStyle(font: customFont,)),
+                      ],
+                    ),
+                    pw. Divider(height: 32),
+                    pw. Row(
+                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.  Text(
+                          "Total Payment",
+                            style: pw.TextStyle(font: customFont,)
                         ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
-                                "Transaction type",
-                              ),
-                            ),
-                            pw.Text('Payment', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontSize: AppSizes.receiptFontSize)),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
-                                "Transaction id",
-                              ),
-                            ),
-                            pw.Text('PAY-${counters['paymentsCounter'] - 1}', style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, color: PdfColors.black, font: ttf)),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
-                                "From",
-                              ),
-                            ),
-                            pw.Text(from.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontSize: AppSizes.receiptFontSize, font: ttf)),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(font: ttf, fontSize: AppSizes.receiptFontSize),
-                                "Receiver",
-                              ),
-                            ),
-                            pw.Text(paidToOwner.value ? from.text.trim() : receiver.text.trim(), style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, color: PdfColors.black, font: ttf)),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(font: ttf, fontSize: AppSizes.receiptFontSize),
-                                "Currency",
-                              ),
-                            ),
-                            pw.Text(paidCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontSize: AppSizes.receiptFontSize, font: ttf)),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
-                                "Amount",
-                              ),
-                            ),
-                            pw.Text(formatter.format(double.parse(amount.text.trim())),
-                                style: pw.TextStyle(
-                                  fontSize: AppSizes.receiptFontSize,
-                                  font: ttf,
-                                  color: PdfColors.black,
-                                )),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text(
-                                style: pw.TextStyle(fontSize: AppSizes.receiptFontSize, font: ttf),
-                                "Description",
-                              ),
-                            ),
-                            pw.Text(description.text.trim(),
-                                style: pw.TextStyle(
-                                  font: ttf,
-                                  fontSize: AppSizes.receiptFontSize,
-                                  color: PdfColors.black,
-                                )),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Divider(
-                          thickness: 0.11,
-                          color: PdfColors.black,
-                        ),
-                        pw.SizedBox(
-                          height: 10,
-                        ),
-                        pw.Row(
-                          children: [
-                            pw.Expanded(
-                              child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontSize: AppSizes.receiptFontSize)),
-                            ),
-                            pw.Text(
-                              DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
-                              style: pw.TextStyle(font: ttf, color: PdfColors.black, fontSize: AppSizes.receiptFontSize),
-                            ),
-                          ],
-                        ),
-                        pw.SizedBox(
-                          height: 10,
+                        pw.  Text(
+                          "IDR 1,000,000",
+                            style: pw.TextStyle(font: customFont,fontSize: 36)
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ))));
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 
       ///Share or download the receipt
       final directory = await getTemporaryDirectory();
