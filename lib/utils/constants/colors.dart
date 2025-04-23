@@ -1,12 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color primary = Color(0xFFE2EBED);
   static const Color secondary = Color(0xff222831);
-  static const Color red = Color(0xffC5172E);
+  static const Color red = CupertinoColors.destructiveRed;
   static const Color tertiary = Color(0xFF3F463E);
   static const Color quarternary = Color(0xffEEEEEE);
-  static const Color quinary = Color(0xFFF9F9F9);
+  static const Color quinary = Colors.white;
   static const Color dark = Color(0xFF000000);
   static const Color grey = Color(0xFFDDDDDD);
   static const Color darkGrey = Color(0xff5b5c5e);

@@ -247,6 +247,17 @@ showPaymentForm(BuildContext context) {
                                   ))),
                               value: 'Cash',
                               label: 'cash'),
+                          DropdownMenuEntry(
+                              style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                  side: WidgetStateProperty.all(
+                                    BorderSide(width: 2, color: AppColors.quarternary),
+                                  ),
+                                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                                  ))),
+                              value: 'Mobile money',
+                              label: 'Mobile money'),
                           // DropdownMenuEntry(
                           //     style: ButtonStyle(
                           //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),

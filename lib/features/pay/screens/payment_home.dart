@@ -40,7 +40,6 @@ class _PaymentHomeState extends State<PaymentHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.quarternary,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.prettyDark,
         shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 1.5), borderRadius: BorderRadius.circular(100)),
