@@ -47,20 +47,23 @@ showPaymentForm(BuildContext context) {
             decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.secondary),
             width: double.maxFinite,
             // height: 30,
-            child: Column(
-              children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Text(
-                        'Paying a client',
-                        style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w200 ),
-                      ),
-                    ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.quinary,))
-                  ],
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: Column(
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Text(
+                          'Paying a client',
+                          style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w400 ),
+                        ),
+                      ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.quinary,))
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           content: Column(
@@ -335,7 +338,7 @@ showPaymentForm(BuildContext context) {
                   // ),
                 ),
               ),
-              Gap(15),
+              Gap(10),
               SizedBox(
                 height: 45,
                 width: double.maxFinite,
@@ -344,7 +347,7 @@ showPaymentForm(BuildContext context) {
                     // style: ElevatedButton.styleFrom(
                     //   padding: EdgeInsets.symmetric(horizontal: 10),
                     //   disabledBackgroundColor: const Color(0xff35689fff),
-                    backgroundColor: CupertinoColors.systemBlue,
+                    backgroundColor: AppColors.secondary,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     // ),
                     onPressed: () {

@@ -34,17 +34,18 @@ class _PaymentHomeState extends State<PaymentHome> {
     PayExpenseController.instance.fetchTotals();
     super.initState();
   }
+
   final controller = Get.put(PayExpenseController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.quarternary,
+      // backgroundColor: AppColors.quarternary,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.prettyDark,
         shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 1.5), borderRadius: BorderRadius.circular(100)),
         onPressed: () {
-          Get.to(()=>PaymentSuccessPage());
+          Get.to(() => PaymentSuccessPage());
           // Platform.isIOS ? showIosPaymentActionSheet(context) : showAndroidPaymentBottomSheet(context: context);
         },
         child: Icon(
@@ -111,13 +112,21 @@ class _PaymentHomeState extends State<PaymentHome> {
   }
 }
 
-
 class PaymentSuccessPage extends StatelessWidget {
   const PaymentSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(floatingActionButton: FloatingActionButton(onPressed: ()=>Get.to(()=>PaymentHome())),
+    final controller = Get.put(PayClientController());
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          controller.createReceiptPdf();
+        },
+        // onPressed: () => Get.to(
+        //   () => PaymentHome(),
+        // ),
+      ),
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: Padding(
@@ -125,7 +134,8 @@ class PaymentSuccessPage extends StatelessWidget {
           child: Column(
             children: [
               // Top success box
-              Container(width: double.maxFinite,
+              Container(
+                width: double.maxFinite,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -140,21 +150,13 @@ class PaymentSuccessPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    const Icon(Icons.task_alt, color: Colors.green, size:68),
-                    const SizedBox(height: 16),
-                    const Text(
-                      "Payment Success!",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      "IDR 1,000,000",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                    const Icon(Icons.info_outline_rounded, color: Colors.orange, size: 68),
+                    const SizedBox(height: 15),
+                    Text("Confirm Payment?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
+Gap(6),
+                    Text("USD 1,200.00", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
+                    Gap(6),
+
                   ],
                 ),
               ),
@@ -163,7 +165,7 @@ class PaymentSuccessPage extends StatelessWidget {
               // Payment Details box
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -180,84 +182,124 @@ class PaymentSuccessPage extends StatelessWidget {
                   children: [
                     Text(
                       "Payment Details",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Ref Number"),
-                        Text("000085752257"),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Payment Status"),
-                        Row(
-                          children: [
-                            Icon(Icons.check_circle, size: 16, color: Colors.green),
-                            SizedBox(width: 4),
-                            Text("Success"),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Payee"),
-                        Text("John Doe"),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Receiver"),
-                        Text("Acme Corp."),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Description"),
-                        Text("Invoice #4567"),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Payment Time"),
-                        Text("25-02-2023, 13:22:16"),
-                      ],
-                    ),
-                    const Divider(height: 32),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total Payment",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "IDR 1,000,000",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
+                          // fontWeight: FontWeight.bold,
                           ),
-                        ),
+                    ),
+                    SizedBox(height: 26),
+                    // Divider(color: Colors.black, thickness: .11),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Payee",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                        Text("John Doe",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Divider(color: Colors.black, thickness: .11),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Payee",
+                            style: TextStyle(
+                              fontSize: 14,
+                            )),
+                        Text("John Doe",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Divider(color: Colors.black, thickness: .11),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Payee",
+                            style: TextStyle(
+                              fontSize: 14,
+                            )),
+                        Text("John Doe",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Divider(color: Colors.black, thickness: .11),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Payee",
+                            style: TextStyle(
+                              fontSize: 14,
+                            )),
+                        Text("John Doe",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Divider(color: Colors.black, thickness: .11),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Payee",
+                            style: TextStyle(
+                              fontSize: 14,
+                            )),
+                        Text("John Doe",
+                            style: TextStyle(fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            )),
+                      ],
+                    ),
+                    Divider(color: Colors.black, thickness: .11),Gap(12),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Total Payment", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
+                        Text("IDR 1,000,000",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.bold,
+                            )),
                       ],
                     ),
                   ],
                 ),
+              ),
+              Gap(20),
+              SizedBox(
+                // height: 45,
+                width: double.maxFinite,
+                child: FloatingActionButton(
+                    elevation: 0,
+                    // style: ElevatedButton.styleFrom(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                    backgroundColor: AppColors.secondary,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    // ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      controller.createPayment(context);
+                    },
+
+                    // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                    child: Text(
+                      'Confirm',
+                      style: TextStyle(color: AppColors.quinary, fontSize: 14),
+                    )),
               ),
             ],
           ),
@@ -266,4 +308,3 @@ class PaymentSuccessPage extends StatelessWidget {
     );
   }
 }
-

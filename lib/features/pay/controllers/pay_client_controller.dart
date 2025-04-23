@@ -108,9 +108,15 @@ class PayClientController extends GetxController {
   createReceiptPdf() async {
     try {
       /// Create the receipt.
-      final font = await rootBundle.load('assets/fonts/OpenSans-VariableFont_wdth,wght.ttf');
-      final customFont = pw.Font.ttf(font);
+      final normalFont = await rootBundle.load('assets/fonts/Roboto-VariableFont_wdth,wght.ttf');
+      final boldFonts = await rootBundle.load('assets/fonts/Roboto-Bold.ttf');
+
+      final customNormalFont = pw.Font.ttf(normalFont);
+      final customBoldFont = pw.Font.ttf(boldFonts);
       final pdf = pw.Document();
+      final img = await rootBundle.load('assets/images/icons/checkMark.png');
+      final imageBytes = img.buffer.asUint8List();
+      pw.Image image1 = pw.Image(pw.MemoryImage(imageBytes));
 
       pdf.addPage(
         pw.Page(
@@ -118,138 +124,173 @@ class PayClientController extends GetxController {
           build: (pw.Context context) => pw.Column(
             children: [
               // Top success box
-              pw.Container(width: double.maxFinite,
-                padding: const pw.EdgeInsets.all(24),
-                decoration: pw.BoxDecoration(
-                  color: PdfColors.white,
-                  borderRadius: pw.BorderRadius.circular(20),
-                  boxShadow: [
-                    pw.BoxShadow(
-                      color: PdfColors.black,
-                      blurRadius: 10,
-                      // offset: const pw.Offset(0, 4),
-                    )
-                  ],
-                ),
-                child: pw.Column(
-                  children: [
-                    // const pw.Icon(Icons.task_alt, color: Colors.green, size:68),
-                     pw.SizedBox(height: 16),
-                    pw. Text(
-                      "Payment Success!",
-                      style:   pw.TextStyle(fontSize: 18,font: customFont,
-                   //        fontWeight:
-                   // pw.FontWeight.w500
-                      ),
+              pw.Container(
+                  width: double.maxFinite,
+                  padding: const pw.EdgeInsets.all(24),
+                  decoration: pw.BoxDecoration(
+                    color: PdfColors.grey100,
+                    borderRadius: pw.BorderRadius.circular(20),
+                  ),
+                  child: pw.Padding(
+                    padding: pw.EdgeInsets.all(24),
+                    child: pw.Column(
+                      children: [
+                        pw.Container(
+                          alignment: pw.Alignment.center,
+                          height: 120,
+                          child: image1,
+                        ),
+                        pw.SizedBox(height: 24),
+                        pw.Text(
+                          "Payment Success!",
+                          style: pw.TextStyle(letterSpacing: 2, fontSize: 25, font: customNormalFont, fontWeight: pw.FontWeight.bold),
+                        ),
+                        pw.SizedBox(height: 15),
+                        pw.Text(
+                          "IDR 1,000,000",
+                          style: pw.TextStyle(
+                            font: customBoldFont,
+                            fontSize: 35,
+                            fontWeight: pw.FontWeight.bold,
+                            color: PdfColors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                    pw.SizedBox(height: 8),
-                    pw. Text(
-                      "IDR 1,000,000",
-                      style:   pw.TextStyle(font: customFont,
-                        fontSize: 24,
-                        // fontWeight: FontWeight.bold,
-                        color: PdfColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              pw. SizedBox(height: 20),
+                  )),
+              pw.SizedBox(height: 20),
 
               // Payment Details box
-              pw.  Container(
+              pw.Container(
                 width: double.infinity,
-                padding:   pw. EdgeInsets.all(24),
-                decoration:   pw.BoxDecoration(
-                  color: PdfColors.white,
-                  borderRadius:   pw.BorderRadius.circular(20),
-                  boxShadow: [
-                    pw.  BoxShadow(
-                      color: PdfColors.black
-                          // .withOpacity(0.05),
-                      // pw.blurRadius: 10,
-                      // offset: const Offset(0, 4),
-                    )
-                  ],
+                padding: pw.EdgeInsets.all(24),
+                decoration: pw.BoxDecoration(
+                  color: PdfColors.grey100,
+                  borderRadius: pw.BorderRadius.circular(20),
                 ),
-                child:  pw. Column(
-                  crossAxisAlignment:   pw.CrossAxisAlignment.start,
+                child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.  Text(
+                    pw.Text(
                       "Payment Details",
-                      style:  pw. TextStyle(font: customFont,
-                        fontSize: 16,
-                        // fontWeight: FontWeight.bold,
+                      style: pw.TextStyle(letterSpacing: 2, fontSize: 22,                             color: PdfColors.grey800,
+                          font: customBoldFont, fontWeight: pw.FontWeight.bold),
+                    ),pw.SizedBox(height: 24),
+                    // pw.Divider(color: PdfColors.black, thickness: .11),
+                    pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 6),
+                      child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text("Payee",
+                              style: pw.TextStyle(
+                                fontSize: 18,
+                                font: customNormalFont,
+                              )),
+                          pw.Text("John Doe",
+                              style: pw.TextStyle(
+                                fontSize: 22,
+                                font: customNormalFont,
+                              )),
+                        ],
                       ),
-                    ),
-                    pw. SizedBox(height: 16),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw. Text("Ref Number",style: pw.TextStyle(font: customFont,)),
-                        pw. Text("000085752257",style: pw.TextStyle(font: customFont,)),
-                      ],
-                    ),
-                    pw. SizedBox(height: 12),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.  Text("Payment Status",style: pw.TextStyle(font: customFont,)),
-                        pw.  Row(
-                          children: [
-                            // Icon(Icons.check_circle, size: 16, color: Colors.green),
-                            pw. SizedBox(width: 4),
-                            pw.Text("Success",style: pw.TextStyle(font: customFont,)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    pw. SizedBox(height: 12),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.  Text("Payee",style: pw.TextStyle(font: customFont,)),
-                        pw.  Text("John Doe",style: pw.TextStyle(font: customFont,)),
-                      ],
-                    ),
-                    pw. SizedBox(height: 12),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw. Text("Receiver",style: pw.TextStyle(font: customFont,)),
-                        pw. Text("Acme Corp.",style: pw.TextStyle(font: customFont,)),
-                      ],
-                    ),
-                    pw. SizedBox(height: 12),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw. Text("Description",style: pw.TextStyle(font: customFont,)),
-                        pw. Text("Invoice #4567",style: pw.TextStyle(font: customFont,)),
-                      ],
-                    ),
-                    pw. SizedBox(height: 12),
-                    pw. Row(
-                      mainAxisAlignment:   pw.MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw. Text("Payment Time",style: pw.TextStyle(font: customFont,)),
-                        pw. Text("25-02-2023, 13:22:16",style: pw.TextStyle(font: customFont,)),
-                      ],
-                    ),
-                    pw. Divider(height: 32),
-                    pw. Row(
-                      mainAxisAlignment:  pw. MainAxisAlignment.spaceBetween,
-                      children: [
-                        pw.  Text(
-                          "Total Payment",
-                            style: pw.TextStyle(font: customFont,)
-                        ),
-                        pw.  Text(
-                          "IDR 1,000,000",
-                            style: pw.TextStyle(font: customFont,fontSize: 36)
-                        ),
-                      ],
-                    ),
+                    ),                    pw.Divider(color: PdfColors.black, thickness: .11),
+
+                    pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 6),
+                      child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text("Payee",
+                              style: pw.TextStyle(
+                                fontSize: 18,
+                                font: customNormalFont,
+                              )),
+                          pw.Text("John Doe",
+                              style: pw.TextStyle(
+                                fontSize: 22,
+                                font: customNormalFont,
+                              )),
+                        ],
+                      ),
+                    ),                    pw.Divider(color: PdfColors.black, thickness: .11),
+
+                    pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 6),
+                      child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text("Payee",
+                              style: pw.TextStyle(
+                                fontSize: 18,
+                                font: customNormalFont,
+                              )),
+                          pw.Text("John Doe",
+                              style: pw.TextStyle(
+                                fontSize: 22,
+                                font: customNormalFont,
+                              )),
+                        ],
+                      ),
+                    ),                    pw.Divider(color: PdfColors.black, thickness: .11),
+
+                    pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 6),
+                      child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text("Payee",
+                              style: pw.TextStyle(
+                                fontSize: 18,
+                                font: customNormalFont,
+                              )),
+                          pw.Text("John Doe",
+                              style: pw.TextStyle(
+                                fontSize: 22,
+                                font: customNormalFont,
+                              )),
+                        ],
+                      ),
+                    ),                    pw.Divider(color: PdfColors.black, thickness: .11),
+
+                    pw.Padding(
+                      padding: pw.EdgeInsets.symmetric(vertical: 6),
+                      child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Text("Payee",
+                              style: pw.TextStyle(
+                                fontSize: 18,
+                                font: customNormalFont,
+                              )),
+                          pw.Text("John Doe",
+                              style: pw.TextStyle(
+                                fontSize: 22,
+                                font: customNormalFont,
+                              )),
+                        ],
+                      ),
+                    ),                    pw.Divider(color: PdfColors.black, thickness: .11),
+
+                   pw.Padding(padding:pw. EdgeInsets.fromLTRB(0,24,0,12),child:  pw.Row(
+                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                     children: [
+                       pw.Text("Total Payment",
+                           style: pw.TextStyle(
+                             font: customBoldFont,
+                             fontSize: 25,
+                             color: PdfColors.grey800,
+                             fontWeight: pw.FontWeight.bold,
+                           )),
+                       pw.Text("IDR 1,000,000",
+                           style: pw.TextStyle(
+                             font: customBoldFont,
+                             fontSize: 25,
+                             color: PdfColors.grey800,
+                             fontWeight: pw.FontWeight.bold,
+                           )),
+                     ],
+                   ),)
                   ],
                 ),
               ),

@@ -51,7 +51,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
             return Padding(
               padding: const EdgeInsets.only(top: 5),
               child: CustomContainer(
-                darkColor: Colors.white,
+                darkColor: AppColors.quinary,
                 width: double.infinity,
                 padding: EdgeInsets.all(8),
                 child: Column(

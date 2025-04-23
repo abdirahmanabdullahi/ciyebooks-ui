@@ -79,130 +79,145 @@ class Dashboard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Align(alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 18.0,0,30),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: ClampingScrollPhysics(),
-                    child: ButtonList(),
-                  ),
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text(
-                  "Cash balances",
-                  style: Theme.of(context).textTheme.titleMedium,
+                padding: const EdgeInsets.all(10.0),
+                child: Container( width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppColors.quarternary,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(13),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
+                  ),
+                  child: ButtonList(),
                 ),
-              ),
-              Divider(
-                height: 2,
-                color: AppColors.prettyDark,
-              ),
-              Gap(10),
-              Obx(() => Column(
-                    children: controller.totals.value.cashBalances.entries.map((entry) {
-                      return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Gap(6),
-                                  Text(
-                                    entry.key,
-                                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-                                  ),
-                                  Gap(30),
-                                  Text(
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: CupertinoColors.systemBlue,
-                                    ),
-                                    formatter.format(entry.value),
-                                  )
-                                ],
-                              ),
-                              Divider()
-                            ],
-                          )
+              ),Gap(15),
+              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Text(
+                      "Cash balances",
+                      style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,fontSize: 16),              ),
+
+                  ), Divider(
+                    height: 2,
+                    color: AppColors.prettyDark,
+                  ),
+                  Gap(10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Obx(() => Column(
+                      children: controller.totals.value.cashBalances.entries.map((entry) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            child: Column(
+                              children: [
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      entry.key,
+                              style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,),              ),
+
+                                    Text(
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: CupertinoColors.systemBlue,
+                                      ),
+                                      formatter.format(entry.value),
+                                    )
+                                  ],
+                                ),
+                                Divider()
+                              ],
+                            )
                           // BalanceTile(
                           //   leading: entry.key,
                           //   title: formatter.format(entry.value),
                           //   // subtitle: entry.key,
                           //   valueColor: CupertinoColors.activeGreen,
                           // ),
-                          );
-                    }).toList(),
-                  )),
+                        );
+                      }).toList(),
+                    )),
+                  ),
+                ],
+              ),
+
               Gap(10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text(
                   "Bank balances",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                  style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,fontSize: 16),              ),
+
               ),
               Divider(
                 height: 2,
                 color: AppColors.prettyDark,
               ),
               Gap(10),
-              Obx(() => Column(
-                    children: controller.totals.value.bankBalances.entries.map((entry) {
-                      return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 3.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Gap(6),
-                                  Text(
-                                    entry.key,
-                                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-                                  ),
-                                  Gap(30),
-                                  Text(
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: CupertinoColors.systemBlue,
-                                    ),
-                                    formatter.format(entry.value),
-                                  )
-                                ],
-                              ),
-                              Divider()
-                            ],
-                          )
-                          // BalanceTile(
-                          //   leading: entry.key,
-                          //   title: formatter.format(entry.value),
-                          //   // subtitle: entry.key,
-                          //   valueColor: CupertinoColors.activeGreen,
-                          // ),
-                          );
-                    }).toList(),
-                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Obx(() => Column(
+                      children: controller.totals.value.bankBalances.entries.map((entry) {
+                        return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3.0),
+                            child: Column(
+                              children: [
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      entry.key,
+                              style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,),              ),
+
+                                    Text(
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: CupertinoColors.systemBlue,
+                                      ),
+                                      formatter.format(entry.value),
+                                    )
+                                  ],
+                                ),
+                                Divider()
+                              ],
+                            )
+                            // BalanceTile(
+                            //   leading: entry.key,
+                            //   title: formatter.format(entry.value),
+                            //   // subtitle: entry.key,
+                            //   valueColor: CupertinoColors.activeGreen,
+                            // ),
+                            );
+                      }).toList(),
+                    )),
+              ),
               Gap(10),
               Text(
                 "Foreign currency stock",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+                style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500,fontSize: 16),              ),
               Divider(
                 height: 2,
                 color: AppColors.prettyDark,
               ),
               Obx(
                 () {
-                  return Container(color: AppColors.quarternary,
+                  return Container(
+                    color: AppColors.quarternary,
                     width: MediaQuery.sizeOf(context).width,
-                    child: SingleChildScrollView(
+                    child: SingleChildScrollView(physics: ClampingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
                       child: DataTable(
                           dataRowMaxHeight: 40,
                           dataRowMinHeight: 40,
                           showBottomBorder: true,
-                          headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                          headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w500),
                           columnSpacing: 30,
                           headingRowHeight: 40,
                           horizontalMargin: 0,
@@ -218,21 +233,24 @@ class Dashboard extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
                                   currency.currencyCode,
-                                  style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w500),
                                 ),
                               )),
                               DataCell(
                                 Text(
                                   formatter.format(
                                     currency.amount,
-                                  ),
+                                  ),style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500),
                                 ),
                               ),
-                              DataCell(Text(
+                              DataCell(Text(style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500),
                                 currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
                               )),
-                              DataCell(Text(
-                                formatter.format(currency.totalCost),
+                              DataCell(Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  formatter.format(currency.totalCost),style: TextStyle(color: Colors.black87,fontWeight: FontWeight.w500),
+                                ),
                               )),
                             ]);
                           }).toList()),

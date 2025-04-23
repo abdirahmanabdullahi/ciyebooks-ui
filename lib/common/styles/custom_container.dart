@@ -25,6 +25,7 @@ class CustomContainer extends StatelessWidget {
     final dark = HelperFunctions.isDarkMode(context);
     return Container(
       decoration: BoxDecoration(
+       
         border: border,
         borderRadius: BorderRadius.circular(borderRadius!),
         color: dark ? lightColor : darkColor,

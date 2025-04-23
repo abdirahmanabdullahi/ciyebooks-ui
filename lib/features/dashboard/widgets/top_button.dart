@@ -23,7 +23,6 @@ class TopButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // final dark = HelperFunctions.isDarkMode(context);
     return Column(mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           height: 55,

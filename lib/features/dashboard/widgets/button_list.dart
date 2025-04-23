@@ -17,7 +17,7 @@ class ButtonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center,
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TopButton(
           heroTag: "Payment",
@@ -30,26 +30,26 @@ class ButtonList extends StatelessWidget {
           );
 
           }
-        ),Gap(15),
+        ),
 
         TopButton(
           heroTag: "Receive",
           icon: Icons.arrow_downward,
           label: 'Receive',
           onPressed: () => Get.offAll(() => ReceiptsHistory()),
-        ),Gap(15),
+        ),
         TopButton(
           heroTag: "Bank",
           icon: Icons.account_balance_outlined,
           label: 'Bank',
           onPressed: () => Get.offAll(() => BankHistory()),
-        ),Gap(15),
+        ),
         TopButton(
           heroTag: "Forex",
           icon: Icons.currency_exchange,
           label: 'Forex',
           onPressed: () => Get.offAll(() => ForexHome()),
-        ),Gap(15),
+        ),
         TopButton(
           heroTag: "Accounts",
           icon: Icons.group_outlined,
