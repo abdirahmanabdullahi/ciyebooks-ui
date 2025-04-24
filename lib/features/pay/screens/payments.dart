@@ -105,7 +105,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                           ],
                         ),
 
-                        Divider(color: AppColors.prettyDark, thickness: .11),
+                        Divider(color: Colors.black, thickness: .11),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

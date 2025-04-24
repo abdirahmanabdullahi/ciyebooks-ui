@@ -88,7 +88,7 @@ class Dashboard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(13),
+                        color: Colors.black.withAlpha(25),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -210,7 +210,7 @@ class Dashboard extends StatelessWidget {
                 () {
                   return Container(
                     color: AppColors.quarternary,
-                    width: MediaQuery.sizeOf(context).width,
+                    // width: MediaQuery.sizeOf(context).width,
                     child: SingleChildScrollView(physics: ClampingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
@@ -218,7 +218,7 @@ class Dashboard extends StatelessWidget {
                           dataRowMinHeight: 40,
                           showBottomBorder: true,
                           headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w500),
-                          columnSpacing: 30,
+                          columnSpacing: MediaQuery.sizeOf(context).width/8,
                           headingRowHeight: 40,
                           horizontalMargin: 0,
                           columns: [
