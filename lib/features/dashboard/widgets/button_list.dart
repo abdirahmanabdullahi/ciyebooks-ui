@@ -48,7 +48,7 @@ class ButtonList extends StatelessWidget {
           heroTag: "Forex",
           icon: Icons.currency_exchange,
           label: 'Forex',
-          onPressed: () => Get.offAll(() => ForexHome()),
+          onPressed: (){forexComingSoon(context);}
         ),
         TopButton(
           heroTag: "Accounts",

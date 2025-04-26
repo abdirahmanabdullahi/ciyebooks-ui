@@ -117,6 +117,20 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
+                                        text: data['accountNo'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+                                          // Grey Label
+                                          // Black Value
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ), Gap(10),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
                                         text: data['paymentType'].toUpperCase(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,

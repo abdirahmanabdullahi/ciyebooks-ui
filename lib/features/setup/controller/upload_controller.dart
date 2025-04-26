@@ -175,6 +175,7 @@ class UploadController extends GetxController {
           transactionId: 'PAY-$paymentsCounter',
           accountFrom: splitLine[1],
           paymentType: '',
+          accountNo: '',
           currency: splitLine[3],
           amountPaid: double.tryParse(splitLine[4]) ?? 0.0,
           receiver: splitLine[2],

@@ -68,7 +68,7 @@ class Accounts extends StatelessWidget {
               AccountModel account = snapshot.data();
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
+                padding: const EdgeInsets.only(top:  7),
                 child: CustomContainer(
                   darkColor: AppColors.quinary,
                   width: double.infinity,
@@ -77,66 +77,23 @@ class Accounts extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // First Row (From, Receiver, Amount)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Account name: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 10,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: account.accountName,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12,
-                                    color: Colors.blue,
-                                    // Black Value
-                                  ),
-                                ),
-                              ],
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: account.accountName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13,
+                                color: AppColors.secondary,
+                                // Black Value
+                              ),
                             ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: account.currencies.entries.map((entry) {
-                              return RichText(
-                                  text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${entry.key}: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      // fontSize: 12,
-                                      fontSize: 10,
-                                      color: Colors.grey[600], // Grey Label
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: formatter.format(
-                                      double.tryParse(entry.value.toString()) ?? 0.0,
-                                    ),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        // fontSize: 12,
-                                        fontSize: 10,
-                                        color: (double.tryParse(entry.value.toString()) ?? 0.0) <= 0 ? CupertinoColors.destructiveRed : CupertinoColors.systemBlue // Grey Label
-                                        ),
-                                  ),
-                                ],
-                              ));
-                            }).toList(),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
 
-                      Divider(color: Colors.grey[400], thickness: 1),
+                      Divider(color: AppColors.prettyDark, thickness: .11),
 
                       // Second Row (Transaction ID, Type, Date)
                       Row(
@@ -146,18 +103,21 @@ class Accounts extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Account no: ',
+                                  text: 'ACCOUNT NO: ',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w300,
                                     fontSize: 10,
-                                    color: Colors.grey[600], // Grey Label
+                                    color: AppColors.prettyDark, // Grey Label
                                   ),
                                 ),
                                 TextSpan(
                                   text: account.accountNo,
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
-                                      // Black Value
-                                      ),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 10,
+                                    color: AppColors.prettyDark,                                    // Grey Label
+                                    // Black Value
+                                  ),
                                 ),
                               ],
                             ),
@@ -166,18 +126,20 @@ class Accounts extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Date created: ',
+                                  text: 'CREATED AT: ',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w300,
                                     fontSize: 10,
-                                    color: Colors.grey[600], // Grey Label
+                                    color: AppColors.prettyDark,// Grey Label
                                   ),
                                 ),
                                 TextSpan(
                                   text: DateFormat('dd MMM yyy').format(
                                     account.dateCreated,
                                   ),
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 10, color: Colors.blue // Grey Label
+                                  style: TextStyle( fontWeight: FontWeight.w300,
+                                    fontSize: 10,
+                                    color: AppColors.prettyDark, // Grey Label
                                       // Black Value
                                       ),
                                 ),
@@ -214,7 +176,6 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Text(
@@ -290,13 +251,16 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                       TextFormField(
                         controller: controller.kes,
                         decoration: InputDecoration(hintText: 'KES balance'),
-                      ),Gap(20),SizedBox(height: 45,
+                      ),
+                      Gap(20),
+                      SizedBox(
+                        height: 45,
                         width: double.maxFinite,
                         child: Obx(
-                              () => ElevatedButton(
+                          () => ElevatedButton(
                             style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), backgroundColor: CupertinoColors.systemBlue, foregroundColor: AppColors.quinary
-                              // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                            ),
+                                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                ),
                             onPressed: controller.isLoading.value ? null : () => controller.createAccount(context),
                             child: const Text(
                               'Create',
@@ -308,11 +272,10 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                   ),
                 ),
               ),
-              Gap(10)
-,            ],
+              Gap(10),
+            ],
           ),
         ),
-
       );
     },
   );

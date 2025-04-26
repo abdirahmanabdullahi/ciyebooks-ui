@@ -417,6 +417,7 @@ class PayClientController extends GetxController {
       final newPayment = PayClientModel(
           transactionId: 'PAY-${counters['paymentsCounter']}',
           transactionType: 'payment',
+          accountNo: accountNo.text.trim(),
           paymentType: paymentType.text.trim(),
           accountFrom: from.text.trim(),
           currency: paidCurrency.text.trim(),

@@ -332,7 +332,7 @@ showForexForm(BuildContext context) {
                           selectedTrailingIcon: Icon(Icons.search),
                           width: double.maxFinite,
                           onSelected: (value) {
-                            if(value!=null){
+                            if (value != null) {
                               controller.currency.text = value;
                             }
                           },
@@ -353,7 +353,9 @@ showForexForm(BuildContext context) {
                                 label: '${currency.currencyCode}  ${currency.amount}');
                           }).toList(),
                         ),
-                      ),Gap(10),                        Expanded(
+                      ),
+                      Gap(10),
+                      Expanded(
                         child: DropdownMenu(
                             controller: controller.type,
                             trailingIcon: Icon(
@@ -418,7 +420,6 @@ showForexForm(BuildContext context) {
                                   label: 'Bank transfer'),
                             ]),
                       )
-
                     ],
                   ),
                   Gap(6),
@@ -946,3 +947,19 @@ showConfirmForexDialog(BuildContext context) {
   );
 }
 
+forexComingSoon(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        // titlePadding: EdgeInsets.zero,
+        // insetPadding: EdgeInsets.all(8),
+        backgroundColor: AppColors.quinary,
+        contentPadding: EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        content: Image(image: AssetImage('assets/images/icons/under construction.png')
+        ),
+      );
+    },
+  );
+}
