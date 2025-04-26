@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
+final now = DateTime.now();
+final startOfToday = DateTime(now.year, now.month, now.day);
 
 class TransactionsHistory extends StatefulWidget {
   const TransactionsHistory({super.key});
@@ -21,12 +23,14 @@ final NumberFormat formatter = NumberFormat.decimalPatternDigits(
 );
 
 class TransactionsHistoryState extends State<TransactionsHistory> {
+
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
       .where(
-        'transactionType',
+        'dateCreated',isGreaterThanOrEqualTo
+      :startOfToday
       )
       .orderBy('dateCreated', descending: true)
       .snapshots();
@@ -48,6 +52,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
         }
 
         return ListView(
+          physics: ClampingScrollPhysics(),
           shrinkWrap: true,
           children: snapshot.data!.docs
               .map((DocumentSnapshot document) {
@@ -65,7 +70,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                             Text(
-                              "-${data['Currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
+                              "-${data['Currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
                               style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
@@ -103,7 +108,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                             Text(
-                              "+${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
+                              "+${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
                               style: TextStyle(color: Color(0xff118B50), fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
@@ -130,7 +135,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                             Text(
-                              "-${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
+                              "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
                               style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
@@ -168,8 +173,8 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                             Text(
-                              "${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
+                              "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
+                              style: TextStyle(color: AppColors.blue, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
                         ),
@@ -205,8 +210,8 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                             Text(
-                              "${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
+                              "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
+                              style: TextStyle(color: AppColors.blue, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
                         ),

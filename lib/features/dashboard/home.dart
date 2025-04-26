@@ -1,18 +1,17 @@
 import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/dashboard/widgets/button_list.dart';
 import 'package:ciyebooks/features/dashboard/widgets/transactions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/constants/colors.dart';
 
 import '../profile/profile.dart';
+import 'all_transactions.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -28,7 +27,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       appBar: AppBar(
-        backgroundColor: AppColors.quarternary,
+        backgroundColor: AppColors.quinary,
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
         centerTitle: true,
@@ -48,16 +47,9 @@ class Dashboard extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.search,
-              color: CupertinoColors.systemBlue,
-            ),
-          ),
-          IconButton(
             onPressed: () => Get.to(() => Profile()),
             icon: Icon(
-              Icons.person_outline,
+              Icons.person,
               color: AppColors.prettyDark,
             ),
           ),
@@ -66,17 +58,24 @@ class Dashboard extends StatelessWidget {
       body: SafeArea(
         // bottom: false,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
-          physics: ClampingScrollPhysics(),
+          // physics: ClampingScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
-                child: Text(DateFormat.yMMMMEEEEd().format(DateTime.now()), style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.prettyDark)),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
+              //   child: Text(DateFormat.yMMMMEEEEd().format(DateTime.now()),
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         color: Colors.grey.shade600,
+              //         fontWeight: FontWeight.w500,
+              //         letterSpacing: 0.3,
+              //       )),
+              // ),
+              Gap(8),
               Container(
+                margin: EdgeInsets.all(6),
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -84,39 +83,39 @@ class Dashboard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(25),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+                      color: Colors.black.withAlpha(30),
+                      blurRadius: 4,
+                      offset: Offset(0, 3),
                     )
                   ],
                 ),
                 child: ButtonList(),
               ),
-              // Gap(15),
 
-              SizedBox(height: 16),
-
-              // 💵 Cash Balances
+              /// 💵 Cash Balances
               Container(
-                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: AppColors.quinary,
-                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(20),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
+                      color: Colors.black.withAlpha(30),
+                      blurRadius: 4,
+                      offset: Offset(0, 3),
                     )
                   ],
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Cash balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.prettyDark)),
-                    SizedBox(height: 12),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
+                      child: Text("Cash balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    ),
+                    Gap(8),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
                       child: Obx(() => Column(
                             children: controller.totals.value.cashBalances.entries.map((entry) {
                               return Column(
@@ -127,10 +126,11 @@ class Dashboard extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text("\$${formatter.format(entry.value)}", style: TextStyle(fontWeight: FontWeight.w700, color: CupertinoColors.systemBlue)),
+                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.blue)),
                                       ],
                                     ),
-                                  ),Divider(
+                                  ),
+                                  Divider(
                                     height: 0,
                                     thickness: .11,
                                     color: AppColors.prettyDark,
@@ -143,29 +143,31 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
 
-              // 🏦 Bank Balances
+              /// 🏦 Bank Balances
               Container(
-                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: AppColors.quinary,
-                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(20),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
+                      color: Colors.black.withAlpha(30),
+                      blurRadius: 4,
+                      offset: Offset(0, 3),
                     )
                   ],
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.prettyDark)),
-                    SizedBox(height: 12),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
+                      child: Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    ),
+                    SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
                       child: Obx(() => Column(
                             children: controller.totals.value.bankBalances.entries.map((entry) {
                               return Column(
@@ -176,10 +178,11 @@ class Dashboard extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text("\$${formatter.format(entry.value)}", style: TextStyle(fontWeight: FontWeight.w700, color: CupertinoColors.systemBlue)),
+                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.blue)),
                                       ],
                                     ),
-                                  ),Divider(
+                                  ),
+                                  Divider(
                                     height: 0,
                                     thickness: .11,
                                     color: AppColors.prettyDark,
@@ -192,28 +195,40 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
 
-              // 📄 Transactions Section
+              /// 📄 Transactions Section
               Container(
-                padding: EdgeInsets.all(20),
+                margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: AppColors.quinary,
-                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(25),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
+                      color: Colors.black.withAlpha(30),
+                      blurRadius: 4,
+                      offset: Offset(0, 3),
                     )
                   ],
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Recent transactions", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16, color: AppColors.prettyDark)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(12.0, 12, 12, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Recent transactions", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                          TextButton(onPressed: () => Get.to(() => TransactionHistory()), child: Text('View all',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,
+                            color: AppColors.blue,),))
+                        ],
+                      ),
+                    ),
                     SizedBox(height: 16),
-                    TransactionsHistory(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: TransactionsHistory(),
+                    ),
                   ],
                 ),
               ),

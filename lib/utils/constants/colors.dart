@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primary = Color(0xFFE2EBED);
   static const Color secondary = Color(0xff222831);
+  static const Color blue = CupertinoColors.systemBlue;
   static const Color red = CupertinoColors.destructiveRed;
   static const Color tertiary = Color(0xFF3F463E);
   static const Color quarternary = Color(0xffEEEEEE);

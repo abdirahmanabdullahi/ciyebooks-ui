@@ -497,7 +497,7 @@ class UploadController extends GetxController {
             totalCost: double.parse(splitLine[5]),
             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
             transactionType: 'forex',
-            transactionId: 'FXBY-$buyFxCounter');
+            transactionId: 'FXBY-$buyFxCounter', revenueContributed: 0);
         final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
 
         ///Point where to create each new currency account

@@ -340,7 +340,7 @@ class ForexController extends GetxController {
         // currencyName: currency.text.trim(),
         currencyCode: currency.text.trim(),
         rate: double.tryParse(rate.text.trim()) ?? 0.0,
-        totalCost: double.tryParse(total.text.trim()) ?? 0.0,
+        totalCost: double.tryParse(total.text.trim()) ?? 0.0, revenueContributed: 0,
       );
 
       ///Create payment transaction

@@ -45,7 +45,7 @@ class PayClientModel {
       transactionType: jsonData['transactionType'],
       accountFrom: jsonData['AccountFrom']??'',
       currency: jsonData['Currency']??'',
-      amountPaid: jsonData['AmountPaid'] ?? 0.0,
+      amountPaid: double.tryParse(jsonData['AmountPaid'].toString()) ?? 0.0,
       receiver: jsonData['Receiver']??'',
       description: jsonData['Description']??'',
       dateCreated: DateTime.tryParse(jsonData['dateCreated'].toDate().toString())??DateTime.now(),
