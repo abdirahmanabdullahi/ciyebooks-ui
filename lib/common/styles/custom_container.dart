@@ -23,7 +23,7 @@ class CustomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunctions.isDarkMode(context);
-    return Container(
+    return Container(margin: EdgeInsets.only(top: 7),
       decoration: BoxDecoration(
        
         border: border,
