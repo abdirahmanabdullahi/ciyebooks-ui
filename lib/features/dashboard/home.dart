@@ -27,7 +27,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       appBar: AppBar(
-        backgroundColor: AppColors.quinary,
+        backgroundColor: AppColors.quarternary,
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
         centerTitle: true,
@@ -58,7 +58,7 @@ class Dashboard extends StatelessWidget {
       body: SafeArea(
         // bottom: false,
         child: SingleChildScrollView(
-          // physics: ClampingScrollPhysics(),
+          physics: ClampingScrollPhysics(),
           scrollDirection: Axis.vertical,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,31 +77,90 @@ class Dashboard extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(6),
                 width: double.infinity,
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
                 decoration: BoxDecoration(
-                  color: AppColors.quinary,
+                  color: AppColors.quarternary,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withAlpha(30),
                       blurRadius: 4,
-                      offset: Offset(0, 3),
+                      offset: Offset(-3, 3),
+
                     )
                   ],
                 ),
-                child: ButtonList(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(width: double.maxFinite,),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Available Balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                              Gap(10),
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: FloatingActionButton(
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 1), borderRadius: BorderRadius.circular(20)),
+                                    onPressed: () {},
+                                    child: Icon(
+                                      size: 15,
+                                      Icons.visibility,
+                                      color: AppColors.prettyDark,
+                                    )),
+                              )
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: AppColors.quinary, width: 1.5),
+                              // color: AppColors.quinary,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Row(
+                              children: [
+                                CircleAvatar(radius:13,
+                                  backgroundImage:  NetworkImage('https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/2560px-Flag_of_Kenya.svg.png'),
+                                ),Gap(6),
+                                Text('Kenya Shilling', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 10, color: AppColors.prettyDark)),
+                                Gap(8),],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text("ksh: 325,879,899.00", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: AppColors.blue)),
+                    ),
+                    Gap(18),
+                    ButtonList(),                    Gap(10),
+
+                  ],
+                ),
               ),
 
               /// 💵 Cash Balances
               Container(
                 margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.quinary,
+                  color: AppColors.quarternary,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withAlpha(30),
                       blurRadius: 4,
-                      offset: Offset(0, 3),
+                      offset: Offset(-3, 3),
+
                     )
                   ],
                   borderRadius: BorderRadius.circular(14),
@@ -148,12 +207,13 @@ class Dashboard extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.quinary,
+                  color: AppColors.quarternary,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withAlpha(30),
                       blurRadius: 4,
-                      offset: Offset(0, 3),
+                      offset: Offset(-3, 3),
+
                     )
                   ],
                   borderRadius: BorderRadius.circular(14),
@@ -200,12 +260,13 @@ class Dashboard extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: AppColors.quinary,
+                  color: AppColors.quarternary,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withAlpha(30),
                       blurRadius: 4,
-                      offset: Offset(0, 3),
+                      offset: Offset(-3, 3),
+
                     )
                   ],
                   borderRadius: BorderRadius.circular(14),
@@ -219,8 +280,16 @@ class Dashboard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Recent transactions", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                          TextButton(onPressed: () => Get.to(() => TransactionHistory()), child: Text('View all',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,
-                            color: AppColors.blue,),))
+                          TextButton(
+                              onPressed: () => Get.to(() => TransactionHistory()),
+                              child: Text(
+                                'View all',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.blue,
+                                ),
+                              ))
                         ],
                       ),
                     ),
