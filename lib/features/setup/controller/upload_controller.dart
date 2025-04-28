@@ -244,7 +244,7 @@ class UploadController extends GetxController {
             description: splitLine[4],
             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
             currency: splitLine[2],
-            amountPaid: double.tryParse(splitLine[3]) ?? 0.0);
+            amountPaid: double.tryParse(splitLine[3]) ?? 0.0, paymentType: 'Cash');
 
         ///Point where to create each new account
         final newExpenseRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('EXP-$expenseCounter');
@@ -301,6 +301,7 @@ class UploadController extends GetxController {
         }
         final newReceipt = ReceiveModel(
             transactionType: 'receipt',
+            depositType: 'cash',
             transactionId: 'RCPT-$receiptsCounter',
             depositorName: splitLine[1],
             receivingAccountName: splitLine[2],

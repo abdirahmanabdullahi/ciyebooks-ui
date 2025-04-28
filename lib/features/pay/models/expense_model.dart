@@ -1,6 +1,7 @@
 
 class ExpenseModel {
   final String transactionId;
+  final String paymentType;
   final String category;
   final String description;
   final DateTime dateCreated;
@@ -11,6 +12,7 @@ final String transactionType;
 
   ExpenseModel({
     required this.transactionId,
+    required this.paymentType,
     required this.category,
     required this.description,
     required this.dateCreated,
@@ -21,6 +23,7 @@ final String transactionType;
   Map<String, dynamic> toJson() {
     return {
       'transactionType':transactionType,
+      'paymentType':paymentType,
       'transactionId': transactionId,
       'category': category,
       'description': description,
@@ -34,6 +37,7 @@ final String transactionType;
     return ExpenseModel(
       transactionId: jsonData['transactionId'],
       category: jsonData['category'],
+      paymentType: jsonData['paymentType'],
       description: jsonData['description'],
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
       currency: jsonData['currency'],

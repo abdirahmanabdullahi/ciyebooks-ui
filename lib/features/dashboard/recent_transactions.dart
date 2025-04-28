@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../common/styles/custom_container.dart';
-import '../../../../utils/constants/colors.dart';
+import '../../../common/styles/custom_container.dart';
+import '../../../utils/constants/colors.dart';
+
 final now = DateTime.now();
 final startOfToday = DateTime(now.year, now.month, now.day);
 
-class TransactionsHistory extends StatefulWidget {
-  const TransactionsHistory({super.key});
+class RecentTransactions extends StatefulWidget {
+  const RecentTransactions({super.key});
 
   @override
-  TransactionsHistoryState createState() => TransactionsHistoryState();
+  RecentTransactionsState createState() => RecentTransactionsState();
 }
 
 final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -22,16 +23,12 @@ final NumberFormat formatter = NumberFormat.decimalPatternDigits(
   decimalDigits: 2,
 );
 
-class TransactionsHistoryState extends State<TransactionsHistory> {
-
+class RecentTransactionsState extends State<RecentTransactions> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('Users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
-      .where(
-        'dateCreated',isGreaterThanOrEqualTo
-      :startOfToday
-      )
+      .where('dateCreated', isGreaterThanOrEqualTo: startOfToday)
       .orderBy('dateCreated', descending: true)
       .snapshots();
 
@@ -61,13 +58,14 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               data['AccountFrom'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 10),
                             ),
                             Text(
                               "-${data['Currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
@@ -76,6 +74,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                           ],
                         ),
                         Divider(
+                          // height: 0,
                           thickness: .11,
                           color: AppColors.prettyDark,
                         )
@@ -83,17 +82,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                     ),
                   );
 
-                  return ListTile(
-                    dense: true,
-                    title: Text(
-                      data['AccountFrom'],
-                      style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                    trailing: Text(
-                      "-${data['Currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
-                      style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                  );
+
                 }
                 if (data['transactionType'] == 'receipt') {
                   return Padding(
@@ -148,17 +137,6 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                       ],
                     ),
                   );
-                  return ListTile(
-                    dense: true,
-                    title: Text(
-                      data['category'],
-                      style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                    trailing: Text(
-                      "-${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
-                      style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                  );
                 }
                 if (data['transactionType'] == 'deposit') {
                   return Padding(
@@ -174,7 +152,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: AppColors.blue, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
                         ),
@@ -211,7 +189,7 @@ class TransactionsHistoryState extends State<TransactionsHistory> {
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: AppColors.blue, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
                             ),
                           ],
                         ),

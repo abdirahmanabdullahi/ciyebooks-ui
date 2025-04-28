@@ -53,7 +53,7 @@ class PayExpenseController extends GetxController {
 
   ///Controllers
   final category = TextEditingController();
-  // final paymentType = TextEditingController();
+  final paymentTypeController = TextEditingController();
   final amount = TextEditingController();
   final paidCurrency = TextEditingController();
   final description = TextEditingController();
@@ -422,6 +422,7 @@ class PayExpenseController extends GetxController {
       final newExpense = ExpenseModel(
           transactionId: 'exp-${counters['expenseCounter']}',
           category: category.text.trim(),
+          paymentType: paymentTypeController.text.trim(),
           description: description.text.trim(),
           dateCreated: DateTime.now(),
           currency: paidCurrency.text.trim(),

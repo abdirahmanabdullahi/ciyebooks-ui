@@ -331,6 +331,7 @@ class ReceiveFromClientController extends GetxController {
       final newPayment = ReceiveModel(
           transactionId: 'RCPT-${counters['receiptsCounter']}',
           transactionType: 'receipt',
+          depositType: 'cash',
           depositorName: depositorName.text.trim(),
           currency: receivedCurrency.text.trim(),
           amount: double.tryParse(amount.text.trim()) ?? 0.0,

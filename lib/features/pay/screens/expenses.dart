@@ -51,139 +51,124 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
           children: snapshot.data!.docs
               .map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-            return Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: CustomContainer(
-                darkColor:Colors.white,
-                width: double.infinity,
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // First Row (From, Receiver, Amount)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Category: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              TextSpan(
-                                text: data['category'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12,
-                                  color: Colors.blue,
-                                  // Black Value
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${data['currency']}: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  // fontSize: 12,
-                                  fontSize: 10,
-                                  color: Colors.grey[600], // Grey Label
-                                ),
-                              ),
-                              TextSpan(
-                                text: formatter
-                                    .format(data['amountPaid'])
-                                // text: payment.amountPaid
-                                    .toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Colors.redAccent, // Grey Label
-                                  // Black Value
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Divider(color: Colors.black, thickness: .11),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+            return  CustomContainer(
+              darkColor: AppColors.quinary,
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // First Row (From, Receiver, Amount)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: TextSpan(
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Type: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 10,
-                                      color: Colors.grey[600], // Grey Label
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: data['transactionType'],
-                                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Gap(10),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '# ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 10,
-                                      color: Colors.grey[600], // Grey Label
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: data['transactionId'],
-                                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
+                            TextSpan(
+                              text: data['category'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                color: AppColors.secondary,
+                                // Grey Label
+                                // Black Value
                               ),
                             ),
                           ],
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()),
-                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 10, color: Colors.blue // Grey Label
-                                  // Black Value
-                                ),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: '${data['currency']}: ',
+                              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
                               ),
-                            ],
-                          ),
+                            ),
+                            TextSpan(
+                              text: formatter
+                                  .format(data['amountPaid'])
+                              // text: payment.amountPaid
+                                  .toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                                color: AppColors.red,// Grey Label
+                                // Black Value
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+
+                  Divider(color: Colors.black, thickness: .11),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: data['paymentType'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+                                    // Grey Label
+                                    // Black Value
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Gap(10),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '# ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 10,
+                                    color: AppColors.secondary,
+                                    // Grey Label
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: data['transactionId'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+
+                                    // Black Value
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()).toUpperCase(),
+                              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
+                                // Black Value
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
           })

@@ -49,140 +49,137 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
           children: snapshot.data!.docs
               .map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                return Padding(
-                  padding: const EdgeInsets.only(top: 7),
-                  child: CustomContainer(
-                    darkColor: AppColors.quinary,
-                    width: double.infinity,
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // First Row (From, Receiver, Amount)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: data['AccountFrom'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12,
-                                      color: AppColors.secondary,
-                                      // Grey Label
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${data['Currency']}: ',
-                                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: formatter
-                                        .format(data['AmountPaid'])
-                                        // text: payment.amountPaid
-                                        .toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: AppColors.red, // Grey Label
-                                      // Black Value
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        Divider(color: Colors.black, thickness: .11),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                return CustomContainer(
+                  darkColor: AppColors.quinary,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // First Row (From, Receiver, Amount)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
                               children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: data['accountNo'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
-                                          // Grey Label
-                                          // Black Value
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ), Gap(10),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: data['paymentType'].toUpperCase(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
-                                          // Grey Label
-                                          // Black Value
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Gap(10),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: '# ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 10,
-                                          color: AppColors.secondary,
-                                          // Grey Label
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: data['TransactionId'],
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
-
-                                          // Black Value
-                                        ),
-                                      ),
-                                    ],
+                                TextSpan(
+                                  text: data['AccountFrom'],
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppColors.secondary,
+                                    // Grey Label
+                                    // Black Value
                                   ),
                                 ),
                               ],
                             ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()).toUpperCase(),
-                                    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
-                                        // Black Value
-                                        ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${data['Currency']}: ',
+                                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
                                   ),
-                                ],
-                              ),
+                                ),
+                                TextSpan(
+                                  text: formatter
+                                      .format(data['AmountPaid'])
+                                      // text: payment.amountPaid
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    color: AppColors.red, // Grey Label
+                                    // Black Value
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+
+                      Divider(color: Colors.black, thickness: .11),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: data['accountNo'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+                                        // Grey Label
+                                        // Black Value
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ), Gap(10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: data['paymentType'].toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+                                        // Grey Label
+                                        // Black Value
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Gap(10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '# ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 10,
+                                        color: AppColors.secondary,
+                                        // Grey Label
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: data['TransactionId'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+
+                                        // Black Value
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: DateFormat("dd MMM yyyy HH:mm").format(data['dateCreated'].toDate()).toUpperCase(),
+                                  style: TextStyle(fontWeight: FontWeight.w300, fontSize: 10,                               color: AppColors.secondary,
+                                      // Black Value
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 );
               })

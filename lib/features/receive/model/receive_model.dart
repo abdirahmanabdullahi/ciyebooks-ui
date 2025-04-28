@@ -4,6 +4,7 @@ class ReceiveModel {
   final String transactionType;
   final String transactionId;
   final String depositorName;
+  final String depositType;
   final String receivingAccountName;
   final String receivingAccountNo;
   final String currency;
@@ -12,6 +13,7 @@ class ReceiveModel {
   final String description;
   ReceiveModel({
     required this.transactionType,
+    required this.depositType,
     required this.receivingAccountNo,
     required this.transactionId,
     required this.depositorName,
@@ -22,10 +24,11 @@ class ReceiveModel {
     required this.description,
   });
   static ReceiveModel empty() =>
-      ReceiveModel(transactionType: '', receivingAccountNo: '', transactionId: '', depositorName: '', receivingAccountName: '', currency: '', amount: 0, dateCreated: DateTime.now(), description: '');
+      ReceiveModel(transactionType: '', receivingAccountNo: '', transactionId: '', depositorName: '', receivingAccountName: '', currency: '', amount: 0, dateCreated: DateTime.now(), description: '', depositType: '');
   Map<String, dynamic> toJson() {
     return {
       'transactionType': transactionType,
+      'depositType': depositType,
       'transactionId': transactionId,
       'depositorName': depositorName,
       'receivingAccountName': receivingAccountName,
@@ -40,6 +43,7 @@ class ReceiveModel {
   factory ReceiveModel.fromJson(Map<String, dynamic> jsonData) {
     return ReceiveModel(
       transactionType: jsonData['transactionType'],
+      depositType: jsonData['depositType'],
       transactionId: jsonData['transactionId'],
       depositorName: jsonData['depositorName'],
       receivingAccountNo: jsonData['receivingAccountNo'],
