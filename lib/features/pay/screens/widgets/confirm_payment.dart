@@ -1,9 +1,8 @@
+import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
@@ -18,7 +17,8 @@ showConfirmPayment(BuildContext context) {
         decimalDigits: 2,
       );
       final controller = Get.put(PayClientController());
-      return PopScope(canPop: false,
+      return PopScope(
+        canPop: false,
         child: AlertDialog(
           insetPadding: EdgeInsets.all(AppSizes.padding),
           backgroundColor: AppColors.quinary,
@@ -153,7 +153,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-               Divider(color: Colors.black, thickness: .11),
+                      Divider(color: Colors.black, thickness: .11),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,20 +201,26 @@ showConfirmPayment(BuildContext context) {
                     ],
                   ),
                 ),
-                Gap(10), SizedBox(
+                Gap(10),
+                SizedBox(
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        controller.createPayment(context);
+                      onPressed: () async{
+                        await controller.createPayment(context);
+                        if(context.mounted){
+                          Navigator.of(context).pop();
+                          showPaymentSuccessPopup(context);
+
+                        }
+
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
@@ -229,10 +235,10 @@ showConfirmPayment(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.quinary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
@@ -241,9 +247,17 @@ showConfirmPayment(BuildContext context) {
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Icon(Icons.west_outlined,color: AppColors.prettyDark,),
+                          ),
+                          Text(
+                            'Back',
+                            style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
+                          ),SizedBox(width: 20,)
+                        ],
                       )),
                 ),
                 Gap(6)
@@ -255,4 +269,3 @@ showConfirmPayment(BuildContext context) {
     },
   );
 }
-

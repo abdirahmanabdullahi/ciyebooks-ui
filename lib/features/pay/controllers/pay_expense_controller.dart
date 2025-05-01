@@ -37,7 +37,6 @@ class PayExpenseController extends GetxController {
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
-  final isLoading = false.obs;
 
   ///Sort by date
   final sortCriteria = 'dateCreated'.obs;
@@ -122,8 +121,6 @@ class PayExpenseController extends GetxController {
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         expenseCategories.value = snapshot.data() as Map<String,dynamic>;
-        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-        print(expenseCategories);
 
       }
     });
@@ -405,9 +402,8 @@ class PayExpenseController extends GetxController {
   }
 
   Future createExpense(BuildContext context) async {
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
 
-    isLoading.value = true;
     //
     try {
       /// Initialize batch
@@ -458,8 +454,6 @@ class PayExpenseController extends GetxController {
           colorText: Colors.white,
         );
       });
-      isLoading.value = false;
-      createReceiptPdf();
 
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

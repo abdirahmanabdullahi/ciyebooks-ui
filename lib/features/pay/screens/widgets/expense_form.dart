@@ -44,24 +44,33 @@ showExpenseForm(BuildContext context) {
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
               title: Container(
-                padding: EdgeInsets.only(left: 15),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.secondary),
                 width: double.maxFinite,
                 // height: 30,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Paying an expense',
-                      style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
-                    ),
-                    IconButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        icon: Icon(
-                          Icons.close,
-                          color: AppColors.quinary,
-                        ))
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: Text(
+                              'Paying an expense',
+                              style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              icon: Icon(
+                                Icons.close,
+                                color: AppColors.quinary,
+                              ))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               content: Column(
@@ -69,7 +78,7 @@ showExpenseForm(BuildContext context) {
                 children: [
                   Gap(AppSizes.spaceBtwItems),
                   Obx(
-                        () => DropdownMenu(
+                    () => DropdownMenu(
                       controller: controller.category,
                       trailingIcon: Icon(
                         Icons.search,
@@ -112,13 +121,13 @@ showExpenseForm(BuildContext context) {
                             label: entry.value == 'AddNew' ? '' : '${entry.value}');
                       }).toList(),
                     ),
-                  ),              Gap(AppSizes.spaceBtwItems),
-
+                  ),
+                  Gap(AppSizes.spaceBtwItems),
                   Row(
                     children: [
                       Expanded(
                         child: DropdownMenu(
-                          // controller: controller.paymentType,
+                            // controller: controller.paymentType,
                             trailingIcon: Icon(
                               Icons.keyboard_arrow_down_outlined,
                               color: CupertinoColors.systemBlue,
@@ -145,9 +154,8 @@ showExpenseForm(BuildContext context) {
                             selectedTrailingIcon: Icon(Icons.search),
                             width: double.maxFinite,
                             onSelected: (value) {
-                              if(value!=null){
+                              if (value != null) {
                                 controller.paymentType.value = value;
-
                               }
                             },
                             dropdownMenuEntries: [
@@ -189,7 +197,7 @@ showExpenseForm(BuildContext context) {
                       Gap(AppSizes.spaceBtwItems),
                       Expanded(
                         child: Obx(
-                              () => DropdownMenu(
+                          () => DropdownMenu(
                             controller: controller.paidCurrency,
                             trailingIcon: Icon(
                               Icons.keyboard_arrow_down_rounded,
@@ -224,50 +232,49 @@ showExpenseForm(BuildContext context) {
                             },
                             dropdownMenuEntries: controller.paymentType.value != 'Bank'
                                 ? controller.cashBalances.entries.map((currency) {
-                              return DropdownMenuEntry(
-                                  style: ButtonStyle(
-                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                      side: WidgetStateProperty.all(
-                                        BorderSide(width: 2, color: AppColors.quarternary),
-                                      ),
-                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                                      ))),
-                                  value: currency.key,
-                                  label: currency.key,
-                                  labelWidget: Text(
-                                    '${currency.key}  ${formatter.format(currency.value)}',
-                                    style: TextStyle(color: currency.value == 0 ? Colors.red : null),
-                                  ));
-                            }).toList()
+                                    return DropdownMenuEntry(
+                                        style: ButtonStyle(
+                                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                            side: WidgetStateProperty.all(
+                                              BorderSide(width: 2, color: AppColors.quarternary),
+                                            ),
+                                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                                            ))),
+                                        value: currency.key,
+                                        label: currency.key,
+                                        labelWidget: Text(
+                                          '${currency.key}  ${formatter.format(currency.value)}',
+                                          style: TextStyle(color: currency.value == 0 ? Colors.red : null),
+                                        ));
+                                  }).toList()
                                 : controller.bankBalances.entries.map((currency) {
-                              return DropdownMenuEntry(
-                                  style: ButtonStyle(
-                                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                      side: WidgetStateProperty.all(
-                                        BorderSide(width: 2, color: AppColors.quarternary),
-                                      ),
-                                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                                      ))),
-                                  value: currency.key,
-                                  label: currency.key,
-                                  labelWidget: Text(
-                                    '${currency.key}  ${formatter.format(currency.value)}',
-                                    style: TextStyle(color: currency.value == 0 ? Colors.red : null),
-                                  ));
-                            }).toList(),
+                                    return DropdownMenuEntry(
+                                        style: ButtonStyle(
+                                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                            side: WidgetStateProperty.all(
+                                              BorderSide(width: 2, color: AppColors.quarternary),
+                                            ),
+                                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                                            ))),
+                                        value: currency.key,
+                                        label: currency.key,
+                                        labelWidget: Text(
+                                          '${currency.key}  ${formatter.format(currency.value)}',
+                                          style: TextStyle(color: currency.value == 0 ? Colors.red : null),
+                                        ));
+                                  }).toList(),
                           ),
                         ),
                       ),
                     ],
-                  ),              Gap(AppSizes.spaceBtwItems),
-
+                  ),
+                  Gap(AppSizes.spaceBtwItems),
                   SizedBox(
                     height: 45,
                     child: TextFormField(
-                      onChanged: (val) {
-                      },
+                      onChanged: (val) {},
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Amount paid";
@@ -282,8 +289,8 @@ showExpenseForm(BuildContext context) {
                         // ),
                       ),
                     ),
-                  ),              Gap(AppSizes.spaceBtwItems),
-
+                  ),
+                  Gap(AppSizes.spaceBtwItems),
                   TextFormField(
                     maxLength: 40,
                     maxLines: 2,
@@ -302,8 +309,8 @@ showExpenseForm(BuildContext context) {
                       // ),
                     ),
                   ),
-
-                  Gap(15),SizedBox(
+                  Gap(15),
+                  SizedBox(
                     height: AppSizes.buttonHeight,
                     width: double.maxFinite,
                     child: FloatingActionButton(
@@ -311,7 +318,7 @@ showExpenseForm(BuildContext context) {
                         // style: ElevatedButton.styleFrom(
                         //   padding: EdgeInsets.symmetric(horizontal: 10),
                         //   disabledBackgroundColor: const Color(0xff35689fff),
-                        backgroundColor: CupertinoColors.systemBlue,
+                        backgroundColor:  AppColors.secondary,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         // ),
                         onPressed: () {

@@ -14,6 +14,7 @@ import '../../setup/models/setup_model.dart';
 
 class DashboardController extends GetxController {
   static DashboardController get instance => Get.find();
+  final hide = false.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
 

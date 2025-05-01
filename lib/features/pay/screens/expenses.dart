@@ -142,7 +142,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: data['transactionId'],
+                                  text: data['transactionId'].toUpperCase(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
 

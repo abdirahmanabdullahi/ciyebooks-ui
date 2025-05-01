@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ciyebooks/features/pay/controllers/pay_client_controller.dart';
 import 'package:ciyebooks/features/pay/screens/widgets/payment_bottom_sheet.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -42,10 +43,8 @@ class _PaymentHomeState extends State<PaymentHome> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.prettyDark,
-        shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 1.5), borderRadius: BorderRadius.circular(100)),
-        onPressed: () =>
-          Platform.isIOS ? showIosPaymentActionSheet(context) : showAndroidPaymentBottomSheet(context: context),
-
+        shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
+        onPressed: () => Platform.isIOS ? showIosPaymentActionSheet(context) : showAndroidPaymentBottomSheet(context: context),
         child: Icon(
           Icons.add,
           color: AppColors.quinary,
@@ -109,4 +108,3 @@ class _PaymentHomeState extends State<PaymentHome> {
     );
   }
 }
-

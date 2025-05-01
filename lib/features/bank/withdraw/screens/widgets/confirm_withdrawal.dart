@@ -1,4 +1,5 @@
-import 'package:ciyebooks/features/pay/controllers/pay_expense_controller.dart';
+import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
+import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
 import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../utils/constants/colors.dart';
-import '../../controllers/pay_client_controller.dart';
-import 'expense_success_screen.dart';
+import '../../../../../utils/constants/colors.dart';
+import '../../../../pay/controllers/pay_client_controller.dart';
+import 'withdrawal_success.dart';
 
-showConfirmExpenseDialog(BuildContext context) {
+showConfirmWithdrawal(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -18,7 +19,7 @@ showConfirmExpenseDialog(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(PayExpenseController());
+      final controller = Get.put(WithdrawCashController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -52,9 +53,9 @@ showConfirmExpenseDialog(BuildContext context) {
                       Gap(6),
                       Icon(Icons.info_outline_rounded, color: Colors.orange[700], size: 68),
                       const SizedBox(height: 15),
-                      Text("Confirm Expense?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
+                      Text("Confirm bank withdrawal?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
                       Gap(6),
-                      Text("${controller.paidCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
+                      Text("${controller.withdrawnCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
@@ -82,67 +83,44 @@ showConfirmExpenseDialog(BuildContext context) {
                     children: [
                       Gap(10),
                       Text(
-                        "Expense Details",
+                        "Withdrawal Details",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
-                          // fontWeight: FontWeight.bold,
-                        ),
+                            // fontWeight: FontWeight.bold,
+                            ),
                       ),
                       SizedBox(height: 24),
                       // Divider(color: Colors.black, thickness: .11),
+
+                      Divider(color: Colors.black, thickness: .11),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Category",
+                          Text("Withdrawn currency",
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.category.text.trim(),
+                          Text(controller.withdrawnCurrency.text.trim(),
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                        ],
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Amount",
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                          Text(controller.amount.text.trim(),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
                         ],
                       ),
 
-                      // Divider(color: Colors.black, thickness: .11),
-                      //
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text("Receiver",
-                      //         style: TextStyle(
-                      //           fontSize: 13,
-                      //         )),
-                      //     Obx(
-                      //           () => controller.paidToOwner.value
-                      //           ? Text(controller.from.text.trim(),
-                      //           style: TextStyle(
-                      //             fontSize: 13,
-                      //           ))
-                      //           : Text(controller.receiver.text.trim(),
-                      //           style: TextStyle(
-                      //             fontWeight: FontWeight.w600,
-                      //             fontSize: 13,
-                      //           )),
-                      //     ),
-                      //   ],
-                      // ),
-
                       Divider(color: Colors.black, thickness: .11),
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text("Payment type",
-                      //         style: TextStyle(
-                      //           fontSize: 13,
-                      //         )),
-                      //     Text(controller.paymentType..trim(),
-                      //         style: TextStyle(
-                      //           fontSize: 13,
-                      //         )),
-                      //   ],
-                      // ),
-                      // Divider(color: Colors.black, thickness: .11),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,8 +155,8 @@ showConfirmExpenseDialog(BuildContext context) {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total Expense", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                          Text('${controller.paidCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
+                          Text("Total withdrawal", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
+                          Text('${controller.withdrawnCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,
@@ -190,31 +168,29 @@ showConfirmExpenseDialog(BuildContext context) {
                     ],
                   ),
                 ),
-                Gap(25),
+                Gap(10),
                 SizedBox(
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async{
-                        await controller.createExpense(context);
-                        if(context.mounted){
+                      onPressed: () async {
+                        await controller.createWithdrawal(context);
+                        if (context.mounted) {
                           Navigator.of(context).pop();
-                          showExpenseSuccessPopup(context);
-
+                          showSuccessWithdrawal(context);
                         }
-
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
-                        'Confirm payment',
+                        'Confirm deposit',
                         style: TextStyle(color: AppColors.quinary, fontSize: 14, fontWeight: FontWeight.w700),
                       )),
                 ),
@@ -224,10 +200,10 @@ showConfirmExpenseDialog(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.quinary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
@@ -236,16 +212,23 @@ showConfirmExpenseDialog(BuildContext context) {
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.west_outlined,color: AppColors.prettyDark,),
+                            child: Icon(
+                              Icons.west_outlined,
+                              color: AppColors.prettyDark,
+                            ),
                           ),
                           Text(
                             'Back',
                             style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
-                          ),SizedBox(width: 20,)
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
                         ],
                       )),
                 ),

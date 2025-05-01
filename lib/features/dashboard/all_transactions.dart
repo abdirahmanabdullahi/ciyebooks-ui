@@ -519,17 +519,6 @@ class TransactionHistory extends StatelessWidget {
                           ],
                         ),
                       );
-                      return ListTile(
-                        dense: true,
-                        title: Text(
-                          data['category'],
-                          style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 13),
-                        ),
-                        trailing: Text(
-                          "-${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
-                          style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 13),
-                        ),
-                      );
                     }
                     if (data['transactionType'] == 'deposit') {
                       return CustomContainer(

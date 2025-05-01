@@ -365,7 +365,7 @@ showPaymentForm(BuildContext context) {
                 controller.checkBalances(context);                        },
                     // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                     child: Text(
-                      'Submit',
+                      'Pay',
                       style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                     )),
               ),

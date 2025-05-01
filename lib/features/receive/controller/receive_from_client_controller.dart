@@ -31,14 +31,13 @@ class ReceiveFromClientController extends GetxController {
   final cashBalance = 0.0.obs;
   final receivedAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
-  final isLoading = false.obs;
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
   final paidToOwner = true.obs;
   final payClientFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
-  final receivedFromOwner = false.obs;
+  final receivedFromOwner = true.obs;
 
   ///Controllers
   final depositorName = TextEditingController();
@@ -99,214 +98,10 @@ class ReceiveFromClientController extends GetxController {
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-  Future<void> createPdf() async {
-    try {
-      /// Create the receipt.
-      final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-      final ttf = pw.Font.ttf(font);
-      final pdf = pw.Document();
-      final ByteData image = await rootBundle.load('assets/images/icons/checkMark.png');
-
-      Uint8List imageData = (image).buffer.asUint8List();
-
-      pdf.addPage(
-        pw.Page(
-            build: (pw.Context context) => pw.Column(
-              children: [
-                pw.Container(
-                  decoration: pw.BoxDecoration(
-                      border: pw.Border.all(
-                        width: 1,
-                        color: PdfColors.black,
-                      ),
-                      borderRadius: pw.BorderRadius.circular(12)),
-                  child: pw.Column(
-                    mainAxisSize: pw.MainAxisSize.min,
-                    mainAxisAlignment: pw.MainAxisAlignment.center,
-                    children: [
-                      pw.Container(
-                        decoration: pw.BoxDecoration(borderRadius: pw.BorderRadius.only(topLeft: pw.Radius.circular(12), topRight: pw.Radius.circular(12)), color: PdfColors.blue),
-                        width: double.maxFinite,
-                        height: 70,
-                        child: pw.Row(
-                          mainAxisAlignment: pw.MainAxisAlignment.center,
-                          children: [
-                            pw.Image(height: 60, pw.MemoryImage(imageData)),
-                            pw.SizedBox(width: 20),
-                            pw.Text(
-                              'Payment receipt',
-                              style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Gap(10),
-                      pw.Padding(
-                        padding: pw.EdgeInsets.all(8.0),
-                        child: pw.Column(
-                          children: [
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "Transaction type",
-                                  ),
-                                ),
-                                pw.Text('Payment', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "Transaction id",
-                                  ),
-                                ),
-                                pw.Text('pymnt-${counters['paymentsCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "From",
-                                  ),
-                                ),
-                                pw.Text(depositorName.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "Receiver",
-                                  ),
-                                ),
-                                pw.Text(paidToOwner.value ? 'Account holder' : receivedCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "Currency",
-                                  ),
-                                ),
-                                pw.Text(receivedCurrency.text.trim(), style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text(
-                                    style: pw.TextStyle(font: ttf),
-                                    "Amount",
-                                  ),
-                                ),
-                                pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Divider(thickness: 1, color: PdfColors.grey),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Row(
-                              children: [
-                                pw.Expanded(
-                                  child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.normal)),
-                                ),
-                                pw.Text(
-                                  DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
-                                  style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )),
-      );
-
-      ///Share or download the receipt
-      final directory = await getTemporaryDirectory();
-      final path = directory.path;
-      final file = File('$path/RCPT-${counters['paymentsCounter']}.pdf');
-      await file.writeAsBytes(await pdf.save());
-      if (await file.exists()) {
-        Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
-      } else {}
-    } catch (e) {
-      Get.snackbar(
-        icon: Icon(
-          Icons.cloud_done,
-          color: Colors.white,
-        ),
-        shouldIconPulse: true,
-        "There was an error",
-        e.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    }
-  }
 
 
 
   Future createReceipt(BuildContext context) async {
-    isLoading.value = true;
     if (!paidToOwner.value) {
       if (!payClientFormKey.currentState!.validate()) {
         return;
@@ -371,8 +166,6 @@ class ReceiveFromClientController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        createPdf();
-        isLoading.value = false;
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

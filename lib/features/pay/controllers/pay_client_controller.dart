@@ -6,6 +6,7 @@ import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -19,16 +20,18 @@ import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
-import '../../../utils/constants/sizes.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
 import '../models/pay_client_model.dart';
-import '../screens/widgets/payment_receipt.dart';
+import '../screens/widgets/payment_success_screen.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
+  final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_us',
+    decimalDigits: 2,
+  );
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
@@ -37,7 +40,6 @@ class PayClientController extends GetxController {
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
-  final isLoading = false.obs;
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
@@ -106,7 +108,6 @@ class PayClientController extends GetxController {
 
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-
   checkBalances(BuildContext context) {
     /// Check if currency is at bank and amount is enough to pay amount requested
     if (paymentType.text.trim() == 'Bank transfer') {
@@ -143,36 +144,32 @@ class PayClientController extends GetxController {
         return;
       }
     }
+    // Navigator.of(context).pop();
+
     showConfirmPayment(context);
   }
 
-  Future createPayment(
-    BuildContext context,
-  ) async {
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-    isLoading.value = true;
+  Future createPayment(BuildContext context) async {
 
     try {
       ///Compare cash and amount to be paid
       cashBalance.value = double.tryParse('${cashBalances[paidCurrency.text.trim()]}') ?? 0.0;
       paidAmount.value = double.tryParse(amount.text.trim()) ?? 0.0;
 
-      // if (paidAmount.value > cashBalance.value) {
-      //   Get.snackbar(
-      //     icon: Icon(
-      //       Icons.cloud_done,
-      //       color: Colors.white,
-      //     ),
-      //     shouldIconPulse: true,
-      //     "Payment failed",
-      //     'Amount to be paid cannot be more than cash in hand',
-      //     backgroundColor: Colors.red,
-      //     colorText: Colors.white,
-      //   );
-      //   return;
-      // }
+      if (paidAmount.value > cashBalance.value) {
+        Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Payment failed",
+          'Amount to be paid cannot be more than cash in hand',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
       if (paidAmount == cashBalance) {
         Get.snackbar(
           icon: Icon(
@@ -231,6 +228,7 @@ class PayClientController extends GetxController {
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -243,13 +241,15 @@ class PayClientController extends GetxController {
           colorText: Colors.white,
         );
 
-        createReceiptPdf();
+        // SharePlus.instance.share(ShareParams(
+        //     text:
+        //         'PAY-${counters['paymentsCounter']} Confirmed. ${paymentType.text.trim()} of${ paidCurrency.text.trim()}:${formatter.format(double.parse(amount.text.trim()))} on ${DateFormat('dd MMM yyy HH:mm').format(DateTime.now())} to ${receiver.text.trim()}. If you have not authorised this action, please contact your account operator immediately.'));
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (_) {
+    } on FormatException catch (e) {
       throw const TFormatException();
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
