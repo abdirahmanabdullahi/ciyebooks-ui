@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../setup/models/setup_model.dart';
 import '../ui/forex_home.dart';
+import '../ui/widgets/forex_form.dart';
 
 class NewCurrencyController extends GetxController {
   static NewCurrencyController get instance => Get.find();
@@ -26,6 +27,7 @@ class NewCurrencyController extends GetxController {
   void onInit() {
     super.onInit();
     fetchTotals();
+    fetchCurrencies();
   }
 
   fetchTotals() async {
@@ -64,19 +66,13 @@ class NewCurrencyController extends GetxController {
       // Create new currency
       final newCurrency = CurrencyModel(currencyName: currencyName.text.trim(), amount: 0, totalCost: 0, symbol: symbol.text.trim(), currencyCode: currencyCode.text.trim());
 
-       await _db
-          .collection('Users')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-
-          .collection('Currency stock').doc(currencyCode.text.trim().toUpperCase())
-          .set(newCurrency.toJson()).then((_) {
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(currencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           showForexForm(context);
         }
       });
-
     } catch (e) {
       throw e.toString();
     }
@@ -92,10 +88,14 @@ class NewCurrencyController extends GetxController {
   }
 
   fetchCurrencies() async {
-    DocumentSnapshot currencies = await FirebaseFirestore.instance.collection('Common').doc('Currencies').get();
-    if (currencies.exists && currencies.data() != null) {
-      currencyList.value = currencies.data() as Map<String, dynamic>;
-    }
+    FirebaseFirestore.instance.collection('Common').doc('Currencies').snapshots().listen((snapshot) {
+      if (snapshot.exists&&snapshot.data()!.isNotEmpty) {
+        currencyList.value = snapshot.data() as Map<String, dynamic>;
+        print('currencyList');
+
+      }
+    });
+
   }
 
   Future<void> addAllCurrencies() async {

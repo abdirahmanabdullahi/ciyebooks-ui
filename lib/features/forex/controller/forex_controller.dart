@@ -31,7 +31,6 @@ class ForexController extends GetxController {
 
   RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
   final isButtonEnabled = false.obs;
-  final isLoading = false.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
   ///Sort by date for the history screen
@@ -39,7 +38,8 @@ class ForexController extends GetxController {
   final transactionCounter = 0.obs;
 
   ///Controllers
-  TextEditingController currency = TextEditingController();
+  // TextEditingController currency = TextEditingController();
+  TextEditingController forexType = TextEditingController();
   TextEditingController type = TextEditingController();
   TextEditingController currencyCode = TextEditingController();
   TextEditingController transactionType = TextEditingController();
@@ -62,7 +62,6 @@ class ForexController extends GetxController {
     total.addListener(updateButtonStatus);
 
     ///Get the totals and balances
-    fetchTotals();
 
     super.onInit();
   }
@@ -104,220 +103,7 @@ class ForexController extends GetxController {
     });
   }
 
-  ///Get currencies for the new currency popup form
-
-  /// *-----------------------------Create and share pdf receipt----------------------------------*
-
-  createPdf() async {
-    try {
-      /// Create the receipt.
-      final font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
-      final ttf = pw.Font.ttf(font);
-      final pdf = pw.Document();
-      final ByteData image = await rootBundle.load('assets/images/icons/checkMark.png');
-
-      Uint8List imageData = (image).buffer.asUint8List();
-
-      pdf.addPage(
-        pw.Page(
-            build: (pw.Context context) => pw.Column(
-                  children: [
-                    pw.Container(
-                      decoration: pw.BoxDecoration(
-                          border: pw.Border.all(
-                            width: 1,
-                            color: PdfColors.black,
-                          ),
-                          borderRadius: pw.BorderRadius.circular(12)),
-                      child: pw.Column(
-                        mainAxisSize: pw.MainAxisSize.min,
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Container(
-                            decoration: pw.BoxDecoration(borderRadius: pw.BorderRadius.only(topLeft: pw.Radius.circular(12), topRight: pw.Radius.circular(12)), color: PdfColors.blue),
-                            width: double.maxFinite,
-                            height: 70,
-                            child: pw.Row(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              children: [
-                                pw.Image(height: 60, pw.MemoryImage(imageData)),
-                                pw.SizedBox(width: 20),
-                                pw.Text(
-                                  'Expense receipt',
-                                  style: pw.TextStyle(color: PdfColors.white, fontSize: 24, font: ttf),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // Gap(10),
-                          pw.Padding(
-                            padding: pw.EdgeInsets.all(8.0),
-                            child: pw.Column(
-                              children: [
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Transaction type",
-                                      ),
-                                    ),
-                                    pw.Text('Expense', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Transaction id",
-                                      ),
-                                    ),
-                                    pw.Text('exp-${counters['expenseCounter']}', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Expense category",
-                                      ),
-                                    ),
-                                    pw.Text('category.text.trim()', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Currency",
-                                      ),
-                                    ),
-                                    pw.Text('depositedCurrency.text', style: pw.TextStyle(color: PdfColors.black, fontWeight: pw.FontWeight.bold, font: ttf)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Amount",
-                                      ),
-                                    ),
-                                    pw.Text(double.parse(amount.text.trim()).toStringAsFixed(2), style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text(
-                                        style: pw.TextStyle(font: ttf),
-                                        "Description",
-                                      ),
-                                    ),
-                                    pw.Text('description.text', style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold)),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Divider(thickness: 1, color: PdfColors.grey),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                                pw.Row(
-                                  children: [
-                                    pw.Expanded(
-                                      child: pw.Text("Date & Time", style: pw.TextStyle(font: ttf, fontWeight: pw.FontWeight.normal)),
-                                    ),
-                                    pw.Text(
-                                      DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
-                                      style: pw.TextStyle(font: ttf, color: PdfColors.black, fontWeight: pw.FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                                pw.SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
-      );
-
-      ///Share or download the receipt
-      final directory = await getApplicationDocumentsDirectory();
-      final path = directory.path;
-      final file = File('$path/EXP-${counters['expenseCounter']}.pdf');
-      await file.writeAsBytes(await pdf.save());
-      if (await file.exists()) {
-        Share.shareXFiles([XFile(file.path)], text: "Here is your PDF receipt!");
-      } else {}
-    } catch (e) {
-      Get.snackbar(
-        icon: Icon(
-          Icons.cloud_done,
-          color: Colors.white,
-        ),
-        shouldIconPulse: true,
-        "There was an error",
-        e.toString(),
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    }
-  }
-
-  /// *-----------------------------Show receipt preview----------------------------------*
-
-  /// *-----------------------------Create the payment----------------------------------*
-
   Future createForexTransaction(BuildContext context) async {
-    isLoading.value = true;
 
     try {
       /// Initialize batch
@@ -326,7 +112,7 @@ class ForexController extends GetxController {
 
       ///Doc references
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final currencyRef = db.collection('Users').doc(_uid).collection('Currency stock').doc(currency.text.trim().toUpperCase());
+      final currencyRef = db.collection('Users').doc(_uid).collection('Currency stock').doc(currencyCode.text.trim().toUpperCase());
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final transactionRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
 
@@ -334,13 +120,14 @@ class ForexController extends GetxController {
 
         forexType: selectedTransaction.value,
         transactionType: 'forex',
-        transactionId: '${selectedTransaction.value}-${counters[selectedTransaction.value]}',
-        amount: double.tryParse(amount.text.trim()) ?? 0.0,
+        type: type.text.trim(),
+        transactionId: '${selectedTransaction.value.toUpperCase()}-${counters[selectedTransaction.value]}',
+        amount: double.tryParse(amount.text.trim().replaceAll(',', '')) ?? 0.0,
         dateCreated: DateTime.now(),
         // currencyName: currency.text.trim(),
-        currencyCode: currency.text.trim(),
+        currencyCode: currencyCode.text.trim(),
         rate: double.tryParse(rate.text.trim()) ?? 0.0,
-        totalCost: double.tryParse(total.text.trim()) ?? 0.0, revenueContributed: 0,
+        totalCost: double.tryParse(total.text.trim().replaceAll(',', '')) ?? 0.0, revenueContributed: 0,
       );
 
       ///Create payment transaction
@@ -351,14 +138,14 @@ class ForexController extends GetxController {
        /// Update currency amount
        batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(amount.text.trim().replaceAll(',', '')))});
        ///Update total cost
-       batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(total.text.trim()))});
+       batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(total.text.trim().replaceAll(',', '')))});
 
        batch.update(
            cashRef,
            type.text.trim() == 'Bank transfer'
                ? {"bankBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))}
                : {"cashBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))});
-  
+
      }
       ///update cash balance when selling currencies
 
@@ -370,11 +157,11 @@ class ForexController extends GetxController {
 
         batch.update(
            cashRef,
-           type.text.trim() == 'Bank transfer'  
+           type.text.trim() == 'Bank transfer'
                ? {"bankBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))}
                : {"cashBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))});
 
-     }  
+     }
 
       ///Update forex counter
       batch.update(counterRef, {"transactionCounters.${selectedTransaction.value}": FieldValue.increment(1)});
@@ -392,11 +179,11 @@ class ForexController extends GetxController {
           colorText: Colors.white,
         );
       });
-      isLoading.value = false;
-      if (context.mounted) {
-        Navigator.of(context).pop();
-        createPdf();
-      }
+     if(context.mounted){
+       Navigator.of(context).pop();
+
+     }
+
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -412,34 +199,3 @@ class ForexController extends GetxController {
   /// *-----------------------------End data submission----------------------------------*
 }
 
-class GradientScaffold extends StatelessWidget {
-  final Widget body;
-  final AppBar? appBar;
-  final Widget? floatingActionButton;
-
-  const GradientScaffold({
-    super.key,
-    required this.body,
-    this.appBar,
-    this.floatingActionButton,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF6D0EB5), Color(0xFF4059F1)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: body,
-      ),
-      floatingActionButton: floatingActionButton,
-      backgroundColor: Colors.transparent, // Important!
-    );
-  }
-}

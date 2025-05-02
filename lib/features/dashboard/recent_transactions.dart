@@ -47,13 +47,44 @@ class RecentTransactionsState extends State<RecentTransactions> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: const Text("Loading"));
         }
-
-        return ListView(
-          physics: ClampingScrollPhysics(),
-          shrinkWrap: true,
+        if (snapshot.data!.docs.isEmpty) {
+          return Center(child: const Text("No data available so far"));
+        }
+        return Column(
           children: snapshot.data!.docs
               .map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                if (data['transactionType'] == 'forex') {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              data['forexType'],
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 10),
+                            ),
+                            Text(
+                              "-${data['CurrencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['Amount'].toString()))} ",
+                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          // height: 0,
+                          thickness: .11,
+                          color: AppColors.prettyDark,
+                        )
+                      ],
+                    ),
+                  );
+
+
+                }
+
                 if (data['transactionType'] == 'payment') {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
@@ -81,8 +112,6 @@ class RecentTransactionsState extends State<RecentTransactions> {
                       ],
                     ),
                   );
-
-
                 }
                 if (data['transactionType'] == 'receipt') {
                   return Padding(
