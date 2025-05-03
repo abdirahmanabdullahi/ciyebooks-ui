@@ -206,7 +206,7 @@ showConfirmExpenseDialog(BuildContext context) {
                         await controller.createExpense(context);
                         if(context.mounted){
                           Navigator.of(context).pop();
-                          showExpenseSuccessPopup(context);
+                          controller.checkInternetConnection(context);
 
                         }
 

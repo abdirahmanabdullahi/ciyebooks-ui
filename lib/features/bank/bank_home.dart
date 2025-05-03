@@ -55,7 +55,7 @@ class BankHistory extends StatelessWidget {
         backgroundColor: AppColors.quarternary,
         title: Text(
           'Bank history',
-          style: TextStyle(color: AppColors.prettyDark),
+          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
         ),
       ),
       body: SafeArea(
@@ -76,14 +76,14 @@ class BankHistory extends StatelessWidget {
                       height: 35,
                       child: Text(
                         'Deposits',
-                        // style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                     ),
                     Tab(
                       height: 35,
                       child: Text(
                         'Withdrawals',
-                        // style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ],

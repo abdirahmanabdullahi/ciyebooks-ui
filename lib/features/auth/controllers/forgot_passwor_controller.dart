@@ -3,7 +3,6 @@ import 'package:ciyebooks/features/auth/screens/password_config/reset_password.d
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/helpers/network_manager.dart';
 
 class ForgotPasswordController extends GetxController {
   static ForgotPasswordController get instance => Get.find();
@@ -20,8 +19,8 @@ class ForgotPasswordController extends GetxController {
       isLoading.value = true;
 
       ///Check internet connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
+      // final isConnected = await NetworkManager.instance.isConnected();
+      // if (!isConnected) {
         isLoading.value = false;
         Get.snackbar("Oh snap! No internet connection.",
             "Please check your internet connection and try again",
@@ -32,7 +31,7 @@ class ForgotPasswordController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-      }
+      // }
 
       /// Validate form
       if (!forgotPasswordFormKey.currentState!.validate()) {

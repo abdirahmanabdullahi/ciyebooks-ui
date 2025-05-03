@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ciyebooks/common/custom_appbar.dart';
 import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/dashboard/widgets/button_list.dart';
 import 'package:ciyebooks/features/dashboard/recent_transactions.dart';
@@ -30,7 +31,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       appBar: AppBar(
-        backgroundColor: AppColors.quarternary,
+        backgroundColor: AppColors.quinary,
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
         centerTitle: true,
@@ -131,7 +132,7 @@ class Dashboard extends StatelessWidget {
                       child: Obx(
                         () => controller.hide.value
                             ? ImageFiltered(
-                                imageFilter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                imageFilter: ImageFilter.blur(sigmaX: 9, sigmaY: 7),
                                 child: Text(
                                   formatter
                                       .format((double.parse(controller.totals.value.cashBalances['KES'].toString()) + double.parse(controller.totals.value.bankBalances['KES'].toString())))
@@ -261,57 +262,114 @@ class Dashboard extends StatelessWidget {
                     ),
                   )),
 
-              /// 🏦 Bank Balances
-              // Container(
-              //   margin: EdgeInsets.all(6),
-              //   decoration: BoxDecoration(
-              //     color: AppColors.quinary,
-              //     boxShadow: [
-              //       BoxShadow(
-              //         color: Colors.black.withAlpha(30),
-              //         blurRadius: 4,
-              //         offset: Offset(-3, 3),
-              //       )
-              //     ],
-              //     borderRadius: BorderRadius.circular(14),
-              //   ),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Padding(
-              //         padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-              //         child: Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-              //       ),
-              //       SizedBox(height: 8),
-              //       Padding(
-              //         padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-              //         child: Obx(() => Column(
-              //               children: controller.totals.value.bankBalances.entries.map((entry) {
-              //                 return Column(
-              //                   children: [
-              //                     Padding(
-              //                       padding: const EdgeInsets.symmetric(vertical: 6.0),
-              //                       child: Row(
-              //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                         children: [
-              //                           Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-              //                           Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                     Divider(
-              //                       height: 0,
-              //                       thickness: .11,
-              //                       color: AppColors.prettyDark,
-              //                     )
-              //                   ],
-              //                 );
-              //               }).toList(),
-              //             )),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              /// 🏦 Payables
+              Obx(() => ImageFiltered(
+                imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                child: Container(
+                  margin: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.quinary,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(30),
+                        blurRadius: 4,
+                        offset: Offset(-3, 3),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
+                        child: Text("Payables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                      ),
+                      Gap(8),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                        child: Obx(() => Column(
+                          children: controller.totals.value.bankBalances.entries.map((entry) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                      Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                    ],
+                                  ),
+                                ),
+                                Divider(
+                                  height: 0,
+                                  thickness: .11,
+                                  color: AppColors.prettyDark,
+                                )
+                              ],
+                            );
+                          }).toList(),
+                        )),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+              /// 🏦 Receivables
+              Obx(() => ImageFiltered(
+                imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                child: Container(
+                  margin: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.quinary,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(30),
+                        blurRadius: 4,
+                        offset: Offset(-3, 3),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
+                        child: Text("Receivables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                      ),
+                      Gap(8),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                        child: Obx(() => Column(
+                          children: controller.totals.value.bankBalances.entries.map((entry) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                      Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                    ],
+                                  ),
+                                ),
+                                Divider(
+                                  height: 0,
+                                  thickness: .11,
+                                  color: AppColors.prettyDark,
+                                )
+                              ],
+                            );
+                          }).toList(),
+                        )),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
 
               /// 📄 Transactions Section
               Obx(

@@ -1,4 +1,7 @@
+import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
+import 'package:ciyebooks/utils/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,7 +94,7 @@ showForexForm(BuildContext context) {
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(width: 1, color: AppColors.grey), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
                               elevation: 0,
-                              backgroundColor: controller.selectedTransaction.value == 'buyFx' ? AppColors.secondary : AppColors.quinary,
+                              backgroundColor: controller.selectedTransaction.value == 'buyFx' ? CupertinoColors.systemBlue : AppColors.quinary,
                               // selected: controller.selectedTransaction.value == 'Buy',
                               onPressed: () {
                                 controller.selectedTransaction.value = 'buyFx';
@@ -126,7 +129,7 @@ showForexForm(BuildContext context) {
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(width: 1, color: AppColors.grey), borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
-                              backgroundColor: controller.selectedTransaction.value == 'sellFx' ? AppColors.secondary : AppColors.quinary,
+                              backgroundColor: controller.selectedTransaction.value == 'sellFx' ? AppColors.red : AppColors.quinary,
                               // selected: controller.selectedTransaction.value == 'Buy',
                               onPressed: () {
                                 controller.selectedTransaction.value = 'sellFx';
@@ -196,7 +199,9 @@ showForexForm(BuildContext context) {
                           width: double.maxFinite,
                           onSelected: (value) {
                             if (value != null) {
-                              controller.currencyCode.text = value;
+                              controller.currencyCode.text = value[0].toString();
+                              controller.currencyStockAmount.text = value[1].toString();
+                              controller.currencyStockTotalCost.text = value[2].toString();
                             }
                           },
                           // dropdownMenuEntries: [
@@ -218,8 +223,8 @@ showForexForm(BuildContext context) {
                                     ),
                                   ),
                                 ),
-                                value: currency.currencyCode,
-                                label: '${currency.currencyCode}  ${currency.amount}');
+                                value: [currency.currencyCode, currency.amount, currency.totalCost],
+                                label: '${currency.currencyCode}  ${currency.amount}  Rate  ${formatter.format(currency.totalCost / currency.amount)}');
                           }).toList(),
                         ),
                       ),
@@ -299,6 +304,10 @@ showForexForm(BuildContext context) {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                            ],
                             style: const TextStyle(
                               letterSpacing: 2,
                               // fontFamily: 'Oswald',
@@ -306,23 +315,22 @@ showForexForm(BuildContext context) {
                               // fontWeight: FontWeight.bold,
                               // color: CupertinoColors.systemBlue,
                             ),
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
-                            // onTap: () => controller.selectedField.value = 'rate',
+                            // inputFormatters: [
+                            //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                            // ],                            // onTap: () => controller.selectedField.value = 'rate',
                             onChanged: (value) {
                               controller.onAmountChanged(value);
                             },
 
                             // cursorColor: CupertinoColors.systemBlue,
-                            cursorWidth: 2,
+                            // cursorWidth: 2,
                             // cursorHeight: 35,
                             textAlign: TextAlign.center,
-                            controller: controller.rate,
+                            controller: controller.sellingRate,
 
-                            inputFormatters: [
-                              // CustomFormatter()
-                              LengthLimitingTextInputFormatter(10),
-                              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                            ],
+                            // inputFormatters: [
+                            //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                            // ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(horizontal: 10),
                               floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -352,21 +360,27 @@ showForexForm(BuildContext context) {
                             padding: EdgeInsets.only(left: 6),
                             child: TextFormField(
                               keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                              ],
+                              // inputFormatters: [
+                              //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                              // ],
                               onChanged: (value) {
                                 controller.onAmountChanged(value);
                               },
-                              controller: controller.amount,
+                              controller: controller.sellingAmount,
                               cursorWidth: 2,
                               style: const TextStyle(
                                 letterSpacing: 2,
                                 fontFamily: 'Oswald',
                                 fontSize: 15,
                               ),
-                              inputFormatters: [
-                                // CustomFormatter()
-                                LengthLimitingTextInputFormatter(10),
-                                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                              ],
+                              // inputFormatters: [
+                              //   // CustomFormatter()
+                              //   LengthLimitingTextInputFormatter(10),
+                              //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                              // ],
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(horizontal: 10),
                                 // prefix: Text('Amnt:',style:  TextStyle(
@@ -406,13 +420,19 @@ showForexForm(BuildContext context) {
                     height: 45,
                     child: TextFormField(
                       keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                      ],
+                      // inputFormatters: [
+                      //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                      // ],
                       onTap: () {
                         controller.selectedField.value = 'total';
                       },
                       onChanged: (value) {
                         controller.onTotalChanged(value);
                       },
-                      controller: controller.total,
+                      controller: controller.sellingTotal,
                       // canRequestFocus: false,
                       // cursorColor: CupertinoColors.systemBlue,
                       cursorWidth: 2,
@@ -425,11 +445,11 @@ showForexForm(BuildContext context) {
                         // fontWeight: FontWeight.bold,
                         // color: CupertinoColors.systemBlue,
                       ),
-                      inputFormatters: [
-                        // ThousandsFormatter()
-                        LengthLimitingTextInputFormatter(20),
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                      ],
+                      // inputFormatters: [
+                      //   // ThousandsFormatter()
+                      //   LengthLimitingTextInputFormatter(20),
+                      //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                      // ],
                       decoration: InputDecoration(
                         // prefix: Text('Amnt:',style:  TextStyle(
                         //     color: CupertinoColors.systemBlue,fontSize: 12,fontWeight: FontWeight.w900)),
@@ -465,52 +485,28 @@ showForexForm(BuildContext context) {
                   //   // indent: 30,
                   //   // endIndent: 30,
                   // ),
-                  Gap(AppSizes.spaceBtwItems),
-                  SizedBox(
+                  Gap(AppSizes.spaceBtwItems*2),
+                  SizedBox(width: double.maxFinite,
                     height: 45,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: FloatingActionButton(
-                            elevation: 0,
-                            backgroundColor: AppColors.quinary,
-                            shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.prettyDark, width: 1), borderRadius: BorderRadius.circular(10)),
-                            onPressed: () async {
-
-                              if (context.mounted) {
-                                showAddNewCurrencyDialog(context,newCurrencyController);
-                              }
-                            },
-                            // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                            child: Icon(
-                              Icons.add,
-                              color: AppColors.prettyDark,
-                            ),
-                          ),
+                    child: Expanded(
+                      flex: 5,
+                      child: FloatingActionButton(
+                        elevation: 0,
+                        // style: ElevatedButton.styleFrom(
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   disabledBackgroundColor: const Color(0xff35689fff),
+                        backgroundColor: AppColors.secondary,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        // ),
+                        onPressed: ()
+                        => controller.checkInternetConnection(context)
+                        ,
+                        // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                         ),
-                        Gap(4),
-                        Expanded(
-                          flex: 5,
-                          child:  FloatingActionButton(
-                              elevation: 0,
-                              // style: ElevatedButton.styleFrom(
-                              //   padding: EdgeInsets.symmetric(horizontal: 10),
-                              //   disabledBackgroundColor: const Color(0xff35689fff),
-                              backgroundColor: AppColors.secondary,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              // ),
-                              onPressed: () {
-                                showConfirmForexTransaction(context);
-                              },
-                              // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w900),
-                              ),
-                            ),
-
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],

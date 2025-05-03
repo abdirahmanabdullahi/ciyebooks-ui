@@ -16,7 +16,6 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        initialBinding: GeneralBindings(),
         title: AppTexts.appName,
         // themeMode: ThemeMode.system,
         theme: AppTheme.lightTheme,

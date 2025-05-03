@@ -48,7 +48,10 @@ class RecentTransactionsState extends State<RecentTransactions> {
           return Center(child: const Text("Loading"));
         }
         if (snapshot.data!.docs.isEmpty) {
-          return Center(child: const Text("No data available so far"));
+          return Center(child: Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,0, 30.0),
+            child: const Text("Your daily transactions will appear here."),
+          ));
         }
         return Column(
           children: snapshot.data!.docs

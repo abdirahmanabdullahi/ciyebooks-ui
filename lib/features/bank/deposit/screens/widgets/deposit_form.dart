@@ -180,6 +180,10 @@ showDepositForm(BuildContext context) {
                 SizedBox(
                   height: 45,
                   child: TextFormField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                  ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Amount deposited";
@@ -227,12 +231,12 @@ showDepositForm(BuildContext context) {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
                       onPressed: () {
-                        showConfirmDeposit(context);
+                        controller.checkInternetConnection(context);
                       },
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
                         'Deposit',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w900),
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                       )),
                 ),
               ],

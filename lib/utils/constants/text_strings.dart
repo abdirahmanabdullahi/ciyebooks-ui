@@ -19,20 +19,13 @@ class AppTexts {
   static const String onBoardingTitle7 = "Reminders";
   static const String onBoardingTitle8 = "Calculator";
 
-  static const String onBoardingSubTitle1 =
-      "Your most comprehensive finance management partner";
-  static const String onBoardingSubTitle2 =
-      "Create your cash and bank account balances correctly. These figures will be used in the calculation of profits";
-  static const String onBoardingSubTitle3 =
-      "Register accounts of customers you manage accounts for";
-  static const String onBoardingSubTitle4 =
-      "Record transfers, payments and expenses easily within the app";
-  static const String onBoardingSubTitle5 =
-      "Easily buy and sell currencies, manage currency stock and automatically calculate profits";
-  static const String onBoardingSubTitle6 =
-      "To manage your time, set your daily tasks within the app and prioritize your daily tasks.";
-  static const String onBoardingSubTitle7 =
-      "Create reminders for the most important things like meetings. Never miss an opportunity again";
+  static const String onBoardingSubTitle1 = "Your most comprehensive finance management partner";
+  static const String onBoardingSubTitle2 = "Create your cash and bank account balances correctly. These figures will be used in the calculation of profits";
+  static const String onBoardingSubTitle3 = "Register accounts of customers you manage accounts for";
+  static const String onBoardingSubTitle4 = "Record transfers, payments and expenses easily within the app";
+  static const String onBoardingSubTitle5 = "Easily buy and sell currencies, manage currency stock and automatically calculate profits";
+  static const String onBoardingSubTitle6 = "To manage your time, set your daily tasks within the app and prioritize your daily tasks.";
+  static const String onBoardingSubTitle7 = "Create reminders for the most important things like meetings. Never miss an opportunity again";
   static const String onBoardingSubTitle8 = "Use the inbuilt calculator to easily workout those tricky numbers.";
 
   // -- Authentication Forms
@@ -63,29 +56,17 @@ class AppTexts {
   static const String goToLoginTitle = "Have an account already? ";
 
   static const String goToLoginLabel = "Login";
-  static const String loginSubTitle =
-      "The convenient way to manage your finances.";
+  static const String loginSubTitle = "The convenient way to manage your finances.";
   static const String signupTitle = "Let’s create your account";
   static const String forgetPasswordTitle = "Forgot password?";
-  static const String forgetPasswordSubTitle =
-      "Don’t worry sometimes people can forget too, enter your email and we will send you a password reset link.";
+  static const String forgetPasswordSubTitle = "Don’t worry sometimes people can forget too, enter your email and we will send you a password reset link.";
   static const String changeYourPasswordTitle = "Password Reset Email Sent";
-  static const String changeYourPasswordSubTitle =
-      "Your Account Security is Our Priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected.";
+  static const String changeYourPasswordSubTitle = "Your Account Security is Our Priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected.";
   static const String confirmEmail = "Verify your email address!";
-  static const String confirmEmailSubTitle =
-      "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
-  static const String emailNotReceivedMessage =
-      "Didn’t get the email? Check your junk/spam or resend it.";
-  static const String yourAccountCreatedTitle =
-      "Your account was successfully created!"; static const String emailVerified =
-      "Your email has been verified";
-  static const String yourAccountCreatedSubTitle =
-      "Go ahead and login to your account and unleash the joy of seamless finance management";
-  // -- Product
-  // static const String popularProducts = "Popular Products";
+  static const String confirmEmailSubTitle = "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
+  static const String emailNotReceivedMessage = "Didn’t get the email? Check your junk/spam or resend it.";
+  static const String yourAccountCreatedTitle = "Your account was successfully created!";
+  static const String emailVerified = "Your email has been verified";
+  static const String yourAccountCreatedSubTitle = "Go ahead and login to your account and unleash the joy of seamless finance management";
 
-  // -- Home
-  static const String homeAppbarTitle = "Good morning ";
-  static const String homeAppbarSubTitle = "Abdirahman Abdullahi";
 }

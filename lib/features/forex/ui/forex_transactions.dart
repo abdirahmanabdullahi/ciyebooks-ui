@@ -60,27 +60,11 @@ class ForexTransactionsState extends State<ForexTransactions> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // RichText(
-                      //   text: TextSpan(
-                      //     children: [
-                      //       TextSpan(
-                      //         text: '${data['forexType']} ${data['CurrencyCode']}',
-                      //         style: TextStyle(
-                      //           fontWeight: FontWeight.w500,
-                      //           fontSize: 12,
-                      //           color: AppColors.secondary,
-                      //           // Grey Label
-                      //           // Black Value
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                       RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: '${data['forexType'].toUpperCase()} ${data['CurrencyCode']}',
+                              text: '${data['forexType'].replaceAll('Fx','').toUpperCase()} - ${data['CurrencyCode']}',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,

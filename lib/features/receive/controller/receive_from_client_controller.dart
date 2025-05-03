@@ -5,18 +5,13 @@ import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
 
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
+import '../../../common/widgets/error_dialog.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
 
@@ -96,12 +91,28 @@ class ReceiveFromClientController extends GetxController {
 
   }
 
+  /// Check internet connection
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          createReceipt(context);
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
 
 
 
   Future createReceipt(BuildContext context) async {
+
     if (!paidToOwner.value) {
       if (!payClientFormKey.currentState!.validate()) {
         return;

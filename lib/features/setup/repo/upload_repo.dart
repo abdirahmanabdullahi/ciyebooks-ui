@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,47 +10,47 @@ import '../../../utils/constants/colors.dart';
 class UploadRepo extends GetxController {
   static UploadRepo get instance => Get.find();
 
-  Future<List?> uploadData({
-    required BuildContext context,
-    required List checkList,
-    required String fileName,
-  }) async {
-    ///Todo: upload the file.
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
-    if (result != null) {
-      File file = File(result.files.single.path!);
-
-      ///Todo:Check if file type is CSV.
-      if (!file.path.endsWith('.csv')) {
-        if (context.mounted) {
-          showErrorDialog(context, "Oops! Unsupported File Type.", "The selected file is not supported. Please upload a CSV file.");
-        }
-        return null;
-      }
-      //Todo:Check if file is not empty.
-      if (file.readAsLinesSync(encoding: utf8).isEmpty) {
-        if (context.mounted) {
-          showErrorDialog(context, "Oops! File is empty.", "The selected file has no content. Please upload a valid CSV file with data.");
-        }
-        return null;
-      }
-
-      ///Todo: Check if all headers exist in the file.
-      final lines = file.readAsLinesSync(encoding: utf8);
-      final List headers = lines.isNotEmpty ? lines[0].split(',').map((e) => e.replaceAll('"', '').trim()).toList() : [];
-
-      if (!listEquals(headers, checkList)) {
-        if (context.mounted) {
-          showErrorDialog(context, "Oops! Unsupported data format!.", 'Column headers mismatch or missing. Please use the provided "$fileName" to upload your data');
-        }
-        return null;
-      }
-
-      return lines;
-    }
-
-    return null;
-  }
+  // Future<List?> uploadData({
+  //   required BuildContext context,
+  //   required List checkList,
+  //   required String fileName,
+  // }) async {
+  //   ///Todo: upload the file.
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
+  //   if (result != null) {
+  //     File file = File(result.files.single.path!);
+  //
+  //     ///Todo:Check if file type is CSV.
+  //     if (!file.path.endsWith('.csv')) {
+  //       if (context.mounted) {
+  //         showErrorDialog(context, "Oops! Unsupported File Type.", "The selected file is not supported. Please upload a CSV file.");
+  //       }
+  //       return null;
+  //     }
+  //     //Todo:Check if file is not empty.
+  //     if (file.readAsLinesSync(encoding: utf8).isEmpty) {
+  //       if (context.mounted) {
+  //         showErrorDialog(context, "Oops! File is empty.", "The selected file has no content. Please upload a valid CSV file with data.");
+  //       }
+  //       return null;
+  //     }
+  //
+  //     ///Todo: Check if all headers exist in the file.
+  //     final lines = file.readAsLinesSync(encoding: utf8);
+  //     final List headers = lines.isNotEmpty ? lines[0].split(',').map((e) => e.replaceAll('"', '').trim()).toList() : [];
+  //
+  //     if (!listEquals(headers, checkList)) {
+  //       if (context.mounted) {
+  //         showErrorDialog(context, "Oops! Unsupported data format!.", 'Column headers mismatch or missing. Please use the provided "$fileName" to upload your data');
+  //       }
+  //       return null;
+  //     }
+  //
+  //     return lines;
+  //   }
+  //
+  //   return null;
+  // }
 
   /// Function to show an error dialog
   void showErrorDialog(BuildContext context, String title, String message) {

@@ -6,14 +6,9 @@ import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
 
 import '../../../../common/widgets/error_dialog.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
@@ -148,7 +143,21 @@ class PayClientController extends GetxController {
 
     showConfirmPayment(context);
   }
-
+/// Check internet connection
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          checkBalances(context);
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }
   Future createPayment(BuildContext context) async {
 
     try {

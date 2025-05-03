@@ -52,7 +52,7 @@ showForexSuccess(BuildContext context) {
                       const SizedBox(height: 15),
                       Obx(()=>Text("${controller.selectedTransaction} success!", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary))),
                       Gap(6),
-                      Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
+                      Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.sellingAmount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
@@ -141,7 +141,7 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.amount.text.trim())),
+                          Text(formatter.format(double.parse(controller.sellingAmount.text.trim())),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -156,7 +156,7 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.rate.text.trim())),
+                          Text(formatter.format(double.parse(controller.sellingRate.text.trim())),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -170,7 +170,7 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.total.text.trim().replaceAll(',', ''))),
+                          Text(formatter.format(double.parse(controller.sellingTotal.text.trim().replaceAll(',', ''))),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -197,7 +197,7 @@ showForexSuccess(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Total", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                          Text('KES ${formatter.format(double.parse(controller.total.text.trim().replaceAll(',', '')))}',
+                          Text('KES ${formatter.format(double.parse(controller.sellingTotal.text.trim().replaceAll(',', '')))}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,

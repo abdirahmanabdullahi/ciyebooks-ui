@@ -5,14 +5,10 @@ import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
 
+
+import '../../../../common/widgets/error_dialog.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/format_exceptions.dart';
@@ -45,39 +41,6 @@ class WithdrawCashController extends GetxController {
   ///
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
-  /// *-----------------------------Start keypad--------------------------------------------*
-
-  void addCharacter(buttonValue) {
-    ///Limit the number of decimals
-    if (buttonValue == '.' && amount.text.contains('.')) {
-      return;
-    }
-
-    ///Limit the number of decimal places
-    if (amount.text.contains('.')) {
-      if (amount.text.split('.')[1].length < 2) {
-        amount.text += buttonValue;
-      }
-      return;
-    }
-
-    if (amount.text.length >= 12) {
-      return;
-    }
-
-    ///Add other values
-    amount.text += buttonValue;
-  }
-
-  ///Remove characters
-  void removeCharacter() {
-    if (amount.text.isNotEmpty) {
-      amount.text = amount.text.substring(0, amount.text.length - 1);
-    }
-  }
-
-  /// *-----------------------------End keypad--------------------------------------------*
 
   @override
   onInit() {
@@ -115,6 +78,21 @@ class WithdrawCashController extends GetxController {
 
   }
 
+  /// Check internet connection
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          createWithdrawal(context);
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }
 
 
   Future createWithdrawal(BuildContext context) async {

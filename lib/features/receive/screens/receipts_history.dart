@@ -1,20 +1,14 @@
 import 'package:ciyebooks/features/receive/screens/widgets/client_deposit_form.dart';
-import 'package:ciyebooks/features/receive/screens/widgets/confirm_client_deposit.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../common/widgets/calculator.dart';
-import '../controller/receive_from_client_controller.dart';
 
 class ReceiptsHistory extends StatelessWidget {
   const ReceiptsHistory({super.key});
@@ -46,7 +40,8 @@ class ReceiptsHistory extends StatelessWidget {
       ),
       appBar: AppBar(
         backgroundColor: AppColors.quinary,
-        title: Text('Receipt history'),
+        title: Text('Receipt history',          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
+        ),
         actions: [IconButton(onPressed: () => Get.offAll(() => NavigationMenu()), icon: Icon(Icons.close))],
       ),
       backgroundColor: AppColors.quarternary,

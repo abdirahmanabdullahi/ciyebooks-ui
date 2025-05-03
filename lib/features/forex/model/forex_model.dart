@@ -3,6 +3,7 @@ class ForexModel {
   final String transactionId;
   final double revenueContributed;
   final String forexType;
+  final String type;
   final String transactionType;
   // final String currencyName;
   final String currencyCode;
@@ -14,6 +15,7 @@ class ForexModel {
     required this.transactionId,
     required this.revenueContributed,
     required this.forexType,
+    required this.type,
     required this.transactionType,
     // required this.currencyName,
     required this.currencyCode,
@@ -29,6 +31,7 @@ class ForexModel {
       'transactionType': transactionType,
       'revenueContributed': revenueContributed,
       'forexType': forexType,
+      'type': type,
       'transactionId': transactionId,
       // 'CurrencyName': currencyName,
       'CurrencyCode': currencyCode,
@@ -44,6 +47,7 @@ class ForexModel {
     return ForexModel(
       transactionId: jsonData['transactionId'] ?? '',
       forexType: jsonData['forexType'] ?? '',
+      type: jsonData['type'] ?? '',
       // currencyName: jsonData['CurrencyName'] ?? '',
       currencyCode: jsonData['CurrencyCode'] ?? '',
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),

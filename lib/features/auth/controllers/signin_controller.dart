@@ -1,5 +1,4 @@
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
-import 'package:ciyebooks/utils/helpers/network_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,8 +31,8 @@ class SignInController extends GetxController {
       isLoading.value = true;
 
       ///Check internet connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
+      // final isConnected = await NetworkManager.instance.isConnected();
+      // if (!isConnected) {
         isLoading.value = false;
         Get.snackbar("Oh snap! No internet connection.",
             "Please check your internet connection and try again",
@@ -44,7 +43,7 @@ class SignInController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-      }
+      // }
 
       /// Validate form
       if (!signInFormKey.currentState!.validate()) {

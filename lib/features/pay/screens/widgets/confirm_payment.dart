@@ -213,14 +213,12 @@ showConfirmPayment(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async{
+                      onPressed: () async {
                         await controller.createPayment(context);
-                        if(context.mounted){
+                        if (context.mounted) {
                           Navigator.of(context).pop();
                           showPaymentSuccessPopup(context);
-
                         }
-
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
@@ -247,16 +245,23 @@ showConfirmPayment(BuildContext context) {
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.west_outlined,color: AppColors.prettyDark,),
+                            child: Icon(
+                              Icons.west_outlined,
+                              color: AppColors.prettyDark,
+                            ),
                           ),
                           Text(
                             'Back',
                             style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
-                          ),SizedBox(width: 20,)
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
                         ],
                       )),
                 ),

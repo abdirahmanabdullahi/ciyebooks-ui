@@ -51,15 +51,22 @@ showPaymentForm(BuildContext context) {
               padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: Column(
                 children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: Text(
                           'Paying a client',
-                          style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w400 ),
+                          style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
                         ),
-                      ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.quinary,))
+                      ),
+                      IconButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(
+                            Icons.close,
+                            color: AppColors.quinary,
+                          ))
                     ],
                   ),
                 ],
@@ -71,7 +78,7 @@ showPaymentForm(BuildContext context) {
             children: [
               Gap(AppSizes.spaceBtwItems),
               Obx(
-                    () => SizedBox(
+                () => SizedBox(
                   height: 45,
                   child: DropdownMenu(
                     controller: controller.from,
@@ -128,7 +135,7 @@ showPaymentForm(BuildContext context) {
               ),
               Gap(AppSizes.spaceBtwItems),
               Obx(
-                    () => SizedBox(
+                () => SizedBox(
                   height: 45,
                   child: DropdownMenu(
                     controller: controller.paidCurrency,
@@ -192,21 +199,24 @@ showPaymentForm(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(flex: 2,
+                  Expanded(
+                    flex: 2,
                     child: Obx(
-                          () => Row(
+                      () => Row(
                         children: [
                           SizedBox(
                             height: 20,
                             width: 20,
                             child: Checkbox(value: controller.paidToOwner.value, onChanged: (value) => controller.paidToOwner.value = !controller.paidToOwner.value),
-                          ),Gap(10),
+                          ),
+                          Gap(10),
                           controller.paidToOwner.value ? Text('Paid to owner') : Text('Paid to a other')
                         ],
                       ),
                     ),
                   ),
-                  Expanded(flex: 3,
+                  Expanded(
+                    flex: 3,
                     child: DropdownMenu(
                         controller: controller.paymentType,
                         trailingIcon: Icon(
@@ -285,36 +295,41 @@ showPaymentForm(BuildContext context) {
                 ],
               ),
               Obx(
-                    () => controller.paidToOwner.value
+                () => controller.paidToOwner.value
                     ? SizedBox()
                     : Form(
-                  key: controller.payClientFormKey,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0),                      child: SizedBox(
-                      height: 45,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Receiver's name is required";
-                          }
-                          return null;
-                        },
-                        controller: controller.receiver,
-                        decoration: InputDecoration(
-                          labelText: "Receiver's name",
-                          // constraints: BoxConstraints.tight(
-                          // const Size.fromHeight(50),
-                          // ),
+                        key: controller.payClientFormKey,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: SizedBox(
+                            height: 45,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Receiver's name is required";
+                                }
+                                return null;
+                              },
+                              controller: controller.receiver,
+                              decoration: InputDecoration(
+                                labelText: "Receiver's name",
+                                // constraints: BoxConstraints.tight(
+                                // const Size.fromHeight(50),
+                                // ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
               ),
               Gap(AppSizes.spaceBtwItems),
               SizedBox(
                 height: 45,
-                child: TextFormField(
+                child: TextFormField(                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                  ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Amount paid";
@@ -323,6 +338,7 @@ showPaymentForm(BuildContext context) {
                   },
                   controller: controller.amount,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
                     labelText: "Amount paid",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -362,7 +378,8 @@ showPaymentForm(BuildContext context) {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     // ),
                     onPressed: () {
-                controller.checkBalances(context);                        },
+                      controller.checkInternetConnection(context);
+                    },
                     // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                     child: Text(
                       'Pay',

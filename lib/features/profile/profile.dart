@@ -13,15 +13,6 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(
-        actions: [
-          IconButton(
-              onPressed: () => Get.offAll(() => const NavigationMenu()),
-              icon: const Icon(Icons.clear))
-        ],
-        title: const Text("Profile"), backgroundColor: Colors.red,
-        // showBackArrow: true,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.sm),

@@ -1,8 +1,10 @@
 import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
 import 'package:ciyebooks/features/forex/ui/widgets/forex_form.dart';
+import 'package:ciyebooks/features/forex/ui/widgets/new_currency_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
@@ -41,6 +43,7 @@ class ForexHome extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         actions: [
+
           IconButton(
               onPressed: () => Get.offAll(NavigationMenu()),
               icon: Icon(
@@ -52,7 +55,7 @@ class ForexHome extends StatelessWidget {
         backgroundColor: AppColors.quarternary,
         title: Text(
           'Forex',
-          style: TextStyle(color: AppColors.prettyDark),
+          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
         ),
       ),
       body: SafeArea(
@@ -73,14 +76,14 @@ class ForexHome extends StatelessWidget {
                       height: 35,
                       child: Text(
                         'Currency stock',
-                        // style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                     ),
                     Tab(
                       height: 35,
                       child: Text(
-                        'Forex Transactions',
-                        // style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                        'Forex transactions',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                       ),
                     ),
                   ],
@@ -90,11 +93,11 @@ class ForexHome extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     Obx(
-                      () {
-                        return SizedBox(
-                          width: MediaQuery.sizeOf(context).width,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
+                          () {
+                        return SingleChildScrollView(physics: ClampingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          child: Container(margin: EdgeInsets.only(top: 7),
+                            color: AppColors.quinary,width: MediaQuery.sizeOf(context).width,
                             child: DataTable(
                                 dataRowMaxHeight: 40,
                                 dataRowMinHeight: 40,
@@ -115,7 +118,7 @@ class ForexHome extends StatelessWidget {
                                       padding: const EdgeInsets.only(left: 8.0),
                                       child: Text(
                                         currency.currencyCode,
-                                        style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                        style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w400),
                                       ),
                                     )),
                                     DataCell(
@@ -149,6 +152,63 @@ class ForexHome extends StatelessWidget {
   }
 }
 
+class ForexStock extends StatelessWidget {
+  const ForexStock({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(ForexController());
 
-
+    return Scaffold(
+      body: SafeArea(
+        child: Obx(
+          () {
+            return SingleChildScrollView(physics: ClampingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: Container(color: AppColors.quinary,
+                child: DataTable(
+                    dataRowMaxHeight: 40,
+                    dataRowMinHeight: 40,
+                    showBottomBorder: true,
+                    headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                    columnSpacing: 30,
+                    headingRowHeight: 40,
+                    horizontalMargin: 0,
+                    columns: [
+                      DataColumn(label: Text(' Name')),
+                      DataColumn(label: Text('Amount')),
+                      DataColumn(label: Text('Rate')),
+                      DataColumn(label: Text('Total ')),
+                    ],
+                    rows: controller.currencyStock.map((currency) {
+                      return DataRow(cells: [
+                        DataCell(Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            currency.currencyCode,
+                            style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                          ),
+                        )),
+                        DataCell(
+                          Text(
+                            formatter.format(
+                              currency.amount,
+                            ),
+                          ),
+                        ),
+                        DataCell(Text(
+                          currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
+                        )),
+                        DataCell(Text(
+                          formatter.format(currency.totalCost),
+                        )),
+                      ]);
+                    }).toList()),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

@@ -233,17 +233,10 @@ showConfirmClientDeposit(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      // ),
                       onPressed: () async{
-                        print('object')
-;                        await controller.createReceipt(context).then((_){print('done');});
-                        if(context.mounted){
+                         if(context.mounted){
                           Navigator.of(context).pop();
                           showDepositSuccessPopup(context);
 
@@ -251,7 +244,6 @@ showConfirmClientDeposit(BuildContext context) {
 
                       },
 
-                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
                         'Confirm deposit',
                         style: TextStyle(color: AppColors.quinary, fontSize: 14, fontWeight: FontWeight.w700),

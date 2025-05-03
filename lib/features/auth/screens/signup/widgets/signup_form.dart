@@ -9,7 +9,6 @@ import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../common/custom_divider.dart';
-import '../../common/social_icons.dart';
 
 import '../../login/login.dart';
 import '../../../controllers/signup_controller.dart';
@@ -148,7 +147,6 @@ class SignupForm extends StatelessWidget {
           const Gap(AppSizes.appBarHeight/2),
           const CustomDivider(label: AppTexts.orSignUpWith),
           const Gap(AppSizes.spaceBtwItems),
-          const SocialIcons()
         ],
       ),
     );

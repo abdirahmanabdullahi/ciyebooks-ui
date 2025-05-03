@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
@@ -189,7 +188,7 @@ showReceiptForm(BuildContext context) {
                         ),
                       ),
                     ),
-                    Gap(10),
+                    Gap(AppSizes.spaceBtwItems),
                     Expanded(
                       child: DropdownMenu(
                           controller: controller.receiptType,
@@ -260,7 +259,11 @@ showReceiptForm(BuildContext context) {
                 Gap(AppSizes.spaceBtwItems),
                 SizedBox(
                   height: 45,
-                  child: TextFormField(
+                  child: TextFormField(                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Amount";
@@ -353,7 +356,7 @@ showReceiptForm(BuildContext context) {
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
                         'Receive',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w900),
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                       )),
                 ),
               ],

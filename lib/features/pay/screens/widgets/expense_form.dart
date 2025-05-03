@@ -274,6 +274,10 @@ showExpenseForm(BuildContext context) {
                   SizedBox(
                     height: 45,
                     child: TextFormField(
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                      ],
                       onChanged: (val) {},
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -282,7 +286,7 @@ showExpenseForm(BuildContext context) {
                         return null;
                       },
                       controller: controller.amount,
-                      decoration: InputDecoration(
+                      decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 8),
                         labelText: "Amount paid",
                         // constraints: BoxConstraints.tight(
                         // const Size.fromHeight(50),
@@ -322,7 +326,7 @@ showExpenseForm(BuildContext context) {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         // ),
                         onPressed: () {
-                          showConfirmExpenseDialog(context);
+                          controller.checkInternetConnection(context);
                         },
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(

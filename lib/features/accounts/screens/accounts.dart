@@ -1,4 +1,5 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
+import 'package:ciyebooks/features/accounts/screens/widgets/create_account_form.dart';
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,9 +27,8 @@ class Accounts extends StatelessWidget {
     // final controller = Get.put(AccountsController());
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          elevation: 0,
           backgroundColor: AppColors.prettyDark,
-          shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.prettyDark, width: 2), borderRadius: BorderRadius.circular(100)),
+          shape: RoundedRectangleBorder(side: BorderSide(color:AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
           onPressed: () => showCreateAccountDialog(context),
           child: Icon(
             Icons.add,
@@ -50,7 +50,7 @@ class Accounts extends StatelessWidget {
           backgroundColor: AppColors.quarternary,
           title: Text(
             'Accounts',
-            // style: TextStyle(color: AppColors.quinary),
+            style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
           ),
         ),
         body: SafeArea(
@@ -67,89 +67,86 @@ class Accounts extends StatelessWidget {
               // Data is now typed!
               AccountModel account = snapshot.data();
 
-              return Padding(
-                padding: const EdgeInsets.only(top:  7),
-                child: CustomContainer(
-                  darkColor: AppColors.quinary,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // First Row (From, Receiver, Amount)
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: account.accountName,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                                color: AppColors.secondary,
-                                // Black Value
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Divider(color: AppColors.prettyDark, thickness: .11),
-
-                      // Second Row (Transaction ID, Type, Date)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              return CustomContainer(
+                darkColor: AppColors.quinary,
+                width: double.infinity,
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // First Row (From, Receiver, Amount)
+                    RichText(
+                      text: TextSpan(
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'ACCOUNT NO: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 10,
-                                    color: AppColors.prettyDark, // Grey Label
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: account.accountNo,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 10,
-                                    color: AppColors.prettyDark,                                    // Grey Label
-                                    // Black Value
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'CREATED AT: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 10,
-                                    color: AppColors.prettyDark,// Grey Label
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: DateFormat('dd MMM yyy').format(
-                                    account.dateCreated,
-                                  ),
-                                  style: TextStyle( fontWeight: FontWeight.w300,
-                                    fontSize: 10,
-                                    color: AppColors.prettyDark, // Grey Label
-                                      // Black Value
-                                      ),
-                                ),
-                              ],
+                          TextSpan(
+                            text: account.accountName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              color: AppColors.secondary,
+                              // Black Value
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+
+                    Divider(color: AppColors.prettyDark, thickness: .11),
+
+                    // Second Row (Transaction ID, Type, Date)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'ACCOUNT NO: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 10,
+                                  color: AppColors.prettyDark, // Grey Label
+                                ),
+                              ),
+                              TextSpan(
+                                text: account.accountNo,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 10,
+                                  color: AppColors.prettyDark,                                    // Grey Label
+                                  // Black Value
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'CREATED AT: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 10,
+                                  color: AppColors.prettyDark,// Grey Label
+                                ),
+                              ),
+                              TextSpan(
+                                text: DateFormat('dd MMM yyy').format(
+                                  account.dateCreated,
+                                ),
+                                style: TextStyle( fontWeight: FontWeight.w300,
+                                  fontSize: 10,
+                                  color: AppColors.prettyDark, // Grey Label
+                                    // Black Value
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               );
             },
@@ -158,125 +155,3 @@ class Accounts extends StatelessWidget {
   }
 }
 
-Future<dynamic> showCreateAccountDialog(BuildContext context) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      final controller = Get.put(AccountsController());
-      return AlertDialog(
-        titlePadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(8),
-        backgroundColor: AppColors.quinary,
-        contentPadding: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: CupertinoColors.systemBlue),
-          width: double.maxFinite,
-          // height: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Text(
-                  'Create a new client account',
-                  style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w500),
-                ),
-              ),
-              IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(
-                    Icons.close,
-                    color: AppColors.quinary,
-                  ))
-            ],
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Gap(6),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Form(
-                  key: controller.accountsFormKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'First name is required';
-                          }
-                          return null;
-                        },
-                        controller: controller.firstName,
-                        decoration: InputDecoration(hintText: 'First name'),
-                      ),
-                      Gap(6),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Last name is required';
-                          }
-                          return null;
-                        },
-                        controller: controller.lastName,
-                        decoration: InputDecoration(hintText: 'Last name'),
-                      ),
-                      Gap(6),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Phone number is required';
-                          }
-                          return null;
-                        },
-                        controller: controller.phoneNo,
-                        decoration: InputDecoration(hintText: 'Phone number'),
-                      ),
-                      Gap(6),
-                      TextFormField(
-                        controller: controller.email,
-                        decoration: InputDecoration(hintText: 'Email'),
-                      ),
-                      Gap(6),
-                      TextFormField(
-                        controller: controller.usd,
-                        decoration: InputDecoration(hintText: 'USD balance'),
-                      ),
-                      Gap(6),
-                      TextFormField(
-                        controller: controller.kes,
-                        decoration: InputDecoration(hintText: 'KES balance'),
-                      ),
-                      Gap(20),
-                      SizedBox(
-                        height: 45,
-                        width: double.maxFinite,
-                        child: Obx(
-                          () => ElevatedButton(
-                            style: ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), backgroundColor: CupertinoColors.systemBlue, foregroundColor: AppColors.quinary
-                                // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                ),
-                            onPressed: controller.isLoading.value ? null : () => controller.createAccount(context),
-                            child: const Text(
-                              'Create',
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Gap(10),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}

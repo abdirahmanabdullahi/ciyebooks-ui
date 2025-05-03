@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/helpers/network_manager.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
 import '../../pay/models/expense_model.dart';
 import '../../pay/models/pay_client_model.dart';
@@ -80,8 +79,8 @@ class SetupController extends GetxController {
       //Start loading
       isLoading.value = true;
       //Check connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
+      // final isConnected = await NetworkManager.instance.isConnected();
+      // if (!isConnected) {
         Get.snackbar("Oh snap! No internet connection.", "Please check your internet connection and try again",
             icon: Icon(
               Icons.cloud_off,
@@ -90,7 +89,7 @@ class SetupController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-      }
+      // }
       final setupStatus = {'AccountIsSetup': true};
 
       await setupRepo.updateSetupStatus(setupStatus).then((_) {

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/repositories/user/user_repo.dart';
-import '../../../utils/helpers/network_manager.dart';
 import '../../setup/repo/setup_repo.dart';
 import '../screens/signup/controllers/verify_email_controller.dart';
 
@@ -42,8 +41,8 @@ class SignupController extends GetxController {
       //Start loading
       isLoading.value = true;
       //Check connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
+      // final isConnected = await NetworkManager.instance.isConnected();
+      // if (!isConnected) {
         Get.snackbar("Oh snap! No internet connection.",
             "Please check your internet connection and try again",
             icon: Icon(
@@ -53,7 +52,7 @@ class SignupController extends GetxController {
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
         return;
-      }
+      // }
 
       //Form validation
       if (!signupFormKey.currentState!.validate()) {

@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'calculator_screen.dart';
@@ -48,7 +49,7 @@ class CalculatorController extends GetxController {
         break;
     }
 
-    number1.value = result.toStringAsPrecision(3);
+    number1.value = formatter.format(result);
     if (number1.value.endsWith('.0')) {
       number1.value = number1.value.substring(0, number1.value.length - 2);
     }

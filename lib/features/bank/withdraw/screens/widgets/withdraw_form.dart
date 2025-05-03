@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/calculator.dart';
-import '../../../bank_home.dart';
 import 'confirm_withdrawal.dart';
 
 showWithdrawForm(BuildContext context) {
@@ -60,7 +58,7 @@ showWithdrawForm(BuildContext context) {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
-                            'Deposit cash at bank',
+                            'Withdraw cash from bank',
                             style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -76,18 +74,16 @@ showWithdrawForm(BuildContext context) {
                 ),
               ),
             ),
-
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Gap(10),
                 Obx(
-                      () => DropdownMenu(
+                  () => DropdownMenu(
                     controller: controller.withdrawnCurrency,
                     trailingIcon: Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: CupertinoColors.systemBlue,
-                      size: 30,
                     ),
                     inputDecorationTheme: InputDecorationTheme(
                       filled: true,
@@ -142,6 +138,10 @@ showWithdrawForm(BuildContext context) {
                 SizedBox(
                   height: 45,
                   child: TextFormField(
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Amount withdrawn";
@@ -182,19 +182,16 @@ showWithdrawForm(BuildContext context) {
                   width: double.maxFinite,
                   child: FloatingActionButton(
                       elevation: 0,
-                      // style: ElevatedButton.styleFrom(
-                      //   padding: EdgeInsets.symmetric(horizontal: 10),
-                      //   disabledBackgroundColor: const Color(0xff35689fff),
-                      backgroundColor:AppColors.secondary,
+                      backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
                       onPressed: () {
-                        showConfirmWithdrawal(context);
+                        controller.checkInternetConnection(context);
                       },
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
-                        'Deposit',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w900),
+                        'Withdraw',
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                       )),
                 ),
               ],

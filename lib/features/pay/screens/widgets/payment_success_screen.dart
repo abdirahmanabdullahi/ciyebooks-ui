@@ -1,15 +1,10 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+
 import '../../../../utils/constants/colors.dart';
 import '../../controllers/pay_client_controller.dart';
 

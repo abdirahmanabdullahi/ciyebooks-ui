@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../utils/constants/colors.dart';
-import 'controller.dart';
+import 'calculator_controller.dart';
 
 class CalculatorScreen extends StatelessWidget {
   const CalculatorScreen({super.key});

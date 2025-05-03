@@ -180,7 +180,7 @@ class SetupScreen extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          uploadController.uploadTotals(context);
+                          // uploadController.uploadTotals(context);
                         },
                         child: const Text(
                           "Upload totals",
@@ -1575,7 +1575,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadAccounts(context);
+                              // uploadController.uploadAccounts(context);
                             },
                             // style: ElevatedButton.styleFrom(
                             //   backgroundColor: CupertinoColors.systemBlue,
@@ -1916,7 +1916,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadPayments(context);
+                              // uploadController.uploadPayments(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
@@ -2255,7 +2255,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadExpenses(context);
+                              // uploadController.uploadExpenses(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
@@ -2583,7 +2583,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadReceipts(context);
+                              // uploadController.uploadReceipts(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
@@ -2821,7 +2821,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadWithdrawals(context);
+                              // uploadController.uploadWithdrawals(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
@@ -3046,7 +3046,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadDeposits(context);
+                              // uploadController.uploadDeposits(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(
@@ -3158,7 +3158,7 @@ class SetupScreen extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              uploadController.uploadCurrencyStock(context);
+                              // uploadController.uploadCurrencyStock(context);
                               // createNewAccountBottom(context);
                             },
                             // style: ElevatedButton.styleFrom(

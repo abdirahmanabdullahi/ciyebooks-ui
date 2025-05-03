@@ -1,23 +1,22 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ciyebooks/common/widgets/error_dialog.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
+import 'package:ciyebooks/utils/helpers/forex_profit_calculator.dart';
+import 'package:ciyebooks/utils/helpers/helper_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
 
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
 import '../model/new_currency_model.dart';
+import '../ui/widgets/confirm_fx_transaction.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -25,6 +24,7 @@ class ForexController extends GetxController {
     locale: 'en_us',
     decimalDigits: 2,
   );
+  double profit = 0;
   final selectedTransaction = 'buyFx'.obs;
   final counters = {}.obs;
   final selectedField = ''.obs;
@@ -43,10 +43,12 @@ class ForexController extends GetxController {
   TextEditingController type = TextEditingController();
   TextEditingController currencyCode = TextEditingController();
   TextEditingController transactionType = TextEditingController();
-  TextEditingController rate = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  TextEditingController total = TextEditingController();
+  TextEditingController sellingRate = TextEditingController();
+  TextEditingController sellingAmount = TextEditingController();
+  TextEditingController sellingTotal = TextEditingController();
   TextEditingController description = TextEditingController();
+  TextEditingController currencyStockTotalCost = TextEditingController();
+  TextEditingController currencyStockAmount = TextEditingController();
 
   ///
 
@@ -57,9 +59,9 @@ class ForexController extends GetxController {
     fetchTotals();
 
     ///Add listeners to the controllers
-    rate.addListener(updateButtonStatus);
-    amount.addListener(updateButtonStatus);
-    total.addListener(updateButtonStatus);
+    sellingRate.addListener(updateButtonStatus);
+    sellingAmount.addListener(updateButtonStatus);
+    sellingTotal.addListener(updateButtonStatus);
 
     ///Get the totals and balances
 
@@ -68,22 +70,22 @@ class ForexController extends GetxController {
 
   ///Calculate the fields
   onAmountChanged(String? value) {
-    total.text = formatter.format(((double.tryParse(amount.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(rate.text.trim()) ?? 0.0)));
+    sellingTotal.text = formatter.format(((double.tryParse(sellingAmount.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
 
   onTotalChanged(String? value) {
-    if ((double.tryParse(rate.text.trim().replaceAll(',', '').removeAllWhitespace) ?? 0.0) <= 0) {
+    if ((double.tryParse(sellingRate.text.trim().replaceAll(',', '').removeAllWhitespace) ?? 0.0) <= 0) {
       return;
     }
 
-    amount.text = formatter.format(((double.tryParse(total.text.trim()) ?? 0.0) / (double.tryParse(rate.text.trim()) ?? 0.0)));
+    sellingAmount.text = formatter.format(((double.tryParse(sellingTotal.text.trim()) ?? 0.0) / (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
 
   updateButtonStatus() {
-    isButtonEnabled.value = rate.text.isNotEmpty &&
-        amount.text.isNotEmpty &&
-        total.text.isNotEmpty &&
-        ((num.tryParse(rate.text) ?? 0) > 0 && (num.tryParse(amount.text) ?? 0) > 0 && (num.tryParse(total.text.replaceAll(',', '')) ?? 0) > 0);
+    isButtonEnabled.value = sellingRate.text.isNotEmpty &&
+        sellingAmount.text.isNotEmpty &&
+        sellingTotal.text.isNotEmpty &&
+        ((num.tryParse(sellingRate.text) ?? 0) > 0 && (num.tryParse(sellingAmount.text) ?? 0) > 0 && (num.tryParse(sellingTotal.text.replaceAll(',', '')) ?? 0) > 0);
   }
 
   fetchTotals() async {
@@ -98,14 +100,40 @@ class ForexController extends GetxController {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         counters.value = totals.value.transactionCounters;
         transactionCounter.value = counters[selectedTransaction.value];
-
       }
     });
   }
 
-  Future createForexTransaction(BuildContext context) async {
-
+  checkInternetConnection(BuildContext context) async {
     try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          showConfirmForexTransaction(context);
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }
+
+  Future createForexTransaction(BuildContext context) async {
+    try {
+      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[Moving on]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+
+      /// If it is a sale calculate the profit
+      if (selectedTransaction.value == 'sellFx') {
+        profit = ForexProfitCalculator.calculateTotalProfit(
+            sellingAmount: double.parse(sellingAmount.text.trim()),
+            sellingRate: double.parse(sellingRate.text.trim()),
+            sellingTotal: double.parse(sellingTotal.text.trim()),
+            currencyStockTotalCost: double.parse(currencyStockTotalCost.text.trim()),
+            currencyStockAmount: double.parse(currencyStockAmount.text.trim()));
+        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[profit calculated]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+      }
+
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
@@ -117,51 +145,52 @@ class ForexController extends GetxController {
       final transactionRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
 
       final newForexTransaction = ForexModel(
-
         forexType: selectedTransaction.value,
         transactionType: 'forex',
         type: type.text.trim(),
         transactionId: '${selectedTransaction.value.toUpperCase()}-${counters[selectedTransaction.value]}',
-        amount: double.tryParse(amount.text.trim().replaceAll(',', '')) ?? 0.0,
+        amount: double.tryParse(sellingAmount.text.trim().replaceAll(',', '')) ?? 0.0,
         dateCreated: DateTime.now(),
         // currencyName: currency.text.trim(),
         currencyCode: currencyCode.text.trim(),
-        rate: double.tryParse(rate.text.trim()) ?? 0.0,
-        totalCost: double.tryParse(total.text.trim().replaceAll(',', '')) ?? 0.0, revenueContributed: 0,
+        rate: double.tryParse(sellingRate.text.trim()) ?? 0.0,
+        totalCost: double.tryParse(sellingTotal.text.trim().replaceAll(',', '')) ?? 0.0,
+        revenueContributed: double.parse(profit.toStringAsFixed(3)),
       );
 
       ///Create payment transaction
       batch.set(transactionRef, newForexTransaction.toJson());
 
       ///update cash and currency balances when buying currencies
-     if(selectedTransaction.value=='buyFx'){
-       /// Update currency amount
-       batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(amount.text.trim().replaceAll(',', '')))});
-       ///Update total cost
-       batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(total.text.trim().replaceAll(',', '')))});
-
-       batch.update(
-           cashRef,
-           type.text.trim() == 'Bank transfer'
-               ? {"bankBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))}
-               : {"cashBalances.KES": FieldValue.increment(-num.parse(total.text.trim().replaceAll(',', '')))});
-
-     }
-      ///update cash balance when selling currencies
-
-      if(selectedTransaction.value=='sellFx'){
+      if (selectedTransaction.value == 'buyFx') {
         /// Update currency amount
-        batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(amount.text.trim().replaceAll(',', '')))});
+        batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
+
         ///Update total cost
-        batch.update(currencyRef, {"totalCost": FieldValue.increment(-double.parse(total.text.trim().replaceAll(',', '')))});
+        batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
 
         batch.update(
-           cashRef,
-           type.text.trim() == 'Bank transfer'
-               ? {"bankBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))}
-               : {"cashBalances.KES": FieldValue.increment(num.parse(total.text.trim().replaceAll(',', '')))});
+            cashRef,
+            type.text.trim() == 'Bank transfer'
+                ? {"bankBalances.KES": FieldValue.increment(-num.parse(sellingTotal.text.trim().replaceAll(',', '')))}
+                : {"cashBalances.KES": FieldValue.increment(-num.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+      }
 
-     }
+      ///update cash balance when selling currencies
+
+      if (selectedTransaction.value == 'sellFx') {
+        /// Update currency amount
+        batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
+
+        ///Update total cost
+        batch.update(currencyRef, {"totalCost": FieldValue.increment(-double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+
+        batch.update(
+            cashRef,
+            type.text.trim() == 'Bank transfer'
+                ? {"bankBalances.KES": FieldValue.increment(num.parse(sellingTotal.text.trim().replaceAll(',', '')))}
+                : {"cashBalances.KES": FieldValue.increment(num.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+      }
 
       ///Update forex counter
       batch.update(counterRef, {"transactionCounters.${selectedTransaction.value}": FieldValue.increment(1)});
@@ -179,16 +208,14 @@ class ForexController extends GetxController {
           colorText: Colors.white,
         );
       });
-     if(context.mounted){
-       Navigator.of(context).pop();
-
-     }
-
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[Moving done]]]]]]]]]]]]]]]]]]]]]]]]]]]');
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
@@ -198,4 +225,3 @@ class ForexController extends GetxController {
 
   /// *-----------------------------End data submission----------------------------------*
 }
-
