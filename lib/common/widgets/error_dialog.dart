@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 
-import '../../utils/constants/colors.dart';
 
 showErrorDialog({required BuildContext context, required String errorText, required String errorTitle}) {
   return showDialog(

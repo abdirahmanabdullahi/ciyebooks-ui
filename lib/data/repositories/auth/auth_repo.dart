@@ -6,9 +6,7 @@ import 'package:ciyebooks/utils/exceptions/format_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/platform_exceptions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../../features/auth/screens/login/login.dart';
 import '../../../features/setup/setup_screen.dart';
@@ -18,7 +16,7 @@ class AuthRepo extends GetxController {
   static AuthRepo get instance => Get.find();
 
   //Variables
-  final deviceStorage = GetStorage();
+  // final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
   Rx<UserModel> userData = UserModel.empty().obs;
   final accountIsSetUp = false.obs;
@@ -28,7 +26,7 @@ class AuthRepo extends GetxController {
   @override
   void onReady() {
 
-    FlutterNativeSplash.remove();
+    // FlutterNativeSplash.remove();
     screenRedirect();
   }
 

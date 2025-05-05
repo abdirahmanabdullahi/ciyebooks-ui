@@ -10,7 +10,6 @@ import '../../../../utils/constants/colors.dart';
 
 import '../../../common/widgets/calculator.dart';
 import '../../controllers/pay_client_controller.dart';
-import 'confirm_payment.dart';
 
 showPaymentForm(BuildContext context) {
   return showDialog(

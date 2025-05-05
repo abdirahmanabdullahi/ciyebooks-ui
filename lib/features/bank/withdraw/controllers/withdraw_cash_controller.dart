@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
+import 'package:ciyebooks/features/bank/withdraw/screens/widgets/confirm_withdrawal.dart';
+import 'package:ciyebooks/features/bank/withdraw/screens/widgets/withdrawal_success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 
 import '../../../../common/widgets/error_dialog.dart';
@@ -17,7 +20,10 @@ import '../../../setup/models/setup_model.dart';
 
 class WithdrawCashController extends GetxController {
   static WithdrawCashController get instance => Get.find();
-
+  final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_us',
+    decimalDigits: 2,
+  );
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final bankBalances = {}.obs;
@@ -76,6 +82,23 @@ class WithdrawCashController extends GetxController {
       },
     );
 
+  }
+  checkBalances(BuildContext context) {
+      final currencyKey = withdrawnCurrency.text.trim();
+
+      final availableAmount = double.parse('${bankBalances[currencyKey]}');
+      final requestedAmount = double.parse(amount.text.trim());
+
+      if (requestedAmount > availableAmount) {
+        showErrorDialog(
+          context: context,
+          errorTitle: 'Balance at bank not enough',
+          errorText: 'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot withdraw ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+        );
+        return;
+
+    }
+showConfirmWithdrawal(context);
   }
 
   /// Check internet connection
@@ -180,6 +203,10 @@ class WithdrawCashController extends GetxController {
         );
 
       });
+      if(context.mounted){
+        Navigator.of(context).pop();
+        showSuccessWithdrawal(context);
+      }
       isLoading.value = false;
 
     } on FirebaseAuthException catch (e) {

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/pay/screens/widgets/confirm_expense.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/expense_success_screen.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +82,17 @@ class PayExpenseController extends GetxController {
       docReference.set({
         category.text.trim(): category.text.trim(),
       }, SetOptions(merge: true));
-      Get.back();
+      Get.snackbar(
+        icon: Icon(
+          Icons.cloud_done,
+          color: Colors.white,
+        ),
+        shouldIconPulse: true,
+        "Success",
+        'New category added',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -114,8 +126,7 @@ class PayExpenseController extends GetxController {
 
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').snapshots().listen((snapshot) {
       if (snapshot.exists) {
-        expenseCategories.value = snapshot.data() as Map<String,dynamic>;
-
+        expenseCategories.value = snapshot.data() as Map<String, dynamic>;
       }
     });
     // if (balances.exists && balances.data() != null) {
@@ -366,15 +377,17 @@ class PayExpenseController extends GetxController {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (context.mounted) {
-          checkBalances(context);
+          createExpense(context);
         }
       }
     } on SocketException catch (_) {
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
+      return;
     }
   }
+
   checkBalances(BuildContext context) {
     if (paymentType.value == 'Bank') {
       final currencyKey = paidCurrency.text.trim();
@@ -394,7 +407,7 @@ class PayExpenseController extends GetxController {
     if (paymentType.value != 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-      final availableAmount = double.parse('${cashBalances[currencyKey]}');
+      final availableAmount = double.parse(cashBalances[currencyKey].toString());
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -410,8 +423,6 @@ class PayExpenseController extends GetxController {
   }
 
   Future createExpense(BuildContext context) async {
-
-
     try {
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -460,8 +471,13 @@ class PayExpenseController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-      });
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          showExpenseSuccessPopup(context);
 
+        }
+
+      });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

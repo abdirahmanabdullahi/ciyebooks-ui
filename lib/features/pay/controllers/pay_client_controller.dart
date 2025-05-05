@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
 import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
+import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,6 @@ import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
 import '../models/pay_client_model.dart';
-import '../screens/widgets/payment_success_screen.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
@@ -120,6 +119,7 @@ class PayClientController extends GetxController {
         showErrorDialog(context: context, errorTitle: 'Insufficient bank balance', errorText: 'You do have enough ${paidCurrency.text.trim()} in your bank account to make this transfer.');
         return;
       }
+      showConfirmPayment(context);
     }
 
     /// Check if currency is in cash and amount is enough to pay amount requested
@@ -156,6 +156,7 @@ class PayClientController extends GetxController {
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
+      return;
     }
   }
   Future createPayment(BuildContext context) async {
@@ -249,6 +250,10 @@ class PayClientController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+        if(context.mounted){
+          Navigator.of(context).pop();
+          showPaymentSuccessPopup(context);
+        }
 
         // SharePlus.instance.share(ShareParams(
         //     text:
@@ -258,7 +263,7 @@ class PayClientController extends GetxController {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
-    } on FormatException catch (e) {
+    } on FormatException {
       throw const TFormatException();
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;

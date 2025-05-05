@@ -1,23 +1,11 @@
 import 'dart:core';
 
-import 'package:ciyebooks/features/accounts/model/model.dart';
-import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/forex/model/forex_model.dart';
-import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/upload_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-import '../../pay/models/expense_model.dart';
-import '../../pay/models/pay_client_model.dart';
 
 class UploadController extends GetxController {
   static UploadController get instance => Get.find();

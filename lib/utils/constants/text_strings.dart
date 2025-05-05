@@ -50,7 +50,7 @@ class AppTexts {
   static const String resendEmailIn = "Resend email in";
 
   // -- Authentication Headings
-  static const String loginTitle = "Welcome back to Ciye Books,";
+  static const String loginTitle = "Welcome back";
   static const String goToSignupTitle = "Don't have an account yet? ";
   static const String goToSignupLabel = "Register";
   static const String goToLoginTitle = "Have an account already? ";

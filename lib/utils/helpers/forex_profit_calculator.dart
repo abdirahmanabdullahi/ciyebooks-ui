@@ -13,7 +13,6 @@ class ForexProfitCalculator {
     final costRate =   currencyStockTotalCost/currencyStockAmount;
     final cost = sellingAmount*costRate;
     final profit = revenue-cost;
-    print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[${profit.toString()}]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
 
     return profit;
   }

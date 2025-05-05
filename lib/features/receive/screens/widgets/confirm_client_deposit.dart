@@ -1,4 +1,3 @@
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/features/receive/controller/receive_from_client_controller.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
@@ -235,13 +234,12 @@ showConfirmClientDeposit(BuildContext context) {
                   child: FloatingActionButton(
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      onPressed: () async{
-                         if(context.mounted){
+                      onPressed: () async {
+                        await controller.checkInternetConnection(context);
+                        if (context.mounted) {
                           Navigator.of(context).pop();
                           showDepositSuccessPopup(context);
-
                         }
-
                       },
 
                       child: Text(

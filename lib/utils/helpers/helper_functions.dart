@@ -1,10 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-import '../../common/widgets/error_dialog.dart';
 
 class HelperFunctions {
   static bool isDarkMode(BuildContext context) {

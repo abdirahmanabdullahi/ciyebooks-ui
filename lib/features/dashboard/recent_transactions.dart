@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-import '../../../common/styles/custom_container.dart';
 import '../../../utils/constants/colors.dart';
 
 final now = DateTime.now();
@@ -195,17 +193,7 @@ class RecentTransactionsState extends State<RecentTransactions> {
                       ],
                     ),
                   );
-                  return ListTile(
-                    dense: true,
-                    title: Text(
-                      data['transactionType'],
-                      style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                    trailing: Text(
-                      "${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                      style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                  );
+
                 }
                 if (data['transactionType'] == 'withdrawal') {
                   return Padding(
@@ -233,17 +221,7 @@ class RecentTransactionsState extends State<RecentTransactions> {
                       ],
                     ),
                   );
-                  return ListTile(
-                    dense: true,
-                    title: Text(
-                      data['transactionType'],
-                      style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                    trailing: Text(
-                      "${data['currency'].toString().toLowerCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                      style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 13),
-                    ),
-                  );
+
                 }
               })
               .toList()

@@ -213,12 +213,9 @@ showConfirmPayment(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async {
-                        await controller.createPayment(context);
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          showPaymentSuccessPopup(context);
-                        }
+                      onPressed: ()  {
+                         controller.createPayment(context);
+
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

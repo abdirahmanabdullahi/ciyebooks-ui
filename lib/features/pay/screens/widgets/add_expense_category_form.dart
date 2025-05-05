@@ -1,5 +1,4 @@
 import 'package:ciyebooks/utils/constants/sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -71,7 +70,6 @@ showAddExpenseCategoryDialog(context) {
                 ),
                 onPressed: () {
                   controller.addNewExpenseCategory();
-                  Navigator.of(context).pop();
                 },
               ),)
             ],

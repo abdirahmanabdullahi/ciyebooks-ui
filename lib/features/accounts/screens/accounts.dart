@@ -4,15 +4,12 @@ import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/styles/custom_container.dart';
 import '../../../utils/constants/colors.dart';
-import '../controller/accounts_controller.dart';
 
 class Accounts extends StatelessWidget {
   const Accounts({super.key});
@@ -66,7 +63,6 @@ class Accounts extends StatelessWidget {
             itemBuilder: (context, snapshot) {
               // Data is now typed!
               AccountModel account = snapshot.data();
-
               return CustomContainer(
                 darkColor: AppColors.quinary,
                 width: double.infinity,

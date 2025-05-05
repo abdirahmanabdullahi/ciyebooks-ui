@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'features/calculator/calculator_screen.dart';
 import 'features/dashboard/home.dart';
 import 'features/notes/notes.dart';
-import 'features/stats/stats.dart';
 import 'features/todos/todos.dart';
 
 class NavigationMenu extends StatelessWidget {
@@ -31,12 +30,9 @@ class NavigationMenu extends StatelessWidget {
                 children: [
                   Image(
                     image: AssetImage(AppImages.logoDark),
-                    height: 100,
+                    height: 120,
                   ),
-                  Text(
-                    'Ciye Books',
-                    style: TextStyle(fontSize: 24, fontFamily: "Roboto"),
-                  ),
+
                 ],
               ),
             ),
@@ -625,10 +621,9 @@ class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final screens = [
     const Dashboard(),
-    Notes(),
-    Todo(),
-    CalculatorScreen(),
-    StatsPage(),
+    // Notes(),
+    // CalculatorScreen(),
+    // StatsPage(),
   ];
 }
 

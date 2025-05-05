@@ -1,10 +1,8 @@
-import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
 import 'package:ciyebooks/features/forex/ui/widgets/forex_form.dart';
 import 'package:ciyebooks/features/forex/ui/widgets/new_currency_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
@@ -20,7 +18,6 @@ class ForexHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ForexController());
-    final newCurrencyController = Get.put(NewCurrencyController());
 
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
       locale: 'en_us',
@@ -43,11 +40,16 @@ class ForexHome extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         actions: [
-
           IconButton(
               onPressed: () => Get.offAll(NavigationMenu()),
               icon: Icon(
                 Icons.close,
+                color: AppColors.prettyDark,
+              )),
+          IconButton(
+              onPressed: () => showAddNewCurrencyDialog(context),
+              icon: Icon(
+                Icons.add,
                 color: AppColors.prettyDark,
               )),
         ],
@@ -93,11 +95,14 @@ class ForexHome extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     Obx(
-                          () {
-                        return SingleChildScrollView(physics: ClampingScrollPhysics(),
+                      () {
+                        return SingleChildScrollView(
+                          physics: ClampingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
-                          child: Container(margin: EdgeInsets.only(top: 7),
-                            color: AppColors.quinary,width: MediaQuery.sizeOf(context).width,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 7),
+                            color: AppColors.quinary,
+                            width: MediaQuery.sizeOf(context).width,
                             child: DataTable(
                                 dataRowMaxHeight: 40,
                                 dataRowMinHeight: 40,
@@ -163,9 +168,11 @@ class ForexStock extends StatelessWidget {
       body: SafeArea(
         child: Obx(
           () {
-            return SingleChildScrollView(physics: ClampingScrollPhysics(),
+            return SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              child: Container(color: AppColors.quinary,
+              child: Container(
+                color: AppColors.quinary,
                 child: DataTable(
                     dataRowMaxHeight: 40,
                     dataRowMinHeight: 40,

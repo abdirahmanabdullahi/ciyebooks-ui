@@ -1,10 +1,8 @@
 import 'package:ciyebooks/utils/constants/sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../utils/constants/colors.dart';
 import '../../controller/accounts_controller.dart';

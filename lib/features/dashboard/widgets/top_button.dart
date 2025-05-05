@@ -27,23 +27,25 @@ class TopButton extends StatelessWidget {
         SizedBox(
           height: 55,
           width: 55,
-          child: FloatingActionButton(elevation: 3,
+          child: FloatingActionButton(
             heroTag: heroTag,
-            backgroundColor: backgroundColor,
-            shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary,width: 2.5),
+            backgroundColor: AppColors.quinary,
+            shape: RoundedRectangleBorder(side: BorderSide(
+                color: AppColors.quinary,width: 2.5
+            ),
                 borderRadius: BorderRadius.circular(100)),
             onPressed: onPressed,
             child: Icon(
               size: 20,
               icon,
-              color: iconColor,
+              color: AppColors.prettyDark,
             ),
           ),
         ),
         Gap(AppSizes.sm / 2),
         Text(
           label, style: TextStyle(fontSize: 12,
-            fontWeight:FontWeight.w500,color: AppColors.prettyDark),
+            fontWeight:FontWeight.w700,color: AppColors.quinary),
         )
       ],
     );

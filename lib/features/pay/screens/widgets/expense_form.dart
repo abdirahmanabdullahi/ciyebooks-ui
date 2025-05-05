@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controllers/pay_expense_controller.dart';
-import 'confirm_expense.dart';
 
 showExpenseForm(BuildContext context) {
   return showDialog(
@@ -326,7 +325,7 @@ showExpenseForm(BuildContext context) {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         // ),
                         onPressed: () {
-                          controller.checkInternetConnection(context);
+                          controller.checkBalances(context);
                         },
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(

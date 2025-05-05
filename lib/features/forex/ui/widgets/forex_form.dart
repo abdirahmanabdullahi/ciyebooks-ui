@@ -1,7 +1,5 @@
 import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
-import 'package:ciyebooks/utils/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,16 +10,12 @@ import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controller/forex_controller.dart';
 import '../../controller/new_currency_controller.dart';
-import '../forex_home.dart';
-import 'confirm_fx_transaction.dart';
-import 'new_currency_form.dart';
 
 showForexForm(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
       final controller = Get.put(ForexController());
-      final newCurrencyController = Get.put(NewCurrencyController());
 
       Future<void> vibrate() async {
         await SystemChannels.platform.invokeMethod<void>(

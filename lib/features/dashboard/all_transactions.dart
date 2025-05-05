@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
@@ -1261,7 +1259,6 @@ class TransactionHistory extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 
@@ -1428,6 +1425,5 @@ class TransactionCard extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

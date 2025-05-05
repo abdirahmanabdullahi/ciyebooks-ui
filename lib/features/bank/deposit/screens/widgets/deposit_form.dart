@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/calculator.dart';
-import '../../../bank_home.dart';
 import '../../controller/deposit_cash_controller.dart';
-import 'confirm_deposit.dart';
 
 showDepositForm(BuildContext context) {
   return showDialog(
@@ -231,7 +228,7 @@ showDepositForm(BuildContext context) {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
                       onPressed: () {
-                        controller.checkInternetConnection(context);
+                        controller.checkBalances(context);
                       },
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(

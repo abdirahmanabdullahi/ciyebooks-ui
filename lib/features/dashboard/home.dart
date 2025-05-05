@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:ciyebooks/common/custom_appbar.dart';
 import 'package:ciyebooks/features/dashboard/controller/dashboard_controller.dart';
 import 'package:ciyebooks/features/dashboard/widgets/button_list.dart';
 import 'package:ciyebooks/features/dashboard/recent_transactions.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/constants/colors.dart';
@@ -48,7 +46,7 @@ class Dashboard extends StatelessWidget {
           IconButton(
             onPressed: () => Get.to(() => Profile()),
             icon: Icon(
-              Icons.person,
+              Icons.person_outline_outlined,
               color: AppColors.prettyDark,
             ),
           ),
@@ -83,25 +81,27 @@ class Dashboard extends StatelessWidget {
                   children: [
                     // SizedBox(width: double.maxFinite,),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
+                      padding: const EdgeInsets.only(bottom: 15.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Available Balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                              Text("Available Balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.quarternary)),
                               Obx(
-                                () => IconButton(
+                                () => IconButton(padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
                                     constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
-                                    style: IconButton.styleFrom(side: BorderSide(color: AppColors.quinary, width: 1.5)),
+                                    style: IconButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                        side: BorderSide(
+                                        color: AppColors.quarternary, width: .5)),
                                     onPressed: () {
                                       controller.hide.value = !controller.hide.value;
                                     },
                                     icon: Icon(
                                       size: 15,
                                       controller.hide.value ? Icons.visibility_off : Icons.visibility,
-                                      color: AppColors.prettyDark,
+                                      color: AppColors.quarternary,
                                     )),
                               )
                             ],
@@ -109,7 +109,7 @@ class Dashboard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.quinary, width: 1.5),
+                              border: Border.all(color: AppColors.quinary, width: 1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -119,7 +119,7 @@ class Dashboard extends StatelessWidget {
                                   backgroundImage: AssetImage('assets/images/icons/kenyanFlag.png'),
                                 ),
                                 Gap(6),
-                                Text('Kenya Shilling', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 10, color: AppColors.prettyDark)),
+                                Text('Kenya Shilling', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 10, color: AppColors.quarternary)),
                                 Gap(8),
                               ],
                             ),
@@ -130,26 +130,21 @@ class Dashboard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Obx(
-                        () => controller.hide.value
-                            ? ImageFiltered(
-                                imageFilter: ImageFilter.blur(sigmaX: 9, sigmaY: 7),
+                        () =>
+                            ImageFiltered(
+                                imageFilter: controller.hide.value?ImageFilter.blur(sigmaX: 9, sigmaY: 7):ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                                 child: Text(
                                   formatter
                                       .format((double.parse(controller.totals.value.cashBalances['KES'].toString()) + double.parse(controller.totals.value.bankBalances['KES'].toString())))
                                       .toString(),
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: AppColors.prettyDark),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: AppColors.quinary),
                                 ),
                               )
-                            : Text(
-                                formatter
-                                    .format((double.parse(controller.totals.value.cashBalances['KES'].toString()) + double.parse(controller.totals.value.bankBalances['KES'].toString())))
-                                    .toString(),
-                                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: AppColors.prettyDark),
-                              ),
+
                       ),
                     ),
                     Gap(18),
-                    ButtonList(), Gap(10),
+                    ButtonList(), Gap(15),
                   ],
                 ),
               ),
@@ -262,114 +257,6 @@ class Dashboard extends StatelessWidget {
                     ),
                   )),
 
-              /// 🏦 Payables
-              Obx(() => ImageFiltered(
-                imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                child: Container(
-                  margin: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: AppColors.quinary,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(30),
-                        blurRadius: 4,
-                        offset: Offset(-3, 3),
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                        child: Text("Payables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                      ),
-                      Gap(8),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                        child: Obx(() => Column(
-                          children: controller.totals.value.bankBalances.entries.map((entry) {
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                      Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  height: 0,
-                                  thickness: .11,
-                                  color: AppColors.prettyDark,
-                                )
-                              ],
-                            );
-                          }).toList(),
-                        )),
-                      ),
-                    ],
-                  ),
-                ),
-              )),
-              /// 🏦 Receivables
-              Obx(() => ImageFiltered(
-                imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                child: Container(
-                  margin: EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: AppColors.quinary,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(30),
-                        blurRadius: 4,
-                        offset: Offset(-3, 3),
-                      )
-                    ],
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                        child: Text("Receivables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                      ),
-                      Gap(8),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                        child: Obx(() => Column(
-                          children: controller.totals.value.bankBalances.entries.map((entry) {
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                      Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  height: 0,
-                                  thickness: .11,
-                                  color: AppColors.prettyDark,
-                                )
-                              ],
-                            );
-                          }).toList(),
-                        )),
-                      ),
-                    ],
-                  ),
-                ),
-              )),
 
               /// 📄 Transactions Section
               Obx(

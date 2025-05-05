@@ -1,4 +1,3 @@
-import 'package:ciyebooks/bindings/general_bindings.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:ciyebooks/utils/constants/text_strings.dart';
 import 'package:ciyebooks/utils/theme/theme.dart';

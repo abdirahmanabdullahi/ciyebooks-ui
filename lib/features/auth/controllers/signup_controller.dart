@@ -51,7 +51,7 @@ class SignupController extends GetxController {
             ),
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
-        return;
+        // return;
       // }
 
       //Form validation
@@ -83,7 +83,7 @@ class SignupController extends GetxController {
         userName: userName.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
-        accountIsSetup: false,
+        accountIsSetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
       );
 
 

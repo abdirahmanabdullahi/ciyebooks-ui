@@ -1,4 +1,5 @@
 import 'package:ciyebooks/features/auth/screens/login/widgets/signin_form.dart';
+import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -11,32 +12,28 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Color(0xffE2EBED),
-      body: Center(
-        child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(AppSizes.defaultSpace / 4, 20, AppSizes.defaultSpace / 4, 0),
-            child: SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomHeader(
-                    height: 100,
-                    title: AppTexts.loginTitle,
-                    subtitle: AppTexts.goToSignupTitle,
-                    label: AppTexts.goToSignupLabel,
-                  ),
-                  Gap(AppSizes.spaceBtwSections / 2),
-                  SignInForm(),
-                ],
+    return Scaffold(backgroundColor: AppColors.quinary,
+      body: SizedBox(
+          width: double.infinity,
+          child: Column(
+            // mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomHeader(
+                height: 130,
+                title: AppTexts.loginTitle,
+                subtitle: AppTexts.goToSignupTitle,
+                label: AppTexts.goToSignupLabel,
               ),
-            ),
+              Gap(AppSizes.spaceBtwSections / 2),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: SignInForm(),
+              ),
+            ],
           ),
         ),
-      ),
     );
   }
 }

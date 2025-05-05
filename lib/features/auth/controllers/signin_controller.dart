@@ -1,7 +1,6 @@
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class SignInController extends GetxController {
   static SignInController get instance => Get.find();
@@ -10,7 +9,7 @@ class SignInController extends GetxController {
   final rememberMe = false.obs;
   final hidePassword = true.obs;
   final isLoading = false.obs;
-  final localStorage = GetStorage();
+  // final localStorage = GetStorage();
   final email = TextEditingController();
   final password = TextEditingController();
   GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
@@ -33,16 +32,16 @@ class SignInController extends GetxController {
       ///Check internet connectivity
       // final isConnected = await NetworkManager.instance.isConnected();
       // if (!isConnected) {
-        isLoading.value = false;
-        Get.snackbar("Oh snap! No internet connection.",
-            "Please check your internet connection and try again",
-            icon: Icon(
-              Icons.cloud_off,
-              color: Colors.white,
-            ),
-            backgroundColor: Color(0xffFF0033),
-            colorText: Colors.white);
-        return;
+      //   isLoading.value = false;
+      //   Get.snackbar("Oh snap! No internet connection.",
+      //       "Please check your internet connection and try again",
+      //       icon: Icon(
+      //         Icons.cloud_off,
+      //         color: Colors.white,
+      //       ),
+      //       backgroundColor: Color(0xffFF0033),
+      //       colorText: Colors.white);
+      //   return;
       // }
 
       /// Validate form
@@ -54,8 +53,8 @@ class SignInController extends GetxController {
 
       /// Save data if remember me is checked
       if (rememberMe.value) {
-        localStorage.write('REMEMBER_ME_EMAIL', email.text.trim());
-        localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
+        ///localStorage.write('REMEMBER_ME_EMAIL', email.text.trim());
+       /// localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
       }
 
       /// Login user with email and password.

@@ -1,6 +1,4 @@
-import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
-import '../../../../pay/controllers/pay_client_controller.dart';
 import 'withdrawal_success.dart';
 
 showConfirmWithdrawal(BuildContext context) {
@@ -181,11 +178,11 @@ showConfirmWithdrawal(BuildContext context) {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
                       onPressed: () async {
-                        await controller.createWithdrawal(context);
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          showSuccessWithdrawal(context);
-                        }
+                        await controller.checkInternetConnection(context);
+                        // if (context.mounted) {
+                        //   Navigator.of(context).pop();
+                        //   showSuccessWithdrawal(context);
+                        // }
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

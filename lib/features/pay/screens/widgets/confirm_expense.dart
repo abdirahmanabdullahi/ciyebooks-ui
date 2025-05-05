@@ -1,5 +1,4 @@
 import 'package:ciyebooks/features/pay/controllers/pay_expense_controller.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../controllers/pay_client_controller.dart';
 import 'expense_success_screen.dart';
 
 showConfirmExpenseDialog(BuildContext context) {
@@ -84,8 +82,8 @@ showConfirmExpenseDialog(BuildContext context) {
                       Text(
                         "Expense Details",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
-                          // fontWeight: FontWeight.bold,
-                        ),
+                            // fontWeight: FontWeight.bold,
+                            ),
                       ),
                       SizedBox(height: 24),
                       // Divider(color: Colors.black, thickness: .11),
@@ -195,20 +193,15 @@ showConfirmExpenseDialog(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async{
-                        await controller.createExpense(context);
-                        if(context.mounted){
-                          Navigator.of(context).pop();
-                          controller.checkInternetConnection(context);
-
-                        }
+                      onPressed: ()  {
+                         controller.checkInternetConnection(context);
 
                       },
 
@@ -224,10 +217,10 @@ showConfirmExpenseDialog(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.quinary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
@@ -236,16 +229,23 @@ showConfirmExpenseDialog(BuildContext context) {
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.west_outlined,color: AppColors.prettyDark,),
+                            child: Icon(
+                              Icons.west_outlined,
+                              color: AppColors.prettyDark,
+                            ),
                           ),
                           Text(
                             'Back',
                             style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
-                          ),SizedBox(width: 20,)
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
                         ],
                       )),
                 ),

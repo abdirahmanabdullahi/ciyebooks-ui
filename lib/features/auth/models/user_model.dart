@@ -1,6 +1,7 @@
 class UserModel {
   final String accountId;
   String firstName;
+  String accountName;
   String lastName;
   final String userName;
   final String email;
@@ -9,6 +10,7 @@ class UserModel {
 
   UserModel({
     required this.firstName,
+    required this.accountName,
     required this.accountIsSetup,
     required this.lastName,
     required this.accountId,
@@ -21,6 +23,7 @@ class UserModel {
 
   ///Static function to create an empty userModel.
   static UserModel empty() => UserModel(
+    accountName:'',
         firstName: '',
         lastName: '',
         accountId: '',
@@ -34,6 +37,7 @@ class UserModel {
   Map<String, dynamic> toJson() {
     return {
       'firstName': firstName,
+      'accountName': accountName,
       'LastName': lastName,
       'UserName': userName,
       'Email': email,
@@ -46,11 +50,12 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> jsonData) {
     return UserModel(
       firstName: jsonData['FirstName'] ?? '',
+      accountName: jsonData['accountName'] ?? '',
       lastName: jsonData['LastName'] ?? '',
       accountId: jsonData['id'] ?? '',
       userName: jsonData['UserName'] ?? '',
       email: jsonData['Email'] ?? '',
-      phoneNumber: jsonData['phoneNumber'] ?? '',
+      phoneNumber: jsonData['PhoneNumber'] ?? '',
       accountIsSetup: jsonData['AccountIsSetup'],
     );
   }

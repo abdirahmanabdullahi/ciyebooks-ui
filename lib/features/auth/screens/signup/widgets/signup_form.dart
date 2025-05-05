@@ -4,7 +4,6 @@ import 'package:ciyebooks/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
@@ -61,7 +60,7 @@ class SignupForm extends StatelessWidget {
             controller: controller.userName,
             expands: false,
             decoration: const InputDecoration(
-              prefixIcon: Icon(Iconsax.user_edit),
+              // prefixIcon: Icon(Iconsax.user_edit),
               label: Text(AppTexts.username),
             ),
           ),
@@ -81,7 +80,6 @@ class SignupForm extends StatelessWidget {
             controller: controller.phoneNumber,
             expands: false,
             decoration: const InputDecoration(
-              prefixIcon: Icon(Iconsax.call),
               label: Text(AppTexts.phoneNo),
             ),
           ),

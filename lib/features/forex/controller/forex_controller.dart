@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:ciyebooks/common/widgets/error_dialog.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/utils/helpers/forex_profit_calculator.dart';
-import 'package:ciyebooks/utils/helpers/helper_functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,7 @@ import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
 import '../model/new_currency_model.dart';
 import '../ui/widgets/confirm_fx_transaction.dart';
+import '../ui/widgets/forex_form.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -28,6 +28,7 @@ class ForexController extends GetxController {
   final selectedTransaction = 'buyFx'.obs;
   final counters = {}.obs;
   final selectedField = ''.obs;
+  final currencyList ={}.obs;
 
   RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
   final isButtonEnabled = false.obs;
@@ -50,7 +51,12 @@ class ForexController extends GetxController {
   TextEditingController currencyStockTotalCost = TextEditingController();
   TextEditingController currencyStockAmount = TextEditingController();
 
-  ///
+  /// New currency controllers
+  final newCurrencyName = TextEditingController();
+  final newCurrencyCode = TextEditingController();
+  final newCurrencySymbol = TextEditingController();
+
+  final _db = FirebaseFirestore.instance;
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
@@ -66,6 +72,50 @@ class ForexController extends GetxController {
     ///Get the totals and balances
 
     super.onInit();
+  }
+/// Get all currencies ,
+  fetchCurrencies() async {
+    FirebaseFirestore.instance.collection('Common').doc('Currencies').snapshots().listen((snapshot) {
+      if (snapshot.exists&&snapshot.data()!.isNotEmpty) {
+        currencyList.value = snapshot.data() as Map<String, dynamic>;
+
+      }
+    });
+
+  }
+  addNewCurrency(BuildContext context) async {
+    try {
+      // Check if currency is base currency
+      // if (currencyCode.text.trim() == baseCurrency.value) {
+      //   Get.snackbar(
+      //     "Can't add base currency!",
+      //     'Please select a new currency and try again',
+      //     backgroundColor: Colors.orange,
+      //     colorText: Colors.white,
+      //   );
+      //   return;
+      // }
+
+      // Check if currency is selected
+      if (currencyCode.text.isEmpty) {
+        Get.snackbar(
+          'No currency selected!',
+          'Please select a new currency and try again',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Create new currency
+      final newCurrency = CurrencyModel(currencyName: newCurrencyName.text.trim(), amount: 0, totalCost: 0, symbol: newCurrencySymbol.text.trim(), currencyCode: newCurrencyCode.text.trim());
+
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(currencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
+
+      });
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   ///Calculate the fields
@@ -121,7 +171,6 @@ class ForexController extends GetxController {
 
   Future createForexTransaction(BuildContext context) async {
     try {
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[Moving on]]]]]]]]]]]]]]]]]]]]]]]]]]]');
 
       /// If it is a sale calculate the profit
       if (selectedTransaction.value == 'sellFx') {
@@ -131,7 +180,6 @@ class ForexController extends GetxController {
             sellingTotal: double.parse(sellingTotal.text.trim()),
             currencyStockTotalCost: double.parse(currencyStockTotalCost.text.trim()),
             currencyStockAmount: double.parse(currencyStockAmount.text.trim()));
-        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[profit calculated]]]]]]]]]]]]]]]]]]]]]]]]]]]');
       }
 
       /// Initialize batch
@@ -211,7 +259,6 @@ class ForexController extends GetxController {
       if (context.mounted) {
         Navigator.of(context).pop();
       }
-      print('[[[[[[[[[[[[[[[[[[[[[[[[[[[Moving done]]]]]]]]]]]]]]]]]]]]]]]]]]]');
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

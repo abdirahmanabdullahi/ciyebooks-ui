@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/receive/screens/widgets/confirm_client_deposit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,6 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controller/receive_from_client_controller.dart';
-import 'confirm_client_deposit.dart';
 
 showReceiptForm(BuildContext context) {
   return showDialog(
@@ -160,7 +160,6 @@ showReceiptForm(BuildContext context) {
                           onSelected: (value) {
                             if (value != null) {
                               controller.receivedCurrency.text = value;
-                              print(controller.receivedCurrency.text);
                             }
                           },
                           dropdownMenuEntries: controller.currency.map((currency) {
@@ -350,10 +349,8 @@ showReceiptForm(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
-                      onPressed: () {
-                        showConfirmClientDeposit(context);
-                      },
-                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                      onPressed: () =>showConfirmClientDeposit(context)
+,                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
                         'Receive',
                         style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),

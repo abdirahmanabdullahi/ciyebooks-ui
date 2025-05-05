@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/calculator.dart';
-import 'confirm_withdrawal.dart';
 
 showWithdrawForm(BuildContext context) {
   return showDialog(
@@ -186,7 +185,7 @@ showWithdrawForm(BuildContext context) {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
                       onPressed: () {
-                        controller.checkInternetConnection(context);
+                        controller.checkBalances(context);
                       },
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(

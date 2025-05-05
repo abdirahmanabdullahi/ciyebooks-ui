@@ -1,5 +1,4 @@
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
-import '../../../../pay/controllers/pay_client_controller.dart';
 
 showSuccessDeposit(BuildContext context) {
   return showDialog(
@@ -199,7 +197,11 @@ showSuccessDeposit(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+
+                      },
 
                       child: Text(
                         'Done',

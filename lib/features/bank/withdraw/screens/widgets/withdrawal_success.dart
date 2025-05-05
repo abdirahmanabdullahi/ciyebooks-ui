@@ -1,5 +1,5 @@
 import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
+import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
-import '../../../../pay/controllers/pay_client_controller.dart';
 
 showSuccessWithdrawal(BuildContext context) {
   return showDialog(
@@ -17,7 +16,7 @@ showSuccessWithdrawal(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(DepositCashController());
+      final controller = Get.put(WithdrawCashController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -53,7 +52,7 @@ showSuccessWithdrawal(BuildContext context) {
                       const SizedBox(height: 15),
                       Text("Withdrawal successful", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
                       Gap(6),
-                      Text("${controller.depositedCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
+                      Text("${controller.withdrawnCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
@@ -124,7 +123,7 @@ showSuccessWithdrawal(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.depositedCurrency.text.trim(),
+                          Text(controller.withdrawnCurrency.text.trim(),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -167,7 +166,7 @@ showSuccessWithdrawal(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Total withdrawal", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                          Text('${controller.depositedCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
+                          Text('${controller.withdrawnCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,
@@ -191,7 +190,9 @@ showSuccessWithdrawal(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: (){
+                        Navigator.of(context).pop();Navigator.of(context).pop();
+                      },
 
                       child: Text(
                         'Done',

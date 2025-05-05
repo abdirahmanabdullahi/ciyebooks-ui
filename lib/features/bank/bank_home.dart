@@ -1,32 +1,25 @@
 import 'dart:io';
 
-import 'package:ciyebooks/features/bank/withdraw/controllers/withdraw_cash_controller.dart';
+import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
 import 'package:ciyebooks/features/bank/payment_bank_bottom_sheet.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/withdrawals.dart';
 
 import 'package:ciyebooks/navigation_menu.dart';
-import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'package:intl/intl.dart';
 
 import '../../utils/constants/colors.dart';
-import '../common/widgets/calculator.dart';
-import '../dashboard/widgets/bottom_sheet_button.dart';
 
-import '../pay/screens/widgets/payment_bottom_sheet.dart';
-import 'deposit/controller/deposit_cash_controller.dart';
 
 class BankHistory extends StatelessWidget {
   const BankHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DepositCashController());
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       floatingActionButton: FloatingActionButton(

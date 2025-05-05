@@ -1,7 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:ciyebooks/features/pay/controllers/pay_expense_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +5,6 @@ import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../controllers/pay_client_controller.dart';
 
 showExpenseSuccessPopup(BuildContext context) {
   return showDialog(
@@ -88,8 +83,8 @@ showExpenseSuccessPopup(BuildContext context) {
                         Text(
                           "Expense Details",
                           style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
-                            // fontWeight: FontWeight.bold,
-                          ),
+                              // fontWeight: FontWeight.bold,
+                              ),
                         ),
                         SizedBox(height: 24),
                         Row(
@@ -225,8 +220,12 @@ showExpenseSuccessPopup(BuildContext context) {
                         backgroundColor: AppColors.secondary,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          Future.delayed(Duration(milliseconds: 600), () {
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            }
+                          });
                         },
 
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../../common/widgets/error_dialog.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
+import '../screens/widgets/confirm_client_deposit.dart';
 
 class ReceiveFromClientController extends GetxController {
   static ReceiveFromClientController get instance => Get.find();
@@ -104,6 +106,7 @@ class ReceiveFromClientController extends GetxController {
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
+      return;
     }
   }
   /// *-----------------------------Create and share pdf receipt----------------------------------*
@@ -177,6 +180,10 @@ class ReceiveFromClientController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+
+        if(context.mounted){
+          showDepositSuccessPopup(context);
+        }
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

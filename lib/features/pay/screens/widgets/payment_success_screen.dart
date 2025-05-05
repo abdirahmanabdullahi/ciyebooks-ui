@@ -10,6 +10,7 @@ import '../../controllers/pay_client_controller.dart';
 
 showPaymentSuccessPopup(BuildContext context) {
   return showDialog(
+
     context: context,
     builder: (context) {
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -120,7 +121,7 @@ showPaymentSuccessPopup(BuildContext context) {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Paying account no",
+                            Text("Payee account no",
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -222,8 +223,12 @@ showPaymentSuccessPopup(BuildContext context) {
                         backgroundColor: AppColors.secondary,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          Future.delayed(Duration(milliseconds: 800), () {
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop();
+                            }
+                          });
                         },
 
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
