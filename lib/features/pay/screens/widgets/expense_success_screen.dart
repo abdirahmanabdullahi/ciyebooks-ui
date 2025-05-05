@@ -217,7 +217,7 @@ showExpenseSuccessPopup(BuildContext context) {
                     // height: 45,
                     width: double.maxFinite,
                     child: FloatingActionButton(
-                        backgroundColor: AppColors.secondary,
+                        backgroundColor: AppColors.prettyBlue,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           Future.delayed(Duration(milliseconds: 600), () {

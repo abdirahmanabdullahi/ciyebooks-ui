@@ -44,7 +44,7 @@ showDepositForm(BuildContext context) {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.secondary),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -224,7 +224,7 @@ showDepositForm(BuildContext context) {
                       // style: ElevatedButton.styleFrom(
                       //   padding: EdgeInsets.symmetric(horizontal: 10),
                       //   disabledBackgroundColor: const Color(0xff35689fff),
-                      backgroundColor:AppColors.secondary,
+                      backgroundColor:AppColors.prettyBlue,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
                       onPressed: () {

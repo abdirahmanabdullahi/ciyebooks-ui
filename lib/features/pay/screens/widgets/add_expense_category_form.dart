@@ -18,7 +18,7 @@ showAddExpenseCategoryDialog(context) {
         insetPadding: EdgeInsets.all(AppSizes.padding),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         title: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.secondary),
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
           width: double.maxFinite,
           // height: 30,
           child: Padding(
@@ -62,7 +62,7 @@ showAddExpenseCategoryDialog(context) {
               Gap(AppSizes.spaceBtwItems*4),
               SizedBox(height: 45,width: double.maxFinite,
                 child:  FloatingActionButton(
-                backgroundColor: AppColors.secondary,
+                backgroundColor: AppColors.prettyBlue,
 
                 child: const Text(
                   'Add',

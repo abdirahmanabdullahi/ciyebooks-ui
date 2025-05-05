@@ -217,7 +217,7 @@ showForexSuccess(BuildContext context) {
                     // style: ElevatedButton.styleFrom(
                     //   padding: EdgeInsets.symmetric(horizontal: 10),
                     //   disabledBackgroundColor: const Color(0xff35389fff),
-                      backgroundColor: AppColors.secondary,
+                      backgroundColor: AppColors.prettyBlue,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
                       onPressed: () {

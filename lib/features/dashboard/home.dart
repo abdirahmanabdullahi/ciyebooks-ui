@@ -40,7 +40,7 @@ class Dashboard extends StatelessWidget {
           },
           icon: Icon(
             color: AppColors.prettyBlue,
-            Icons.sort,
+            Icons.sort_rounded,
           ),
         ),
         actions: [IconButton(
@@ -116,7 +116,7 @@ class Dashboard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.quarternary, width: .5),
+                              border: Border.all(color: AppColors.quarternary, width: .35),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
