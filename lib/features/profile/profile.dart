@@ -56,8 +56,9 @@ class Profile extends StatelessWidget {
               const Text(
                 "User info",
                 style: TextStyle(color: AppColors.prettyDark, fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 12),
+              ),              const Divider(color: AppColors.prettyDark,thickness: .1,),
+
+              const SizedBox(height: 8),
               InfoTile(
                 leading: Icons.person_outline,
                 title: controller.user.value.accountName,
@@ -126,7 +127,7 @@ class Profile extends StatelessWidget {
                 "Settings",
                 style: TextStyle(color: AppColors.prettyDark, fontSize: 16, fontWeight: FontWeight.w600),
               ),
-              const Divider(color: AppColors.prettyDark),
+              const Divider(color: AppColors.prettyDark,thickness: .1,),
               const SizedBox(height: 10),
 
               // Dark Mode Switch
@@ -153,6 +154,7 @@ class Profile extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
+
               Obx(
                 () => ListTile(
                   contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
@@ -164,6 +166,18 @@ class Profile extends StatelessWidget {
                 ),
               ),
               // Forex Theme
+              const SizedBox(height: 8),
+
+              const Divider(color: AppColors.prettyDark,thickness: .1,),
+
+              const SizedBox(height: 18),
+              ListTile(
+                contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
+                title: Text('Submit a user for review'),
+trailing: Icon(Icons.chevron_right),                tileColor: AppColors.quinary,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                leading: Icon(Icons.person_add_alt),
+              ),
               const SizedBox(height: 70),
 
               // Sign Out

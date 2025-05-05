@@ -22,12 +22,12 @@ class _AppState extends State<App> {
         debugShowCheckedModeBanner: false,
         // initialBinding: GeneralBindings(),
         home: Scaffold(
-            backgroundColor: AppColors.primary,
+            backgroundColor: AppColors.quinary,
             body: Column(mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: double.maxFinite,),
-                Image(height:100,image: AssetImage('assets/logos/logo dark.png')),
-                Text('Fetching records...',style: TextStyle(fontSize: 12,fontWeight: FontWeight.w400,color: Colors.black),)
+                Image(height: 300,
+                    image: AssetImage('assets/logos/logo dark.png')),
               ],
             )));
   }

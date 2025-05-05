@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import '../../utils/constants/colors.dart';
 
 import '../profile/profile.dart';
+import '../stats/stats.dart';
 import 'all_transactions.dart';
 
 class Dashboard extends StatelessWidget {
@@ -38,16 +39,22 @@ class Dashboard extends StatelessWidget {
             Scaffold.of(context).openDrawer(); // Correct context for drawer
           },
           icon: Icon(
-            color: AppColors.prettyDark,
+            color: AppColors.prettyBlue,
             Icons.sort,
           ),
         ),
-        actions: [
+        actions: [IconButton(
+          onPressed: () => Get.to(() => Stats()),
+          icon: Icon(
+            Icons.bar_chart_rounded,
+            color: AppColors.prettyBlue,
+          ),
+        ),
           IconButton(
             onPressed: () => Get.to(() => Profile()),
             icon: Icon(
               Icons.person_outline_outlined,
-              color: AppColors.prettyDark,
+              color: AppColors.prettyBlue,
             ),
           ),
         ],
@@ -109,7 +116,7 @@ class Dashboard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.quinary, width: 1),
+                              border: Border.all(color: AppColors.quarternary, width: .5),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -137,7 +144,7 @@ class Dashboard extends StatelessWidget {
                                   formatter
                                       .format((double.parse(controller.totals.value.cashBalances['KES'].toString()) + double.parse(controller.totals.value.bankBalances['KES'].toString())))
                                       .toString(),
-                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25, color: AppColors.quinary),
+                                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 35, color: AppColors.quinary),
                                 ),
                               )
 

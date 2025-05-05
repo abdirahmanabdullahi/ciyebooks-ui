@@ -20,7 +20,7 @@ class ButtonList extends StatelessWidget {
       children: [
         TopButton(
           heroTag: "Payment",
-          icon: Icons.arrow_outward,
+          icon: Icons.arrow_outward_rounded,
           label: 'Pay',
          
           onPressed: () {
@@ -33,7 +33,7 @@ class ButtonList extends StatelessWidget {
 
         TopButton(
           heroTag: "Receive",
-          icon: Icons.arrow_downward,
+          icon: Icons.arrow_downward_rounded,
           label: 'Receive',
           onPressed: () => Get.offAll(() => ReceiptsHistory()),
         ),
@@ -45,7 +45,7 @@ class ButtonList extends StatelessWidget {
         ),
         TopButton(
           heroTag: "Forex",
-          icon: Icons.currency_exchange,
+          icon: Icons.currency_exchange_rounded,
           label: 'Forex',
           onPressed: ()=>Get.offAll(()=>ForexHome())
         ),

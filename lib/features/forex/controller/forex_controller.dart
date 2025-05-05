@@ -63,7 +63,7 @@ class ForexController extends GetxController {
   @override
   onInit() async {
     fetchTotals();
-
+    fetchCurrencies();
     ///Add listeners to the controllers
     sellingRate.addListener(updateButtonStatus);
     sellingAmount.addListener(updateButtonStatus);
@@ -97,7 +97,7 @@ class ForexController extends GetxController {
       // }
 
       // Check if currency is selected
-      if (currencyCode.text.isEmpty) {
+      if (newCurrencyCode.text.isEmpty) {
         Get.snackbar(
           'No currency selected!',
           'Please select a new currency and try again',
@@ -110,7 +110,7 @@ class ForexController extends GetxController {
       // Create new currency
       final newCurrency = CurrencyModel(currencyName: newCurrencyName.text.trim(), amount: 0, totalCost: 0, symbol: newCurrencySymbol.text.trim(), currencyCode: newCurrencyCode.text.trim());
 
-      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(currencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(newCurrencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
 
       });
     } catch (e) {

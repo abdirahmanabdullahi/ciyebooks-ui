@@ -31,12 +31,12 @@ class TopButton extends StatelessWidget {
             heroTag: heroTag,
             backgroundColor: AppColors.quinary,
             shape: RoundedRectangleBorder(side: BorderSide(
-                color: AppColors.quinary,width: 2.5
+                color: AppColors.prettyBlue,width: 1.5
             ),
                 borderRadius: BorderRadius.circular(100)),
             onPressed: onPressed,
             child: Icon(
-              size: 20,
+              // size: 20,
               icon,
               color: AppColors.prettyDark,
             ),
