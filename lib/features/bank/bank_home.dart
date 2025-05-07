@@ -35,19 +35,27 @@ class BankHistory extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
+
+        // leading:
+      // IconButton(
+          // onPressed: () => Get.off(NavigationMenu()),
+          // icon: Icon(
+          //   Icons.arrow_back_ios,
+          //   color: AppColors.prettyDark,
+          // )),
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () => Get.offAll(NavigationMenu()),
-              icon: Icon(
-                Icons.close,
-                color: AppColors.prettyDark,
-              )),
-        ],
-        automaticallyImplyLeading: false,
+        // actions: [
+        //   IconButton(
+        //       onPressed: () => Get.offAll(NavigationMenu()),
+        //       icon: Icon(
+        //         Icons.close,
+        //         color: AppColors.prettyDark,
+        //       )),
+        // ],
+        automaticallyImplyLeading: true,
         backgroundColor: AppColors.quarternary,
         title: Text(
-          'Bank history',
+          'Bank',
           style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
         ),
       ),

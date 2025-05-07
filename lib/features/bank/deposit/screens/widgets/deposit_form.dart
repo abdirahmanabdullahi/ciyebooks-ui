@@ -36,15 +36,14 @@ showDepositForm(BuildContext context) {
         child: PopScope(
           canPop: false,
           child: AlertDialog(
-            titlePadding: EdgeInsets.zero,
-            insetPadding: EdgeInsets.all(8),
+            titlePadding: EdgeInsets.zero, insetPadding: EdgeInsets.all(16),
+            contentPadding: EdgeInsets.all(16),
             backgroundColor: AppColors.quarternary,
-            contentPadding: EdgeInsets.all(6),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -58,14 +57,14 @@ showDepositForm(BuildContext context) {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Deposit cash at bank',
-                            style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                            style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                           ),
                         ),
                         IconButton(
                             onPressed: () => Navigator.of(context).pop(),
                             icon: Icon(
                               Icons.close,
-                              color: AppColors.quinary,
+                              color: AppColors.prettyDark,
                             ))
                       ],
                     ),
@@ -84,30 +83,29 @@ showDepositForm(BuildContext context) {
                     trailingIcon: Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: CupertinoColors.systemBlue,
-                      size: 30,
                     ),
-                    inputDecorationTheme: InputDecorationTheme(
-                      filled: true,
-                      fillColor: AppColors.quinary,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    enableFilter: true,
-                    menuStyle: MenuStyle(
-                      // side: WidgetStateProperty.all(BorderSide(color: Colors.grey,width: 2,)),
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 3)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                    ),
-                    label: Text('Select currency'),
+                        expandedInsets: EdgeInsets.zero,
+                        inputDecorationTheme: InputDecorationTheme(
+                          fillColor: AppColors.quinary,
+                          filled: true,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                          constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        enableSearch: true,
+                        requestFocusOnTap: true,
+                        enableFilter: true,
+                        menuStyle: MenuStyle(
+                          padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                          backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                        ),
+
+                        label: Text('Select currency'),
                     selectedTrailingIcon: Icon(Icons.search),
-                    width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
                         controller.depositedCurrency.text = value;

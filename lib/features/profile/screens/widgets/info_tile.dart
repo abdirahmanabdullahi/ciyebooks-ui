@@ -17,6 +17,7 @@ class InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      // isThreeLine: true,
       tileColor: AppColors.quinary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

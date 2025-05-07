@@ -36,14 +36,14 @@ showExpenseForm(BuildContext context) {
             canPop: false,
             child: AlertDialog(
               titlePadding: EdgeInsets.zero,
-              insetPadding: EdgeInsets.all(AppSizes.padding),
+              insetPadding: EdgeInsets.all(16),
               backgroundColor: AppColors.quarternary,
-              contentPadding: EdgeInsets.all(AppSizes.padding),
+              contentPadding: EdgeInsets.all(16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
               ),
               title: Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
                 width: double.maxFinite,
                 // height: 30,
                 child: Padding(
@@ -57,14 +57,14 @@ showExpenseForm(BuildContext context) {
                             padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               'Paying an expense',
-                              style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                             ),
                           ),
                           IconButton(
                               onPressed: () => Navigator.of(context).pop(),
                               icon: Icon(
                                 Icons.close,
-                                color: AppColors.quinary,
+                                color: AppColors.prettyDark,
                               ))
                         ],
                       ),
@@ -83,6 +83,7 @@ showExpenseForm(BuildContext context) {
                         Icons.search,
                         color: CupertinoColors.systemBlue,
                       ),
+                      expandedInsets: EdgeInsets.zero,
                       inputDecorationTheme: InputDecorationTheme(
                         fillColor: AppColors.quinary,
                         filled: true,
@@ -101,9 +102,9 @@ showExpenseForm(BuildContext context) {
                         backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                         maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                       ),
-                      label: Text('Select expense category'),
                       selectedTrailingIcon: Icon(Icons.search),
-                      width: double.maxFinite,
+                      // width: double.maxFinite,
+                      label: Text('Select expense category'),
                       onSelected: (value) {},
                       dropdownMenuEntries: controller.expenseCategories.entries.map((entry) {
                         return DropdownMenuEntry(
@@ -131,11 +132,12 @@ showExpenseForm(BuildContext context) {
                               Icons.keyboard_arrow_down_outlined,
                               color: CupertinoColors.systemBlue,
                             ),
+                            expandedInsets: EdgeInsets.zero,
                             inputDecorationTheme: InputDecorationTheme(
                               fillColor: AppColors.quinary,
                               filled: true,
                               isDense: true,
-                              // contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                               constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -149,9 +151,9 @@ showExpenseForm(BuildContext context) {
                               backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                               maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                             ),
+
                             label: Text('Payment type'),
                             selectedTrailingIcon: Icon(Icons.search),
-                            width: double.maxFinite,
                             onSelected: (value) {
                               if (value != null) {
                                 controller.paymentType.value = value;
@@ -202,11 +204,12 @@ showExpenseForm(BuildContext context) {
                               Icons.keyboard_arrow_down_rounded,
                               color: CupertinoColors.systemBlue,
                             ),
+                            expandedInsets: EdgeInsets.zero,
                             inputDecorationTheme: InputDecorationTheme(
-                              filled: true,
                               fillColor: AppColors.quinary,
+                              filled: true,
                               isDense: true,
-                              // contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                               constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
@@ -216,14 +219,13 @@ showExpenseForm(BuildContext context) {
                             requestFocusOnTap: true,
                             enableFilter: true,
                             menuStyle: MenuStyle(
-                              // side: WidgetStateProperty.all(BorderSide(color: Colors.grey,width: 2,)),
-                              padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 3)),
+                              padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                               backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                               maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                             ),
+
                             label: Text('Currency'),
                             selectedTrailingIcon: Icon(Icons.search),
-                            width: double.maxFinite,
                             onSelected: (value) {
                               if (value != null) {
                                 controller.paidCurrency.text = value;

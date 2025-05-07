@@ -211,6 +211,9 @@ class ForexController extends GetxController {
 
       ///update cash and currency balances when buying currencies
       if (selectedTransaction.value == 'buyFx') {
+        /// Update currencies at cost
+        batch.update(cashRef, {'currenciesAtCost':FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+
         /// Update currency amount
         batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
 
@@ -224,20 +227,25 @@ class ForexController extends GetxController {
                 : {"cashBalances.KES": FieldValue.increment(-num.parse(sellingTotal.text.trim().replaceAll(',', '')))});
       }
 
+
       ///update cash balance when selling currencies
 
       if (selectedTransaction.value == 'sellFx') {
+        /// Update currencies at cost
+        batch.update(cashRef, {'currenciesAtCost':FieldValue.increment(-double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+
         /// Update currency amount
         batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
 
         ///Update total cost
         batch.update(currencyRef, {"totalCost": FieldValue.increment(-double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
 
+
         batch.update(
             cashRef,
             type.text.trim() == 'Bank transfer'
                 ? {"bankBalances.KES": FieldValue.increment(num.parse(sellingTotal.text.trim().replaceAll(',', '')))}
-                : {"cashBalances.KES": FieldValue.increment(num.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+                : {"cashBalances.cKES": FieldValue.increment(num.parse(sellingTotal.text.trim().replaceAll(',', '')))});
       }
 
       ///Update forex counter

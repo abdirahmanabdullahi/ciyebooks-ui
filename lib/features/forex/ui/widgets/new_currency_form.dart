@@ -17,11 +17,11 @@ showAddNewCurrencyDialog(BuildContext context) {
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
         insetPadding: EdgeInsets.all(20),
-        backgroundColor: AppColors.quinary,
+        backgroundColor: AppColors.quarternary,
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
           width: double.maxFinite,
           height: 50,
           child: Row(
@@ -32,7 +32,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                 child: Text(
                   'Adding new currency',
                   style: TextStyle(
-                    color: AppColors.quinary,
+                    color: AppColors.prettyBlue,
                   ),
                 ),
               ),
@@ -44,7 +44,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                   },
                   icon: Icon(
                     Icons.close,
-                    color: AppColors.quinary,
+                    color: AppColors.prettyDark,
                   ))
             ],
           ),
@@ -65,7 +65,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                   fillColor: AppColors.quinary,
                   isDense: false,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                  constraints: BoxConstraints.tight(const Size.fromHeight(38)),
+                  constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -125,8 +125,8 @@ showAddNewCurrencyDialog(BuildContext context) {
                 width: double.maxFinite,
                 child: FloatingActionButton(
                     elevation: 0,
-                    backgroundColor: AppColors.secondary,
-                    shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.secondary, width: 1), borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: AppColors.prettyBlue,
+                    shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.prettyBlue, width: 1), borderRadius: BorderRadius.circular(10)),
                     onPressed: () => controller.addNewCurrency(context),
                     child: Text(
                       'Add currency',

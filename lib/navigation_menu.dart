@@ -18,602 +18,186 @@ class NavigationMenu extends StatelessWidget {
     final controller = Get.put(NavigationController());
     final authController = Get.put(AuthRepo());
     return Scaffold(
-      // Add the Drawer here
-      drawer: Drawer(
-        backgroundColor: AppColors.quarternary,
-        child: ListView(
-          physics: ClampingScrollPhysics(),
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              child: Column(
-                children: [
-                  Image(
-                    image: AssetImage(AppImages.logoDark),
-                    height: 120,
-                  ),
+        // Add the Drawer here
+        drawer: Drawer(
+          backgroundColor: AppColors.quarternary,
+          child: ListView(
+            physics: ClampingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                child: Column(
 
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Main', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                dense: true,
-                tileColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                leading: const Icon(
-                  Icons.home_outlined,
+                  children: [
+                    Image(
+                      image: AssetImage(AppImages.logoDark),
+                      height: 120,
+                    ),
+                  ],
                 ),
-                title: const Text('Home'),
-                onTap: () {
-                  // Navigate to Home
-                  controller.selectedIndex.value = 0;
-                  Get.back(); // Close the drawer
-                },
               ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                dense: true,
-                tileColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                leading: const Icon(Icons.description_outlined),
-                title: const Text('Notes'),
-                onTap: () {
-                  // Navigate to Notes
-                  controller.selectedIndex.value = 1;
-                  Get.back(); // Close the drawer
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                dense: true,
-                tileColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                leading: const Icon(Icons.calculate_outlined),
-                title: const Text('Todos'),
-                onTap: () {
-                  controller.selectedIndex.value = 2;
-                  Get.back(); // C
-                  Get.back(); // Close the drawer
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                dense: true,
-                tileColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                leading: const Icon(
-                  Icons.settings,
+              SizedBox(
+                child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,mainAxisSize: MainAxisSize.max,
+                  children: [SizedBox(height: double.maxFinite,),
+                    SizedBox(width: double.maxFinite,
+                      height: 70,
+                      child: FloatingActionButton(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                        backgroundColor: AppColors.prettyBlue,
+                        onPressed: () => authController.logoutUser(),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout_outlined,
+                              color: AppColors.quinary,
+                            ),
+                            Gap(20),
+                            Text(
+                              'Logout',
+                              style: TextStyle(color: AppColors.quinary, fontSize: 16, fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                title: const Text(
-                  'Calculator',
-                ),
-                onTap: () {
-                  controller.selectedIndex.value = 3;
-                  Get.back(); // C
-                  Get.back(); // Close the drawer
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Stats'),
-                onTap: () {
-                  controller.selectedIndex.value = 4;
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Pay', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Pay client'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Pay expense'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Schedule a payment'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Payment history'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Receive', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Receive funds from a client'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Receipt history'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Bank', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Cash bank deposit'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Withdraw cash'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Deposit for client'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Bank history'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Transfer', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Internal transfer'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Bank transfer'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Transfer history'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Forex', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Buy'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Sell'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('New currency'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Currency stock'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Forex history'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('Accounts', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Create new account'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(6),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('View accounts'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3),
-              child: Text('History', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 9)),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: ListTile(
-                tileColor: AppColors.quinary,
-                dense: true,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                leading: const Icon(Icons.settings),
-                title: const Text('Search transactions'),
-                onTap: () {
-                  // Get.offAll(() => PayAccountSelectorScreen());
-                  Get.back(); // C
-                },
-              ),
-            ),
-            Gap(40),
-            SizedBox(
-              height: 70,
-              child: FloatingActionButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  backgroundColor: AppColors.prettyDark,
-                  onPressed: () => authController.logoutUser(),
-                  child: Text(
-                    "Logout",
-                    style: Theme.of(context).textTheme.titleSmall!.apply(color: AppColors.quinary),
-                  )),
-            )
-          ],
+              )
+            ],
+          ),
         ),
-      ),
-      // bottomNavigationBar: Obx(
-      //   () => NavigationBarTheme(
-      //     data: NavigationBarThemeData(
-      //       labelTextStyle: WidgetStatePropertyAll(
-      //         TextStyle(
-      //           fontSize: 10,
-      //           fontWeight: FontWeight.w600,
-      //           color: AppColors.prettyDark,
-      //         ),
-      //       ),
-      //     ),
-      //     child: BottomNavigationBar(
-      //       useLegacyColorScheme: false,
-      //
-      //       // animationDuration: Duration.zero,
-      //       // indicatorColor: Colors.transparent,
-      //       // backgroundColor: AppColors.quinary,
-      //       // height: 60,
-      //       currentIndex: controller.selectedIndex.value,
-      //       onTap: (index) => controller.selectedIndex.value = index,
-      //       elevation: 3,
-      //       items: [
-      //         BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home_outlined,
-      //             color: AppColors.prettyDark,
-      //           ),
-      //           label: 'Home',
-      //           // selectedIcon: Icon(
-      //           //   Icons.home,
-      //           //   color: AppColors.prettyDark,
-      //           // ),
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home_outlined,
-      //             color: AppColors.prettyDark,
-      //           ),
-      //           label: 'Home',
-      //           // selectedIcon: Icon(
-      //           //   Icons.home,
-      //           //   color: AppColors.prettyDark,
-      //           // ),
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home_outlined,
-      //             color: AppColors.prettyDark,
-      //           ),
-      //           label: 'Home',
-      //           // selectedIcon: Icon(
-      //           //   Icons.home,
-      //           //   color: AppColors.prettyDark,
-      //           // ),
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home_outlined,
-      //             color: AppColors.prettyDark,
-      //           ),
-      //           label: 'Home',
-      //           // selectedIcon: Icon(
-      //           //   Icons.home,
-      //           //   color: AppColors.prettyDark,
-      //           // ),
-      //         ),
-      //         BottomNavigationBarItem(
-      //           icon: Icon(
-      //             Icons.home_outlined,
-      //             color: AppColors.prettyDark,
-      //           ),
-      //           label: 'Home',
-      //           // selectedIcon: Icon(
-      //           //   Icons.home,
-      //           //   color: AppColors.prettyDark,
-      //           // ),
-      //         ),
-      //         // NavigationDestination(
-      //         //   icon: Icon(
-      //         //     Icons.description_outlined,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         //   label: 'Notes',
-      //         //   selectedIcon: Icon(
-      //         //     Icons.description,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         // ),
-      //         // NavigationDestination(
-      //         //   icon: Icon(
-      //         //     Icons.fact_check_outlined,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         //   label: 'Todos',
-      //         //   selectedIcon: Icon(
-      //         //     Icons.fact_check,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         // ),
-      //         // NavigationDestination(
-      //         //   icon: Icon(
-      //         //     Icons.calculate_outlined,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         //   label: 'Calc',
-      //         //   selectedIcon: Icon(
-      //         //     Icons.calculate,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         // ),
-      //         // NavigationDestination(
-      //         //   icon: Icon(
-      //         //     Icons.leaderboard_outlined,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         //   label: 'Stats',
-      //         //   selectedIcon: Icon(
-      //         //     Icons.leaderboard,
-      //         //     color: AppColors.prettyDark,
-      //         //   ),
-      //         // ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        // bottomNavigationBar: Obx(
+        //   () => NavigationBarTheme(
+        //     data: NavigationBarThemeData(
+        //       labelTextStyle: WidgetStatePropertyAll(
+        //         TextStyle(
+        //           fontSize: 10,
+        //           fontWeight: FontWeight.w600,
+        //           color: AppColors.prettyDark,
+        //         ),
+        //       ),
+        //     ),
+        //     child: BottomNavigationBar(
+        //       useLegacyColorScheme: false,
+        //
+        //       // animationDuration: Duration.zero,
+        //       // indicatorColor: Colors.transparent,
+        //       // backgroundColor: AppColors.quinary,
+        //       // height: 60,
+        //       currentIndex: controller.selectedIndex.value,
+        //       onTap: (index) => controller.selectedIndex.value = index,
+        //       elevation: 3,
+        //       items: [
+        //         BottomNavigationBarItem(
+        //           icon: Icon(
+        //             Icons.home_outlined,
+        //             color: AppColors.prettyDark,
+        //           ),
+        //           label: 'Home',
+        //           // selectedIcon: Icon(
+        //           //   Icons.home,
+        //           //   color: AppColors.prettyDark,
+        //           // ),
+        //         ),
+        //         BottomNavigationBarItem(
+        //           icon: Icon(
+        //             Icons.home_outlined,
+        //             color: AppColors.prettyDark,
+        //           ),
+        //           label: 'Home',
+        //           // selectedIcon: Icon(
+        //           //   Icons.home,
+        //           //   color: AppColors.prettyDark,
+        //           // ),
+        //         ),
+        //         BottomNavigationBarItem(
+        //           icon: Icon(
+        //             Icons.home_outlined,
+        //             color: AppColors.prettyDark,
+        //           ),
+        //           label: 'Home',
+        //           // selectedIcon: Icon(
+        //           //   Icons.home,
+        //           //   color: AppColors.prettyDark,
+        //           // ),
+        //         ),
+        //         BottomNavigationBarItem(
+        //           icon: Icon(
+        //             Icons.home_outlined,
+        //             color: AppColors.prettyDark,
+        //           ),
+        //           label: 'Home',
+        //           // selectedIcon: Icon(
+        //           //   Icons.home,
+        //           //   color: AppColors.prettyDark,
+        //           // ),
+        //         ),
+        //         BottomNavigationBarItem(
+        //           icon: Icon(
+        //             Icons.home_outlined,
+        //             color: AppColors.prettyDark,
+        //           ),
+        //           label: 'Home',
+        //           // selectedIcon: Icon(
+        //           //   Icons.home,
+        //           //   color: AppColors.prettyDark,
+        //           // ),
+        //         ),
+        //         // NavigationDestination(
+        //         //   icon: Icon(
+        //         //     Icons.description_outlined,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         //   label: 'Notes',
+        //         //   selectedIcon: Icon(
+        //         //     Icons.description,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         // ),
+        //         // NavigationDestination(
+        //         //   icon: Icon(
+        //         //     Icons.fact_check_outlined,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         //   label: 'Todos',
+        //         //   selectedIcon: Icon(
+        //         //     Icons.fact_check,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         // ),
+        //         // NavigationDestination(
+        //         //   icon: Icon(
+        //         //     Icons.calculate_outlined,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         //   label: 'Calc',
+        //         //   selectedIcon: Icon(
+        //         //     Icons.calculate,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         // ),
+        //         // NavigationDestination(
+        //         //   icon: Icon(
+        //         //     Icons.leaderboard_outlined,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         //   label: 'Stats',
+        //         //   selectedIcon: Icon(
+        //         //     Icons.leaderboard,
+        //         //     color: AppColors.prettyDark,
+        //         //   ),
+        //         // ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // floatingActionButton: FloatingActionButton(backgroundColor:AppColors.prettyDark,elevation:0,onPressed: (){}),            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
-      body: Dashboard()
-      // Obx(
-      //   () => controller.screens[controller.selectedIndex.value],
-      // ),
-    );
+        body: Dashboard()
+        // Obx(
+        //   () => controller.screens[controller.selectedIndex.value],
+        // ),
+        );
   }
 }
 
@@ -626,4 +210,3 @@ class NavigationController extends GetxController {
     // StatsPage(),
   ];
 }
-

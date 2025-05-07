@@ -38,13 +38,13 @@ showReceiptForm(BuildContext context) {
           canPop: false,
           child: AlertDialog(
             titlePadding: EdgeInsets.zero,
-            insetPadding: EdgeInsets.all(AppSizes.padding),
+            insetPadding: EdgeInsets.all(16),
             backgroundColor: AppColors.quarternary,
-            contentPadding: EdgeInsets.all(AppSizes.padding),
+            contentPadding: EdgeInsets.all(16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)),),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -57,9 +57,9 @@ showReceiptForm(BuildContext context) {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Receiving a deposit from client',
-                            style: TextStyle(color: AppColors.quinary,fontWeight: FontWeight.w400 ),
+                            style: TextStyle(color: AppColors.prettyDark,fontWeight: FontWeight.w400 ),
                           ),
-                        ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.quinary,))
+                        ),IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.close,color: AppColors.prettyDark,))
                       ],
                     ),
                   ],
@@ -78,27 +78,28 @@ showReceiptForm(BuildContext context) {
                       Icons.search,
                       color: CupertinoColors.systemBlue,
                     ),
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: AppColors.quinary,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    enableFilter: true,
-                    menuStyle: MenuStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                    ),
-                    label: Text('Select receiving account'),
+                        expandedInsets: EdgeInsets.zero,
+                        inputDecorationTheme: InputDecorationTheme(
+                          fillColor: AppColors.quinary,
+                          filled: true,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                          constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        enableSearch: true,
+                        requestFocusOnTap: true,
+                        enableFilter: true,
+                        menuStyle: MenuStyle(
+                          padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                          backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                        ),
+
+                        label: Text('Select receiving account'),
                     selectedTrailingIcon: Icon(Icons.search),
-                    width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
                         controller.receivingAccountNo.text = value[0].toString();
@@ -135,28 +136,28 @@ showReceiptForm(BuildContext context) {
                             Icons.keyboard_arrow_down_rounded,
                             color: CupertinoColors.systemBlue,
                           ),
-                          inputDecorationTheme: InputDecorationTheme(
-                            filled: true,
-                            fillColor: AppColors.quinary,
-                            isDense: true,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          enableSearch: true,
-                          requestFocusOnTap: true,
-                          enableFilter: true,
-                          menuStyle: MenuStyle(
-                            // side: WidgetStateProperty.all(BorderSide(color: Colors.grey,width: 2,)),
-                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 3)),
-                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                          ),
-                          label: Text('Currency'),
+                              expandedInsets: EdgeInsets.zero,
+                              inputDecorationTheme: InputDecorationTheme(
+                                fillColor: AppColors.quinary,
+                                filled: true,
+                                isDense: true,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                                constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              enableSearch: true,
+                              requestFocusOnTap: true,
+                              enableFilter: true,
+                              menuStyle: MenuStyle(
+                                padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                                backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                                maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                              ),
+
+                              label: Text('Currency'),
                           selectedTrailingIcon: Icon(Icons.search),
-                          width: double.maxFinite,
                           onSelected: (value) {
                             if (value != null) {
                               controller.receivedCurrency.text = value;
@@ -215,7 +216,6 @@ showReceiptForm(BuildContext context) {
                           ),
                           label: Text('Deposit type'),
                           selectedTrailingIcon: Icon(Icons.search),
-                          width: double.maxFinite,
                           onSelected: (value) {},
                           dropdownMenuEntries: [
                             DropdownMenuEntry(

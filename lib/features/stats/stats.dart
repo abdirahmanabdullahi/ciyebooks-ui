@@ -9,17 +9,21 @@ class Stats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(appBar: AppBar(    automaticallyImplyLeading: true,
-      // title: Text("Dashboard"),
-      centerTitle: true,
-      leading: IconButton(
-        onPressed: () =>Get.off(()=>NavigationMenu()),
-        icon: Icon(
-          color: AppColors.quinary,
-          Icons.west_outlined,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        // title: Text("Dashboard"),
+        centerTitle: true,
+        // leading: IconButton(
+        //   onPressed: () =>Get.off(()=>NavigationMenu()),
+        //   icon: Icon(
+        //     color: AppColors.quinary,
+        //     Icons.west_outlined,
+        //   ),
+        // ),
+        backgroundColor: AppColors.prettyBlue,
       ),
-      backgroundColor: AppColors.prettyBlue,),
-      backgroundColor: AppColors.prettyBlue,);
+      backgroundColor: AppColors.prettyBlue,
+    );
   }
 }

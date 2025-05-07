@@ -20,6 +20,7 @@ class DashboardController extends GetxController {
 
   final _uid = FirebaseAuth.instance.currentUser!.uid;
 
+
   ///
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
 

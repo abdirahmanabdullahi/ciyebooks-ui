@@ -36,14 +36,14 @@ showPaymentForm(BuildContext context) {
         },
         child: AlertDialog(
           titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.all(AppSizes.padding),
+          insetPadding: EdgeInsets.all(16),
+          contentPadding: EdgeInsets.all(16),
           backgroundColor: AppColors.quarternary,
-          contentPadding: EdgeInsets.all(AppSizes.padding),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
           title: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
             width: double.maxFinite,
             // height: 30,
             child: Padding(
@@ -57,14 +57,14 @@ showPaymentForm(BuildContext context) {
                         padding: const EdgeInsets.only(left: 15.0),
                         child: Text(
                           'Paying a client',
-                          style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                          style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                         ),
                       ),
                       IconButton(
                           onPressed: () => Navigator.of(context).pop(),
                           icon: Icon(
                             Icons.close,
-                            color: AppColors.quinary,
+                            color: AppColors.prettyDark,
                           ))
                     ],
                   ),
@@ -78,8 +78,11 @@ showPaymentForm(BuildContext context) {
               Gap(AppSizes.spaceBtwItems),
               Obx(
                 () => SizedBox(
+                  width: double.maxFinite,
                   height: 45,
                   child: DropdownMenu(
+                    expandedInsets: EdgeInsets.zero,
+
                     controller: controller.from,
                     trailingIcon: Icon(
                       Icons.search,
@@ -105,7 +108,7 @@ showPaymentForm(BuildContext context) {
                     ),
                     label: Text('Paying account'),
                     selectedTrailingIcon: Icon(Icons.search),
-                    width: double.maxFinite,
+                    // width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
                         controller.from.text = value[2].toString();
@@ -137,14 +140,16 @@ showPaymentForm(BuildContext context) {
                 () => SizedBox(
                   height: 45,
                   child: DropdownMenu(
+                    expandedInsets: EdgeInsets.zero,
+
                     controller: controller.paidCurrency,
                     trailingIcon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
+                      Icons.keyboard_arrow_down_outlined,
                       color: CupertinoColors.systemBlue,
                     ),
                     inputDecorationTheme: InputDecorationTheme(
-                      filled: true,
                       fillColor: AppColors.quinary,
+                      filled: true,
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                       constraints: BoxConstraints.tight(const Size.fromHeight(45)),
@@ -156,14 +161,13 @@ showPaymentForm(BuildContext context) {
                     requestFocusOnTap: true,
                     enableFilter: true,
                     menuStyle: MenuStyle(
-                      // side: WidgetStateProperty.all(BorderSide(color: Colors.grey,width: 2,)),
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 3)),
+                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                       backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                       maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                     ),
                     label: Text('Currency paid'),
                     selectedTrailingIcon: Icon(Icons.search),
-                    width: double.maxFinite,
+                    // width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
                         controller.paidCurrency.text = value;
@@ -218,6 +222,8 @@ showPaymentForm(BuildContext context) {
                     flex: 3,
                     child: DropdownMenu(
                         controller: controller.paymentType,
+                        expandedInsets: EdgeInsets.zero,
+
                         trailingIcon: Icon(
                           Icons.keyboard_arrow_down_outlined,
                           color: CupertinoColors.systemBlue,
@@ -226,7 +232,7 @@ showPaymentForm(BuildContext context) {
                           fillColor: AppColors.quinary,
                           filled: true,
                           isDense: true,
-                          // contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                           constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -242,7 +248,7 @@ showPaymentForm(BuildContext context) {
                         ),
                         label: Text('Payment type'),
                         selectedTrailingIcon: Icon(Icons.search),
-                        width: double.maxFinite,
+                        // width: double.maxFinite,
                         onSelected: (value) {},
                         dropdownMenuEntries: [
                           DropdownMenuEntry(
@@ -324,8 +330,8 @@ showPaymentForm(BuildContext context) {
               Gap(AppSizes.spaceBtwItems),
               SizedBox(
                 height: 45,
-                child: TextFormField(                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-
+                child: TextFormField(
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                   ],
@@ -377,7 +383,7 @@ showPaymentForm(BuildContext context) {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     // ),
                     onPressed: () {
-                      controller.checkInternetConnection(context);
+                      controller.checkBalances(context);
                     },
                     // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                     child: Text(

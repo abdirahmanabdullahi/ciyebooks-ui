@@ -14,11 +14,11 @@ showAddExpenseCategoryDialog(context) {
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
         backgroundColor: AppColors.quarternary,
-        contentPadding: EdgeInsets.symmetric(horizontal: AppSizes.padding),
-        insetPadding: EdgeInsets.all(AppSizes.padding),
+        contentPadding: EdgeInsets.all(16),
+        insetPadding: EdgeInsets.all(16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         title: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
           width: double.maxFinite,
           // height: 30,
           child: Padding(
@@ -32,14 +32,14 @@ showAddExpenseCategoryDialog(context) {
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Text(
                         'Adding new expense category',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                        style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                       ),
                     ),
                     IconButton(
                         onPressed: () => Navigator.of(context).pop(),
                         icon: Icon(
                           Icons.close,
-                          color: AppColors.quinary,
+                          color: AppColors.prettyDark,
                         ))
                   ],
                 ),
@@ -59,10 +59,11 @@ showAddExpenseCategoryDialog(context) {
                     controller: controller.category,
                     decoration: InputDecoration(labelText: 'Category name'),
                   )),
-              Gap(AppSizes.spaceBtwItems*4),
+              Gap(AppSizes.spaceBtwItems*2.5),
               SizedBox(height: 45,width: double.maxFinite,
-                child:  FloatingActionButton(
-                backgroundColor: AppColors.prettyBlue,
+                child:  FloatingActionButton(elevation: 0,                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+
+                  backgroundColor: AppColors.prettyBlue,
 
                 child: const Text(
                   'Add',

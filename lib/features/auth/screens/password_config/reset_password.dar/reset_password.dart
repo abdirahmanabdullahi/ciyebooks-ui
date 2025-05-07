@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../../navigation_menu.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -15,7 +16,13 @@ class ResetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.quarternary,
+      appBar: AppBar(backgroundColor: AppColors.quarternary, leading: IconButton(
+          onPressed: () => Get.back(),
+
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.prettyDark,
+          )),
         actions: [
           IconButton(
               onPressed: () => Get.back(),

@@ -39,10 +39,13 @@ class ReceiptsHistory extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: AppColors.quinary,
-        title: Text('Receipt history',          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
+        automaticallyImplyLeading: true,
+        backgroundColor: AppColors.quarternary,
+        title: Text(
+          'Deposits',
+          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
         ),
-        actions: [IconButton(onPressed: () => Get.offAll(() => NavigationMenu()), icon: Icon(Icons.close))],
+        // actions: [IconButton(onPressed: () => Get.offAll(() => NavigationMenu()), icon: Icon(Icons.close))],
       ),
       backgroundColor: AppColors.quarternary,
       body: StreamBuilder<QuerySnapshot>(

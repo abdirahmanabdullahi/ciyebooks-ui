@@ -35,14 +35,13 @@ showForexForm(BuildContext context) {
           canPop: false,
           child: AlertDialog(
             titlePadding: EdgeInsets.zero,
-            insetPadding: EdgeInsets.all(8),
             backgroundColor: AppColors.quarternary,
-            contentPadding: EdgeInsets.all(6),
-            shape: RoundedRectangleBorder(
+            insetPadding: EdgeInsets.all(16),
+            contentPadding: EdgeInsets.all(16),            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.prettyBlue),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -56,14 +55,14 @@ showForexForm(BuildContext context) {
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             'Forex',
-                            style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w400),
+                            style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                           ),
                         ),
                         IconButton(
                             onPressed: () => Navigator.of(context).pop(),
                             icon: Icon(
                               Icons.close,
-                              color: AppColors.quinary,
+                              color: AppColors.prettyDark,
                             ))
                       ],
                     ),
@@ -159,7 +158,7 @@ showForexForm(BuildContext context) {
                 Gap(AppSizes.spaceBtwItems),
                 Row(
                   children: [
-                    Expanded(
+                    Expanded(flex: 3,
                       child: DropdownMenu(
                         enableFilter: true,
                         controller: controller.currencyCode,
@@ -167,6 +166,7 @@ showForexForm(BuildContext context) {
                           Icons.search,
                           color: CupertinoColors.systemBlue,
                         ),
+                        expandedInsets: EdgeInsets.zero,
                         inputDecorationTheme: InputDecorationTheme(
                           fillColor: AppColors.quinary,
                           filled: true,
@@ -182,8 +182,9 @@ showForexForm(BuildContext context) {
                         menuStyle: MenuStyle(
                           padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                           backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
+                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                         ),
+
                         label: Text(
                           'Currency',
                           style: const TextStyle(
@@ -191,7 +192,6 @@ showForexForm(BuildContext context) {
                           ),
                         ),
                         selectedTrailingIcon: Icon(Icons.search),
-                        width: double.maxFinite,
                         onSelected: (value) {
                           if (value != null) {
                             controller.currencyCode.text = value[0].toString();
@@ -224,18 +224,19 @@ showForexForm(BuildContext context) {
                       ),
                     ),
                     Gap(AppSizes.spaceBtwItems),
-                    Expanded(
+                    Expanded(flex: 2,
                       child: DropdownMenu(
                           controller: controller.type,
                           trailingIcon: Icon(
                             Icons.keyboard_arrow_down_outlined,
                             color: CupertinoColors.systemBlue,
                           ),
+                          expandedInsets: EdgeInsets.zero,
                           inputDecorationTheme: InputDecorationTheme(
                             fillColor: AppColors.quinary,
                             filled: true,
                             isDense: true,
-                            // contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                             constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -249,9 +250,9 @@ showForexForm(BuildContext context) {
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                             maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                           ),
+
                           label: Text(' Type'),
                           selectedTrailingIcon: Icon(Icons.search),
-                          width: double.maxFinite,
                           onSelected: (value) {},
                           dropdownMenuEntries: [
                             DropdownMenuEntry(

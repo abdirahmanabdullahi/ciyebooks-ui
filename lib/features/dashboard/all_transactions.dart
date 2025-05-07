@@ -24,17 +24,23 @@ class TransactionHistory extends StatelessWidget {
 
     return Scaffold(backgroundColor: AppColors.quarternary,
       appBar: AppBar(
+        // leading: IconButton(
+        //   onPressed: () => Get.off(NavigationMenu()),
+        //   icon: Icon(
+        //     Icons.arrow_back_ios,
+        //     color: AppColors.prettyDark,
+        //   )),
         elevation: 0,
-        actions: [
-          IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => Get.offAll(NavigationMenu()),
-              icon: Icon(
-                Icons.close,
-                color: AppColors.prettyDark,
-              )),
-        ],
-        automaticallyImplyLeading: false,
+        // actions: [
+        //   IconButton(
+        //       padding: EdgeInsets.zero,
+        //       onPressed: () => Get.offAll(NavigationMenu()),
+        //       icon: Icon(
+        //         Icons.close,
+        //         color: AppColors.prettyDark,
+        //       )),
+        // ],
+        // automaticallyImplyLeading: false,
         backgroundColor: AppColors.quarternary,
         title: Text(
           'Transaction history',

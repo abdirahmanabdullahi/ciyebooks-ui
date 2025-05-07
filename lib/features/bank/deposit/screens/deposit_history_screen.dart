@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
+import '../../../../navigation_menu.dart';
 import '../../../../utils/constants/colors.dart';
 
 class DepositHistoryScreen extends StatelessWidget {
@@ -42,12 +43,11 @@ onPressed: (){},        child: Icon(
         foregroundColor: AppColors.quinary,
         automaticallyImplyLeading: true,
         leading: IconButton(
-            onPressed: () => Get.back(),
+            onPressed: () => Get.off(NavigationMenu()),
             icon: Icon(
-              Icons.arrow_back,
-              color: AppColors.quinary,
+              Icons.arrow_back_ios,
+              color: AppColors.prettyDark,
             )),
-        actions: [],
         backgroundColor: CupertinoColors.systemBlue,
         title: Text(
           'Deposit history',

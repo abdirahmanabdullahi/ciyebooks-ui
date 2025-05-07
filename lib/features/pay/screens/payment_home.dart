@@ -13,26 +13,9 @@ import '../controllers/pay_expense_controller.dart';
 import 'expenses.dart';
 import 'payments.dart';
 
-class PaymentHome extends StatefulWidget {
+
+class PaymentHome extends StatelessWidget {
   const PaymentHome({super.key});
-
-  @override
-  State<PaymentHome> createState() => _PaymentHomeState();
-}
-
-class _PaymentHomeState extends State<PaymentHome> {
-  @override
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Platform.isIOS ? showIosPaymentActionSheet(context) : showAndroidPaymentBottomSheet(context: context);
-    });
-
-    PayExpenseController.instance.fetchTotals();
-    super.initState();
-  }
-
-  final controller = Get.put(PayExpenseController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +42,10 @@ class _PaymentHomeState extends State<PaymentHome> {
                 color: AppColors.prettyDark,
               )),
         ],
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         backgroundColor: AppColors.quarternary,
         title: Text(
-          'Payment history',
+          'Payments',
           style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
         ),
       ),
