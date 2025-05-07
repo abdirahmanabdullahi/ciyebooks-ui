@@ -1,11 +1,11 @@
-import 'package:ciyebooks/features/pay/screens/widgets/add_expense_category_form.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_form.dart';
+import 'package:ciyebooks/features/pay/screens/expense/add_expense_category_form.dart';
+import 'package:ciyebooks/features/pay/screens/payments/payment_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import '../../../dashboard/widgets/bottom_sheet_button.dart';
-import 'expense_form.dart';
+import '../expense/expense_form.dart';
 
 showAndroidPaymentBottomSheet({required BuildContext context}) {
   return showModalBottomSheet<dynamic>(

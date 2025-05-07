@@ -22,7 +22,6 @@ showAddNewCurrencyDialog(BuildContext context) {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
-          width: double.maxFinite,
           height: 50,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,16 +54,17 @@ showAddNewCurrencyDialog(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownMenu(
+                controller: controller.currencyCode,
                 trailingIcon: Icon(
                   Icons.search,
                   color: CupertinoColors.systemBlue,
-                  // size: 30,
                 ),
+                // expandedInsets: EdgeInsets.zero,
                 inputDecorationTheme: InputDecorationTheme(
-                  filled: true,
                   fillColor: AppColors.quinary,
-                  isDense: false,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  filled: true,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                   constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -72,16 +72,13 @@ showAddNewCurrencyDialog(BuildContext context) {
                 ),
                 enableSearch: true,
                 requestFocusOnTap: true,
-                enableFilter: true,
                 menuStyle: MenuStyle(
-                  // side: WidgetStateProperty.all(BorderSide(color: Colors.grey,width: 2,)),
-                  padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 3)),
+                  padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                   backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                   maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                 ),
                 label: Text('Select currency'),
                 selectedTrailingIcon: Icon(Icons.search),
-                width: double.maxFinite,
                 onSelected: (value) {
                   if (value != null) {
                     controller.newCurrencyCode.text = value;

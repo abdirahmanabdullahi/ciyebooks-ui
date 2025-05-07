@@ -142,9 +142,7 @@ class SignupForm extends StatelessWidget {
             label: AppTexts.goToLoginLabel,
             onPressed: () => Get.offAll(() => Login()),
           ),
-          const Gap(AppSizes.appBarHeight/2),
-          const CustomDivider(label: AppTexts.orSignUpWith),
-          const Gap(AppSizes.spaceBtwItems),
+
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
+import 'package:ciyebooks/features/pay/controllers/pay_expense_controller.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -6,9 +6,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../controllers/pay_client_controller.dart';
 
-showConfirmPayment(BuildContext context) {
+showConfirmExpenseDialog(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -16,7 +15,7 @@ showConfirmPayment(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(PayClientController());
+      final controller = Get.put(PayExpenseController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -50,7 +49,7 @@ showConfirmPayment(BuildContext context) {
                       Gap(6),
                       Icon(Icons.info_outline_rounded, color: Colors.orange[700], size: 68),
                       const SizedBox(height: 15),
-                      Text("Confirm Payment?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
+                      Text("Confirm Expense?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
                       Gap(6),
                       Text("${controller.paidCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
@@ -80,7 +79,7 @@ showConfirmPayment(BuildContext context) {
                     children: [
                       Gap(10),
                       Text(
-                        "Payment Details",
+                        "Expense Details",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
                             // fontWeight: FontWeight.bold,
                             ),
@@ -90,70 +89,57 @@ showConfirmPayment(BuildContext context) {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Payee",
+                          Text("Category",
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.from.text.trim(),
+                          Text(controller.category.text.trim(),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                        ],
-                      ),
-                      Divider(color: Colors.black, thickness: .11),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Paying account no",
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                          Text(controller.accountNo.text.trim(),
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                        ],
-                      ),
-                      Divider(color: Colors.black, thickness: .11),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Receiver",
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                          Obx(
-                            () => controller.paidToOwner.value
-                                ? Text(controller.from.text.trim(),
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                    ))
-                                : Text(controller.receiver.text.trim(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13,
-                                    )),
-                          ),
                         ],
                       ),
 
+                      // Divider(color: Colors.black, thickness: .11),
+                      //
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text("Receiver",
+                      //         style: TextStyle(
+                      //           fontSize: 13,
+                      //         )),
+                      //     Obx(
+                      //           () => controller.paidToOwner.value
+                      //           ? Text(controller.from.text.trim(),
+                      //           style: TextStyle(
+                      //             fontSize: 13,
+                      //           ))
+                      //           : Text(controller.receiver.text.trim(),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 13,
+                      //           )),
+                      //     ),
+                      //   ],
+                      // ),
+
                       Divider(color: Colors.black, thickness: .11),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Payment type",
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                          Text(controller.paymentType.text.trim(),
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                        ],
-                      ),
-                      Divider(color: Colors.black, thickness: .11),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text("Payment type",
+                      //         style: TextStyle(
+                      //           fontSize: 13,
+                      //         )),
+                      //     Text(controller.paymentType..trim(),
+                      //         style: TextStyle(
+                      //           fontSize: 13,
+                      //         )),
+                      //   ],
+                      // ),
+                      // Divider(color: Colors.black, thickness: .11),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +174,7 @@ showConfirmPayment(BuildContext context) {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Total Payment", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
+                          Text("Total Expense", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
                           Text('${controller.paidCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
                               style: TextStyle(
                                 fontSize: 16,
@@ -201,7 +187,7 @@ showConfirmPayment(BuildContext context) {
                     ],
                   ),
                 ),
-                Gap(10),
+                Gap(25),
                 SizedBox(
                   // height: 45,
                   width: double.maxFinite,
@@ -214,7 +200,7 @@ showConfirmPayment(BuildContext context) {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
                       onPressed: ()  {
-                         controller.createPayment(context);
+                         controller.checkInternetConnection(context);
 
                       },
 

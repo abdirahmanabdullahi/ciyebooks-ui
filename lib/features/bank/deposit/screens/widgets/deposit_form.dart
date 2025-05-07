@@ -10,7 +10,7 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/calculator.dart';
 import '../../controller/deposit_cash_controller.dart';
 
-showDepositForm(BuildContext context) {
+showBankDepositForm(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) {

@@ -1,9 +1,13 @@
-import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
+import 'package:ciyebooks/features/bank/deposit/screens/deposits.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'calculator_screen.dart';
 
 class CalculatorController extends GetxController {
+  final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_us',
+    decimalDigits: 2,
+  );
   // Reactive state variables
   var number1 = '0'.obs;
   var operand = ''.obs;

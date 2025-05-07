@@ -177,8 +177,8 @@ showConfirmWithdrawal(BuildContext context) {
                       backgroundColor: AppColors.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async {
-                        await controller.checkInternetConnection(context);
+                      onPressed: ()  {
+                         controller.checkInternetConnection(context);
                         // if (context.mounted) {
                         //   Navigator.of(context).pop();
                         //   showSuccessWithdrawal(context);

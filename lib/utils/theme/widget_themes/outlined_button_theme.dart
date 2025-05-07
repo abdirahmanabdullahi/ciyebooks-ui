@@ -13,7 +13,7 @@ class TOutlinedButtonTheme {
       elevation: 0,
       // backgroundColor: AppColors.quarternary,
       foregroundColor: AppColors.dark,
-      side: const BorderSide(color: AppColors.grey, width: 1),
+      side: const BorderSide(color: AppColors.prettyGrey, width: 1),
       textStyle: const TextStyle(
           fontSize: 16, color: AppColors.dark, fontWeight: FontWeight.w600),
       padding: const EdgeInsets.symmetric(

@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../../../common/widgets/error_dialog.dart';
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
@@ -62,7 +61,6 @@ class WithdrawCashController extends GetxController {
     super.onInit();
   }
 
-
   /// *-----------------------------Enable or disable the continue button----------------------------------*
 
   updateButtonStatus() {
@@ -72,7 +70,7 @@ class WithdrawCashController extends GetxController {
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen(
-          (snapshot) {
+      (snapshot) {
         if (snapshot.exists) {
           bankBalances.value = totals.value.bankBalances;
           totals.value = BalancesModel.fromJson(snapshot.data()!);
@@ -81,24 +79,23 @@ class WithdrawCashController extends GetxController {
         }
       },
     );
-
   }
+
   checkBalances(BuildContext context) {
-      final currencyKey = withdrawnCurrency.text.trim();
+    final currencyKey = withdrawnCurrency.text.trim();
 
-      final availableAmount = double.parse('${bankBalances[currencyKey]}');
-      final requestedAmount = double.parse(amount.text.trim());
+    final availableAmount = double.parse('${bankBalances[currencyKey]}');
+    final requestedAmount = double.parse(amount.text.trim());
 
-      if (requestedAmount > availableAmount) {
-        showErrorDialog(
-          context: context,
-          errorTitle: 'Balance at bank not enough',
-          errorText: 'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot withdraw ${formatter.format(requestedAmount)}. Please check your balances and try again.',
-        );
-        return;
-
+    if (requestedAmount > availableAmount) {
+      showErrorDialog(
+        context: context,
+        errorTitle: 'Balance at bank not enough',
+        errorText: 'You only have $currencyKey ${formatter.format(availableAmount)} at bank and cannot withdraw ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+      );
+      return;
     }
-showConfirmWithdrawal(context);
+    showConfirmWithdrawal(context);
   }
 
   /// Check internet connection
@@ -117,14 +114,13 @@ showConfirmWithdrawal(context);
     }
   }
 
-
   Future createWithdrawal(BuildContext context) async {
     isLoading.value = true;
 
     try {
       ///Compare bank balance and amount to withdraw
 
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString())??0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -140,7 +136,7 @@ showConfirmWithdrawal(context);
 
         return;
       }
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString())??0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -160,7 +156,7 @@ showConfirmWithdrawal(context);
       final batch = db.batch();
 
       ///Doc references
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('WDR-${counters['bankWithdrawCounter']}');
+      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('BKWD-${counters['bankWithdrawCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
@@ -170,7 +166,7 @@ showConfirmWithdrawal(context);
           transactionType: 'withdrawal',
           transactionId: 'BKWD-${counters['bankWithdrawCounter']}',
           currency: withdrawnCurrency.text.trim(),
-          amount: double.tryParse(amount.text.trim())??0.0,
+          amount: double.tryParse(amount.text.trim()) ?? 0.0,
           dateCreated: DateTime.now(),
           withdrawalType: withdrawType.text.trim());
 
@@ -201,14 +197,19 @@ showConfirmWithdrawal(context);
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-
       });
-      if(context.mounted){
+      if (context.mounted) {
         Navigator.of(context).pop();
-        showSuccessWithdrawal(context);
+        showBankWithdrawInfo(
+            context: context,
+            currency: withdrawnCurrency.text.trim(),
+            amount: amount.text.trim(),
+            transactionCode: 'BKWD-${counters['bankWithdrawCounter']}',
+            withdrawnBy: withdrawnBy.text.trim(),
+            description: description.text.trim(),
+            date: DateTime.now());
       }
       isLoading.value = false;
-
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

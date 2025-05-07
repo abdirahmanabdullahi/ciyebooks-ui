@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
@@ -8,9 +7,19 @@ import 'package:get/get.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../controllers/pay_client_controller.dart';
 
-showPaymentSuccessPopup(BuildContext context) {
+showPaymentInfo({
+  required BuildContext context,
+  required String transactionCode,
+  required String payee,
+  required String paidCurrency,
+  required String payeeAccountNo,
+  required Widget receiver,
+  required String paymentType,
+  required String description,
+  required DateTime date,
+  required String totalPayment,
+}) {
   return showDialog(
-
     context: context,
     builder: (context) {
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -53,8 +62,7 @@ showPaymentSuccessPopup(BuildContext context) {
                         const SizedBox(height: 15),
                         Text("Payment success", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: AppColors.secondary)),
                         Gap(6),
-                        Text("${controller.paidCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
-                            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
+                        Text("$paidCurrency  ${formatter.format(double.parse(totalPayment.replaceAll(',', '')))}", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                         Gap(6),
                       ],
                     ),
@@ -97,7 +105,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text('PAY-${controller.counters['paymentsCounter'].toString()}',
+                            Text(transactionCode,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -111,7 +119,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.from.text.trim(),
+                            Text(payee,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -125,7 +133,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.accountNo.text.trim(),
+                            Text(payeeAccountNo,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -139,18 +147,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Obx(
-                              () => controller.paidToOwner.value
-                                  ? Text(controller.from.text.trim(),
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                      ))
-                                  : Text(controller.receiver.text.trim(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 13,
-                                      )),
-                            ),
+                            receiver,
                           ],
                         ),
                         Divider(color: Colors.black, thickness: .11),
@@ -161,7 +158,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.paymentType.text.trim(),
+                            Text(paymentType,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -175,7 +172,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.description.text.trim(),
+                            Text(description,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -189,7 +186,7 @@ showPaymentSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
+                            Text(DateFormat('dd MMM yyy HH:mm').format(date),
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -201,7 +198,7 @@ showPaymentSuccessPopup(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Total Payment", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                            Text('${controller.paidCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
+                            Text('$paidCurrency ${formatter.format(double.parse(totalPayment.replaceAll(',', '')))}',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.secondary,

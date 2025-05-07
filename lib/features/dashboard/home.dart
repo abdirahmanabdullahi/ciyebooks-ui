@@ -383,80 +383,74 @@ class Dashboard extends StatelessWidget {
                           child: Text("Currency stock", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
                         ),
                         Gap(8),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                          child: controller.totals.value.currenciesAtCost == 0
-                              ? SizedBox(
-                                  width: double.maxFinite,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(24.0),
-                                    child: Center(child: Text('No foreign currencies available.')),
-                                  ),
-                                )
-                              : Obx(
-                                  () {
-                                    return SingleChildScrollView(
-                                      physics: ClampingScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 7),
-                                        color: AppColors.quinary,
-                                        width: MediaQuery.sizeOf(context).width,
-                                        child: DataTable(
-                                            dataRowMaxHeight: 40,
-                                            dataRowMinHeight: 40,
-                                            showBottomBorder: true,
-                                            headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
-                                            columnSpacing: 30,
-                                            headingRowHeight: 40,
-                                            horizontalMargin: 0,
-                                            columns: [
-                                              DataColumn(label: Text(' Name')),
-                                              DataColumn(label: Text('Amount')),
-                                              DataColumn(label: Text('Rate')),
-                                              DataColumn(label: Text('Total ')),
-                                            ],
-                                            rows: controller.currencies.map((currency) {
-                                              return DataRow(cells: [
-                                                DataCell(Padding(
-                                                  padding: const EdgeInsets.only(left: 8.0),
-                                                  child: Text(
-                                                    currency.currencyCode,
-                                                    style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w400),
-                                                  ),
-                                                )),
-                                                DataCell(
-                                                  Text(
-                                                    formatter.format(
-                                                      currency.amount,
-                                                    ),
+                        controller.totals.value.currenciesAtCost == 0
+                            ? SizedBox(
+                                width: double.maxFinite,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(24.0),
+                                  child: Center(child: Text('No foreign currencies available.')),
+                                ),
+                              )
+                            : Obx(
+                                () {
+                                  return SingleChildScrollView(
+                                    physics: ClampingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 7),
+                                      color: AppColors.quinary,
+                                      width: MediaQuery.sizeOf(context).width,
+                                      child: DataTable(
+                                          dataRowMaxHeight: 40,
+                                          dataRowMinHeight: 40,
+                                          showBottomBorder: true,
+                                          headingTextStyle: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600),
+                                          columnSpacing: 30,
+                                          headingRowHeight: 40,
+                                          horizontalMargin: 0,
+                                          columns: [
+                                            DataColumn(label: Text(' Name')),
+                                            DataColumn(label: Text('Amount')),
+                                            DataColumn(label: Text('Rate')),
+                                            DataColumn(label: Text('Total ')),
+                                          ],
+                                          rows: controller.currencies.map((currency) {
+                                            return DataRow(cells: [
+                                              DataCell(Padding(
+                                                padding: const EdgeInsets.only(left: 8.0),
+                                                child: Text(
+                                                  currency.currencyCode,
+                                                  style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w400),
+                                                ),
+                                              )),
+                                              DataCell(
+                                                Text(
+                                                  formatter.format(
+                                                    currency.amount,
                                                   ),
                                                 ),
-                                                DataCell(Text(
-                                                  currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
-                                                )),
-                                                DataCell(Text(
-                                                  formatter.format(currency.totalCost),
-                                                )),
-                                              ]);
-                                            }).toList()),
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
-                        Divider(
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        ),
+                                              ),
+                                              DataCell(Text(
+                                                currency.amount <= 0 ? '0.0' : formatter.format(currency.totalCost / currency.amount),
+                                              )),
+                                              DataCell(Text(
+                                                formatter.format(currency.totalCost),
+                                              )),
+                                            ]);
+                                          }).toList()),
+                                    ),
+                                  );
+                                },
+                              ),
+
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 6, 12, 24),
+                          padding: const EdgeInsets.symmetric(vertical: 24.0,horizontal: 16 ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Cost of currencies", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: CupertinoColors.systemBlue)),
+                              Text("Cost of currencies", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                               Obx(() => Text(formatter.format(double.parse(controller.totals.value.currenciesAtCost.toString())),
-                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: CupertinoColors.systemBlue))),
+                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark))),
                             ],
                           ),
                         ),

@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/pay/screens/widgets/confirm_expense.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/expense_success_screen.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
+import 'package:ciyebooks/features/pay/screens/expense/confirm_expense.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +16,7 @@ import '../../../utils/exceptions/platform_exceptions.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
 import '../models/expense_model.dart';
+import '../screens/expense/expense_success_screen.dart';
 
 class PayExpenseController extends GetxController {
   static PayExpenseController get instance => Get.find();
@@ -429,12 +428,12 @@ class PayExpenseController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final expenseRef = db.collection('Users').doc(_uid).collection('transactions').doc('exp-${counters['expenseCounter']}');
+      final expenseRef = db.collection('Users').doc(_uid).collection('transactions').doc('EXP-${counters['expenseCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
 
       final newExpense = ExpenseModel(
-          transactionId: 'exp-${counters['expenseCounter']}',
+          transactionId: 'EXP-${counters['expenseCounter']}',
           category: category.text.trim(),
           paymentType: paymentTypeController.text.trim(),
           description: description.text.trim(),
@@ -473,7 +472,11 @@ class PayExpenseController extends GetxController {
         );
         if (context.mounted) {
           Navigator.of(context).pop();
-          showExpenseSuccessPopup(context);
+          showExpenseInfo(context:context,
+              transactionCode: 'EXP-${counters['expenseCounter'].toString()}',
+              category:category.text.trim(), amountPaid: amount.text.trim(),
+              description: description.text.trim(), 
+              currency: paidCurrency.text.trim(), date: DateTime.now());
 
         }
 

@@ -15,7 +15,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Roboto',
-    disabledColor: AppColors.grey,
+    disabledColor: AppColors.prettyGrey,
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     textTheme: AppTextTheme.lightTextTheme,
@@ -32,7 +32,7 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
-    disabledColor: AppColors.grey,
+    disabledColor: AppColors.prettyGrey,
     brightness: Brightness.dark,  
     primaryColor: AppColors.primary,
     textTheme: AppTextTheme.darkTextTheme,

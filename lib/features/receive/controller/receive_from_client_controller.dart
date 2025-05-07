@@ -20,7 +20,6 @@ import '../screens/widgets/confirm_client_deposit.dart';
 class ReceiveFromClientController extends GetxController {
   static ReceiveFromClientController get instance => Get.find();
 
-
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
@@ -48,12 +47,10 @@ class ReceiveFromClientController extends GetxController {
   ///Sort criteria
   final sortCriteria = 'dateCreated'.obs;
 
-
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   onInit() {
-
     fetchTotals();
 
     ///Add listeners to the controllers
@@ -75,7 +72,7 @@ class ReceiveFromClientController extends GetxController {
   }
 
   void updateButtonStatus() {
-    isButtonEnabled.value =   amount.text.isNotEmpty && receivedCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+    isButtonEnabled.value = amount.text.isNotEmpty && receivedCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -90,7 +87,6 @@ class ReceiveFromClientController extends GetxController {
         transactionCounter.value = counters['receiptsCounter'];
       }
     });
-
   }
 
   /// Check internet connection
@@ -109,23 +105,16 @@ class ReceiveFromClientController extends GetxController {
       return;
     }
   }
+
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
-
-
-
   Future createReceipt(BuildContext context) async {
-
     if (!paidToOwner.value) {
       if (!payClientFormKey.currentState!.validate()) {
         return;
       }
     }
     try {
-
-
-
-
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
@@ -146,7 +135,8 @@ class ReceiveFromClientController extends GetxController {
           amount: double.tryParse(amount.text.trim()) ?? 0.0,
           receivingAccountNo: receivingAccountNo.text.trim(),
           dateCreated: DateTime.now(),
-          description: description.text.trim(), receivingAccountName: receivingAccountName.text.trim());
+          description: description.text.trim(),
+          receivingAccountName: receivingAccountName.text.trim());
 
       ///Update account
       batch.update(accountRef, {'Currencies.${receivedCurrency.text.trim()}': FieldValue.increment(num.parse(amount.text.trim()))});
@@ -181,8 +171,22 @@ class ReceiveFromClientController extends GetxController {
           colorText: Colors.white,
         );
 
-        if(context.mounted){
-          showDepositSuccessPopup(context);
+        if (context.mounted) {
+          showClientDepositInfo(
+              context: context,
+              currency: receivedCurrency.text.trim(),
+              transactionCode: 'RCPT-${counters['receiptsCounter'].toString()}',
+              amount: amount.text.trim(),
+              depositor: Obx(
+                () => Text(
+                  receivedFromOwner.value ? receivingAccountName.text.trim() : depositorName.text.trim(),
+                ),
+              ),
+              depositType: receiptType.text.trim(),
+              receivingAccountName: receivingAccountName.text.trim(),
+              receivingAccountNo: receivingAccountNo.text.trim(),
+              description: description.text.trim(),
+              date: DateTime.now());
         }
       });
     } on FirebaseAuthException catch (e) {
@@ -198,5 +202,5 @@ class ReceiveFromClientController extends GetxController {
     }
   }
 
-/// *-----------------------------End data submission----------------------------------*
+  /// *-----------------------------End data submission----------------------------------*
 }

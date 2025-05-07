@@ -50,7 +50,7 @@ showConfirmForexTransaction(BuildContext context) {
                       Gap(6),
                       Icon(Icons.info_outline_rounded, color: Colors.orange[700], size: 68),
                       const SizedBox(height: 15),
-                      Obx(()=>Text("Confirm ${controller.selectedTransaction}?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary))),
+                      Obx(() => Text("Confirm ${controller.selectedTransaction}?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary))),
                       Gap(6),
                       Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.sellingAmount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
@@ -82,8 +82,8 @@ showConfirmForexTransaction(BuildContext context) {
                       Text(
                         "Transaction details",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
-                          // fontWeight: FontWeight.bold,
-                        ),
+                            // fontWeight: FontWeight.bold,
+                            ),
                       ),
                       SizedBox(height: 24),
                       // Divider(color: Colors.black, thickness: .11),
@@ -96,13 +96,14 @@ showConfirmForexTransaction(BuildContext context) {
                                 fontSize: 13,
                               )),
                           Obx(
-                              ()=> Text(controller.selectedTransaction.value,
+                            () => Text(controller.selectedTransaction.value,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
                           ),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -116,7 +117,6 @@ showConfirmForexTransaction(BuildContext context) {
                               )),
                         ],
                       ),
-
 
                       Divider(color: Colors.black, thickness: .11),
 
@@ -147,7 +147,8 @@ showConfirmForexTransaction(BuildContext context) {
                                 fontSize: 13,
                               )),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,7 +156,7 @@ showConfirmForexTransaction(BuildContext context) {
                           Text("Total",
                               style: TextStyle(
                                 fontSize: 13,
-                              )), 
+                              )),
                           Text(formatter.format(double.parse(controller.sellingTotal.text.trim().replaceAll(',', ''))),
                               style: TextStyle(
                                 fontSize: 13,
@@ -200,21 +201,20 @@ showConfirmForexTransaction(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.prettyBlue,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () async{
-                        await controller.createForexTransaction(context);
-                        if(context.mounted){
-                          Navigator.of(context).pop();
-                          showForexSuccess(context);
+                      onPressed: () async {
+                        controller.checkInternetConnection(context);
 
-                        }
-
+                        // if(context.mounted){
+                        //   Navigator.of(context).pop();
+                        //
+                        // }
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
@@ -229,28 +229,33 @@ showConfirmForexTransaction(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.quinary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
-                      onPressed: () {
-                        showForexSuccess(context);
-                      },
+                      onPressed: () => Navigator.of(context).pop(),
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.west_outlined,color: AppColors.prettyDark,),
+                            child: Icon(
+                              Icons.west_outlined,
+                              color: AppColors.prettyDark,
+                            ),
                           ),
                           Text(
                             'Back',
                             style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
-                          ),SizedBox(width: 20,)
+                          ),
+                          SizedBox(
+                            width: 20,
+                          )
                         ],
                       )),
                 ),

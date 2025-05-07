@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/pay/screens/widgets/confirm_payment.dart';
-import 'package:ciyebooks/features/pay/screens/widgets/payment_success_screen.dart';
+import 'package:ciyebooks/features/pay/screens/payments/confirm_payment.dart';
+import 'package:ciyebooks/features/pay/screens/payments/payment_success_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -143,24 +143,27 @@ class PayClientController extends GetxController {
 
     showConfirmPayment(context);
   }
-/// Check internet connection
+
+  /// Check internet connection
   checkInternetConnection(BuildContext context) async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (context.mounted) {
-          checkBalances(context);
+
+          createPayment(context);
         }
       }
     } on SocketException catch (_) {
+
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
       return;
     }
   }
-  Future createPayment(BuildContext context) async {
 
+  Future createPayment(BuildContext context) async {
     try {
       ///Compare cash and amount to be paid
       cashBalance.value = double.tryParse('${cashBalances[paidCurrency.text.trim()]}') ?? 0.0;
@@ -238,7 +241,6 @@ class PayClientController extends GetxController {
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
-
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -250,9 +252,24 @@ class PayClientController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        if(context.mounted){
+        if (context.mounted) {
           Navigator.of(context).pop();
-          showPaymentSuccessPopup(context);
+          showPaymentInfo(
+              context: context,
+              transactionCode: 'PAY-${counters['paymentsCounter'].toString()}',
+              payee: from.text.trim(),
+              paidCurrency: paidCurrency.text.trim(),
+              payeeAccountNo: accountNo.text.trim(),
+              receiver: Obx(() => Text(
+                    paidToOwner.value ? from.text.trim() : receiver.text.trim(),
+                    style: TextStyle(
+                      fontSize: 13,
+                    ),
+                  )),
+              paymentType: paymentType.text.trim(),
+              description: description.text.trim(),
+              date: DateTime.now(),
+              totalPayment: amount.text.trim());
         }
 
         // SharePlus.instance.share(ShareParams(

@@ -1,14 +1,24 @@
-
-import 'package:ciyebooks/features/receive/controller/receive_from_client_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 import '../../../../utils/constants/colors.dart';
 
-showDepositSuccessPopup(BuildContext context) {
+showClientDepositInfo({
+  required BuildContext context,
+  required String currency,
+  required String transactionCode,
+  required String amount,
+  required Widget depositor,
+  required String depositType,
+  required String receivingAccountName,
+  required String receivingAccountNo,
+  required String description,
+  required DateTime date,
+
+
+}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -16,7 +26,6 @@ showDepositSuccessPopup(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(ReceiveFromClientController());
 
       return PopScope(
         canPop: false,
@@ -52,7 +61,7 @@ showDepositSuccessPopup(BuildContext context) {
                         const SizedBox(height: 15),
                         Text("Client deposit success", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: AppColors.secondary)),
                         Gap(6),
-                        Text("${controller.receivedCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
+                        Text("$currency  ${formatter.format(double.parse(amount))}",
                             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                         Gap(6),
                       ],
@@ -96,7 +105,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text('RCPT-${controller.counters['receiptsCounter'].toString()}',
+                            Text(transactionCode,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -110,18 +119,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Obx(
-                                  () => controller.receivedFromOwner.value
-                                  ? Text(controller.receivingAccountName.text.trim(),
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                  ))
-                                  : Text(controller.depositorName.text.trim(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13,
-                                  )),
-                            ),
+                           depositor
                           ],
                         ),
 
@@ -133,7 +131,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.receivingAccountName.text.trim(),
+                            Text(receivingAccountName,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -147,7 +145,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.receivingAccountNo.text.trim(),
+                            Text(receivingAccountNo,
                                 style: TextStyle(
                                   fontSize: 13,
                                 ))
@@ -161,7 +159,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.receiptType.text.trim(),
+                            Text(depositType,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -175,7 +173,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(controller.description.text.trim(),
+                            Text(description,
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -189,7 +187,7 @@ showDepositSuccessPopup(BuildContext context) {
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
-                            Text(DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
+                            Text(DateFormat('dd MMM yyy HH:mm').format(date),
                                 style: TextStyle(
                                   fontSize: 13,
                                 )),
@@ -201,7 +199,7 @@ showDepositSuccessPopup(BuildContext context) {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Total Payment", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                            Text('${controller.receivedCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
+                            Text('$currency  ${formatter.format(double.parse(amount))}',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: AppColors.secondary,

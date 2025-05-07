@@ -7,7 +7,16 @@ import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
 
-showSuccessDeposit(BuildContext context) {
+
+showBankDepositInfo({
+  required BuildContext context,
+  required String currency,
+  required String amount,
+  required String transactionCode,
+  required Widget depositor,
+  required String description,
+  required DateTime date,
+}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -15,7 +24,6 @@ showSuccessDeposit(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(DepositCashController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -51,7 +59,7 @@ showSuccessDeposit(BuildContext context) {
                       const SizedBox(height: 15),
                       Text("Deposit successful", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
                       Gap(6),
-                      Text("${controller.depositedCurrency.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
+                      Text("$currency  ${formatter.format(double.parse(amount))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
@@ -92,7 +100,7 @@ showSuccessDeposit(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text('BKDP-${controller.counters['bankDepositCounter']}',
+                          Text(transactionCode,
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -108,18 +116,7 @@ showSuccessDeposit(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Obx(
-                            () => controller.depositedByOwner.value
-                                ? Text('Main account holder',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                    ))
-                                : Text(controller.depositorName.text.trim(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 13,
-                                    )),
-                          ),
+                          depositor
                         ],
                       ),
                       Divider(color: Colors.black, thickness: .11),
@@ -130,7 +127,7 @@ showSuccessDeposit(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.depositedCurrency.text.trim(),
+                          Text(currency,
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -146,7 +143,7 @@ showSuccessDeposit(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.description.text.trim(),
+                          Text(description,
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -161,7 +158,7 @@ showSuccessDeposit(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(DateFormat('dd MMM yyy HH:mm').format(DateTime.now()),
+                          Text(DateFormat('dd MMM yyy HH:mm').format(date),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -173,7 +170,7 @@ showSuccessDeposit(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Total deposit", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                          Text('${controller.depositedCurrency.text.trim()} ${formatter.format(double.parse(controller.amount.text.trim()))}',
+                          Text('$currency ${formatter.format(double.parse(amount))}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,

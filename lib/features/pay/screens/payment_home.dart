@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 import '../../../../utils/constants/colors.dart';
 
 import '../controllers/pay_expense_controller.dart';
-import 'expenses.dart';
-import 'payments.dart';
+import 'expense/expenses.dart';
+import 'payments/payments.dart';
 
 
 class PaymentHome extends StatelessWidget {
@@ -33,15 +33,7 @@ class PaymentHome extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
         elevation: 0,
-        actions: [
-          IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () => Get.offAll(NavigationMenu()),
-              icon: Icon(
-                Icons.close,
-                color: AppColors.prettyDark,
-              )),
-        ],
+
         // automaticallyImplyLeading: false,
         backgroundColor: AppColors.quarternary,
         title: Text(

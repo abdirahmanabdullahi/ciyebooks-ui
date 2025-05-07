@@ -8,32 +8,26 @@ import '../../../utils/constants/colors.dart';
 
 final now = DateTime.now();
 final startOfToday = DateTime(now.year, now.month, now.day);
-
-class RecentTransactions extends StatefulWidget {
-  const RecentTransactions({super.key});
-
-  @override
-  RecentTransactionsState createState() => RecentTransactionsState();
-}
-
 final NumberFormat formatter = NumberFormat.decimalPatternDigits(
   locale: 'en_us',
   decimalDigits: 2,
 );
-
-class RecentTransactionsState extends State<RecentTransactions> {
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('Users')
-      .doc(FirebaseAuth.instance.currentUser?.uid)
-      .collection('transactions')
-      .where('dateCreated', isGreaterThanOrEqualTo: startOfToday)
-      .orderBy('dateCreated', descending: true)
-      .snapshots();
+class RecentTransactions extends StatelessWidget {
+  const RecentTransactions({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
+      stream: FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('transactions')
+          .where('dateCreated', isGreaterThanOrEqualTo: startOfToday)
+          .orderBy('dateCreated', descending: true)
+          .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Center(child: const Text('Something went wrong'));
@@ -66,11 +60,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['forexType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 10),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
-                              "-${data['CurrencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['Amount'].toString()))} ",
-                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
+                              "${data['CurrencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['Amount'].toString()))} ",
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                           ],
                         ),
@@ -97,11 +91,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['AccountFrom'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 10),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
                               "-${data['Currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
-                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                           ],
                         ),
@@ -124,11 +118,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['receivingAccountName'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
                               "+${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: Color(0xff118B50), fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: Color(0xff118B50), fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                           ],
                         ),
@@ -151,11 +145,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['category'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
                               "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
-                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                           ],
                         ),
@@ -178,11 +172,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['transactionType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 11),
                             ),
                           ],
                         ),
@@ -205,11 +199,11 @@ class RecentTransactionsState extends State<RecentTransactions> {
                           children: [
                             Text(
                               data['transactionType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w700, fontSize: 11),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 15),
                             ),
                           ],
                         ),

@@ -41,7 +41,7 @@ class AppSizes {
 
   // Default spacing between sections
   static const double defaultSpace = 24.0;
-  static const double spaceBtwItems = 6.0;
+  static const double spaceBtwItems = 8.0;
   static const double spaceBtwSections = 32.0;
 
   // Border radius

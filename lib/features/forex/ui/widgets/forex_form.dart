@@ -1,10 +1,11 @@
-import 'package:ciyebooks/features/bank/withdraw/screens/deposits.dart';
+import 'package:ciyebooks/features/bank/deposit/screens/deposits.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
@@ -16,6 +17,10 @@ showForexForm(BuildContext context) {
     context: context,
     builder: (context) {
       final controller = Get.put(ForexController());
+      final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+        locale: 'en_us',
+        decimalDigits: 2,
+      );
 
       Future<void> vibrate() async {
         await SystemChannels.platform.invokeMethod<void>(
@@ -37,7 +42,8 @@ showForexForm(BuildContext context) {
             titlePadding: EdgeInsets.zero,
             backgroundColor: AppColors.quarternary,
             insetPadding: EdgeInsets.all(16),
-            contentPadding: EdgeInsets.all(16),            shape: RoundedRectangleBorder(
+            contentPadding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
@@ -73,29 +79,28 @@ showForexForm(BuildContext context) {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Gap(6),
                 Obx(
                   () => Row(
                     children: [
                       Expanded(
-                        child: SizedBox(                    height: 45,
-
+                        child: SizedBox(
+                          height: 45,
                           child: FloatingActionButton(
                             heroTag: 'Forex Buy',
                             shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1, color: AppColors.grey), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
+                                side: BorderSide(width: 1, color: AppColors.prettyGrey), borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))),
                             elevation: 0,
-                            backgroundColor: controller.selectedTransaction.value == 'buyFx' ? AppColors.prettyGrey : AppColors.quinary,
+                            backgroundColor: controller.selectedTransaction.value == 'BUYFX' ? CupertinoColors.systemBlue : AppColors.quinary,
                             // selected: controller.selectedTransaction.value == 'Buy',
                             onPressed: () {
-                              controller.selectedTransaction.value = 'buyFx';
-                              // controller.transactionType.text = 'buyFx';
+                              controller.selectedTransaction.value = 'BUYFX';
+                              // controller.transactionType.text = 'BUYFX';
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                controller.selectedTransaction.value == 'buyFx'
+                                controller.selectedTransaction.value == 'BUYFX'
                                     ? Icon(
                                         Icons.task_alt_outlined,
                                         color: AppColors.quinary,
@@ -107,7 +112,7 @@ showForexForm(BuildContext context) {
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: controller.selectedTransaction.value == 'buyFx' ? Colors.white : AppColors.secondary,
+                                    color: controller.selectedTransaction.value == 'BUYFX' ? Colors.white : AppColors.secondary,
                                   ),
                                 ),
                               ],
@@ -116,23 +121,23 @@ showForexForm(BuildContext context) {
                         ),
                       ),
                       Expanded(
-                        child: SizedBox(                    height: 45,
-
+                        child: SizedBox(
+                          height: 45,
                           child: FloatingActionButton(
                             heroTag: 'Forex sell',
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1, color: AppColors.grey), borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
-                            backgroundColor: controller.selectedTransaction.value == 'sellFx' ? AppColors.prettyGrey : AppColors.quinary,
+                                side: BorderSide(width: 1, color: AppColors.prettyGrey), borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))),
+                            backgroundColor: controller.selectedTransaction.value == 'SELLFX' ? AppColors.red : AppColors.quinary,
                             // selected: controller.selectedTransaction.value == 'Buy',
                             onPressed: () {
-                              controller.selectedTransaction.value = 'sellFx';
-                              // controller.transactionType.text = 'SellFx';
+                              controller.selectedTransaction.value = 'SELLFX';
+                              // controller.transactionType.text = 'SELLFX';
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                controller.selectedTransaction.value == 'sellFx'
+                                controller.selectedTransaction.value == 'SELLFX'
                                     ? Icon(
                                         Icons.task_alt_outlined,
                                         color: AppColors.quinary,
@@ -144,7 +149,7 @@ showForexForm(BuildContext context) {
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
-                                    color: controller.selectedTransaction.value == 'sellFx' ? Colors.white : AppColors.secondary,
+                                    color: controller.selectedTransaction.value == 'SELLFX' ? Colors.white : AppColors.secondary,
                                   ),
                                 ),
                               ],
@@ -158,12 +163,13 @@ showForexForm(BuildContext context) {
                 Gap(AppSizes.spaceBtwItems),
                 Row(
                   children: [
-                    Expanded(flex: 3,
+                    Expanded(
+                      flex: 2,
                       child: DropdownMenu(
                         enableFilter: true,
                         controller: controller.currencyCode,
                         trailingIcon: Icon(
-                          Icons.search,
+                          Icons.keyboard_arrow_down_outlined,
                           color: CupertinoColors.systemBlue,
                         ),
                         expandedInsets: EdgeInsets.zero,
@@ -171,7 +177,7 @@ showForexForm(BuildContext context) {
                           fillColor: AppColors.quinary,
                           filled: true,
                           isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                           constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -191,7 +197,7 @@ showForexForm(BuildContext context) {
                             letterSpacing: 2,
                           ),
                         ),
-                        selectedTrailingIcon: Icon(Icons.search),
+                        selectedTrailingIcon: Icon(Icons.search,color: CupertinoColors.systemBlue,),
                         onSelected: (value) {
                           if (value != null) {
                             controller.currencyCode.text = value[0].toString();
@@ -199,12 +205,7 @@ showForexForm(BuildContext context) {
                             controller.currencyStockTotalCost.text = value[2].toString();
                           }
                         },
-                        // dropdownMenuEntries: [
-                        //   DropdownMenuEntry(value: 'value', label: 'label'),
-                        //   DropdownMenuEntry(value: 'value', label: 'label'),
-                        //   DropdownMenuEntry(value: 'value', label: 'label'),
-                        //   DropdownMenuEntry(value: 'value', label: 'label')
-                        // ],
+
                         dropdownMenuEntries: controller.currencyStock.map((currency) {
                           return DropdownMenuEntry(
                               style: ButtonStyle(
@@ -219,12 +220,13 @@ showForexForm(BuildContext context) {
                                 ),
                               ),
                               value: [currency.currencyCode, currency.amount, currency.totalCost],
-                              label: '${currency.currencyCode}  ${currency.amount}  Rate  ${formatter.format(currency.totalCost / currency.amount)}');
+                              label: '${currency.currencyCode}  ${currency.amount}');
                         }).toList(),
                       ),
                     ),
                     Gap(AppSizes.spaceBtwItems),
-                    Expanded(flex: 2,
+                    Expanded(
+                      flex: 2,
                       child: DropdownMenu(
                           controller: controller.type,
                           trailingIcon: Icon(
@@ -236,7 +238,7 @@ showForexForm(BuildContext context) {
                             fillColor: AppColors.quinary,
                             filled: true,
                             isDense: true,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                             constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -250,9 +252,8 @@ showForexForm(BuildContext context) {
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                             maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                           ),
-
                           label: Text(' Type'),
-                          selectedTrailingIcon: Icon(Icons.search),
+                          selectedTrailingIcon: Icon(Icons.search,color: CupertinoColors.systemBlue,),
                           onSelected: (value) {},
                           dropdownMenuEntries: [
                             DropdownMenuEntry(
@@ -266,17 +267,7 @@ showForexForm(BuildContext context) {
                                     ))),
                                 value: 'Cash',
                                 label: 'Cash'),
-                            // DropdownMenuEntry(
-                            //     style: ButtonStyle(
-                            //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                            //         side: WidgetStateProperty.all(
-                            //           BorderSide(width: 2, color: AppColors.quarternary),
-                            //         ),
-                            //         shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                            //           borderRadius: BorderRadius.all(Radius.circular(0)),
-                            //         ))),
-                            //     value: 'Mobile money',
-                            //     label: 'Mobile money'),
+
                             DropdownMenuEntry(
                                 style: ButtonStyle(
                                     backgroundColor: WidgetStateProperty.all(AppColors.quinary),
@@ -306,8 +297,7 @@ showForexForm(BuildContext context) {
                           letterSpacing: 2,
                           // fontFamily: 'Oswald',
                           fontSize: 15,
-                          // fontWeight: FontWeight.bold,
-                          // color: CupertinoColors.systemBlue,
+
                         ),
                         // inputFormatters: [
                         //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
@@ -339,7 +329,7 @@ showForexForm(BuildContext context) {
                           fillColor: Colors.white,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(width: 1, color: AppColors.grey),
+                            borderSide: BorderSide(width: 1, color: AppColors.prettyGrey),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -393,14 +383,8 @@ showForexForm(BuildContext context) {
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(width: 1, color: AppColors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(width: 1, color: CupertinoColors.systemBlue),
-                            ),
+
+
                           ),
                         ),
                       ),
@@ -444,6 +428,7 @@ showForexForm(BuildContext context) {
                     //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
                     // ],
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
                       // prefix: Text('Amnt:',style:  TextStyle(
                       //     color: CupertinoColors.systemBlue,fontSize: 12,fontWeight: FontWeight.w900)),
                       floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -462,7 +447,7 @@ showForexForm(BuildContext context) {
                       fillColor: Colors.white,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(width: 1, color: AppColors.grey),
+                        borderSide: BorderSide(width: 1, color: AppColors.prettyGrey),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -478,9 +463,10 @@ showForexForm(BuildContext context) {
                 //   // indent: 30,
                 //   // endIndent: 30,
                 // ),
-                Gap(AppSizes.spaceBtwItems*2),
-                SizedBox(             width: double.maxFinite,       height: 45,
-
+                Gap(AppSizes.spaceBtwItems * 2),
+                SizedBox(
+                  width: double.maxFinite,
+                  height: 45,
                   child: FloatingActionButton(
                     elevation: 0,
                     // style: ElevatedButton.styleFrom(
@@ -489,9 +475,7 @@ showForexForm(BuildContext context) {
                     backgroundColor: AppColors.prettyBlue,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     // ),
-                    onPressed: ()
-                    => controller.checkInternetConnection(context)
-                    ,
+                    onPressed: () => controller.checkBalances(context),
                     // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                     child: Text(
                       'Submit',

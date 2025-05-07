@@ -1,34 +1,49 @@
-import 'package:ciyebooks/features/bank/withdraw/screens/widgets/withdrawal_success.dart';
+import 'package:ciyebooks/features/pay/screens/expense/expense_success_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../common/styles/custom_container.dart';
-import '../../../../utils/constants/colors.dart';
+import '../../../../../common/styles/custom_container.dart';
+import '../../../../../utils/constants/colors.dart';
 
-class Withdrawals extends StatelessWidget {
-  const Withdrawals({super.key});
+class ExpenseHistory extends StatefulWidget {
+  const ExpenseHistory({super.key});
+
+  @override
+  ExpenseHistoryState createState() => ExpenseHistoryState();
+}
+
+final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+  locale: 'en_us',
+  decimalDigits: 2,
+);
+
+class ExpenseHistoryState extends State<ExpenseHistory> {
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('transactions')
+      .where('transactionType', isEqualTo: 'expense')
+      .orderBy('dateCreated', descending: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('transactions').where('transactionType', isEqualTo: 'withdrawal').snapshots(),
+      stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return const Text('Something went wrong');
+          return Center(child: const Text('Something went wrong'));
         }
         if (!snapshot.hasData) {
-          return const Text('No data available');
+          return Center(child: const Text('No data available'));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading");
+          return Center(child: const Text("Loading"));
         }
 
         return ListView(
@@ -36,13 +51,13 @@ class Withdrawals extends StatelessWidget {
               .map((DocumentSnapshot document) {
                 Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                 return GestureDetector(
-                  onTap: () => showBankWithdrawInfo(
+                  onTap: () => showExpenseInfo(
                       context: context,
-                      currency: data['currency'],
-                      amount: data['amount'].toString(),
                       transactionCode: data['transactionId'],
-                      withdrawnBy: data['withdrawnBy'],
+                      category: data['category'],
+                      amountPaid: data['amountPaid'].toString(),
                       description: data['description'],
+                      currency: data['currency'],
                       date: data['dateCreated'].toDate()),
                   child: CustomContainer(
                     darkColor: AppColors.quinary,
@@ -60,7 +75,7 @@ class Withdrawals extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: data['withdrawnBy'],
+                                    text: data['category'],
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
@@ -85,7 +100,7 @@ class Withdrawals extends StatelessWidget {
                                   ),
                                   TextSpan(
                                     text: formatter
-                                        .format(data['amount'])
+                                        .format(data['amountPaid'])
                                         // text: payment.amountPaid
                                         .toString(),
                                     style: TextStyle(
@@ -113,7 +128,7 @@ class Withdrawals extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: data['transactionType'],
+                                        text: data['paymentType'],
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                           // Grey Label
@@ -137,7 +152,7 @@ class Withdrawals extends StatelessWidget {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: data['transactionId'],
+                                        text: data['transactionId'].toUpperCase(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
 

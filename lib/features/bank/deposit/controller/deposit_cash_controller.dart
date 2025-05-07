@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/deposit/screens/widgets/confirm_deposit.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,6 @@ class DepositCashController extends GetxController {
     depositedCurrency.addListener(updateButtonStatus);
     amount.addListener(updateButtonStatus);
 
-
     super.onInit();
   }
 
@@ -81,25 +81,24 @@ class DepositCashController extends GetxController {
       },
     );
   }
+
   ///Check if bank balances are enough
   checkBalances(BuildContext context) {
-      final currency = depositedCurrency.text.trim();
-      final availableAmount = double.parse('${cashBalances[currency]}');
-      final requestedAmount = double.parse(amount.text.trim());
+    final currency = depositedCurrency.text.trim();
+    final availableAmount = double.parse('${cashBalances[currency]}');
+    final requestedAmount = double.parse(amount.text.trim());
 
-      if (requestedAmount > availableAmount) {
-        showErrorDialog(
-          context: context,
-          errorTitle: 'Cash not enough.',
-          errorText: 'You only have $currency ${formatter.format(availableAmount)} in hand and cannot deposit ${formatter.format(requestedAmount)}. Please check your balances and try again.',
-        );
-        return;
-      }
-
+    if (requestedAmount > availableAmount) {
+      showErrorDialog(
+        context: context,
+        errorTitle: 'Cash not enough.',
+        errorText: 'You only have $currency ${formatter.format(availableAmount)} in hand and cannot deposit ${formatter.format(requestedAmount)}. Please check your balances and try again.',
+      );
+      return;
+    }
 
     showConfirmDeposit(context);
   }
-
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
@@ -113,13 +112,14 @@ class DepositCashController extends GetxController {
     } on SocketException catch (_) {
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
-      }return;
+      }
+      return;
     }
-  }  /// *-----------------------------Create and share pdf receipt----------------------------------*
+  }
 
+  /// *-----------------------------Create and share pdf receipt----------------------------------*
 
   Future createBankDeposit(BuildContext context) async {
-
     try {
       ///Compare cash and amount to be paid
       // cashBalance.value = double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0;
@@ -203,8 +203,25 @@ class DepositCashController extends GetxController {
       });
       if (context.mounted) {
         Navigator.of(context).pop();
-        showSuccessDeposit(context);
-
+        showBankDepositInfo(
+            context: context,
+            currency: depositedCurrency.text.trim(),
+            transactionCode: 'BKDP-${counters['bankDepositCounter']}',
+            amount: amount.text.trim(),
+            depositor: Obx(
+              () => depositedByOwner.value
+                  ? Text('Main account holder',
+                      style: TextStyle(
+                        fontSize: 13,
+                      ))
+                  : Text(depositorName.text.trim(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      )),
+            ),
+            description: description.text.trim(),
+            date: DateTime.now());
       }
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

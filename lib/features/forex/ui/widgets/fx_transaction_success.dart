@@ -7,7 +7,17 @@ import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
 
-showForexSuccess(BuildContext context) {
+showForexInfo({
+  required BuildContext context,
+  required String forexType,
+  required String currency,
+  required String transactionCode,
+  required String method,
+  required String amount,
+  required String rate,
+  required String totalCost,
+  required DateTime date,
+}) {
   return showDialog(
     context: context,
     builder: (context) {
@@ -15,7 +25,6 @@ showForexSuccess(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(ForexController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -49,10 +58,9 @@ showForexSuccess(BuildContext context) {
                       Gap(6),
                       Icon(Icons.task_alt, color: Colors.green[700], size: 68),
                       const SizedBox(height: 15),
-                      Obx(()=>Text("${controller.selectedTransaction} success!", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary))),
+                      Text("$forexType success!", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary)),
                       Gap(6),
-                      Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.sellingAmount.text.trim()))}",
-                          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
+                      Text("$currency  ${formatter.format(double.parse(amount))}", style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
                   ),
@@ -81,8 +89,8 @@ showForexSuccess(BuildContext context) {
                       Text(
                         "Transaction details",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
-                          // fontWeight: FontWeight.bold,
-                        ),
+                            // fontWeight: FontWeight.bold,
+                            ),
                       ),
                       SizedBox(height: 24),
                       // Divider(color: Colors.black, thickness: .11),
@@ -93,14 +101,14 @@ showForexSuccess(BuildContext context) {
                           Text("Transaction code",
                               style: TextStyle(
                                 fontSize: 13,
-                              )),  Obx(
-                    ()=> Text('${controller.selectedTransaction}-${controller.counters[controller.selectedTransaction]}',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                )),
-                              ),
+                              )),
+                          Text(transactionCode,
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -108,14 +116,13 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Obx(
-                                ()=> Text(controller.selectedTransaction.value,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                )),
-                          ),
+                          Text(forexType,
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -123,13 +130,12 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(controller.type.text.trim(),
+                          Text(method,
                               style: TextStyle(
                                 fontSize: 13,
                               )),
                         ],
                       ),
-
 
                       Divider(color: Colors.black, thickness: .11),
 
@@ -140,7 +146,7 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.sellingAmount.text.trim())),
+                          Text(formatter.format(double.parse(amount.replaceAll(',', ''))),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -155,12 +161,13 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.sellingRate.text.trim())),
+                          Text(formatter.format(double.parse(rate.replaceAll(',', ''))),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
+                      ),
+                      Divider(color: Colors.black, thickness: .11),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,7 +176,7 @@ showForexSuccess(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.sellingTotal.text.trim().replaceAll(',', ''))),
+                          Text(formatter.format(double.parse(totalCost.replaceAll(',', ''))),
                               style: TextStyle(
                                 fontSize: 13,
                               )),
@@ -196,7 +203,7 @@ showForexSuccess(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Total", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.secondary)),
-                          Text('KES ${formatter.format(double.parse(controller.sellingTotal.text.trim().replaceAll(',', '')))}',
+                          Text('KES ${formatter.format(double.parse(totalCost.replaceAll(',', '')))}',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,
@@ -213,18 +220,15 @@ showForexSuccess(BuildContext context) {
                   // height: 45,
                   width: double.maxFinite,
                   child: FloatingActionButton(
-                    // elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                       backgroundColor: AppColors.prettyBlue,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                       // ),
                       onPressed: () {
-
-                          Navigator.of(context).pop();
-
-
+                        Navigator.of(context).pop();
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
@@ -243,3 +247,10 @@ showForexSuccess(BuildContext context) {
     },
   );
 }
+
+// Obx(
+// ()=> Text('${controller.selectedTransaction}-${controller.counters[controller.selectedTransaction]}',
+// style: TextStyle(
+// fontSize: 13,
+// )),
+// ),

@@ -38,7 +38,7 @@ showAndroidBankBottomSheet({required BuildContext context}) {
                   icon: Icons.arrow_downward,
                   onPressed: () {
                     Get.back();
-                    showDepositForm(context);
+                    showBankDepositForm(context);
                   },
                 ),
                 Divider(
@@ -87,7 +87,7 @@ void showIosBankActionSheet(BuildContext context) {
           /// default behavior, turns the action's text to bold text.
           onPressed: () {
             Navigator.pop(context);
-            showDepositForm(context);          },
+            showBankDepositForm(context);          },
           child: const Text(
             'Deposit cash at bank',
             style: TextStyle(color: CupertinoColors.systemBlue),
