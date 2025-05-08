@@ -76,7 +76,6 @@ showBankDepositForm(BuildContext context) {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Gap(10),
                 Obx(
                       () => DropdownMenu(
                     controller: controller.depositedCurrency,
@@ -130,47 +129,7 @@ showBankDepositForm(BuildContext context) {
                     }).toList(),
                   ),
                 ),
-                Gap(AppSizes.spaceBtwItems),
 
-                Obx(
-                      () => Row(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: Checkbox(value: controller.depositedByOwner.value, onChanged: (value) => controller.depositedByOwner.value = !controller.depositedByOwner.value),
-                      ),
-                      Gap(10),
-                      controller.depositedByOwner.value ? Text('Deposited by owner') : Text('Deposited by other')
-                    ],
-                  ),
-                ),
-                // Gap(10),
-                Obx(
-                      () => controller.depositedByOwner.value
-                      ? SizedBox()
-                      : Form(
-                    // key: controller.payClientFormKey,
-                    child: SizedBox(
-                      height: 45,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Depositor's name is required";
-                          }
-                          return null;
-                        },
-                        controller: controller.depositorName,
-                        decoration: InputDecoration(
-                          labelText: "Depositor's name",
-                          // constraints: BoxConstraints.tight(
-                          // const Size.fromHeight(50),
-                          // ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 Gap(AppSizes.spaceBtwItems),
                 SizedBox(
                   height: 45,
@@ -186,7 +145,8 @@ showBankDepositForm(BuildContext context) {
                       return null;
                     },
                     controller: controller.amount,
-                    decoration: InputDecoration(
+                    decoration: InputDecoration(                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+
                       labelText: "Amount deposited",
                       // constraints: BoxConstraints.tight(
                       // const Size.fromHeight(50),
@@ -207,6 +167,7 @@ showBankDepositForm(BuildContext context) {
                   },
                   controller: controller.description,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
                     labelText: "Description",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -217,22 +178,24 @@ showBankDepositForm(BuildContext context) {
                 SizedBox(
                   height: 45,
                   width: double.maxFinite,
-                  child: FloatingActionButton(
-                      elevation: 0,
-                      // style: ElevatedButton.styleFrom(
-                      //   padding: EdgeInsets.symmetric(horizontal: 10),
-                      //   disabledBackgroundColor: const Color(0xff35689fff),
-                      backgroundColor:AppColors.prettyBlue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      // ),
-                      onPressed: () {
-                        controller.checkBalances(context);
-                      },
-                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Text(
-                        'Deposit',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
-                      )),
+                  child: Obx(
+                      ()=> FloatingActionButton(
+                        elevation: 0,
+                        // style: ElevatedButton.styleFrom(
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   disabledBackgroundColor: const Color(0xff35689fff),
+                        backgroundColor:controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        // ),
+                        onPressed:controller.isButtonEnabled.value? () {
+                          controller.checkBalances(context);
+                        }:null,
+                        // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                        child: Text(
+                          'Deposit',
+                          style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                        )),
+                  ),
                 ),
               ],
             ),

@@ -88,11 +88,11 @@ class Accounts extends StatelessWidget {
                             children: [
                               Text(currency.key,
                                   style: TextStyle(
-                                    fontSize: 13,
+                                      fontSize: 13,color: double.parse(currency.value.toString())<0?AppColors.red:AppColors.prettyDark
                                   )),
                               Text(formatter.format(currency.value),
                                   style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 13,color: double.parse(currency.value.toString())<0?AppColors.red:AppColors.prettyDark
                                   )),
                             ],
                           ),

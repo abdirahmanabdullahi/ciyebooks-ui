@@ -1,5 +1,6 @@
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
@@ -47,36 +48,42 @@ showAddExpenseCategoryDialog(context) {
             ),
           ),
         ),
-
         content: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(mainAxisSize: MainAxisSize.min,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                   height: 45,
                   width: double.maxFinite,
-                  child: TextFormField(
+                  child: TextFormField(inputFormatters: [                        FilteringTextInputFormatter.deny(RegExp(r'^\d*\.?\d*$')),
+                  ],
+                    onChanged: (value)=>controller.updateNewCategoryButton(),
                     controller: controller.category,
-                    decoration: InputDecoration(labelText: 'Category name'),
+                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                        labelText: 'Category name'),
                   )),
-              Gap(AppSizes.spaceBtwItems*2.5),
-              SizedBox(height: 45,width: double.maxFinite,
-                child:  FloatingActionButton(elevation: 0,                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              Gap(AppSizes.spaceBtwItems * 2.5),
+              SizedBox(
+                height: 45,
+                width: double.maxFinite,
+                child: Obx(
+                  ()=> FloatingActionButton(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: controller.newCategoryButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,                onPressed:controller.newCategoryButtonEnabled.value? () {
+                      controller.addNewExpenseCategory();
+                    }:null,
 
-                  backgroundColor: AppColors.prettyBlue,
-
-                child: const Text(
-                  'Add',
-                  style: TextStyle(color: AppColors.quinary),
+                    child: const Text(
+                      'Add',
+                      style: TextStyle(color: AppColors.quinary),
+                    ),              ),
                 ),
-                onPressed: () {
-                  controller.addNewExpenseCategory();
-                },
-              ),)
+              )
             ],
           ),
         ),
-
       );
     },
   );

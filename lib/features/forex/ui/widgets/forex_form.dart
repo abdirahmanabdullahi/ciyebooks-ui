@@ -467,19 +467,21 @@ showForexForm(BuildContext context) {
                 SizedBox(
                   width: double.maxFinite,
                   height: 45,
-                  child: FloatingActionButton(
-                    elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35689fff),
-                    backgroundColor: AppColors.prettyBlue,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    // ),
-                    onPressed: () => controller.checkBalances(context),
-                    // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                  child: Obx(
+      ()=> FloatingActionButton(
+                      disabledElevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35689fff),
+                      backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      // ),
+                      onPressed:controller.isButtonEnabled.value? () => controller.checkBalances(context):null,
+                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),

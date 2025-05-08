@@ -75,7 +75,6 @@ showPaymentForm(BuildContext context) {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Gap(AppSizes.spaceBtwItems),
               Obx(
                 () => SizedBox(
                   width: double.maxFinite,
@@ -85,7 +84,7 @@ showPaymentForm(BuildContext context) {
 
                     controller: controller.from,
                     trailingIcon: Icon(
-                      Icons.search,
+                      Icons.keyboard_arrow_down_outlined,
                       color: CupertinoColors.systemBlue,
                     ),
                     inputDecorationTheme: InputDecorationTheme(
@@ -107,10 +106,14 @@ showPaymentForm(BuildContext context) {
                       maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                     ),
                     label: Text('Paying account'),
-                    selectedTrailingIcon: Icon(Icons.search),
+                    selectedTrailingIcon: Icon(
+                      Icons.search,
+                      color: CupertinoColors.systemBlue,
+                    ),
                     // width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
+                        controller.updateButtonStatus();
                         controller.from.text = value[2].toString();
                         controller.accountNo.text = value[0].toString();
 
@@ -166,10 +169,15 @@ showPaymentForm(BuildContext context) {
                       maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                     ),
                     label: Text('Currency paid'),
-                    selectedTrailingIcon: Icon(Icons.search),
+                    selectedTrailingIcon: Icon(
+                      Icons.search,
+                      color: CupertinoColors.systemBlue,
+                    ),
                     // width: double.maxFinite,
                     onSelected: (value) {
                       if (value != null) {
+                        controller.updateButtonStatus();
+
                         controller.paidCurrency.text = value;
                       }
                     },
@@ -199,106 +207,161 @@ showPaymentForm(BuildContext context) {
                 ),
               ),
               Gap(AppSizes.spaceBtwItems),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Obx(
-                      () => Row(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Checkbox(value: controller.paidToOwner.value, onChanged: (value) => controller.paidToOwner.value = !controller.paidToOwner.value),
-                          ),
-                          Gap(10),
-                          controller.paidToOwner.value ? Text('Paid to owner') : Text('Paid to a other')
-                        ],
-                      ),
+              DropdownMenu(
+                  controller: controller.paymentType,
+                  expandedInsets: EdgeInsets.zero,
+                  trailingIcon: Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    color: CupertinoColors.systemBlue,
+                  ),
+                  inputDecorationTheme: InputDecorationTheme(
+                    fillColor: AppColors.quinary,
+                    filled: true,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: DropdownMenu(
-                        controller: controller.paymentType,
-                        expandedInsets: EdgeInsets.zero,
-
-                        trailingIcon: Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: CupertinoColors.systemBlue,
-                        ),
-                        inputDecorationTheme: InputDecorationTheme(
-                          fillColor: AppColors.quinary,
-                          filled: true,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                          constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        enableSearch: true,
-                        requestFocusOnTap: true,
-                        enableFilter: true,
-                        menuStyle: MenuStyle(
-                          padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                          backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                        ),
-                        label: Text('Payment type'),
-                        selectedTrailingIcon: Icon(Icons.search),
-                        // width: double.maxFinite,
-                        onSelected: (value) {},
-                        dropdownMenuEntries: [
-                          DropdownMenuEntry(
-                              style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                  side: WidgetStateProperty.all(
-                                    BorderSide(width: 2, color: AppColors.quarternary),
-                                  ),
-                                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                                  ))),
-                              value: 'Cash',
-                              label: 'cash'),
-                          DropdownMenuEntry(
-                              style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                  side: WidgetStateProperty.all(
-                                    BorderSide(width: 2, color: AppColors.quarternary),
-                                  ),
-                                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                                  ))),
-                              value: 'Mobile money',
-                              label: 'Mobile money'),
-                          // DropdownMenuEntry(
-                          //     style: ButtonStyle(
-                          //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                          //         side: WidgetStateProperty.all(
-                          //           BorderSide(width: 2, color: AppColors.quarternary),
-                          //         ),
-                          //         shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                          //           borderRadius: BorderRadius.all(Radius.circular(0)),
-                          //         ))),
-                          //     value: 'Mobile money',
-                          //     label: 'Mobile money'),
-                          DropdownMenuEntry(
-                              style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                  side: WidgetStateProperty.all(
-                                    BorderSide(width: 2, color: AppColors.quarternary),
-                                  ),
-                                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(0)),
-                                  ))),
-                              value: 'Bank transfer',
-                              label: 'Bank transfer'),
-                        ]),
+                  enableSearch: true,
+                  requestFocusOnTap: true,
+                  enableFilter: true,
+                  menuStyle: MenuStyle(
+                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                    backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                    maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                   ),
-                ],
-              ),
+                  label: Text('Payment type'),
+                  selectedTrailingIcon: Icon(
+                    Icons.search,
+                    color: CupertinoColors.systemBlue,
+                  ),
+                  // width: double.maxFinite,
+                  onSelected: (value) {
+                    controller.updateButtonStatus();
+                  },
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                            ))),
+                        value: 'Cash',
+                        label: 'cash'),
+                    DropdownMenuEntry(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                            ))),
+                        value: 'Mobile money',
+                        label: 'Mobile money'),
+                    // DropdownMenuEntry(
+                    //     style: ButtonStyle(
+                    //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                    //         side: WidgetStateProperty.all(
+                    //           BorderSide(width: 2, color: AppColors.quarternary),
+                    //         ),
+                    //         shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.all(Radius.circular(0)),
+                    //         ))),
+                    //     value: 'Mobile money',
+                    //     label: 'Mobile money'),
+                    DropdownMenuEntry(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                            ))),
+                        value: 'Bank transfer',
+                        label: 'Bank transfer'),
+                  ]),
+              Gap(AppSizes.spaceBtwItems),
+              DropdownMenu(
+                  controller: controller.paidTo,
+                  expandedInsets: EdgeInsets.zero,
+                  trailingIcon: Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    color: CupertinoColors.systemBlue,
+                  ),
+                  inputDecorationTheme: InputDecorationTheme(
+                    fillColor: AppColors.quinary,
+                    filled: true,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  enableSearch: true,
+                  requestFocusOnTap: true,
+                  enableFilter: true,
+                  menuStyle: MenuStyle(
+                    padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                    backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                    maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                  ),
+                  label: Text('Paid to'),
+                  selectedTrailingIcon: Icon(
+                    Icons.search,
+                    color: CupertinoColors.systemBlue,
+                  ),
+                  // width: double.maxFinite,
+                  onSelected: (value) {
+                    controller.updateButtonStatus();
+                    if (value != null) {
+
+                      value ? (controller.receiver.text = controller.from.text.trim(),
+                      controller.paidTo.text = controller.from.text.trim()) : controller.receiver.text = '';
+                    }
+                  },
+                  dropdownMenuEntries: [
+                    DropdownMenuEntry(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                            ))),
+                        value: true,
+                        label: 'Owner'),
+                    DropdownMenuEntry(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                            side: WidgetStateProperty.all(
+                              BorderSide(width: 2, color: AppColors.quarternary),
+                            ),
+                            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                            ))),
+                        value: false,
+                        label: 'Other'),
+                    // DropdownMenuEntry(
+                    //     style: ButtonStyle(
+                    //         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                    //         side: WidgetStateProperty.all(
+                    //           BorderSide(width: 2, color: AppColors.quarternary),
+                    //         ),
+                    //         shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.all(Radius.circular(0)),
+                    //         ))),
+                    //     value: 'Mobile money',
+                    //     label: 'Mobile money'),
+                  ]),
               Obx(
                 () => controller.paidToOwner.value
                     ? SizedBox()
@@ -317,6 +380,8 @@ showPaymentForm(BuildContext context) {
                               },
                               controller: controller.receiver,
                               decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+
                                 labelText: "Receiver's name",
                                 // constraints: BoxConstraints.tight(
                                 // const Size.fromHeight(50),
@@ -341,9 +406,13 @@ showPaymentForm(BuildContext context) {
                     }
                     return null;
                   },
+                  onChanged: (value) {
+                    controller.amount.text = value.trim();
+                    controller.updateButtonStatus();
+                  },
                   controller: controller.amount,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
                     labelText: "Amount paid",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -354,8 +423,8 @@ showPaymentForm(BuildContext context) {
               Gap(AppSizes.spaceBtwItems),
               TextFormField(
                 maxLength: 40,
-                maxLines: 2,
-                minLines: 2,
+                maxLines: 3,
+                minLines: 3,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Description";
@@ -364,6 +433,8 @@ showPaymentForm(BuildContext context) {
                 },
                 controller: controller.description,
                 decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+
                   labelText: "Description",
                   // constraints: BoxConstraints.tight(
                   // const Size.fromHeight(50),
@@ -374,22 +445,27 @@ showPaymentForm(BuildContext context) {
               SizedBox(
                 height: 45,
                 width: double.maxFinite,
-                child: FloatingActionButton(
-                    elevation: 0,
-                    // style: ElevatedButton.styleFrom(
-                    //   padding: EdgeInsets.symmetric(horizontal: 10),
-                    //   disabledBackgroundColor: const Color(0xff35689fff),
-                    backgroundColor: AppColors.prettyBlue,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    // ),
-                    onPressed: () {
-                      controller.checkBalances(context);
-                    },
-                    // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                    child: Text(
-                      'Pay',
-                      style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
-                    )),
+                child: Obx(
+                  () => FloatingActionButton(
+                      disabledElevation: 0,
+                      // elevation: 10,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35689fff),
+                      backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      // ),
+                      onPressed: controller.isButtonEnabled.value
+                          ? () {
+                              controller.checkBalances(context);
+                            }
+                          : null,
+                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                      child: Text(
+                        'Pay',
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                      )),
+                ),
               ),
             ],
           ),

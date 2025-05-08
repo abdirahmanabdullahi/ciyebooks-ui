@@ -48,8 +48,13 @@ class DepositCashController extends GetxController {
   final description = TextEditingController();
   final depositorName = TextEditingController();
 
-  ///
-
+  /// Clear controllers after data submission
+  clearControllers(){
+    amount.clear();
+    depositedCurrency.clear();
+    description.clear();
+    depositorName.clear();
+  }
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
@@ -65,7 +70,7 @@ class DepositCashController extends GetxController {
   }
 
   updateButtonStatus() {
-    isButtonEnabled.value = depositedCurrency.text.isNotEmpty && amount.text.isNotEmpty && (num.parse(amount.text) > 0);
+    isButtonEnabled.value = depositedCurrency.text.isNotEmpty && amount.text.isNotEmpty && ((double.tryParse(amount.text.trim())??0.0) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -189,7 +194,7 @@ class DepositCashController extends GetxController {
       batch.update(counterRef, {"transactionCounters.bankDepositCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
-        Get.snackbar(
+                  Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
             color: Colors.white,
@@ -208,21 +213,10 @@ class DepositCashController extends GetxController {
             currency: depositedCurrency.text.trim(),
             transactionCode: 'BKDP-${counters['bankDepositCounter']}',
             amount: amount.text.trim(),
-            depositor: Obx(
-              () => depositedByOwner.value
-                  ? Text('Main account holder',
-                      style: TextStyle(
-                        fontSize: 13,
-                      ))
-                  : Text(depositorName.text.trim(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      )),
-            ),
             description: description.text.trim(),
             date: DateTime.now());
-      }
+      }        clearControllers();
+
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

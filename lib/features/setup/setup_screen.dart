@@ -106,7 +106,7 @@ class SetupScreen extends StatelessWidget {
                           () => InfoRow(
                             valueColor: CupertinoColors.systemBlue,
                             title: 'Shilling payable',
-                            value:('controller.totals.value.shillingPayable'),
+                            value: ('controller.totals.value.shillingPayable'),
                           ),
                         ),
                         Gap(10),
@@ -3595,135 +3595,138 @@ void createNewAccountBottom(BuildContext? context) {
           top: 16,
           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
         ),
-        child: Form(
-          key: controller.accountsFormKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Create new account",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Create new account",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      controller: controller.firstName,
-                      decoration: InputDecoration(
-                        labelText: "First Name",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      controller: controller.lastName,
-                      decoration: InputDecoration(
-                        labelText: "Last Name",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.phoneNo,
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelText: "Phone Number",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.email,
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.usd,
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      decoration: InputDecoration(
-                        labelText: "USD amount",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: controller.kes,
-                      validator: (value) => Validator.validateEmptyText('field', value),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: "KES amount",
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Gap(10),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // controller.makeItNegative.value = true;
-                    controller.createAccount(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: CupertinoColors.systemBlue,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    "Submit",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
+            ),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    controller: controller.firstName,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "First Name",
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
+                Gap(10),
+                Expanded(
+                  child: TextFormField(
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    controller: controller.lastName,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "Last Name",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.phoneNo,
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "Phone Number",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const Gap(10),
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.email,
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "Email",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.usd,
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "USD amount",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.kes,
+                    validator: (value) => Validator.validateEmptyText('field', value),
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      labelText: "KES amount",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Gap(10),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  // controller.makeItNegative.value = true;
+                  controller.createAccount(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: CupertinoColors.systemBlue,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
               ),
-              Gap(20),
-            ],
-          ),
+            ),
+            Gap(20),
+          ],
         ),
       );
     },

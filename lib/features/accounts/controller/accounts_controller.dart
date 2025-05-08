@@ -15,6 +15,7 @@ class AccountsController extends GetxController {
 
   final counters = {}.obs;
   final isLoading = false.obs;
+  final isButtonEnabled = false.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
   final db = FirebaseFirestore.instance;
@@ -27,13 +28,27 @@ class AccountsController extends GetxController {
   final usd = TextEditingController();
   final kes = TextEditingController();
 
-  GlobalKey<FormState> accountsFormKey = GlobalKey<FormState>();
+  /// Clear controllers after data submission
+  clearControllers() {
+    firstName.clear();
+    lastName.clear();
+    phoneNo.clear();
+    email.clear();
+    usd.clear();
+    kes.clear();
+  }
 
   @override
   void onInit() {
     fetchTotals();
+    firstName.addListener(updateButtonStatus);
+    lastName.addListener(updateButtonStatus);
+    super.onInit();
+  }
 
-  super.onInit();
+  /// Enable/disable submit button
+  updateButtonStatus() {
+    isButtonEnabled.value = firstName.text.isNotEmpty && lastName.text.isNotEmpty;
   }
 
   fetchTotals() async {
@@ -42,22 +57,15 @@ class AccountsController extends GetxController {
     if (documentSnapshot.exists && documentSnapshot.data() != null) {
       final data = documentSnapshot.data() as Map<String, dynamic>;
       totals.value = BalancesModel.fromJson(data);
-
     }
   }
 
   /// Create accounts
   Future<void> createAccount(BuildContext context) async {
-     isLoading.value = true;
+    isLoading.value = true;
     try {
-      if (!accountsFormKey.currentState!.validate()) {
-        isLoading.value = false;
-
-        return;
-      }
-
       final newAccount = AccountModel(
-        currencies: {'USD':double.tryParse( usd.text.trim()), 'KES':double.tryParse( kes.text.trim())},
+        currencies: {'USD': double.tryParse(usd.text.trim()), 'KES': double.tryParse(kes.text.trim())},
 
         firstName: firstName.text.trim(),
         lastName: lastName.text.trim(),
@@ -80,14 +88,14 @@ class AccountsController extends GetxController {
       ///Update the account number counter
       batch.update(accountNoRef, {"transactionCounters.accountsCounter": FieldValue.increment(1)});
 
-
       await batch.commit().then((_) {
+        clearControllers();
         isLoading.value = false;
 
-        if(context.mounted){
+        if (context.mounted) {
           Navigator.pop(context);
-
-        }Get.offAll(()=>Accounts());
+        }
+        Get.offAll(() => Accounts());
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -99,7 +107,7 @@ class AccountsController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-   });
+      });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

@@ -9,7 +9,6 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../data/repositories/auth/auth_repo.dart';
-import '../../navigation_menu.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -29,20 +28,7 @@ class Profile extends StatelessWidget {
             physics: ClampingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             children: [
-              // Top Row
-              // Row(
-              //   children: const [
-              //     Icon(Icons.arrow_back, color: AppColors.prettyDark),
-              //     SizedBox(width: 8),
-              //     Text("Back", style: TextStyle(color: AppColors.prettyDark, fontSize: 16)),
-              //     Spacer(),
-              //   ],
-              // ),
-              // const SizedBox(height: 24),
 
-              // Profile Info
-
-              // About Me Title
               const Text(
                 "User info",
                 style: TextStyle(color: AppColors.prettyDark, fontSize: 16, fontWeight: FontWeight.w600),
@@ -69,7 +55,7 @@ class Profile extends StatelessWidget {
               const SizedBox(height: 8),
 
               InfoTile(
-                leading: Icons.phone,
+                leading: Icons.phone_outlined,
                 title: controller.user.value.phoneNumber,
                 subtitle: "Phone Number",
               ),

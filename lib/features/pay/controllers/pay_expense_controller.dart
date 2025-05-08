@@ -32,6 +32,7 @@ class PayExpenseController extends GetxController {
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
+  final newCategoryButtonEnabled = false.obs;
 
   ///Sort by date
   final sortCriteria = 'dateCreated'.obs;
@@ -52,16 +53,25 @@ class PayExpenseController extends GetxController {
   final paidCurrency = TextEditingController();
   final description = TextEditingController();
 
-  ///
+  /// Clear controllers after data submission
+  clearControllers(){
+    category.clear();
+    paymentTypeController.clear();
+    amount.clear();
+    paidCurrency.clear();
+    description.clear();
+  }
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
   onInit() {
     ///Add listeners to the controllers
-    category.addListener(updateButtonStatus);
-    amount.addListener(updateButtonStatus);
-    paidCurrency.addListener(updateButtonStatus);
+    category.addListener(updateExpenseSubmitButtonStatus);
+    category.addListener(updateNewCategoryButton);
+    amount.addListener(updateExpenseSubmitButtonStatus);
+    paidCurrency.addListener(updateExpenseSubmitButtonStatus);
+    paymentTypeController.addListener(updateExpenseSubmitButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
@@ -106,9 +116,13 @@ class PayExpenseController extends GetxController {
   }
 
   /// *-----------------------------Enable or disable the continue button----------------------------------*
-
-  updateButtonStatus() {
-    isButtonEnabled.value = category.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+/// Enable/disable the client submit button if the pay client form dialog
+  updateExpenseSubmitButtonStatus() {
+    isButtonEnabled.value = category.text.isNotEmpty &&paymentTypeController.text.isNotEmpty&& amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+  }
+/// Update the new category submit button in the new expense category dialog
+  updateNewCategoryButton() {
+    newCategoryButtonEnabled.value =category.text.isNotEmpty&&paymentTypeController.text.isNotEmpty&&paidCurrency.text.isNotEmpty&&amount.text.isNotEmpty&&(double.tryParse(amount.text.trim())??0.0)>0;
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -478,7 +492,8 @@ class PayExpenseController extends GetxController {
               description: description.text.trim(), 
               currency: paidCurrency.text.trim(), date: DateTime.now());
 
-        }
+        }        clearControllers();
+
 
       });
     } on FirebaseAuthException catch (e) {

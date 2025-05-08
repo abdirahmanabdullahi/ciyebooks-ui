@@ -51,6 +51,21 @@ class ForexController extends GetxController {
   TextEditingController currencyStockTotalCost = TextEditingController();
   TextEditingController currencyStockAmount = TextEditingController();
 
+  /// Clear controllers after data submission
+  clearController(){
+
+    forexType.clear();
+    type.clear();
+    currencyCode.clear();
+    transactionType.clear();
+    sellingRate.clear();
+    sellingAmount.clear();
+    sellingTotal.clear();
+    description.clear();
+    currencyStockTotalCost.clear();
+    currencyStockAmount.clear();
+  }
+
   /// New currency controllers
   final newCurrencyName = TextEditingController();
   final newCurrencyCode = TextEditingController();
@@ -85,7 +100,9 @@ class ForexController extends GetxController {
       }
     });
   }
-
+updateNewCurrencyButton(){
+    isButtonEnabled.value = newCurrencyCode.text.isNotEmpty;
+}
   addNewCurrency(BuildContext context) async {
     try {
       // Check if currency is base currency
@@ -113,7 +130,11 @@ class ForexController extends GetxController {
       // Create new currency
       final newCurrency = CurrencyModel(currencyName: newCurrencyName.text.trim(), amount: 0, totalCost: 0, symbol: newCurrencySymbol.text.trim(), currencyCode: newCurrencyCode.text.trim());
 
-      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(newCurrencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {});
+      await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(newCurrencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
+        if(context.mounted){
+          Navigator.of(context).pop();
+        }
+      });
     } catch (e) {
       throw e.toString();
     }
@@ -131,7 +152,7 @@ class ForexController extends GetxController {
 
     sellingAmount.text = formatter.format(((double.tryParse(sellingTotal.text.trim()) ?? 0.0) / (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
-
+/// Update whether the submit button is enabled or disabled
   updateButtonStatus() {
     isButtonEnabled.value = sellingRate.text.isNotEmpty &&
         sellingAmount.text.isNotEmpty &&
@@ -317,7 +338,8 @@ class ForexController extends GetxController {
               rate: sellingRate.text.trim(),
               totalCost: sellingTotal.text.trim(),
               date: DateTime.now());
-        }
+        }        clearController();
+
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

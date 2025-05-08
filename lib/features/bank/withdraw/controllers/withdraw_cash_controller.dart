@@ -43,7 +43,10 @@ class WithdrawCashController extends GetxController {
   final withdrawnBy = TextEditingController();
   final withdrawType = TextEditingController();
 
-  ///
+  /// Clear controller after data submission
+  clearController(){
+    amount.clear();withdrawnCurrency.clear();description.clear();withdrawnBy.clear();withdrawType.clear();
+  }
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
@@ -64,7 +67,7 @@ class WithdrawCashController extends GetxController {
   /// *-----------------------------Enable or disable the continue button----------------------------------*
 
   updateButtonStatus() {
-    isButtonEnabled.value = withdrawnCurrency.text.isNotEmpty && amount.text.isNotEmpty && (num.parse(amount.text) > 0);
+    isButtonEnabled.value = withdrawnCurrency.text.isNotEmpty && amount.text.isNotEmpty && ((double.tryParse(amount.text.trim()) ?? 0.0) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -208,7 +211,8 @@ class WithdrawCashController extends GetxController {
             withdrawnBy: withdrawnBy.text.trim(),
             description: description.text.trim(),
             date: DateTime.now());
-      }
+      }        clearController();
+
       isLoading.value = false;
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

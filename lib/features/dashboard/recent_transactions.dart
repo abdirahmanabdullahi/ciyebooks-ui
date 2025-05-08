@@ -54,7 +54,8 @@ class RecentTransactions extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children:
+                      [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

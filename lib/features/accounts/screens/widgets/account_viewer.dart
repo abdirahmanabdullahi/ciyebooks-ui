@@ -22,7 +22,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
             8,
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
-          content: SingleChildScrollView(
+          content: SingleChildScrollView(physics: ClampingScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -45,12 +45,12 @@ showAccountDetails({required BuildContext context, required String accountName, 
                       children: [
                         CircleAvatar(
                           radius: 35,
-                          backgroundColor: AppColors.quarternary,
+                          backgroundColor: AppColors.prettyBlue,
                           child: Center(
                               child: Icon(
                             Icons.manage_accounts,
                             size: 45,
-                            color: AppColors.prettyDark,
+                            color: AppColors.quinary,
                           )),
                         ),
                         Gap(10),
@@ -72,7 +72,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withAlpha(15),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -160,7 +160,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withAlpha(15),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -181,7 +181,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                     ],
                   ),
                 ),
-                Container(margin: EdgeInsets.all(8),
+                Container(margin: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
                   child: SizedBox(
                     // height: 45,
                     width: double.maxFinite,

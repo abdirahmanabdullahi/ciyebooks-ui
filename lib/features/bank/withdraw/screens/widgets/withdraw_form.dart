@@ -75,7 +75,6 @@ showWithdrawForm(BuildContext context) {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Gap(10),
                 Obx(
                   () => DropdownMenu(
                     controller: controller.withdrawnCurrency,
@@ -147,7 +146,7 @@ showWithdrawForm(BuildContext context) {
                       return null;
                     },
                     controller: controller.amount,
-                    decoration: InputDecoration(
+                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       labelText: "Amount withdrawn",
                       // constraints: BoxConstraints.tight(
                       // const Size.fromHeight(50),
@@ -158,8 +157,8 @@ showWithdrawForm(BuildContext context) {
                 Gap(AppSizes.spaceBtwItems),
                 TextFormField(
                   maxLength: 40,
-                  maxLines: 2,
-                  minLines: 2,
+                  maxLines: 3,
+                  minLines: 3,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Description";
@@ -167,7 +166,7 @@ showWithdrawForm(BuildContext context) {
                     return null;
                   },
                   controller: controller.description,
-                  decoration: InputDecoration(
+                  decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
                     labelText: "Description",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -178,19 +177,21 @@ showWithdrawForm(BuildContext context) {
                 SizedBox(
                   height: 45,
                   width: double.maxFinite,
-                  child: FloatingActionButton(
-                      elevation: 0,
-                      backgroundColor: AppColors.prettyBlue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      // ),
-                      onPressed: () {
-                        controller.checkBalances(context);
-                      },
-                      // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Text(
-                        'Withdraw',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
-                      )),
+                  child: Obx(
+                      ()=> FloatingActionButton(
+                        disabledElevation: 0,
+                        backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        // ),
+                        onPressed:controller.isButtonEnabled.value? () {
+                          controller.checkBalances(context);
+                        }:null,
+                        // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                        child: Text(
+                          'Withdraw',
+                          style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                        )),
+                  ),
                 ),
               ],
             ),

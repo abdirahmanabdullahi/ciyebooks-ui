@@ -13,7 +13,6 @@ showBankDepositInfo({
   required String currency,
   required String amount,
   required String transactionCode,
-  required Widget depositor,
   required String description,
   required DateTime date,
 }) {
@@ -109,17 +108,7 @@ showBankDepositInfo({
 
                       Divider(color: Colors.black, thickness: .11),
                       // Divider(color: Colors.black, thickness: .11),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Depositor",
-                              style: TextStyle(
-                                fontSize: 13,
-                              )),
-                          depositor
-                        ],
-                      ),
-                      Divider(color: Colors.black, thickness: .11),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

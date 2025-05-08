@@ -48,15 +48,30 @@ class PayClientController extends GetxController {
   final paidCurrency = TextEditingController();
   final receiver = TextEditingController();
   final accountNo = TextEditingController();
+  final paidTo = TextEditingController();
   final description = TextEditingController();
+
+  /// Clear controllers after data submission
+  clearController() {
+    from.clear();
+    paymentType.clear();
+    amount.clear();
+    paidCurrency.clear();
+    receiver.clear();
+    accountNo.clear();
+    paidTo.clear();
+    description.clear();
+  }
 
   @override
   onInit() {
     ///Add listeners to the controllers
-    from.addListener(updateButtonStatus);
     accountNo.addListener(updateButtonStatus);
     amount.addListener(updateButtonStatus);
     paidCurrency.addListener(updateButtonStatus);
+    paymentType.addListener(updateButtonStatus);
+    paidCurrency.addListener(updateButtonStatus);
+    receiver.addListener(updateButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
@@ -81,7 +96,8 @@ class PayClientController extends GetxController {
   }
 
   void updateButtonStatus() {
-    isButtonEnabled.value = from.text.isNotEmpty && accountNo.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+    isButtonEnabled.value =
+        accountNo.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && receiver.text.isNotEmpty && paymentType.text.isNotEmpty && ((double.tryParse(amount.text) ?? 0.0) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -150,12 +166,10 @@ class PayClientController extends GetxController {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (context.mounted) {
-
           createPayment(context);
         }
       }
     } on SocketException catch (_) {
-
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -271,6 +285,8 @@ class PayClientController extends GetxController {
               date: DateTime.now(),
               totalPayment: amount.text.trim());
         }
+        clearController();
+
 
         // SharePlus.instance.share(ShareParams(
         //     text:

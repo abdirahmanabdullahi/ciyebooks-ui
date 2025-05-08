@@ -31,18 +31,30 @@ class ReceiveFromClientController extends GetxController {
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
   final paidToOwner = true.obs;
-  final payClientFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
   final receivedFromOwner = true.obs;
 
   ///Controllers
   final depositorName = TextEditingController();
+  final receivedFrom = TextEditingController();
   final receiptType = TextEditingController();
   final amount = TextEditingController();
   final receivedCurrency = TextEditingController();
   final receivingAccountName = TextEditingController();
   final receivingAccountNo = TextEditingController();
   final description = TextEditingController();
+
+  /// Clear controllers after data submission
+  clearControllers(){
+    depositorName.clear();
+    receivedFrom.clear();
+    receiptType.clear();
+    amount.clear();
+    receivedCurrency.clear();
+    receivingAccountName.clear();
+    receivingAccountNo.clear();
+    description.clear();
+  }
 
   ///Sort criteria
   final sortCriteria = 'dateCreated'.obs;
@@ -54,10 +66,12 @@ class ReceiveFromClientController extends GetxController {
     fetchTotals();
 
     ///Add listeners to the controllers
-    depositorName.addListener(updateButtonStatus);
     receivingAccountNo.addListener(updateButtonStatus);
-    amount.addListener(updateButtonStatus);
     receivedCurrency.addListener(updateButtonStatus);
+    receiptType.addListener(updateButtonStatus);
+    receivedFrom.addListener(updateButtonStatus);
+    depositorName.addListener(updateButtonStatus);
+    amount.addListener(updateButtonStatus);
 
     ///Get the totals and balances
     fetchTotals();
@@ -72,7 +86,13 @@ class ReceiveFromClientController extends GetxController {
   }
 
   void updateButtonStatus() {
-    isButtonEnabled.value = amount.text.isNotEmpty && receivedCurrency.text.isNotEmpty && (num.parse(amount.text) > 0);
+    isButtonEnabled.value = depositorName.text.isNotEmpty &&
+        receivedCurrency.text.isNotEmpty &&
+        receiptType.text.isNotEmpty &&
+        receivedFrom.text.isNotEmpty &&
+        depositorName.text.isNotEmpty &&
+        amount.text.isNotEmpty &&
+        ((double.tryParse(amount.text.trim()) ?? 0.0) > 0);
   }
 
   /// *-----------------------------Start data submission---------------------------------*
@@ -109,11 +129,11 @@ class ReceiveFromClientController extends GetxController {
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
   Future createReceipt(BuildContext context) async {
-    if (!paidToOwner.value) {
-      if (!payClientFormKey.currentState!.validate()) {
-        return;
-      }
-    }
+    // if (!paidToOwner.value) {
+    //   if (!payClientFormKey.currentState!.validate()) {
+    //     return;
+    //   }
+    // }
     try {
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -187,7 +207,8 @@ class ReceiveFromClientController extends GetxController {
               receivingAccountNo: receivingAccountNo.text.trim(),
               description: description.text.trim(),
               date: DateTime.now());
-        }
+        }        clearControllers();
+
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

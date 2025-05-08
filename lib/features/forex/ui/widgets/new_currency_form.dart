@@ -16,7 +16,7 @@ showAddNewCurrencyDialog(BuildContext context) {
       final controller = Get.put(ForexController());
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(20),
+        insetPadding: EdgeInsets.all(8),
         backgroundColor: AppColors.quarternary,
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -82,6 +82,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                 onSelected: (value) {
                   if (value != null) {
                     controller.newCurrencyCode.text = value;
+                    controller.updateNewCurrencyButton();
                   }
                 },
                 dropdownMenuEntries: controller.currencyList.entries.map((currency) {
@@ -120,15 +121,17 @@ showAddNewCurrencyDialog(BuildContext context) {
               SizedBox(
                 height: 38,
                 width: double.maxFinite,
-                child: FloatingActionButton(
-                    elevation: 0,
-                    backgroundColor: AppColors.prettyBlue,
-                    shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.prettyBlue, width: 1), borderRadius: BorderRadius.circular(10)),
-                    onPressed: () => controller.addNewCurrency(context),
-                    child: Text(
-                      'Add currency',
-                      style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.bold),
-                    )),
+                child: Obx(()=>
+                  FloatingActionButton(
+                      disabledElevation: 0,
+                      backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(10)),
+                      onPressed: controller.isButtonEnabled.value?() => controller.addNewCurrency(context):null,
+                      child: Text(
+                        'Add currency',
+                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.bold),
+                      )),
+                ),
               )
             ],
           ),

@@ -53,17 +53,7 @@ showAndroidPaymentBottomSheet({required BuildContext context}) {
                       Get.back();
                       showExpenseForm(context);
                     }),
-                Divider(
-                  height: 0,
-                ),
-                BottomSheetButton(
-                    heroTag: "Pay an expense",
-                    label: "Pay an expense",
-                    icon: Icons.shopping_bag,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      showAddExpenseCategoryDialog(context);
-                    }),
+
                 Divider(
                   height: 0,
                 ),
@@ -117,18 +107,7 @@ void showIosPaymentActionSheet(BuildContext context) {
             style: TextStyle(color: CupertinoColors.systemBlue),
           ),
         ),
-        CupertinoActionSheetAction(
-          /// This parameter indicates the action would be a default
-          /// default behavior, turns the action's text to bold text.
-          onPressed: () {
-            Navigator.pop(context);
-            showAddExpenseCategoryDialog(context);
-          },
-          child: const Text(
-            'New expense category',
-            style: TextStyle(color: CupertinoColors.systemBlue),
-          ),
-        ),
+
       ],
     ),
   );

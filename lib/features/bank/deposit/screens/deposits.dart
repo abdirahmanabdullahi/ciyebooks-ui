@@ -42,7 +42,6 @@ class Deposits extends StatelessWidget {
                     currency: data['currency'],
                     amount: data['amount'].toString(),
                     transactionCode: data['transactionId'],
-                    depositor: Text(data['depositedBy']),
                     description: data['description'],
                     date: data['dateCreated'].toDate());
               },
