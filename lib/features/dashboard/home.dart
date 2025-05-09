@@ -20,7 +20,7 @@ import '../forex/ui/forex_home.dart';
 import '../pay/screens/payment_home.dart';
 import '../profile/profile.dart';
 import '../receive/screens/receipts_history.dart';
-import '../stats/stats.dart';
+import '../stats/screens/stats_screen.dart';
 import 'all_transactions.dart';
 
 class Dashboard extends StatelessWidget {
@@ -56,7 +56,7 @@ class Dashboard extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (context) => const Stats()),
+                CupertinoPageRoute(builder: (context) =>  StatsScreen()),
               );
             },
             icon: Icon(

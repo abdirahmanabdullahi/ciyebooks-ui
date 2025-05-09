@@ -170,12 +170,8 @@ class SetupScreen extends StatelessWidget {
                     ),
                     Gap(10),
                     Divider(),
-                    Gap(10),
-                    Obx(
-                      () => InfoRow(
-                          fontWeight: FontWeight.w700, fontSize: 17, valueColor: CupertinoColors.systemBlue, title: 'Working capital', value: formatter.format(controller.totals.value.workingCapital)),
-                    ),
-                    Gap(10), Divider(),
+
+                    Gap(10), Divider(), Gap(10),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(

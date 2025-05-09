@@ -322,9 +322,8 @@ showPaymentForm(BuildContext context) {
                   onSelected: (value) {
                     controller.updateButtonStatus();
                     if (value != null) {
-
-                      value ? (controller.receiver.text = controller.from.text.trim(),
-                      controller.paidTo.text = controller.from.text.trim()) : controller.receiver.text = '';
+                      controller.paidToOwner.value = value;
+                      value ? (controller.receiver.text = controller.from.text.trim(), controller.paidTo.text = controller.from.text.trim()) : controller.receiver.text = '';
                     }
                   },
                   dropdownMenuEntries: [
@@ -365,32 +364,29 @@ showPaymentForm(BuildContext context) {
               Obx(
                 () => controller.paidToOwner.value
                     ? SizedBox()
-                    : Form(
-                        key: controller.payClientFormKey,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: SizedBox(
-                            height: 45,
-                            child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Receiver's name is required";
-                                }
-                                return null;
-                              },
-                              controller: controller.receiver,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    : Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: SizedBox(
+                        height: 45,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Receiver's name is required";
+                            }
+                            return null;
+                          },
+                          controller: controller.receiver,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
 
-                                labelText: "Receiver's name",
-                                // constraints: BoxConstraints.tight(
-                                // const Size.fromHeight(50),
-                                // ),
-                              ),
-                            ),
+                            labelText: "Receiver's name",
+                            // constraints: BoxConstraints.tight(
+                            // const Size.fromHeight(50),
+                            // ),
                           ),
                         ),
                       ),
+                    ),
               ),
               Gap(AppSizes.spaceBtwItems),
               SizedBox(

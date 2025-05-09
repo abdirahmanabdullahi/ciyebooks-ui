@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ciyebooks/common/widgets/error_dialog.dart';
 import 'package:ciyebooks/features/forex/model/forex_model.dart';
 import 'package:ciyebooks/features/forex/ui/widgets/fx_transaction_success.dart';
+import 'package:ciyebooks/features/stats/models/stats_model.dart';
 import 'package:ciyebooks/utils/helpers/forex_profit_calculator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +25,9 @@ class ForexController extends GetxController {
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
     locale: 'en_us',
     decimalDigits: 2,
-  );
+  ); final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+  final dailyReportCreated = false.obs;
+
   double profit = 0;
   final selectedTransaction = 'BUYFX'.obs;
   final counters = {}.obs;
@@ -234,7 +237,14 @@ updateNewCurrencyButton(){
     }
   }
 
-  Future createForexTransaction(BuildContext context) async {
+
+  createDailyReport() async {
+    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final snapshot = await reportRef.get();
+    if (snapshot.exists) {
+      dailyReportCreated.value = true;
+    }
+  }  Future createForexTransaction(BuildContext context) async {
     try {
       /// If it is a sale calculate the profit
       if (selectedTransaction.value == 'SELLFX') {
@@ -255,6 +265,7 @@ updateNewCurrencyButton(){
       final currencyRef = db.collection('Users').doc(_uid).collection('Currency stock').doc(currencyCode.text.trim().toUpperCase());
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final transactionRef = db.collection('Users').doc(_uid).collection('transactions').doc('${selectedTransaction.value}-${counters[selectedTransaction.value]}');
+      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
 
       final newForexTransaction = ForexModel(
         forexType: selectedTransaction.value,
@@ -270,7 +281,12 @@ updateNewCurrencyButton(){
         revenueContributed: double.parse(profit.toStringAsFixed(3)),
       );
 
-      ///Create payment transaction
+      ///Create Daily report
+      if(!dailyReportCreated.value){
+        batch.set(dailyReportRef, DailyReportModel.empty().toJson());
+
+      }
+ ///Create payment transaction
       batch.set(transactionRef, newForexTransaction.toJson());
 
       ///update cash and currency balances when buying currencies

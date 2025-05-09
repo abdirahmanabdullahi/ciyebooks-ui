@@ -223,7 +223,7 @@ showPaymentInfo({
                           Future.delayed(Duration(milliseconds: 800), () {
                             if (context.mounted) {
                               Navigator.of(context).pop();
-                              Navigator.of(context).pop();
+                              // Navigator.of(context).pop();
                             }
                           });
                         },

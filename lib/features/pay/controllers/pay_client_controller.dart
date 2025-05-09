@@ -17,10 +17,13 @@ import '../../../../utils/exceptions/format_exceptions.dart';
 import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
+import '../../stats/models/stats_model.dart';
 import '../models/pay_client_model.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
+  final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+
   final _uid = FirebaseAuth.instance.currentUser?.uid;
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
     locale: 'en_us',
@@ -34,11 +37,11 @@ class PayClientController extends GetxController {
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
+  final dailyReportCreated = false.obs;
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
   final paidToOwner = true.obs;
-  final payClientFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
 
   ///Controllers
@@ -75,7 +78,8 @@ class PayClientController extends GetxController {
 
     ///Get the totals and balances
     fetchTotals();
-
+    /// Check if daily report is created.
+    createDailyReport();
     /// Stream for the accounts
 
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
@@ -100,7 +104,6 @@ class PayClientController extends GetxController {
         accountNo.text.isNotEmpty && amount.text.isNotEmpty && paidCurrency.text.isNotEmpty && receiver.text.isNotEmpty && paymentType.text.isNotEmpty && ((double.tryParse(amount.text) ?? 0.0) > 0);
   }
 
-  /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
@@ -116,7 +119,14 @@ class PayClientController extends GetxController {
     });
   }
 
-  /// *-----------------------------Create and share pdf receipt----------------------------------*
+  /// Check and create daily report if not Created
+  createDailyReport() async {
+    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final snapshot = await reportRef.get();
+    if (snapshot.exists) {
+      dailyReportCreated.value = true;
+    }
+  }
 
   checkBalances(BuildContext context) {
     /// Check if currency is at bank and amount is enough to pay amount requested
@@ -135,11 +145,17 @@ class PayClientController extends GetxController {
         showErrorDialog(context: context, errorTitle: 'Insufficient bank balance', errorText: 'You do have enough ${paidCurrency.text.trim()} in your bank account to make this transfer.');
         return;
       }
-      showConfirmPayment(context);
+      // if (requestedAmount == availableAmount) {
+      //   showErrorDialogWithContinueButton(context: context, errorTitle: 'Zero balance warning', errorText: 'If you make this payment you will have no ${paidCurrency.text.trim()} left!', cancelTransaction: Navigator.of(context).pop(), continueTransaction: null);
+      //   // showErrorDialog(context: context, errorTitle: 'Zero balance warning', errorText: 'If you make this payment you will have no ${paidCurrency.text.trim()} left!');
+      //   return;
+      // }
+      // showConfirmPayment(context);
     }
 
     /// Check if currency is in cash and amount is enough to pay amount requested
     if (paymentType.text.trim() != 'Bank transfer') {
+      createDailyReport();
       final currencyKey = paidCurrency.text.trim();
 
       if (!cashBalances.containsKey(currencyKey)) {
@@ -155,7 +171,6 @@ class PayClientController extends GetxController {
         return;
       }
     }
-    // Navigator.of(context).pop();
 
     showConfirmPayment(context);
   }
@@ -179,44 +194,15 @@ class PayClientController extends GetxController {
 
   Future createPayment(BuildContext context) async {
     try {
-      ///Compare cash and amount to be paid
-      cashBalance.value = double.tryParse('${cashBalances[paidCurrency.text.trim()]}') ?? 0.0;
-      paidAmount.value = double.tryParse(amount.text.trim()) ?? 0.0;
-
-      if (paidAmount.value > cashBalance.value) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Payment failed",
-          'Amount to be paid cannot be more than cash in hand',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-        return;
-      }
-      if (paidAmount == cashBalance) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Zero cash warning",
-          'If you make this payment, you will have to cash left',
-          backgroundColor: Colors.orangeAccent,
-          colorText: Colors.white,
-        );
-        // return;
-      }
+      ///Check and create daily report if not created already
+      createDailyReport();
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
 
       ///Doc references
+      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
       final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('PAY-${counters['paymentsCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
@@ -234,6 +220,11 @@ class PayClientController extends GetxController {
           receiver: paidToOwner.value ? from.text.trim() : receiver.text.trim(),
           dateCreated: DateTime.now(),
           description: description.text.trim());
+
+      /// Check and create daily report if it does not exist;
+      if (!dailyReportCreated.value) {
+        batch.set(dailyReportRef, DailyReportModel.empty().toJson());
+      }
 
       ///Update account
       batch.update(accountRef, {'Currencies.${paidCurrency.text.trim()}': FieldValue.increment(-num.parse(amount.text.trim()))});
@@ -286,11 +277,6 @@ class PayClientController extends GetxController {
               totalPayment: amount.text.trim());
         }
         clearController();
-
-
-        // SharePlus.instance.share(ShareParams(
-        //     text:
-        //         'PAY-${counters['paymentsCounter']} Confirmed. ${paymentType.text.trim()} of${ paidCurrency.text.trim()}:${formatter.format(double.parse(amount.text.trim()))} on ${DateFormat('dd MMM yyy HH:mm').format(DateTime.now())} to ${receiver.text.trim()}. If you have not authorised this action, please contact your account operator immediately.'));
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

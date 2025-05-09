@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
+import 'package:ciyebooks/features/stats/models/stats_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../../utils/exceptions/firebase_exceptions.dart';
@@ -27,6 +29,8 @@ class ReceiveFromClientController extends GetxController {
   final cashBalance = 0.0.obs;
   final receivedAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
+  final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+  final dailyReportCreated = false.obs;
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
@@ -126,20 +130,28 @@ class ReceiveFromClientController extends GetxController {
     }
   }
 
+
+  /// Check and create daily report if not Created
+
+  createDailyReport() async {
+    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final snapshot = await reportRef.get();
+    if (snapshot.exists) {
+      dailyReportCreated.value = true;
+    }
+  }
+
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
   Future createReceipt(BuildContext context) async {
-    // if (!paidToOwner.value) {
-    //   if (!payClientFormKey.currentState!.validate()) {
-    //     return;
-    //   }
-    // }
+
     try {
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
 
       ///Doc references
+      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
       final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('RCPT-${counters['receiptsCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
@@ -158,6 +170,10 @@ class ReceiveFromClientController extends GetxController {
           description: description.text.trim(),
           receivingAccountName: receivingAccountName.text.trim());
 
+      /// Create daily report
+      if(!dailyReportCreated.value){
+        batch.set(dailyReportRef, DailyReportModel.empty().toJson());
+      }
       ///Update account
       batch.update(accountRef, {'Currencies.${receivedCurrency.text.trim()}': FieldValue.increment(num.parse(amount.text.trim()))});
 

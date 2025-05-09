@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/widgets/confirm_withdrawal.dart';
 import 'package:ciyebooks/features/bank/withdraw/screens/widgets/withdrawal_success.dart';
+import 'package:ciyebooks/features/stats/models/stats_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,9 @@ class WithdrawCashController extends GetxController {
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
     locale: 'en_us',
     decimalDigits: 2,
-  );
+  );final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+  final dailyReportCreated = false.obs;
+
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final bankBalances = {}.obs;
@@ -117,6 +120,15 @@ class WithdrawCashController extends GetxController {
     }
   }
 
+
+  createDailyReport() async {
+    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final snapshot = await reportRef.get();
+    if (snapshot.exists) {
+      dailyReportCreated.value = true;
+    }
+  }
+
   Future createWithdrawal(BuildContext context) async {
     isLoading.value = true;
 
@@ -159,6 +171,7 @@ class WithdrawCashController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
+      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
       final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('BKWD-${counters['bankWithdrawCounter']}');
       final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
       final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
@@ -173,7 +186,11 @@ class WithdrawCashController extends GetxController {
           dateCreated: DateTime.now(),
           withdrawalType: withdrawType.text.trim());
 
-      ///Create withdraw transaction
+     /// Create daily report if not created
+      if(!dailyReportCreated.value){
+        batch.set(dailyReportRef, DailyReportModel.empty().toJson());
+
+      }      ///Create withdraw transaction
       batch.set(depositRef, newWithdrawal.toJson());
 
       ///update cash balance
