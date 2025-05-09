@@ -240,7 +240,7 @@ class PayClientController extends GetxController {
               : {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///update payments total
-      batch.update(cashRef, {"payments.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      batch.update(dailyReportRef, {"payments.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update payment counter
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});

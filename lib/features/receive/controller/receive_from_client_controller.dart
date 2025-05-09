@@ -67,8 +67,7 @@ class ReceiveFromClientController extends GetxController {
 
   @override
   onInit() {
-    fetchTotals();
-
+    createDailyReport();
     ///Add listeners to the controllers
     receivingAccountNo.addListener(updateButtonStatus);
     receivedCurrency.addListener(updateButtonStatus);
@@ -106,7 +105,6 @@ class ReceiveFromClientController extends GetxController {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
         counters.value = totals.value.transactionCounters;
-        receipts.value = totals.value.payments;
 
         transactionCounter.value = counters['receiptsCounter'];
       }
@@ -189,7 +187,7 @@ class ReceiveFromClientController extends GetxController {
               : {"cashBalances.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///update payments total
-      batch.update(cashRef, {"payments.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      batch.update(dailyReportRef, {"received.${receivedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update payment counter
       batch.update(counterRef, {"transactionCounters.receiptsCounter": FieldValue.increment(1)});

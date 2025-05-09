@@ -25,9 +25,12 @@ class StatsController extends GetxController {
     final snapshot = await reportRef.get();
 
     if (!snapshot.exists) {
+      print('Doc no exist');
       await reportRef.set(DailyReportModel.empty().toJson());
       todayReport.value = DailyReportModel.empty();
     } else {
+      print('Doc yes exist');
+
       todayReport.value = DailyReportModel.fromJson(snapshot.data() as Map<String, dynamic>);
     }
   }

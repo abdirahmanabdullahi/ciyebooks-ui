@@ -129,8 +129,7 @@ class PayExpenseController extends GetxController {
   }
 /// Update the new category submit button in the new expense category dialog
   updateNewCategoryButton() {
-    newCategoryButtonEnabled.value =category.text.isNotEmpty&&paymentTypeController.text.isNotEmpty&&paidCurrency.text.isNotEmpty&&amount.text.isNotEmpty&&(double.tryParse(amount.text.trim())??0.0)>0;
-  }
+    newCategoryButtonEnabled.value =category.text.isNotEmpty;}
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {

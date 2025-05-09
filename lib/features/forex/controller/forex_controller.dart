@@ -313,6 +313,9 @@ updateNewCurrencyButton(){
         /// Update currencies at cost
         batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
 
+        /// Update profit
+        batch.update(cashRef, {'profit': FieldValue.increment(-profit)});
+
         /// Update currency amount
         batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
 

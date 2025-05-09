@@ -18,9 +18,16 @@ class StatsScreen extends StatelessWidget {
     final controller = Get.put(StatsController());
     return Scaffold(
       backgroundColor: AppColors.quarternary,
-
-
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Get.offAll(() => NavigationMenu());
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: AppColors.prettyDark,
+          ),
+        ),
         title: Text('Stats'),
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
@@ -32,97 +39,41 @@ class StatsScreen extends StatelessWidget {
         //     Icons.west_outlined,
         //   ),
         // ),
-          backgroundColor: AppColors.quinary,
+        backgroundColor: AppColors.quinary,
       ),
       body: SafeArea(
           child: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
         child: Column(
           children: [
+            Gap(3),
 
-            Gap(10),
             ///Payments
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Payments", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                  ),
-                  Gap(8),
-                  Obx(
-                        () => Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                        child: Column(
-                            children: controller.todayReport.value.payments.entries.map((entry) {
-                              return  Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 0,
-                                    thickness: .11,
-                                    color: AppColors.prettyDark,
-                                  )
-                                ],
-                              );;
-                            }).toList())),
-                  ),
-                ],
-              ),
-            ),
+              margin: EdgeInsets.symmetric(vertical:3),
 
-            ///Client deposits
-            Container(
-              width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Received from clients", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text("Payments", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
                   Obx(
                     () => Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                         child: Column(
-                            children: controller.todayReport.value.received.entries.map((entry) {
-                          return  Column(
+                            children: controller.todayReport.value.payments.entries.map((entry) {
+                          return Column(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -140,7 +91,59 @@ class StatsScreen extends StatelessWidget {
                                 color: AppColors.prettyDark,
                               )
                             ],
-                          );;
+                          );
+                          ;
+                        }).toList())),
+                  ),
+                ],
+              ),
+            ),
+
+            ///Client deposits
+            Container(
+              width: double.maxFinite,
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
+              decoration: BoxDecoration(
+                color: AppColors.quinary,
+
+
+
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
+                    child: Text("Received from clients", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
+                  ),
+                  Gap(8),
+                  Obx(
+                    () => Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
+                        child: Column(
+                            children: controller.todayReport.value.received.entries.map((entry) {
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                    Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                                thickness: .11,
+                                color: AppColors.prettyDark,
+                              )
+                            ],
+                          );
+                          ;
                         }).toList())),
                   ),
                 ],
@@ -150,183 +153,177 @@ class StatsScreen extends StatelessWidget {
             ///Bank deposits
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text(" Deposits", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text(" Deposits", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
                   Obx(
-                        () => Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                    () => Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                         child: Column(
                             children: controller.todayReport.value.deposits.entries.map((entry) {
-                              return  Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 0,
-                                    thickness: .11,
-                                    color: AppColors.prettyDark,
-                                  )
-                                ],
-                              );;
-                            }).toList())),
-                  ),                ],
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                    Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                                thickness: .11,
+                                color: AppColors.prettyDark,
+                              )
+                            ],
+                          );
+                          ;
+                        }).toList())),
+                  ),
+                ],
               ),
             ),
 
             /// Bank withdrawals
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Withdrawals", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text("Withdrawals", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
                   Obx(
-                        () => Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                    () => Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                         child: Column(
                             children: controller.todayReport.value.withdrawals.entries.map((entry) {
-                              return  Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 0,
-                                    thickness: .11,
-                                    color: AppColors.prettyDark,
-                                  )
-                                ],
-                              );;
-                            }).toList())),
-                  ),                ],
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                    Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                                thickness: .11,
+                                color: AppColors.prettyDark,
+                              )
+                            ],
+                          );
+                          ;
+                        }).toList())),
+                  ),
+                ],
               ),
             ),
 
             /// Expenses
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Expenses", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text("Expenses", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
                   Obx(
-                        () => Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                    () => Padding(
+                        padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                         child: Column(
                             children: controller.todayReport.value.expenses.entries.map((entry) {
-                              return  Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                        Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 0,
-                                    thickness: .11,
-                                    color: AppColors.prettyDark,
-                                  )
-                                ],
-                              );;
-                            }).toList())),
-                  ),                ],
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                    Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                height: 0,
+                                thickness: .11,
+                                color: AppColors.prettyDark,
+                              )
+                            ],
+                          );
+                          ;
+                        }).toList())),
+                  ),
+                ],
               ),
             ),
 
             ///Currencies payable
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Payables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text("Payables", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
-                  Padding(padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16), child: Column(children: [])),
+                  Padding(padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15), child: Column(children: [])),
                 ],
               ),
             ),
@@ -334,27 +331,24 @@ class StatsScreen extends StatelessWidget {
             /// Accounts receivable
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Accounts receivable", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    child: Text("Accounts receivable", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
                   ),
                   Gap(8),
-                  Padding(padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16), child: Column(children: [])),
+                  Padding(padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15), child: Column(children: [])),
                 ],
               ),
             ),
@@ -362,27 +356,28 @@ class StatsScreen extends StatelessWidget {
             /// Accounts receivable
             Container(
               width: double.maxFinite,
-              margin: EdgeInsets.all(6),
+              margin: EdgeInsets.symmetric(vertical:3),
+
+
               decoration: BoxDecoration(
                 color: AppColors.quinary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withAlpha(30),
-                    blurRadius: 4,
-                    offset: Offset(-3, 3),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(20),
+
+
+
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(12.0, 12, 0, 0),
-                    child: Text("Income", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                    padding: const EdgeInsets.all(12.0, ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Income", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, color: AppColors.prettyDark)),
+                        Text(formatter.format(double.parse(controller.todayReport.value.dailyProfit.toString())),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                      ],
+                    ),
                   ),
-                  Gap(8),
-                  Padding(padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16), child: Column(children: [])),
                 ],
               ),
             ),
