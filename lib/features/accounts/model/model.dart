@@ -4,6 +4,7 @@ class AccountModel {
   final String lastName;
   final String accountNo;
   final String phoneNo;
+  final bool overDrawn;
   final String email;
   final Map<String,dynamic>currencies;
 
@@ -11,6 +12,7 @@ class AccountModel {
   AccountModel({
     required this .currencies,
     required this.accountName,
+    required this.overDrawn,
 
     required this.dateCreated,
     required this.firstName,
@@ -27,6 +29,7 @@ class AccountModel {
   Map<String, dynamic> toJson() {
     return {
       'dateCreated': dateCreated,
+      'overDrawn': overDrawn,
       'AccountName': fullName,
       'FirstName': firstName,
       'LastName': lastName,
@@ -42,6 +45,7 @@ class AccountModel {
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
     return AccountModel(
         accountName: jsonData['AccountName'] ?? '',
+        overDrawn: jsonData['overDrawn'] ,
         dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
         firstName: jsonData['FirstName'] ?? '',
         lastName: jsonData['LastName'] ?? '',

@@ -109,26 +109,7 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                     decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
                         hintText: 'Email'),
                   ),
-                  Gap(AppSizes.spaceBtwItems),
-                  TextFormField(
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                    ],
-                    controller: controller.usd,
-                    decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintText: 'USD balance'),
-                  ),
-                  Gap(AppSizes.spaceBtwItems),
-                  TextFormField(
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                    ],
-                    controller: controller.kes,
-                    decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintText: 'KES balance'),
-                  ),
+
                   Gap(20),
                 ],
               ),

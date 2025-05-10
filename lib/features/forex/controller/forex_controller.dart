@@ -25,10 +25,12 @@ class ForexController extends GetxController {
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
     locale: 'en_us',
     decimalDigits: 2,
-  ); final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+  );
+  final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
   final dailyReportCreated = false.obs;
 
-  double profit = 0;
+  double profit = 0200;
+  double cost = 0;
   final selectedTransaction = 'BUYFX'.obs;
   final counters = {}.obs;
   final selectedField = ''.obs;
@@ -55,8 +57,7 @@ class ForexController extends GetxController {
   TextEditingController currencyStockAmount = TextEditingController();
 
   /// Clear controllers after data submission
-  clearController(){
-
+  clearController() {
     forexType.clear();
     type.clear();
     currencyCode.clear();
@@ -103,38 +104,18 @@ class ForexController extends GetxController {
       }
     });
   }
-updateNewCurrencyButton(){
+
+  updateNewCurrencyButton() {
     isButtonEnabled.value = newCurrencyCode.text.isNotEmpty;
-}
+  }
+
   addNewCurrency(BuildContext context) async {
     try {
-      // Check if currency is base currency
-      // if (currencyCode.text.trim() == baseCurrency.value) {
-      //   Get.snackbar(
-      //     "Can't add base currency!",
-      //     'Please select a new currency and try again',
-      //     backgroundColor: Colors.orange,
-      //     colorText: Colors.white,
-      //   );
-      //   return;
-      // }
-
-      // Check if currency is selected
-      if (newCurrencyCode.text.isEmpty) {
-        Get.snackbar(
-          'No currency selected!',
-          'Please select a new currency and try again',
-          backgroundColor: Colors.orange,
-          colorText: Colors.white,
-        );
-        return;
-      }
-
       // Create new currency
       final newCurrency = CurrencyModel(currencyName: newCurrencyName.text.trim(), amount: 0, totalCost: 0, symbol: newCurrencySymbol.text.trim(), currencyCode: newCurrencyCode.text.trim());
 
       await _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('Currency stock').doc(newCurrencyCode.text.trim().toUpperCase()).set(newCurrency.toJson()).then((_) {
-        if(context.mounted){
+        if (context.mounted) {
           Navigator.of(context).pop();
         }
       });
@@ -155,7 +136,8 @@ updateNewCurrencyButton(){
 
     sellingAmount.text = formatter.format(((double.tryParse(sellingTotal.text.trim()) ?? 0.0) / (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
-/// Update whether the submit button is enabled or disabled
+
+  /// Update whether the submit button is enabled or disabled
   updateButtonStatus() {
     isButtonEnabled.value = sellingRate.text.isNotEmpty &&
         sellingAmount.text.isNotEmpty &&
@@ -186,20 +168,19 @@ updateNewCurrencyButton(){
     final availableForeignCurrencyBalance = double.parse(currencyStockAmount.text.trim());
     final availableBankAmount = double.parse(bankBalances['KES'].toString());
     final availableCashAmount = double.parse(cashBalances['KES'].toString());
-    final requestedAmount = double.parse(sellingTotal.text.trim().replaceAll(',', ''));
+    final requestedAmount = double.parse(sellingAmount.text.trim().replaceAll(',', ''));
 
     /// Limit the user so as not to sell what they do not have.
-    if(selectedTransaction.value == 'SELLFX'&& availableForeignCurrencyBalance<requestedAmount){
+    if (selectedTransaction.value == 'SELLFX' && availableForeignCurrencyBalance < requestedAmount) {
       showErrorDialog(
         context: context,
-          errorTitle: 'Insufficient funds',
+        errorTitle: 'Insufficient funds',
         errorText: 'You do not have enough ${currencyCode.text.trim()} to complete this transaction.',
       );
       return;
     }
 
     if (selectedTransaction.value == 'BUYFX') {
-
       if (type.text.trim() == 'Cash' && requestedAmount > availableCashAmount) {
         showErrorDialog(
           context: context,
@@ -217,7 +198,6 @@ updateNewCurrencyButton(){
         return;
       }
     }
-
 
     showConfirmForexTransaction(context);
   }
@@ -237,24 +217,26 @@ updateNewCurrencyButton(){
     }
   }
 
-
   createDailyReport() async {
     final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
     final snapshot = await reportRef.get();
     if (snapshot.exists) {
       dailyReportCreated.value = true;
     }
-  }  Future createForexTransaction(BuildContext context) async {
+  }
+
+  Future createForexTransaction(BuildContext context) async {
     try {
       /// If it is a sale calculate the profit
       if (selectedTransaction.value == 'SELLFX') {
         profit = ForexProfitCalculator.calculateTotalProfit(
-            sellingAmount: double.parse(sellingAmount.text.trim().replaceAll(',', '')),
-            sellingRate: double.parse(sellingRate.text.trim().replaceAll(',', '')),
-            sellingTotal: double.parse(sellingTotal.text.trim().replaceAll(',', '')),
-            currencyStockTotalCost: double.parse(currencyStockTotalCost.text.trim()),
-            currencyStockAmount: double.parse(currencyStockAmount.text.trim()));
+            sellingAmount: sellingAmount.text.trim(),
+            sellingRate: sellingRate.text.trim(),
+            sellingTotal: sellingTotal.text.trim(),
+            currencyStockTotalCost: currencyStockTotalCost.text.trim(),
+            currencyStockAmount: currencyStockAmount.text.trim());
       }
+      cost = ForexProfitCalculator.cost(sellingAmount: sellingAmount.text.trim(), currencyStockTotalCost: currencyStockTotalCost.text.trim(), currencyStockAmount: currencyStockAmount.text.trim());
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -282,11 +264,11 @@ updateNewCurrencyButton(){
       );
 
       ///Create Daily report
-      if(!dailyReportCreated.value){
+      if (!dailyReportCreated.value) {
         batch.set(dailyReportRef, DailyReportModel.empty().toJson());
-
       }
- ///Create payment transaction
+
+      ///Create payment transaction
       batch.set(transactionRef, newForexTransaction.toJson());
 
       ///update cash and currency balances when buying currencies
@@ -314,13 +296,13 @@ updateNewCurrencyButton(){
         batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
 
         /// Update profit
-        batch.update(cashRef, {'profit': FieldValue.increment(-profit)});
+        batch.update(dailyReportRef, {'dailyProfit': FieldValue.increment(profit)});
 
         /// Update currency amount
         batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
 
         ///Update total cost
-        batch.update(currencyRef, {"totalCost": FieldValue.increment(-double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+        batch.update(currencyRef, {"totalCost": FieldValue.increment(-cost)});
 
         batch.update(
             cashRef,
@@ -344,6 +326,7 @@ updateNewCurrencyButton(){
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
+
         /// Show success dialog
         if (context.mounted) {
           Navigator.of(context).pop();
@@ -357,8 +340,8 @@ updateNewCurrencyButton(){
               rate: sellingRate.text.trim(),
               totalCost: sellingTotal.text.trim(),
               date: DateTime.now());
-        }        clearController();
-
+        }
+        clearController();
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

@@ -222,7 +222,6 @@ showClientDepositInfo({
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          Navigator.of(context).pop();
                         },
 
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

@@ -47,12 +47,19 @@ class DailyReportModel {
   }
 
   static DailyReportModel empty() => DailyReportModel(
-      received: {},
+      received: {
+        'USD':0.0,
+        'KES':0.0,
+      },
       // numberOfExpenses: 0,
-      payments: {},
-      deposits: {},
-      withdrawals: {},
-      expenses: {},
+      payments: { 'USD':0.0,
+        'KES':0.0,},
+      deposits: { 'USD':0.0,
+        'KES':0.0,},
+      withdrawals: { 'USD':0.0,
+        'KES':0.0,},
+      expenses: { 'USD':0.0,
+        'KES':0.0,},
       dailyProfit: 0,
       // numberOfCurrencySales: 0,
       // numberOfClientDeposits: 0,

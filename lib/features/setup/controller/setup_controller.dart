@@ -41,7 +41,12 @@ class SetupController extends GetxController {
   RxList<DepositModel> deposits = <DepositModel>[].obs;
 
 
-  /// fireStore instance
+  /// Reset database
+  void resetDatabase()async {
+     await FirebaseFirestore.instance.collection('Users').doc(_uid).delete().then((_){
+       print('object');
+     });
+  }
 
   @override
   void onInit() {

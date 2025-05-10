@@ -25,8 +25,7 @@ class AccountsController extends GetxController {
   final lastName = TextEditingController();
   final phoneNo = TextEditingController();
   final email = TextEditingController();
-  final usd = TextEditingController();
-  final kes = TextEditingController();
+
 
   /// Clear controllers after data submission
   clearControllers() {
@@ -34,8 +33,7 @@ class AccountsController extends GetxController {
     lastName.clear();
     phoneNo.clear();
     email.clear();
-    usd.clear();
-    kes.clear();
+
   }
 
   @override
@@ -65,9 +63,10 @@ class AccountsController extends GetxController {
     isLoading.value = true;
     try {
       final newAccount = AccountModel(
-        currencies: {'USD': double.tryParse(usd.text.trim()), 'KES': double.tryParse(kes.text.trim())},
+        currencies: {'USD': 0.0, 'KES': 0.0},
 
         firstName: firstName.text.trim(),
+        overDrawn: false,
         lastName: lastName.text.trim(),
         accountNo: '${totals.value.transactionCounters['accountsCounter']}',
         phoneNo: phoneNo.text.trim(),
@@ -95,7 +94,6 @@ class AccountsController extends GetxController {
         if (context.mounted) {
           Navigator.pop(context);
         }
-        Get.offAll(() => Accounts());
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,

@@ -23,6 +23,7 @@ class Accounts extends StatelessWidget {
       locale: 'en_us',
       decimalDigits: 2,
     );
+
     final uid = FirebaseAuth.instance.currentUser?.uid;
     // final controller = Get.put(AccountsController());
     return Scaffold(
@@ -39,6 +40,7 @@ class Accounts extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: AppBar(
+          // automaticallyImplyLeading: true,
           // leading:
           // IconButton(
           // onPressed: () => Get.off(NavigationMenu()),
@@ -88,7 +90,7 @@ class Accounts extends StatelessWidget {
                             children: [
                               Text(currency.key,
                                   style: TextStyle(
-                                      fontSize: 13,color: double.parse(currency.value.toString())<0?AppColors.red:AppColors.prettyDark
+                                    fontSize: 13,
                                   )),
                               Text(formatter.format(currency.value),
                                   style: TextStyle(

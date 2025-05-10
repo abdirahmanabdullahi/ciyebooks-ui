@@ -28,7 +28,7 @@ class SignInForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             controller: controller.email,
             validator: (value) => Validator.validateEmptyText('Email', value),
-            decoration: InputDecoration(
+            decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
               label: const Text(AppTexts.email),
             ),
           ),
@@ -40,9 +40,9 @@ class SignInForm extends StatelessWidget {
               obscureText: controller.hidePassword.value,
               controller: controller.password,
               validator: (value) => Validator.validateEmptyText('Password', value),
-              decoration: InputDecoration(
+              decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   label: const Text(AppTexts.password),
-                  suffixIcon: IconButton(
+                  suffix: IconButton(
                     icon: controller.hidePassword.value
                         ? Icon(
                             Icons.visibility,
@@ -54,7 +54,7 @@ class SignInForm extends StatelessWidget {
                   )),
             ),
           ),
-
+TextButton(onPressed: ()=>Get.offAll(()=>Signup( )), child: Text('data')),
           const Gap(AppSizes.spaceBtwSections / 2),
           SizedBox(
             height: 45,
@@ -64,7 +64,7 @@ class SignInForm extends StatelessWidget {
                 elevation: 0,
                 isExtended: true,
                 enableFeedback: true,
-                backgroundColor: AppColors.secondary,
+                backgroundColor: AppColors.prettyBlue,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 onPressed: controller.isLoading.value
                     ? null // Disable button when loading
@@ -84,16 +84,7 @@ class SignInForm extends StatelessWidget {
             ),
           ),
           const Gap(AppSizes.spaceBtwItems),
-          SwitchScreens(title: AppTexts.goToSignupTitle, label: AppTexts.goToSignupLabel, onPressed: () => Get.to(() => const Signup()))
-          // SizedBox(
-          //   width: double.infinity,
-          //   child: OutlinedButton(
-          //     onPressed: () => Get.to(() => const Signup()),
-          //     child: const Text(
-          //       AppTexts.createAccount,
-          //     ),
-          //   ),
-          // )
+
         ],
       ),
     );

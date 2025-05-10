@@ -53,10 +53,10 @@ class Dashboard extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Get.offAll(()=>StatsScreen());
-
-            },
+            onPressed:  () => Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (context) => const StatsScreen()),
+    ),
             icon: Icon(
               Icons.bar_chart_rounded,
               color: AppColors.prettyBlue,

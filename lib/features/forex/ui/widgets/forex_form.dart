@@ -202,6 +202,7 @@ showForexForm(BuildContext context) {
                           if (value != null) {
                             controller.currencyCode.text = value[0].toString();
                             controller.currencyStockAmount.text = value[1].toString();
+                            print(value[1]);
                             controller.currencyStockTotalCost.text = value[2].toString();
                           }
                         },

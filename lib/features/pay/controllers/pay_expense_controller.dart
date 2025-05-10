@@ -490,7 +490,7 @@ class PayExpenseController extends GetxController {
               : {"cashBalances.${paidCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///update expense total
-      batch.update(cashRef, {"expense.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
+      batch.update(dailyReportRef, {"expenses.${paidCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Update expense counter
       batch.update(counterRef, {"transactionCounters.expenseCounter": FieldValue.increment(1)});
