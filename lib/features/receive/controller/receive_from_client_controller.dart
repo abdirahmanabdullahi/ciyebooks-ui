@@ -49,7 +49,7 @@ class ReceiveFromClientController extends GetxController {
   final description = TextEditingController();
 
   /// Clear controllers after data submission
-  clearControllers(){
+  clearControllers() {
     depositorName.clear();
     receivedFrom.clear();
     receiptType.clear();
@@ -68,6 +68,7 @@ class ReceiveFromClientController extends GetxController {
   @override
   onInit() {
     createDailyReport();
+
     ///Add listeners to the controllers
     receivingAccountNo.addListener(updateButtonStatus);
     receivedCurrency.addListener(updateButtonStatus);
@@ -128,7 +129,6 @@ class ReceiveFromClientController extends GetxController {
     }
   }
 
-
   /// Check and create daily report if not Created
 
   createDailyReport() async {
@@ -142,7 +142,6 @@ class ReceiveFromClientController extends GetxController {
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
   Future createReceipt(BuildContext context) async {
-
     try {
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -169,9 +168,10 @@ class ReceiveFromClientController extends GetxController {
           receivingAccountName: receivingAccountName.text.trim());
 
       /// Create daily report
-      if(!dailyReportCreated.value){
+      if (!dailyReportCreated.value) {
         batch.set(dailyReportRef, DailyReportModel.empty().toJson());
       }
+
       ///Update account
       batch.update(accountRef, {'Currencies.${receivedCurrency.text.trim()}': FieldValue.increment(num.parse(amount.text.trim()))});
 
@@ -206,7 +206,8 @@ class ReceiveFromClientController extends GetxController {
         );
 
         if (context.mounted) {
-          showClientDepositInfo(
+          Navigator.pop(context)
+   ;       showClientDepositInfo(
               context: context,
               currency: receivedCurrency.text.trim(),
               transactionCode: 'RCPT-${counters['receiptsCounter'].toString()}',
@@ -221,8 +222,8 @@ class ReceiveFromClientController extends GetxController {
               receivingAccountNo: receivingAccountNo.text.trim(),
               description: description.text.trim(),
               date: DateTime.now());
-        }        clearControllers();
-
+        }
+        clearControllers();
       });
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;

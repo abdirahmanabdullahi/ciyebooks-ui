@@ -229,6 +229,7 @@ showForexInfo({
                       // ),
                       onPressed: () {
                         Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       },
 
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

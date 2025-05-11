@@ -323,7 +323,7 @@ class SetupScreen extends StatelessWidget {
                           ),
                         );
                       }),
-                      Container(
+                      Container(height: 500,padding: EdgeInsets.all( 8),
                         margin: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: AppColors.quinary,
@@ -336,170 +336,173 @@ class SetupScreen extends StatelessWidget {
                           ],
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Accounts", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                                  TextButton(
-                                      onPressed: () => uploadController.uploadAccounts(context),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: CupertinoColors.systemBlue,
-                                          ),
-                                          Text(
-                                            'Add',
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                                          ),
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                            StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').snapshots(),
-                              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Something went wrong');
-                                }
-
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Text("Loading");
-                                }
-
-                                return Column(
-                                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                                    return GestureDetector(
-                                      onTap: () => showAccountDetails(
-                                        context: context,
-                                        accountName: data['AccountName'],
-                                        accountNumber: data['AccountNo'],
-                                        email: data['Email'],
-                                        phoneNumber: data['PhoneNo'],
-                                        balances: data['Currencies'].entries.expand<Widget>((currency) {
-                                          return [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(currency.key, style: TextStyle(fontSize: 13)),
-                                                Text(
-                                                  formatter.format(currency.value),
-                                                  style: TextStyle(
-                                                    fontSize: 13,
-                                                    color: double.parse(currency.value.toString()) < 0 ? AppColors.red : AppColors.prettyDark,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Divider(color: Colors.black, thickness: .11),
-                                          ];
-                                        }).toList(),
-                                      ),
-                                      child: Container(margin: EdgeInsets.fromLTRB(6,6,6,0),
-                                        decoration: BoxDecoration( boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withAlpha(30),
-                                            blurRadius: 4,
-                                            offset: Offset(-3, 3),
-                                          )
-                                        ],
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: AppColors.quinary,
-                                        ),
-                                        width: double.infinity,
-                                        padding: EdgeInsets.all(8),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: SingleChildScrollView(physics: ClampingScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Accounts", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                                    TextButton(
+                                        onPressed: () => uploadController.uploadAccounts(context),
+                                        child: Row(
                                           children: [
-                                            // First Row (From, Receiver, Amount)
-                                            RichText(
-                                              text: TextSpan(
+                                            Icon(
+                                              Icons.add,
+                                              color: CupertinoColors.systemBlue,
+                                            ),
+                                            Text(
+                                              'Add',
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
+                                            ),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                              ),
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').snapshots(),
+                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Text("Loading");
+                                  }
+
+                                  return Column(
+                                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                                      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                                      return GestureDetector(
+                                        onTap: () => showAccountDetails(
+                                          context: context,
+                                          accountName: data['AccountName'],
+                                          accountNumber: data['AccountNo'],
+                                          email: data['Email'],
+                                          phoneNumber: data['PhoneNo'],
+                                          balances: data['Currencies'].entries.expand<Widget>((currency) {
+                                            return [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  TextSpan(
-                                                    text: data['AccountName'],
+                                                  Text(currency.key, style: TextStyle(fontSize: 13)),
+                                                  Text(
+                                                    formatter.format(currency.value),
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w500,
                                                       fontSize: 13,
-                                                      color: AppColors.secondary,
-                                                      // Black Value
+                                                      color: double.parse(currency.value.toString()) < 0 ? AppColors.red : AppColors.prettyDark,
                                                     ),
                                                   ),
                                                 ],
                                               ),
-                                            ),
-
-                                            Divider(color: AppColors.prettyDark, thickness: .11),
-
-                                            // Second Row (Transaction ID, Type, Date)
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: 'ACCOUNT NO: ',
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.w300,
-                                                          fontSize: 10,
-                                                          color: AppColors.prettyDark, // Grey Label
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: data['AccountNo'],
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.w300,
-                                                          fontSize: 10,
-                                                          color: AppColors.prettyDark, // Grey Label
-                                                          // Black Value
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                // RichText(
-                                                //   text: TextSpan(
-                                                //     children: [
-                                                //       TextSpan(
-                                                //         text: 'CREATED AT: ',
-                                                //         style: TextStyle(
-                                                //           fontWeight: FontWeight.w300,
-                                                //           fontSize: 10,
-                                                //           color: AppColors.prettyDark, // Grey Label
-                                                //         ),
-                                                //       ),
-                                                //       TextSpan(
-                                                //         text: DateFormat('dd MMM yyy').format(
-                                                //           account.dateCreated,
-                                                //         ),
-                                                //         style: TextStyle(
-                                                //           fontWeight: FontWeight.w300,
-                                                //           fontSize: 10,
-                                                //           color: AppColors.prettyDark, // Grey Label
-                                                //           // Black Value
-                                                //         ),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                              ],
-                                            ),
-                                          ],
+                                              Divider(color: Colors.black, thickness: .11),
+                                            ];
+                                          }).toList(),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            ),Gap(6)
-                          ],
+                                        child: Container(margin: EdgeInsets.fromLTRB(3,6,3,0),
+                                          decoration: BoxDecoration( boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withAlpha(30),
+                                              blurRadius: 4,
+                                              offset: Offset(-3, 3),
+                                            )
+                                          ],
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: AppColors.quinary,
+                                          ),
+                                          width: double.infinity,
+                                          padding: EdgeInsets.all(8),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              // First Row (From, Receiver, Amount)
+                                              RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: data['AccountName'],
+                                                      style: TextStyle(
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 13,
+                                                        color: AppColors.secondary,
+                                                        // Black Value
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              Divider(color: AppColors.prettyDark, thickness: .11),
+
+                                              // Second Row (Transaction ID, Type, Date)
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'ACCOUNT NO: ',
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.w300,
+                                                            fontSize: 10,
+                                                            color: AppColors.prettyDark, // Grey Label
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                          text: data['AccountNo'],
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.w300,
+                                                            fontSize: 10,
+                                                            color: AppColors.prettyDark, // Grey Label
+                                                            // Black Value
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  // RichText(
+                                                  //   text: TextSpan(
+                                                  //     children: [
+                                                  //       TextSpan(
+                                                  //         text: 'CREATED AT: ',
+                                                  //         style: TextStyle(
+                                                  //           fontWeight: FontWeight.w300,
+                                                  //           fontSize: 10,
+                                                  //           color: AppColors.prettyDark, // Grey Label
+                                                  //         ),
+                                                  //       ),
+                                                  //       TextSpan(
+                                                  //         text: DateFormat('dd MMM yyy').format(
+                                                  //           account.dateCreated,
+                                                  //         ),
+                                                  //         style: TextStyle(
+                                                  //           fontWeight: FontWeight.w300,
+                                                  //           fontSize: 10,
+                                                  //           color: AppColors.prettyDark, // Grey Label
+                                                  //           // Black Value
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  );
+                                },
+                              ),
+                              Gap(6)
+                            ],
+                          ),
                         ),
                       ),
                     ],

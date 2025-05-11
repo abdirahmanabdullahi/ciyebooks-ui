@@ -421,15 +421,7 @@ showReceiptForm(BuildContext context) {
                         // ),
                         onPressed: controller.isButtonEnabled.value
                             ? () {
-                                showConfirmClientDeposit(context);
-                                print('depositor name ${controller.depositorName.text}');
-                                print('Currency ${controller.receivedCurrency.text}');
-                                print('Deposit type ${controller.receiptType.text}');
-                                print('Received from${controller.receivedFrom.text}');
-                                print('Amount ${controller.amount.text}');
-
-                                ;
-                              }
+showConfirmClientDeposit(context);                              }
                             : null, // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(
                           'Receive',
