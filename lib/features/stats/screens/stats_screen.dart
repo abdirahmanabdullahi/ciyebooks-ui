@@ -34,34 +34,49 @@ class StatsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.quarternary,
+      // appBar: AppBar(
+
+      //   title: Text('Stats'),
+      //   automaticallyImplyLeading: true,
+      //   backgroundColor: AppColors.quinary,
+      // ),
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () async => await showDateRangePicker(
-                context: context,
-                initialDateRange: DateTimeRange(start: startOfMonth, end: now),
-                firstDate: DateTime(1900),
-                lastDate: DateTime.now(),
-                builder: (context, child) {
-                  return Theme(
-                    data: Theme.of(context).copyWith(
-                        colorScheme: ColorScheme.light(
-                      primary: AppColors.prettyDark, // Header and selected day color
-                      onPrimary: AppColors.quinary, // Text color on selected day
-                      surface: Colors.grey, // Calendar surface background
-                      onSurface: AppColors.prettyDark,
-                    )),
-                    child: child!,
-                  );
-                }),
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
             icon: Icon(
-              Icons.tune_outlined,
-            ),
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.quinary,
+            )),   actions: [
+        IconButton(
+          onPressed: () async => await showDateRangePicker(
+              context: context,
+              initialDateRange: DateTimeRange(start: startOfMonth, end: now),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+              builder: (context, child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                      colorScheme: ColorScheme.light(
+                        primary: AppColors.prettyDark, // Header and selected day color
+                        onPrimary: AppColors.quinary, // Text color on selected day
+                        surface: Colors.grey, // Calendar surface background
+                        onSurface: AppColors.prettyDark,
+                      )),
+                  child: child!,
+                );
+              }),
+          icon: Icon(
+            Icons.tune_outlined,color: AppColors.quinary,
           ),
-        ],
-        title: Text('Stats'),
-        automaticallyImplyLeading: true,
-        backgroundColor: AppColors.quinary,
+        ),
+      ],
+        // automaticallyImplyLeading: false,
+        backgroundColor: AppColors.prettyBlue,
+        title: Text(
+          'Stats',
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
+        ),
       ),
       body: SafeArea(
           child: SingleChildScrollView(

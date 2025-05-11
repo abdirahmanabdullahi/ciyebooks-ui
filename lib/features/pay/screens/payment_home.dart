@@ -13,7 +13,6 @@ import '../controllers/pay_expense_controller.dart';
 import 'expense/expenses.dart';
 import 'payments/payments.dart';
 
-
 class PaymentHome extends StatelessWidget {
   const PaymentHome({super.key});
 
@@ -33,12 +32,17 @@ class PaymentHome extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
         elevation: 0,
-
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.quinary,
+            )),
         // automaticallyImplyLeading: false,
-        backgroundColor: AppColors.quarternary,
+        backgroundColor: AppColors.prettyBlue,
         title: Text(
           'Payments',
-          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
         ),
       ),
       body: SafeArea(

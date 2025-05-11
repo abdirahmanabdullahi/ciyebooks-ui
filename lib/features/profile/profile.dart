@@ -17,9 +17,19 @@ class Profile extends StatelessWidget {
     final controller = Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
-
-        title: Text('Profile'),
-        backgroundColor: AppColors.quinary,
+        elevation: 0,
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.quinary,
+            )),
+        // automaticallyImplyLeading: false,
+        backgroundColor: AppColors.prettyBlue,
+        title: Text(
+          'Profile',
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
+        ),
       ),
       backgroundColor: AppColors.quarternary,
       body: SafeArea(

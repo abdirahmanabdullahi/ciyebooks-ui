@@ -40,32 +40,20 @@ class ForexHome extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
-        // leading: IconButton(
-        //     onPressed: () =>Navigator.pop(context),
-        //     icon: Icon(
-        //       Icons.arrow_back_ios,
-        //       color: AppColors.prettyDark,
-        //     )),
         elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-                onPressed: () => showAddNewCurrencyDialog(context),
-                icon: Icon(
-                  Icons.add,
-                  color: AppColors.prettyDark,
-                )),
-          ),
-        ],
-        automaticallyImplyLeading: true,
-        backgroundColor: AppColors.quarternary,
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.quinary,
+            )),
+        // automaticallyImplyLeading: false,
+        backgroundColor: AppColors.prettyBlue,
         title: Text(
           'Forex',
-          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
         ),
-      ),
-      body: SafeArea(
+      ),      body: SafeArea(
         bottom: false,
         child: DefaultTabController(
           length: 2,

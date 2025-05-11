@@ -11,6 +11,7 @@ import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controller/forex_controller.dart';
 import '../../controller/new_currency_controller.dart';
+import 'new_currency_form.dart';
 
 showForexForm(BuildContext context) {
   showDialog(
@@ -47,7 +48,8 @@ showForexForm(BuildContext context) {
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12)), color: AppColors.quinary),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -64,12 +66,25 @@ showForexForm(BuildContext context) {
                             style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                           ),
                         ),
-                        IconButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: Icon(
-                              Icons.close,
-                              color: AppColors.prettyDark,
-                            ))
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: IconButton(
+                                  onPressed: () => showAddNewCurrencyDialog(context),
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: AppColors.prettyDark,
+                                  )),
+                            ),
+                            IconButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                icon: Icon(
+                                  Icons.close,
+                                  color: AppColors.prettyDark,
+                                )),
+                          ],
+                        )
                       ],
                     ),
                   ],
@@ -190,14 +205,16 @@ showForexForm(BuildContext context) {
                           backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                           maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                         ),
-
                         label: Text(
                           'Currency',
                           style: const TextStyle(
                             letterSpacing: 2,
                           ),
                         ),
-                        selectedTrailingIcon: Icon(Icons.search,color: CupertinoColors.systemBlue,),
+                        selectedTrailingIcon: Icon(
+                          Icons.search,
+                          color: CupertinoColors.systemBlue,
+                        ),
                         onSelected: (value) {
                           if (value != null) {
                             controller.currencyCode.text = value[0].toString();
@@ -206,7 +223,6 @@ showForexForm(BuildContext context) {
                             controller.currencyStockTotalCost.text = value[2].toString();
                           }
                         },
-
                         dropdownMenuEntries: controller.currencyStock.map((currency) {
                           return DropdownMenuEntry(
                               style: ButtonStyle(
@@ -254,7 +270,10 @@ showForexForm(BuildContext context) {
                             maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                           ),
                           label: Text(' Type'),
-                          selectedTrailingIcon: Icon(Icons.search,color: CupertinoColors.systemBlue,),
+                          selectedTrailingIcon: Icon(
+                            Icons.search,
+                            color: CupertinoColors.systemBlue,
+                          ),
                           onSelected: (value) {},
                           dropdownMenuEntries: [
                             DropdownMenuEntry(
@@ -268,7 +287,6 @@ showForexForm(BuildContext context) {
                                     ))),
                                 value: 'Cash',
                                 label: 'Cash'),
-
                             DropdownMenuEntry(
                                 style: ButtonStyle(
                                     backgroundColor: WidgetStateProperty.all(AppColors.quinary),
@@ -298,7 +316,6 @@ showForexForm(BuildContext context) {
                           letterSpacing: 2,
                           // fontFamily: 'Oswald',
                           fontSize: 15,
-
                         ),
                         // inputFormatters: [
                         //   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
@@ -384,8 +401,6 @@ showForexForm(BuildContext context) {
                             ),
                             filled: true,
                             fillColor: Colors.white,
-
-
                           ),
                         ),
                       ),
@@ -469,15 +484,15 @@ showForexForm(BuildContext context) {
                   width: double.maxFinite,
                   height: 45,
                   child: Obx(
-      ()=> FloatingActionButton(
+                    () => FloatingActionButton(
                       disabledElevation: 0,
                       // style: ElevatedButton.styleFrom(
                       //   padding: EdgeInsets.symmetric(horizontal: 10),
                       //   disabledBackgroundColor: const Color(0xff35689fff),
-                      backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                      backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
-                      onPressed:controller.isButtonEnabled.value? () => controller.checkBalances(context):null,
+                      onPressed: controller.isButtonEnabled.value ? () => controller.checkBalances(context) : null,
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: Text(
                         'Submit',

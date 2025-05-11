@@ -3,6 +3,7 @@ import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart'
 import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -39,15 +40,21 @@ class ReceiptsHistory extends StatelessWidget {
           // size: 35,
         ),
       ),
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: AppColors.quarternary,
-        title: Text(
-          'Deposits',
-          style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
-        ),
-        // actions: [IconButton(onPressed: () => Get.offAll(() => NavigationMenu()), icon: Icon(Icons.close))],
+     appBar: AppBar(
+      elevation: 0,
+      leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: AppColors.quinary,
+          )),
+      // automaticallyImplyLeading: false,
+      backgroundColor: AppColors.prettyBlue,
+      title: Text(
+        'Deposits',
+        style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
       ),
+    ),
       backgroundColor: AppColors.quarternary,
       body: StreamBuilder<QuerySnapshot>(
         stream: usersStream,
@@ -126,7 +133,7 @@ class ReceiptsHistory extends StatelessWidget {
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12,
-                                        color: AppColors.green, // Grey Label
+                                        color: CupertinoColors.systemBlue, // Grey Label
                                         // Black Value
                                       ),
                                     ),
