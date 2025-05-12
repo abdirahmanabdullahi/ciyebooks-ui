@@ -11,10 +11,11 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../common/widgets/calculator.dart';
 
 showWithdrawForm(BuildContext context) {
+  final controller = Get.put(WithdrawCashController());
+
   return showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(WithdrawCashController());
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
         locale: 'en_us',
         decimalDigits: 2,
@@ -39,7 +40,8 @@ showWithdrawForm(BuildContext context) {
             titlePadding: EdgeInsets.zero,
             backgroundColor: AppColors.quarternary,
             insetPadding: EdgeInsets.all(16),
-            contentPadding: EdgeInsets.all(16),            shape: RoundedRectangleBorder(
+            contentPadding: EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
@@ -101,7 +103,6 @@ showWithdrawForm(BuildContext context) {
                       backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                       maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
                     ),
-
                     label: Text('Select currency'),
                     selectedTrailingIcon: Icon(Icons.search),
                     onSelected: (value) {
@@ -146,7 +147,8 @@ showWithdrawForm(BuildContext context) {
                       return null;
                     },
                     controller: controller.amount,
-                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
                       labelText: "Amount withdrawn",
                       // constraints: BoxConstraints.tight(
                       // const Size.fromHeight(50),
@@ -166,7 +168,8 @@ showWithdrawForm(BuildContext context) {
                     return null;
                   },
                   controller: controller.description,
-                  decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
                     labelText: "Description",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -178,14 +181,16 @@ showWithdrawForm(BuildContext context) {
                   height: 45,
                   width: double.maxFinite,
                   child: Obx(
-                      ()=> FloatingActionButton(
+                    () => FloatingActionButton(
                         disabledElevation: 0,
-                        backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                        backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         // ),
-                        onPressed:controller.isButtonEnabled.value? () {
-                          controller.checkBalances(context);
-                        }:null,
+                        onPressed: controller.isButtonEnabled.value
+                            ? () {
+                                controller.checkBalances(context);
+                              }
+                            : null,
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(
                           'Withdraw',
@@ -199,5 +204,5 @@ showWithdrawForm(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((_){controller.clearController();});
 }

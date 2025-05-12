@@ -92,11 +92,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['AccountFrom'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "-${data['Currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
-                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),
@@ -119,11 +119,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['receivingAccountName'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "+${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: Color(0xff118B50), fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: Color(0xff118B50), fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),
@@ -146,11 +146,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['category'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
-                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),
@@ -173,11 +173,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['transactionType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 11),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),
@@ -200,11 +200,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['transactionType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),

@@ -29,7 +29,7 @@ class ForexController extends GetxController {
   final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
   final dailyReportCreated = false.obs;
 
-  double profit = 0200;
+  double profit = 0;
   double cost = 0;
   final selectedTransaction = 'BUYFX'.obs;
   final counters = {}.obs;
@@ -38,6 +38,7 @@ class ForexController extends GetxController {
 
   RxList<CurrencyModel> currencyStock = <CurrencyModel>[].obs;
   final isButtonEnabled = false.obs;
+  final isLoading = false.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
 
   ///Sort by date for the history screen
@@ -88,6 +89,7 @@ class ForexController extends GetxController {
 
     ///Add listeners to the controllers
     sellingRate.addListener(updateButtonStatus);
+    type.addListener(updateButtonStatus);
     sellingAmount.addListener(updateButtonStatus);
     sellingTotal.addListener(updateButtonStatus);
 
@@ -110,6 +112,7 @@ class ForexController extends GetxController {
   }
 
   addNewCurrency(BuildContext context) async {
+    isLoading.value=true;
     try {
       // Create new currency
       final newCurrency = CurrencyModel(currencyName: newCurrencyName.text.trim(), amount: 0, totalCost: 0, symbol: newCurrencySymbol.text.trim(), currencyCode: newCurrencyCode.text.trim());
@@ -118,8 +121,10 @@ class ForexController extends GetxController {
         if (context.mounted) {
           Navigator.of(context).pop();
         }
+        isLoading.value=false;
       });
     } catch (e) {
+      isLoading.value=false;
       throw e.toString();
     }
   }
@@ -141,6 +146,7 @@ class ForexController extends GetxController {
   updateButtonStatus() {
     isButtonEnabled.value = sellingRate.text.isNotEmpty &&
         sellingAmount.text.isNotEmpty &&
+        type.text.isNotEmpty &&
         sellingTotal.text.isNotEmpty &&
         ((num.tryParse(sellingRate.text) ?? 0) > 0 && (num.tryParse(sellingAmount.text) ?? 0) > 0 && (num.tryParse(sellingTotal.text.replaceAll(',', '')) ?? 0) > 0);
   }
@@ -203,6 +209,7 @@ class ForexController extends GetxController {
   }
 
   checkInternetConnection(BuildContext context) async {
+    isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -226,7 +233,9 @@ class ForexController extends GetxController {
   }
 
   Future createForexTransaction(BuildContext context) async {
+    isLoading.value=true;
     try {
+      await createDailyReport();
       /// If it is a sale calculate the profit
       if (selectedTransaction.value == 'SELLFX') {
         profit = ForexProfitCalculator.calculateTotalProfit(
@@ -315,6 +324,7 @@ class ForexController extends GetxController {
       batch.update(counterRef, {"transactionCounters.${selectedTransaction.value}": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value=false;
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -350,8 +360,7 @@ class ForexController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
-      print(e.toString());
-      throw 'Something went wrong. Please try again';
+isLoading.value=false;      throw 'Something went wrong. Please try again';
     }
   }
 

@@ -10,10 +10,11 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 
 showAddNewCurrencyDialog(BuildContext context) {
+  final controller = Get.put(ForexController());
+
   return showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(ForexController());
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
         insetPadding: EdgeInsets.all(8),
@@ -138,5 +139,6 @@ showAddNewCurrencyDialog(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((_){
+controller.clearController();  });
 }

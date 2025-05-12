@@ -31,6 +31,7 @@ class ReceiveFromClientController extends GetxController {
   final isButtonEnabled = false.obs;
   final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
   final dailyReportCreated = false.obs;
+  final isLoading = false.obs;
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
@@ -114,6 +115,7 @@ class ReceiveFromClientController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
+    isLoading.value =true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -142,6 +144,7 @@ class ReceiveFromClientController extends GetxController {
   /// *-----------------------------Create and share pdf receipt----------------------------------*
 
   Future createReceipt(BuildContext context) async {
+    // isLoading.val
     try {
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -193,6 +196,7 @@ class ReceiveFromClientController extends GetxController {
       batch.update(counterRef, {"transactionCounters.receiptsCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value=false;
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -234,6 +238,7 @@ class ReceiveFromClientController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      isLoading.value=false;
       throw 'Something went wrong. Please try again';
     }
   }

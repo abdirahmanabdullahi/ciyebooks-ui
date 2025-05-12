@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:ciyebooks/common/widgets/error_dialog.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/upload_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,6 +24,7 @@ class UploadController extends GetxController {
   final _db = FirebaseFirestore.instance;
   final uploadRepo = Get.put(UploadRepo());
   final currencyList = {}.obs;
+  final overDrawn = false.obs;
 
   /// Headers checklists
   final totalsFieldChecklist = [
@@ -49,13 +51,13 @@ class UploadController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchCurrencies() async {
-      FirebaseFirestore.instance.collection('Common').doc('Currencies').snapshots().listen((snapshot) {
-        if (snapshot.exists && snapshot.data()!.isNotEmpty) {
-          currencyList.value = snapshot.data() as Map<String, dynamic>;
-        }
-      });
-    }
+    // fetchCurrencies() async {
+    //   FirebaseFirestore.instance.collection('Common').doc('Currencies').snapshots().listen((snapshot) {
+    //     if (snapshot.exists && snapshot.data()!.isNotEmpty) {
+    //       currencyList.value = snapshot.data() as Map<String, dynamic>;
+    //     }
+    //   });
+    // }
   }
 
   ///Todo: upload totals
@@ -81,7 +83,7 @@ class UploadController extends GetxController {
 
       if (!listEquals(fieldNames, totalsFieldChecklist)) {
         if (context.mounted) {
-          uploadRepo.showErrorDialog(context, "Oops! Unsupported data format!.", 'Missing or wrong data format. Please use the provided "Total template" excel sheet to upload your data');
+          showErrorDialog(context: context,errorTitle:  "Oops! Unsupported data format!.",errorText:  ' Please use the provided "Totals template" excel sheet to upload your data');
         }
         return;
       }
@@ -113,6 +115,9 @@ class UploadController extends GetxController {
         if (splitLine.length < 5) {
           return;
         }
+        if(splitLine[4] -0 || splitLine[5]){
+          overDrawn.value=true;
+        }
         final newAccount = AccountModel(
             currencies: {
               'USD': double.tryParse(splitLine[4]) ?? 0.0,
@@ -124,7 +129,7 @@ class UploadController extends GetxController {
             accountNo: '$accountsCounter',
             phoneNo: splitLine[2],
             email: splitLine[3],
-            accountName: '${splitLine[0]} ${splitLine[1]}', overDrawn: false);
+            accountName: '${splitLine[0]} ${splitLine[1]}', overDrawn: overDrawn.value);
 
         ///Point where to create each new account
         final newAccountRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("accounts").doc('$accountsCounter');

@@ -58,7 +58,7 @@ class StatsScreen extends StatelessWidget {
                 return Theme(
                   data: Theme.of(context).copyWith(
                       colorScheme: ColorScheme.light(
-                        primary: AppColors.prettyDark, // Header and selected day color
+                        primary: AppColors.prettyBlue, // Header and selected day color
                         onPrimary: AppColors.quinary, // Text color on selected day
                         surface: Colors.grey, // Calendar surface background
                         onSurface: AppColors.prettyDark,
@@ -124,7 +124,7 @@ class StatsScreen extends StatelessWidget {
                               )
                             ],
                           );
-                          ;
+
                         }).toList())),
                   ),
                 ],
@@ -170,7 +170,7 @@ class StatsScreen extends StatelessWidget {
                               )
                             ],
                           );
-                          ;
+
                         }).toList())),
                   ),
                 ],
@@ -216,7 +216,7 @@ class StatsScreen extends StatelessWidget {
                               )
                             ],
                           );
-                          ;
+
                         }).toList())),
                   ),
                 ],
@@ -262,7 +262,7 @@ class StatsScreen extends StatelessWidget {
                               )
                             ],
                           );
-                          ;
+
                         }).toList())),
                   ),
                 ],

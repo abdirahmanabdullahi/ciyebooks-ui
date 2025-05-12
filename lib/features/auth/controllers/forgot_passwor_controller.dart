@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
-import 'package:ciyebooks/features/auth/screens/password_config/reset_password.dar/reset_password.dart';
+import 'package:ciyebooks/features/auth/screens/password_config/reset_password.dar/resend_password.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../common/widgets/error_dialog.dart';
 
 
 class ForgotPasswordController extends GetxController {
@@ -10,34 +14,41 @@ class ForgotPasswordController extends GetxController {
   ///Variables
   final isLoading = false.obs;
   final email = TextEditingController();
-  GlobalKey<FormState> forgotPasswordFormKey = GlobalKey<FormState>();
+  GlobalKey<FormState> forgotPasswordFormKey2 = GlobalKey<FormState>();
 
   /// Send password reset email
+validateField(BuildContext context){
+  isLoading.value = true;
+
+  if (!forgotPasswordFormKey2.currentState!.validate()) {
+    isLoading.value = false;
+    return;
+  }
+  checkInternetConnection(context);
+}
+  /// Check internet connection
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          sendPasswordResetLink();
+        }
+      }
+    } on SocketException catch (_) {
+      isLoading.value = false;
+
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+      return;
+    }
+  }
 
   void sendPasswordResetLink() async {
     try {
-      isLoading.value = true;
 
-      ///Check internet connectivity
-      // final isConnected = await NetworkManager.instance.isConnected();
-      // if (!isConnected) {
-        isLoading.value = false;
-        Get.snackbar("Oh snap! No internet connection.",
-            "Please check your internet connection and try again",
-            icon: Icon(
-              Icons.cloud_off,
-              color: Colors.white,
-            ),
-            backgroundColor: Color(0xffFF0033),
-            colorText: Colors.white);
-        return;
-      // }
 
-      /// Validate form
-      if (!forgotPasswordFormKey.currentState!.validate()) {
-        isLoading.value = false;
-        return;
-      }
 
       /// Send password reset link
       await AuthRepo.instance.sendPasswordResetLink(email.text.trim());
@@ -50,7 +61,7 @@ class ForgotPasswordController extends GetxController {
           ),
           backgroundColor: Colors.green,
           colorText: Colors.white);
-      Get.to(() => ResetPassword());
+      Get.to(() => ResendPassword());
     } catch (e) {
       isLoading.value = false;
       Get.snackbar("Error!", e.toString(),
@@ -68,7 +79,7 @@ class ForgotPasswordController extends GetxController {
         await AuthRepo.instance.resendPasswordResetLink(email.text.trim());
 
         ///Show success message
-        Get.snackbar("Email has been sent", 'Please check your inbox for the reset password link',
+        Get.snackbar("Reset link has been sent", 'Please check your inbox for the reset password link',
             icon: Icon(
               Icons.task_alt,
               color: Colors.white,

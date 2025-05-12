@@ -34,6 +34,7 @@ class DepositCashController extends GetxController {
   final bankBalances = {}.obs;
   final cashBalances = {}.obs;
   final depositedByOwner = true.obs;
+  final isLoading = false.obs;
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
@@ -110,6 +111,7 @@ class DepositCashController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
+    isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -208,6 +210,7 @@ class DepositCashController extends GetxController {
       batch.update(counterRef, {"transactionCounters.bankDepositCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value=false;
                   Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -240,6 +243,7 @@ class DepositCashController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      isLoading.value=false;
       throw 'Something went wrong. Please try again';
     }
   }

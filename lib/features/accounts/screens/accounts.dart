@@ -40,26 +40,18 @@ class Accounts extends StatelessWidget {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: AppBar(
-          // automaticallyImplyLeading: true,
-          // leading:
-          // IconButton(
-          // onPressed: () => Get.off(NavigationMenu()),
-          // icon: Icon(
-          //   Icons.arrow_back_ios,
-          //   color: AppColors.prettyDark,
-          // )),
-          // actions: [
-          //   IconButton(
-          //       onPressed: () => Get.offAll(() => NavigationMenu()),
-          //       icon: Icon(
-          //         Icons.close,
-          //         color: AppColors.prettyDark,
-          //       )),
-          // ],
-          backgroundColor: AppColors.quarternary,
+          elevation: 0,
+          leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                Icons.arrow_back_ios_rounded,
+                color: AppColors.quinary,
+              )),
+          // automaticallyImplyLeading: false,
+          backgroundColor: AppColors.prettyBlue,
           title: Text(
             'Accounts',
-            style: TextStyle(fontWeight: FontWeight.w400, color: AppColors.prettyDark),
+            style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
           ),
         ),
         body: SafeArea(

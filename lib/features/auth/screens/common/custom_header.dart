@@ -26,18 +26,19 @@ class CustomHeader extends StatelessWidget {
           height: height,
           image: const AssetImage(AppImages.logoDark),
         ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        //   child: Text(
+        //     title,
+        //     style: TextStyle(fontWeight: FontWeight.bold)
+        //   ),
+        // ),
+
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.fromLTRB( 12,6,10,0),
           child: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold)
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Text(
-            AppTexts.loginSubTitle,
-            style: TextStyle(),
+            AppTexts.loginTitle,
+            style: TextStyle(fontWeight: FontWeight.w500,wordSpacing: 2,fontSize: 18),
           ),
         ),
       ],

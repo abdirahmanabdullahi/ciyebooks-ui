@@ -37,6 +37,7 @@ class PayExpenseController extends GetxController {
   final isButtonEnabled = false.obs;
   final newCategoryButtonEnabled = false.obs;
   final dailyReportCreated = false.obs;
+  final isLoading = false.obs;
 
 
   ///Sort by date
@@ -88,6 +89,7 @@ class PayExpenseController extends GetxController {
 
   /// *-----------------------------Add new expense category----------------------------------*
   addNewExpenseCategory() {
+    isLoading.value=true;
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
 
@@ -97,18 +99,20 @@ class PayExpenseController extends GetxController {
 
       docReference.set({
         category.text.trim(): category.text.trim(),
-      }, SetOptions(merge: true));
-      Get.snackbar(
-        icon: Icon(
-          Icons.cloud_done,
-          color: Colors.white,
-        ),
-        shouldIconPulse: true,
-        "Success",
-        'New category added',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      }, SetOptions(merge: true)).then((_){
+        isLoading.value=false; Get.snackbar(
+          icon: Icon(
+            Icons.cloud_done,
+            color: Colors.white,
+          ),
+          shouldIconPulse: true,
+          "Success",
+          'New category added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      });
+
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
@@ -118,6 +122,7 @@ class PayExpenseController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      isLoading.value=false;
       throw e.toString();
     }
   }
@@ -392,6 +397,7 @@ class PayExpenseController extends GetxController {
   // }
   ///Check internet connection
   checkInternetConnection(BuildContext context) async {
+    isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -400,6 +406,7 @@ class PayExpenseController extends GetxController {
         }
       }
     } on SocketException catch (_) {
+      isLoading.value=false;
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -452,7 +459,9 @@ class PayExpenseController extends GetxController {
   }
 
   Future createExpense(BuildContext context) async {
+
     try {
+      await createDailyReport();
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
@@ -496,6 +505,7 @@ class PayExpenseController extends GetxController {
       batch.update(counterRef, {"transactionCounters.expenseCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value=false;
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -526,6 +536,8 @@ class PayExpenseController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+
+      isLoading.value=false;
       throw 'Something went wrong. Please try again';
     }
   }

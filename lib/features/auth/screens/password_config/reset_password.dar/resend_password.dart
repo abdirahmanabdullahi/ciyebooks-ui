@@ -3,31 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../../../../data/repositories/auth/auth_repo.dart';
 import '../../../../../navigation_menu.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 import '../../../controllers/forgot_passwor_controller.dart';
+import '../../login/login.dart';
 
-class ResetPassword extends StatelessWidget {
-  const ResetPassword({super.key});
+class ResendPassword extends StatelessWidget {
+  const ResendPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: AppColors.quarternary, leading: IconButton(
+      appBar: AppBar(backgroundColor: AppColors.prettyBlue, leading: IconButton(
           onPressed: () => Get.back(),
 
           icon: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.prettyDark,
+            color: AppColors.quinary,
           )),
-        actions: [
-          IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(CupertinoIcons.clear))
-        ],
+
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -52,9 +50,12 @@ class ResetPassword extends StatelessWidget {
               height: 50,
               width: double.infinity,
               child: FloatingActionButton(
-                backgroundColor: AppColors.prettyDark,
-                elevation: 2,onPressed: (){},
-                // onPressed: () => AuthRepo.instance.screenRedirect(),
+                backgroundColor: AppColors.prettyBlue,
+                elevation: 2,
+                onPressed: () =>  Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => const Login()),
+                ),
                 child: Text(
                   AppTexts.done,
                   style: Theme.of(context)
@@ -64,7 +65,7 @@ class ResetPassword extends StatelessWidget {
                 ),
               ),
             ),
-            const Gap(AppSizes.spaceBtwItems),
+            // const Gap(AppSizes.spaceBtwItems),
             SizedBox(
               width: double.infinity,
               child: TextButton(

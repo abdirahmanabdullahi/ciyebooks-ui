@@ -8,10 +8,10 @@ import '../../../../utils/constants/colors.dart';
 import '../../controller/accounts_controller.dart';
 
 Future<dynamic> showCreateAccountDialog(BuildContext context) {
+  final controller = Get.put(AccountsController());
   return showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(AccountsController());
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
         insetPadding: EdgeInsets.all(16),
@@ -69,8 +69,7 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                             return null;
                           },
                           controller: controller.firstName,
-                          decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                              hintText: 'First name'),
+                          decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), hintText: 'First name'),
                         ),
                       ),
                       Gap(AppSizes.spaceBtwItems),
@@ -83,14 +82,14 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                             return null;
                           },
                           controller: controller.lastName,
-                          decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                              hintText: 'Last name'),
+                          decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), hintText: 'Last name'),
                         ),
                       ),
                     ],
                   ),
                   Gap(AppSizes.spaceBtwItems),
-                  TextFormField(keyboardType: TextInputType.phone,
+                  TextFormField(
+                    keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Phone number is required';
@@ -98,18 +97,14 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                       return null;
                     },
                     controller: controller.phoneNo,
-                    decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintText: 'Phone number'),
+                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), hintText: 'Phone number'),
                   ),
                   Gap(AppSizes.spaceBtwItems),
                   TextFormField(
                     keyboardType: TextInputType.emailAddress,
-
                     controller: controller.email,
-                    decoration: InputDecoration(                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                        hintText: 'Email'),
+                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), hintText: 'Email'),
                   ),
-
                   Gap(20),
                 ],
               ),
@@ -117,20 +112,27 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                 height: 45,
                 width: double.maxFinite,
                 child: Obx(
-                    ()=> FloatingActionButton(
+                  () => FloatingActionButton(
                       disabledElevation: 0,
                       // style: ElevatedButton.styleFrom(
                       //   padding: EdgeInsets.symmetric(horizontal: 10),
                       //   disabledBackgroundColor: const Color(0xff35689fff),
-                      backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                      backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
-                      onPressed: controller.isButtonEnabled.value?() => controller.createAccount(context):null,
+                      onPressed: controller.isButtonEnabled.value && !controller.isLoading.value ? () => controller.createAccount(context) : null,
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                      child: Text(
-                        'Create account',
-                        style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
-                      )),
+                      child: controller.isLoading.value
+                          ? SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: AppColors.quinary,
+                              ))
+                          : Text(
+                              'Create account',
+                              style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
+                            )),
                 ),
               ),
             ],
@@ -138,5 +140,5 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((_){controller.clearControllers();});
 }

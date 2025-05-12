@@ -38,7 +38,7 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.quarternary,
       appBar: AppBar(
-        backgroundColor: AppColors.quinary,
+        backgroundColor: AppColors.prettyBlue,
         automaticallyImplyLeading: true,
         // title: Text("Dashboard"),
         centerTitle: true,
@@ -47,7 +47,7 @@ class Dashboard extends StatelessWidget {
             Scaffold.of(context).openDrawer(); // Correct context for drawer
           },
           icon: Icon(
-            color: AppColors.prettyBlue,
+            color: AppColors.quinary,
             Icons.sort_rounded,
           ),
         ),
@@ -59,7 +59,7 @@ class Dashboard extends StatelessWidget {
     ),
             icon: Icon(
               Icons.bar_chart_rounded,
-              color: AppColors.prettyBlue,
+              color: AppColors.quinary,
             ),
           ),
           IconButton(
@@ -70,8 +70,8 @@ class Dashboard extends StatelessWidget {
               );
             },
             icon: Icon(
-              Icons.person_outline_outlined,
-              color: AppColors.prettyBlue,
+              Icons.person,
+              color: AppColors.quinary,
             ),
           ),
         ],

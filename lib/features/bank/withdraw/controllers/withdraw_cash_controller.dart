@@ -106,6 +106,7 @@ class WithdrawCashController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
+    isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -133,6 +134,7 @@ class WithdrawCashController extends GetxController {
     isLoading.value = true;
 
     try {
+      await createDailyReport();
       ///Compare bank balance and amount to withdraw
 
       if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
@@ -206,6 +208,7 @@ class WithdrawCashController extends GetxController {
       batch.update(counterRef, {"transactionCounters.bankWithdrawCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value=false;
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -240,6 +243,7 @@ class WithdrawCashController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      isLoading.value;
       throw 'Something went wrong. Please try again';
     }
   }

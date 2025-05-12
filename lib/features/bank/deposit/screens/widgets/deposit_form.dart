@@ -11,10 +11,11 @@ import '../../../../common/widgets/calculator.dart';
 import '../../controller/deposit_cash_controller.dart';
 
 showBankDepositForm(BuildContext context) {
+  final controller = Get.put(DepositCashController());
+
   return showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(DepositCashController());
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
         locale: 'en_us',
         decimalDigits: 2,
@@ -36,7 +37,8 @@ showBankDepositForm(BuildContext context) {
         child: PopScope(
           canPop: false,
           child: AlertDialog(
-            titlePadding: EdgeInsets.zero, insetPadding: EdgeInsets.all(16),
+            titlePadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.all(16),
             contentPadding: EdgeInsets.all(16),
             backgroundColor: AppColors.quarternary,
             shape: RoundedRectangleBorder(
@@ -72,38 +74,36 @@ showBankDepositForm(BuildContext context) {
                 ),
               ),
             ),
-
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Obx(
-                      () => DropdownMenu(
+                  () => DropdownMenu(
                     controller: controller.depositedCurrency,
                     trailingIcon: Icon(
                       Icons.keyboard_arrow_down_rounded,
                       color: CupertinoColors.systemBlue,
                     ),
-                        expandedInsets: EdgeInsets.zero,
-                        inputDecorationTheme: InputDecorationTheme(
-                          fillColor: AppColors.quinary,
-                          filled: true,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                          constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        enableSearch: true,
-                        requestFocusOnTap: true,
-                        enableFilter: true,
-                        menuStyle: MenuStyle(
-                          padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                          backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                        ),
-
-                        label: Text('Select currency'),
+                    expandedInsets: EdgeInsets.zero,
+                    inputDecorationTheme: InputDecorationTheme(
+                      fillColor: AppColors.quinary,
+                      filled: true,
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    enableSearch: true,
+                    requestFocusOnTap: true,
+                    enableFilter: true,
+                    menuStyle: MenuStyle(
+                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                    ),
+                    label: Text('Select currency'),
                     selectedTrailingIcon: Icon(Icons.search),
                     onSelected: (value) {
                       if (value != null) {
@@ -129,15 +129,14 @@ showBankDepositForm(BuildContext context) {
                     }).toList(),
                   ),
                 ),
-
                 Gap(AppSizes.spaceBtwItems),
                 SizedBox(
                   height: 45,
                   child: TextFormField(
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                  ],
+                      FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Amount deposited";
@@ -145,7 +144,8 @@ showBankDepositForm(BuildContext context) {
                       return null;
                     },
                     controller: controller.amount,
-                    decoration: InputDecoration(                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
 
                       labelText: "Amount deposited",
                       // constraints: BoxConstraints.tight(
@@ -179,17 +179,19 @@ showBankDepositForm(BuildContext context) {
                   height: 45,
                   width: double.maxFinite,
                   child: Obx(
-                      ()=> FloatingActionButton(
+                    () => FloatingActionButton(
                         elevation: 0,
                         // style: ElevatedButton.styleFrom(
                         //   padding: EdgeInsets.symmetric(horizontal: 10),
                         //   disabledBackgroundColor: const Color(0xff35689fff),
-                        backgroundColor:controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                        backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         // ),
-                        onPressed:controller.isButtonEnabled.value? () {
-                          controller.checkBalances(context);
-                        }:null,
+                        onPressed: controller.isButtonEnabled.value
+                            ? () {
+                                controller.checkBalances(context);
+                              }
+                            : null,
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(
                           'Deposit',
@@ -203,5 +205,5 @@ showBankDepositForm(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((_){controller.clearControllers();});
 }

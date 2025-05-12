@@ -93,7 +93,7 @@ class SetupController extends GetxController {
             ),
             backgroundColor: Color(0xffFF0033),
             colorText: Colors.white);
-        return;
+        // return;
       // }
       final setupStatus = {'AccountIsSetup': true};
 

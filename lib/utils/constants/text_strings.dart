@@ -58,10 +58,10 @@ class AppTexts {
   static const String goToLoginLabel = "Login";
   static const String loginSubTitle = "The convenient way to manage your finances.";
   static const String signupTitle = "Let’s create your account";
-  static const String forgetPasswordTitle = "Forgot password?";
+  static const String forgetPasswordTitle = "Reset password";
   static const String forgetPasswordSubTitle = "Don’t worry sometimes people can forget too, enter your email and we will send you a password reset link.";
   static const String changeYourPasswordTitle = "Password Reset Email Sent";
-  static const String changeYourPasswordSubTitle = "Your Account Security is Our Priority! We've Sent You a Secure Link to Safely Change Your Password and Keep Your Account Protected.";
+  static const String changeYourPasswordSubTitle = "Your account security is our priority! We've Sent You a secure link to safely change your password and keep your account protected.";
   static const String confirmEmail = "Verify your email address!";
   static const String confirmEmailSubTitle = "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
   static const String emailNotReceivedMessage = "Didn’t get the email? Check your junk/spam or resend it.";

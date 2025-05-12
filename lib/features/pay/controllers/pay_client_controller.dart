@@ -38,7 +38,7 @@ class PayClientController extends GetxController {
   final paidAmount = 0.0.obs;
   final isButtonEnabled = false.obs;
   final dailyReportCreated = false.obs;
-
+  final isLoading = false.obs;
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   final currency = [].obs;
   final paidToOwner = true.obs;
@@ -78,8 +78,10 @@ class PayClientController extends GetxController {
 
     ///Get the totals and balances
     fetchTotals();
+
     /// Check if daily report is created.
     createDailyReport();
+
     /// Stream for the accounts
 
     FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
@@ -155,7 +157,6 @@ class PayClientController extends GetxController {
 
     /// Check if currency is in cash and amount is enough to pay amount requested
     if (paymentType.text.trim() != 'Bank transfer') {
-      createDailyReport();
       final currencyKey = paidCurrency.text.trim();
 
       if (!cashBalances.containsKey(currencyKey)) {
@@ -177,7 +178,9 @@ class PayClientController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
+    isLoading.value =true;
     try {
+      isLoading.value = true;
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (context.mounted) {
@@ -185,6 +188,7 @@ class PayClientController extends GetxController {
         }
       }
     } on SocketException catch (_) {
+      isLoading.value = false;
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -193,9 +197,10 @@ class PayClientController extends GetxController {
   }
 
   Future createPayment(BuildContext context) async {
+    ///Check and create daily report if not created already
+    await createDailyReport();
+
     try {
-      ///Check and create daily report if not created already
-      createDailyReport();
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -246,6 +251,8 @@ class PayClientController extends GetxController {
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
+        isLoading.value = false;
+
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -287,6 +294,8 @@ class PayClientController extends GetxController {
     } on TPlatformException catch (e) {
       throw TPlatformException(e.code).message;
     } catch (e) {
+      isLoading.value = false;
+
       throw 'Something went wrong. Please try again';
     }
   }

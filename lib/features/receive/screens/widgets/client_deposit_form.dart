@@ -12,10 +12,11 @@ import '../../../common/widgets/calculator.dart';
 import '../../controller/receive_from_client_controller.dart';
 
 showReceiptForm(BuildContext context) {
+  final controller = Get.put(ReceiveFromClientController());
+
   return showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(ReceiveFromClientController());
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
         locale: 'en_us',
         decimalDigits: 2,
@@ -89,7 +90,7 @@ showReceiptForm(BuildContext context) {
                       fillColor: AppColors.quinary,
                       filled: true,
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
                       constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -114,8 +115,8 @@ showReceiptForm(BuildContext context) {
                         controller.receivingAccountName.text = value[2].toString();
                         final currencyMap = value[1] as Map<String, dynamic>;
 
-                        controller.currency.value = currencyMap.entries.map((entry) => [entry.key, entry.value]).toList();                        controller.updateButtonStatus();
-
+                        controller.currency.value = currencyMap.entries.map((entry) => [entry.key, entry.value]).toList();
+                        controller.updateButtonStatus();
                       }
                     },
                     dropdownMenuEntries: controller.accounts.map((account) {
@@ -134,140 +135,150 @@ showReceiptForm(BuildContext context) {
                   ),
                 ),
                 Gap(AppSizes.spaceBtwItems),
-                Obx(
-                  () => DropdownMenu(
-                    controller: controller.receivedCurrency,
-                    trailingIcon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: CupertinoColors.systemBlue,
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: DropdownMenu(
+                          controller: controller.receiptType,
+                          trailingIcon: Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: CupertinoColors.systemBlue,
+                          ),
+                          expandedInsets: EdgeInsets.zero,
+                          inputDecorationTheme: InputDecorationTheme(
+                            fillColor: AppColors.quinary,
+                            filled: true,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          enableFilter: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          ),
+                          label: Text('Deposit type'),
+                          selectedTrailingIcon: Icon(Icons.search),
+                          onSelected: (value) {
+                            if (value != null) {
+                              controller.receiptType.text = value.trim();
+                              controller.updateButtonStatus();
+
+                              // print(value);
+                              // controller.paymentType.value = value.trim();
+                              // controller.paymentTypeController.text = value.trim();
+                              // print(   controller.paymentTypeController.text);
+                              // controller.updateNewCategoryButton();
+                            }
+                          },
+                          dropdownMenuEntries: [
+                            DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: 'Cash',
+                                label: 'Cash'),
+                            DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: 'Bank',
+                                label: 'Bank'),
+                            DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: 'Mobile money',
+                                label: 'Mobile money'),
+                          ]),
                     ),
-                    expandedInsets: EdgeInsets.zero,
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: AppColors.quinary,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                    Gap(AppSizes.spaceBtwItems),
+                    Expanded(
+                      flex: 3,
+                      child: Obx(
+                        () => DropdownMenu(
+                          controller: controller.receivedCurrency,
+                          trailingIcon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: CupertinoColors.systemBlue,
+                          ),
+                          expandedInsets: EdgeInsets.zero,
+                          inputDecorationTheme: InputDecorationTheme(
+                            fillColor: AppColors.quinary,
+                            filled: true,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          enableFilter: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          ),
+                          label: Text('Currency'),
+                          selectedTrailingIcon: Icon(Icons.search),
+                          onSelected: (value) {
+                            if (value != null) {
+                              controller.receivedCurrency.text = value;
+                              controller.updateButtonStatus();
+                            }
+                          },
+                          dropdownMenuEntries: controller.currency.map((currency) {
+                            // Ensure valid data structure
+
+                            // Convert first item to a proper currency string
+                            String currencyName = currency[0].toString().toUpperCase(); // Ensure consistency
+                            num balance = num.tryParse(currency[1].toString()) ?? 0;
+                            return DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: currencyName,
+                                label: '$currencyName     ${formatter.format(balance)}',
+                                labelWidget: Text(
+                                  '$currencyName     ${formatter.format(balance)}',
+                                  style: TextStyle(color: balance <= 0 ? Colors.red : null),
+                                ));
+                          }).toList(),
+                        ),
                       ),
                     ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    enableFilter: true,
-                    menuStyle: MenuStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                    ),
-                    label: Text('Currency'),
-                    selectedTrailingIcon: Icon(Icons.search),
-                    onSelected: (value) {
-                      if (value != null) {
-
-                        controller.receivedCurrency.text = value;                        controller.updateButtonStatus();
-
-                      }
-                    },
-                    dropdownMenuEntries: controller.currency.map((currency) {
-                      // Ensure valid data structure
-
-                      // Convert first item to a proper currency string
-                      String currencyName = currency[0].toString().toUpperCase(); // Ensure consistency
-                      num balance = num.tryParse(currency[1].toString()) ?? 0;
-                      return DropdownMenuEntry(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                              side: WidgetStateProperty.all(
-                                BorderSide(width: 2, color: AppColors.quarternary),
-                              ),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ))),
-                          value: currencyName,
-                          label: '$currencyName     ${formatter.format(balance)}',
-                          labelWidget: Text(
-                            '$currencyName     ${formatter.format(balance)}',
-                            style: TextStyle(color: balance <= 0 ? Colors.red : null),
-                          ));
-                    }).toList(),
-                  ),
+                  ],
                 ),
-                Gap(AppSizes.spaceBtwItems),
-                DropdownMenu(
-                    controller: controller.receiptType,
-                    trailingIcon: Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      color: CupertinoColors.systemBlue,
-                    ),
-                    expandedInsets: EdgeInsets.zero,
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: AppColors.quinary,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    enableFilter: true,
-                    menuStyle: MenuStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                    ),
-                    label: Text('Deposit type'),
-                    selectedTrailingIcon: Icon(Icons.search),
-                    onSelected: (value) {
-                      if (value != null) {
-                        controller.receiptType.text = value.trim();
-                        controller.updateButtonStatus();
 
-                        // print(value);
-                        // controller.paymentType.value = value.trim();
-                        // controller.paymentTypeController.text = value.trim();
-                        // print(   controller.paymentTypeController.text);
-                        // controller.updateNewCategoryButton();
-                      }
-                    },
-                    dropdownMenuEntries: [
-                      DropdownMenuEntry(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                              side: WidgetStateProperty.all(
-                                BorderSide(width: 2, color: AppColors.quarternary),
-                              ),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ))),
-                          value: 'Cash',
-                          label: 'Cash'),
-                      DropdownMenuEntry(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                              side: WidgetStateProperty.all(
-                                BorderSide(width: 2, color: AppColors.quarternary),
-                              ),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ))),
-                          value: 'Bank',
-                          label: 'Bank'),
-                      DropdownMenuEntry(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                              side: WidgetStateProperty.all(
-                                BorderSide(width: 2, color: AppColors.quarternary),
-                              ),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ))),
-                          value: 'Mobile money',
-                          label: 'Mobile money'),
-                    ]),
                 Gap(AppSizes.spaceBtwItems),
                 DropdownMenu(
                     controller: controller.receivedFrom,
@@ -280,7 +291,7 @@ showReceiptForm(BuildContext context) {
                       fillColor: AppColors.quinary,
                       filled: true,
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                       constraints: BoxConstraints.tight(const Size.fromHeight(45)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -349,7 +360,7 @@ showReceiptForm(BuildContext context) {
                               },
                               controller: controller.depositorName,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 8),
                                 labelText: "Depositor name",
                                 // constraints: BoxConstraints.tight(
                                 // const Size.fromHeight(50),
@@ -378,7 +389,7 @@ showReceiptForm(BuildContext context) {
                     },
                     controller: controller.amount,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
                       labelText: "Amount",
                       // constraints: BoxConstraints.tight(
                       // const Size.fromHeight(50),
@@ -399,7 +410,7 @@ showReceiptForm(BuildContext context) {
                   },
                   controller: controller.description,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
                     labelText: "Description",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),
@@ -411,7 +422,7 @@ showReceiptForm(BuildContext context) {
                   height: AppSizes.buttonHeight,
                   width: double.maxFinite,
                   child: Obx(
-                      ()=> FloatingActionButton(
+                    () => FloatingActionButton(
                         elevation: 0,
                         // style: ElevatedButton.styleFrom(
                         //   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -421,7 +432,8 @@ showReceiptForm(BuildContext context) {
                         // ),
                         onPressed: controller.isButtonEnabled.value
                             ? () {
-showConfirmClientDeposit(context);                              }
+                                showConfirmClientDeposit(context);
+                              }
                             : null, // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(
                           'Receive',
@@ -435,5 +447,5 @@ showConfirmClientDeposit(context);                              }
         ),
       );
     },
-  );
+  ).then((_){controller.clearControllers();});
 }

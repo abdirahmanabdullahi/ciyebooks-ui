@@ -13,11 +13,11 @@ import '../../controller/forex_controller.dart';
 import '../../controller/new_currency_controller.dart';
 import 'new_currency_form.dart';
 
-showForexForm(BuildContext context) {
-  showDialog(
+showForexForm(BuildContext context) {      final controller = Get.put(ForexController());
+
+showDialog(
     context: context,
     builder: (context) {
-      final controller = Get.put(ForexController());
       final NumberFormat formatter = NumberFormat.decimalPatternDigits(
         locale: 'en_us',
         decimalDigits: 2,
@@ -507,5 +507,5 @@ showForexForm(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((_){controller.clearController();});
 }
