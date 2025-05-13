@@ -1,15 +1,12 @@
-import 'package:ciyebooks/features/receive/screens/widgets/client_deposit_form.dart';
-import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
-import 'package:ciyebooks/navigation_menu.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/receipt_form.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/receipt_success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
 
 class ReceiptsHistory extends StatelessWidget {
@@ -51,7 +48,7 @@ class ReceiptsHistory extends StatelessWidget {
       // automaticallyImplyLeading: false,
       backgroundColor: AppColors.prettyBlue,
       title: Text(
-        'Deposits',
+        'Receipt',
         style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.quinary),
       ),
     ),
@@ -75,7 +72,7 @@ class ReceiptsHistory extends StatelessWidget {
                 .map((DocumentSnapshot document) {
                   Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                   return GestureDetector(
-                    onTap: () => showClientDepositInfo(
+                    onTap: () => showReceiptInfo(
                         context: context,
                         currency: data['currency'],
                         transactionCode: data['transactionId'],

@@ -1,16 +1,13 @@
-import 'package:ciyebooks/features/bank/deposit/screens/deposits.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controller/forex_controller.dart';
-import '../../controller/new_currency_controller.dart';
 import 'new_currency_form.dart';
 
 showForexForm(BuildContext context) {      final controller = Get.put(ForexController());
@@ -18,10 +15,10 @@ showForexForm(BuildContext context) {      final controller = Get.put(ForexContr
 showDialog(
     context: context,
     builder: (context) {
-      final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-        locale: 'en_us',
-        decimalDigits: 2,
-      );
+      // final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+      //   locale: 'en_us',
+      //   decimalDigits: 2,
+      // );
 
       Future<void> vibrate() async {
         await SystemChannels.platform.invokeMethod<void>(
@@ -219,7 +216,6 @@ showDialog(
                           if (value != null) {
                             controller.currencyCode.text = value[0].toString();
                             controller.currencyStockAmount.text = value[1].toString();
-                            print(value[1]);
                             controller.currencyStockTotalCost.text = value[2].toString();
                           }
                         },
@@ -371,7 +367,7 @@ showDialog(
                           onChanged: (value) {
                             controller.onAmountChanged(value);
                           },
-                          controller: controller.sellingAmount,
+                          controller: controller.amount,
                           cursorWidth: 2,
                           style: const TextStyle(
                             letterSpacing: 2,

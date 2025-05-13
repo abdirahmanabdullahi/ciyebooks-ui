@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/receive/controller/receive_from_client_controller.dart';
+import 'package:ciyebooks/features/receive/controller/receipt.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
-import 'deposit_success.dart';
 
 showConfirmClientDeposit(BuildContext context) {
   return showDialog(
@@ -16,7 +15,7 @@ showConfirmClientDeposit(BuildContext context) {
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(ReceiveFromClientController());
+      final controller = Get.put(ReceiptController());
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -39,7 +38,7 @@ showConfirmClientDeposit(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -69,7 +68,7 @@ showConfirmClientDeposit(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )

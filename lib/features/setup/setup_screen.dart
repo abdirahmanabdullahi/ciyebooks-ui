@@ -1,28 +1,17 @@
-import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
-import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
-import 'package:ciyebooks/features/bank/withdraw/model/withdraw_model.dart';
-import 'package:ciyebooks/features/receive/model/receive_model.dart';
 import 'package:ciyebooks/features/setup/controller/upload_controller.dart';
 
 import 'package:ciyebooks/utils/constants/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../utils/validators/validation.dart';
-import '../accounts/controller/accounts_controller.dart';
-import '../accounts/model/model.dart';
 import '../accounts/screens/widgets/account_viewer.dart';
-import '../pay/models/expense_model.dart';
-import '../pay/models/pay_client_model.dart';
 import 'controller/setup_controller.dart';
 
 class SetupScreen extends StatelessWidget {
@@ -553,7 +542,6 @@ class SetupScreen extends StatelessWidget {
                       heroTag: 'Res1231et',
                       backgroundColor: AppColors.prettyGrey,
                       onPressed: () async {
-                        print(await FirebaseAuth.instance.currentUser?.tenantId);
                         await FirebaseAuth.instance.signOut().then((_) {
                           AuthRepo.instance.screenRedirect();
                         });

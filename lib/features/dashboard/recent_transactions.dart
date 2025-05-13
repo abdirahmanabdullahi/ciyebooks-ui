@@ -61,11 +61,11 @@ class RecentTransactions extends StatelessWidget {
                           children: [
                             Text(
                               data['forexType'],
-                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
                               "${data['CurrencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['Amount'].toString()))} ",
-                              style: TextStyle(color: CupertinoColors.systemBlue, fontWeight: FontWeight.w600, fontSize: 15),
+                              style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
                         ),

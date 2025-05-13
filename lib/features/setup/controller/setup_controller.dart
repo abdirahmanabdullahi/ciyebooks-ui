@@ -1,7 +1,7 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
-import 'package:ciyebooks/features/receive/model/receive_model.dart';
+import 'package:ciyebooks/features/receive/model/receipt.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/setup_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,7 +44,6 @@ class SetupController extends GetxController {
   /// Reset database
   void resetDatabase()async {
      await FirebaseFirestore.instance.collection('Users').doc(_uid).delete().then((_){
-       print('object');
      });
   }
 

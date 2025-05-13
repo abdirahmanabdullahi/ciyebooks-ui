@@ -9,7 +9,7 @@ import '../../forex/model/new_currency_model.dart';
 import '../../pay/models/expense_model.dart';
 import '../../pay/models/pay_client_model.dart';
 
-import '../../receive/model/receive_model.dart';
+import '../../receive/model/receipt.dart';
 import '../../setup/models/setup_model.dart';
 
 class DashboardController extends GetxController {
@@ -18,7 +18,7 @@ class DashboardController extends GetxController {
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
 
-  final _uid = FirebaseAuth.instance.currentUser!.uid;
+  final _uid = FirebaseAuth.instance.currentUser?.uid;
 
 
   ///

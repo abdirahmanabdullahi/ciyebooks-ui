@@ -1,17 +1,12 @@
-import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
 import 'package:ciyebooks/features/forex/ui/widgets/forex_form.dart';
-import 'package:ciyebooks/features/forex/ui/widgets/new_currency_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
-import '../../../navigation_menu.dart';
-import '../controller/new_currency_controller.dart';
 import 'forex_transactions.dart';
 
 class ForexHome extends StatelessWidget {

@@ -18,7 +18,6 @@ import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../setup/models/setup_model.dart';
 import '../model/new_currency_model.dart';
 import '../ui/widgets/confirm_fx_transaction.dart';
-import '../ui/widgets/forex_form.dart';
 
 class ForexController extends GetxController {
   static ForexController get instance => Get.find();
@@ -51,7 +50,7 @@ class ForexController extends GetxController {
   TextEditingController currencyCode = TextEditingController();
   TextEditingController transactionType = TextEditingController();
   TextEditingController sellingRate = TextEditingController();
-  TextEditingController sellingAmount = TextEditingController();
+  TextEditingController amount = TextEditingController();
   TextEditingController sellingTotal = TextEditingController();
   TextEditingController description = TextEditingController();
   TextEditingController currencyStockTotalCost = TextEditingController();
@@ -64,7 +63,7 @@ class ForexController extends GetxController {
     currencyCode.clear();
     transactionType.clear();
     sellingRate.clear();
-    sellingAmount.clear();
+    amount.clear();
     sellingTotal.clear();
     description.clear();
     currencyStockTotalCost.clear();
@@ -86,11 +85,12 @@ class ForexController extends GetxController {
   onInit() async {
     fetchTotals();
     fetchCurrencies();
+    createDailyReport();
 
     ///Add listeners to the controllers
     sellingRate.addListener(updateButtonStatus);
     type.addListener(updateButtonStatus);
-    sellingAmount.addListener(updateButtonStatus);
+    amount.addListener(updateButtonStatus);
     sellingTotal.addListener(updateButtonStatus);
 
     ///Get the totals and balances
@@ -131,7 +131,7 @@ class ForexController extends GetxController {
 
   ///Calculate the fields
   onAmountChanged(String? value) {
-    sellingTotal.text = formatter.format(((double.tryParse(sellingAmount.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
+    sellingTotal.text = formatter.format(((double.tryParse(amount.text.trim().replaceAll(',', ',').removeAllWhitespace) ?? 0.0) * (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
 
   onTotalChanged(String? value) {
@@ -139,16 +139,16 @@ class ForexController extends GetxController {
       return;
     }
 
-    sellingAmount.text = formatter.format(((double.tryParse(sellingTotal.text.trim()) ?? 0.0) / (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
+    amount.text = formatter.format(((double.tryParse(sellingTotal.text.trim()) ?? 0.0) / (double.tryParse(sellingRate.text.trim()) ?? 0.0)));
   }
 
   /// Update whether the submit button is enabled or disabled
   updateButtonStatus() {
     isButtonEnabled.value = sellingRate.text.isNotEmpty &&
-        sellingAmount.text.isNotEmpty &&
+        amount.text.isNotEmpty &&
         type.text.isNotEmpty &&
         sellingTotal.text.isNotEmpty &&
-        ((num.tryParse(sellingRate.text) ?? 0) > 0 && (num.tryParse(sellingAmount.text) ?? 0) > 0 && (num.tryParse(sellingTotal.text.replaceAll(',', '')) ?? 0) > 0);
+        ((num.tryParse(sellingRate.text) ?? 0) > 0 && (num.tryParse(amount.text) ?? 0) > 0 && (num.tryParse(sellingTotal.text.replaceAll(',', '')) ?? 0) > 0);
   }
 
   fetchTotals() async {
@@ -174,14 +174,15 @@ class ForexController extends GetxController {
     final availableForeignCurrencyBalance = double.parse(currencyStockAmount.text.trim());
     final availableBankAmount = double.parse(bankBalances['KES'].toString());
     final availableCashAmount = double.parse(cashBalances['KES'].toString());
-    final requestedAmount = double.parse(sellingAmount.text.trim().replaceAll(',', ''));
+    final requestedAmount = double.parse(sellingTotal.text.trim().replaceAll(',', ''));
+    final requestedForeignCurrencyAmount = double.parse(amount.text.trim().replaceAll(',', ''));
 
     /// Limit the user so as not to sell what they do not have.
-    if (selectedTransaction.value == 'SELLFX' && availableForeignCurrencyBalance < requestedAmount) {
+    if (selectedTransaction.value == 'SELLFX' && availableForeignCurrencyBalance < requestedForeignCurrencyAmount) {
       showErrorDialog(
         context: context,
         errorTitle: 'Insufficient funds',
-        errorText: 'You do not have enough ${currencyCode.text.trim()} to complete this transaction.',
+        errorText: 'You do not have enough ${currencyCode.text.trim()} to complete this tr0nsaction.',
       );
       return;
     }
@@ -218,6 +219,7 @@ class ForexController extends GetxController {
         }
       }
     } on SocketException catch (_) {
+      isLoading.value =false;
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -239,13 +241,13 @@ class ForexController extends GetxController {
       /// If it is a sale calculate the profit
       if (selectedTransaction.value == 'SELLFX') {
         profit = ForexProfitCalculator.calculateTotalProfit(
-            sellingAmount: sellingAmount.text.trim(),
+            sellingAmount: amount.text.trim(),
             sellingRate: sellingRate.text.trim(),
             sellingTotal: sellingTotal.text.trim(),
             currencyStockTotalCost: currencyStockTotalCost.text.trim(),
             currencyStockAmount: currencyStockAmount.text.trim());
       }
-      cost = ForexProfitCalculator.cost(sellingAmount: sellingAmount.text.trim(), currencyStockTotalCost: currencyStockTotalCost.text.trim(), currencyStockAmount: currencyStockAmount.text.trim());
+      cost = ForexProfitCalculator.cost(sellingAmount: amount.text.trim(), currencyStockTotalCost: currencyStockTotalCost.text.trim(), currencyStockAmount: currencyStockAmount.text.trim());
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -263,7 +265,7 @@ class ForexController extends GetxController {
         transactionType: 'forex',
         type: type.text.trim(),
         transactionId: '${selectedTransaction.value.toUpperCase()}-${counters[selectedTransaction.value]}',
-        amount: double.tryParse(sellingAmount.text.trim().replaceAll(',', '')) ?? 0.0,
+        amount: double.tryParse(amount.text.trim().replaceAll(',', '')) ?? 0.0,
         dateCreated: DateTime.now(),
         // currencyName: currency.text.trim(),
         currencyCode: currencyCode.text.trim(),
@@ -283,10 +285,10 @@ class ForexController extends GetxController {
       ///update cash and currency balances when buying currencies
       if (selectedTransaction.value == 'BUYFX') {
         /// Update currencies at cost
-        batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(-double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+        batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
 
         /// Update currency amount
-        batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
+        batch.update(currencyRef, {"amount": FieldValue.increment(double.parse(amount.text.trim().replaceAll(',', '')))});
 
         ///Update total cost
         batch.update(currencyRef, {"totalCost": FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
@@ -302,13 +304,13 @@ class ForexController extends GetxController {
 
       if (selectedTransaction.value == 'SELLFX') {
         /// Update currencies at cost
-        batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(double.parse(sellingTotal.text.trim().replaceAll(',', '')))});
+        batch.update(cashRef, {'currenciesAtCost': FieldValue.increment(-cost)});
 
         /// Update profit
         batch.update(dailyReportRef, {'dailyProfit': FieldValue.increment(profit)});
 
         /// Update currency amount
-        batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(sellingAmount.text.trim().replaceAll(',', '')))});
+        batch.update(currencyRef, {"amount": FieldValue.increment(-double.parse(amount.text.trim().replaceAll(',', '')))});
 
         ///Update total cost
         batch.update(currencyRef, {"totalCost": FieldValue.increment(-cost)});
@@ -346,7 +348,7 @@ class ForexController extends GetxController {
               currency: currencyCode.text.trim(),
               transactionCode: '${selectedTransaction.value.toUpperCase()}-${counters[selectedTransaction.value]}',
               method: type.text.trim(),
-              amount: sellingAmount.text.trim(),
+              amount: amount.text.trim(),
               rate: sellingRate.text.trim(),
               totalCost: sellingTotal.text.trim(),
               date: DateTime.now());

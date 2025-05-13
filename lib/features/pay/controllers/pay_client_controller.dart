@@ -22,7 +22,7 @@ import '../models/pay_client_model.dart';
 
 class PayClientController extends GetxController {
   static PayClientController get instance => Get.find();
-  final String today = DateFormat("dd MMM yyyy ").format(DateTime.now());
+  final String today = DateFormat("d MMM yyyy ").format(DateTime.now());
 
   final _uid = FirebaseAuth.instance.currentUser?.uid;
   final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -123,11 +123,31 @@ class PayClientController extends GetxController {
 
   /// Check and create daily report if not Created
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
-    final snapshot = await reportRef.get();
-    if (snapshot.exists) {
-      dailyReportCreated.value = true;
-    }
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(_uid)
+        .collection('DailyReports')
+        .doc('13 May 2025')
+        .set(DailyReportModel(
+        received: {'USD': 1243454, 'KES': 456252},
+        payments: {'USD': 2354, 'KES':2345},
+        deposits: {'USD': 876, 'KES': 124},
+        withdrawals: {'USD': 345, 'KES': 324},
+        expenses: {'USD': 3452, 'KES': 345},
+        dailyProfit: 451)
+        .toJson())
+        .then((_) {
+      print('Done');
+    });
+    // final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    // final snapshot = await reportRef.get();
+    // if (snapshot.exists) {
+    //   dailyReportCreated.value = true;
+    // }
+    // final snapshot = await reportRef.get();
+    // if (snapshot.exists) {
+    //   dailyReportCreated.value = true;
+    // }
   }
 
   checkBalances(BuildContext context) {

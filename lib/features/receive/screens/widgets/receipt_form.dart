@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/receive/screens/widgets/confirm_client_deposit.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/confirm_receipt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,10 +9,10 @@ import 'package:intl/intl.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../common/widgets/calculator.dart';
-import '../../controller/receive_from_client_controller.dart';
+import '../../controller/receipt.dart';
 
 showReceiptForm(BuildContext context) {
-  final controller = Get.put(ReceiveFromClientController());
+  final controller = Get.put(ReceiptController());
 
   return showDialog(
     context: context,

@@ -2,20 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/styles/custom_container.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../navigation_menu.dart';
 
 class TransactionHistory extends StatelessWidget {
   const TransactionHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final startOfToday = DateTime(now.year, now.month, now.day);
+    // final now = DateTime.now();
+    // final startOfToday = DateTime(now.year, now.month, now.day);
 
     final NumberFormat formatter = NumberFormat.decimalPatternDigits(
       locale: 'en_us',
@@ -380,7 +378,8 @@ class TransactionHistory extends StatelessWidget {
                           ],
                         ),
                       );
-                    }else if(data['transactionType'] == 'receipt'){
+                    }
+                    else if(data['transactionType'] == 'receipt'){
                       return CustomContainer(
                         darkColor: AppColors.quinary,
                         width: double.infinity,
@@ -674,7 +673,8 @@ class TransactionHistory extends StatelessWidget {
                           ],
                         ),
                       );
-                    }else if(data['transactionType'] == 'deposit'){return CustomContainer(
+                    }else if(data['transactionType'] == 'deposit'){
+                      return CustomContainer(
                       darkColor: AppColors.quinary,
                       width: double.infinity,
                       padding: EdgeInsets.all(8),
@@ -1274,10 +1274,10 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-      locale: 'en_us',
-      decimalDigits: 2,
-    );
+    // final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+    //   locale: 'en_us',
+    //   decimalDigits: 2,
+    // );
     return CustomContainer(
       darkColor: AppColors.quinary,
       width: double.infinity,

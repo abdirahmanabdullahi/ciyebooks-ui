@@ -56,6 +56,7 @@ class WithdrawCashController extends GetxController {
   @override
   onInit() {
     fetchTotals();
+    createDailyReport();
 
     ///Add listeners to the controllers
     withdrawnCurrency.addListener(updateButtonStatus);

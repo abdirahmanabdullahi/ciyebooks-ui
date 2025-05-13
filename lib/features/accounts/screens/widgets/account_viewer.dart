@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../../../utils/constants/sizes.dart';
 
 showAccountDetails({required BuildContext context, required String accountName, required String accountNumber, required String email, required String phoneNumber, required List<Widget> balances}) {
   return showDialog(
     context: context,
     builder: (context) {
-      final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-        locale: 'en_us',
-        decimalDigits: 2,
-      );
+
       return PopScope(
         canPop: false,
         child: AlertDialog(

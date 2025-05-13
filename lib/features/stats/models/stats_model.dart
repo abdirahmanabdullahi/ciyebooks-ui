@@ -76,7 +76,7 @@ class DailyReportModel {
       withdrawals: Map<String, dynamic>.from(jsonData['withdrawals'] ?? {}),
       expenses: Map<String, dynamic>.from(jsonData['expenses'] ?? {}),
       // numberOfExpenses: jsonData['numberOfExpenses']?? 0.0,
-      dailyProfit: double.parse(jsonData['dailyProfit'].toString()) ?? 0.0,
+      dailyProfit: double.parse(jsonData['dailyProfit'].toString()) ,
       // numberOfCurrencySales: jsonData['numberOfCurrencySales'] ?? 0.0,
       // numberOfClientDeposits: jsonData['numberOfClientDeposits'] ?? 0.0,
       // numberOfPayments: jsonData['numberOfPayments']?? 0.0,

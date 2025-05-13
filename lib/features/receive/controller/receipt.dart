@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:ciyebooks/features/receive/model/receive_model.dart';
-import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
+import 'package:ciyebooks/features/receive/model/receipt.dart';
+import 'package:ciyebooks/features/receive/screens/widgets/receipt_success.dart';
 import 'package:ciyebooks/features/stats/models/stats_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,10 +17,9 @@ import '../../../../utils/exceptions/platform_exceptions.dart';
 import '../../../common/widgets/error_dialog.dart';
 import '../../accounts/model/model.dart';
 import '../../setup/models/setup_model.dart';
-import '../screens/widgets/confirm_client_deposit.dart';
 
-class ReceiveFromClientController extends GetxController {
-  static ReceiveFromClientController get instance => Get.find();
+class ReceiptController extends GetxController {
+  static ReceiptController get instance => Get.find();
 
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
@@ -146,6 +145,7 @@ class ReceiveFromClientController extends GetxController {
   Future createReceipt(BuildContext context) async {
     // isLoading.val
     try {
+      await createDailyReport();
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
@@ -211,7 +211,7 @@ class ReceiveFromClientController extends GetxController {
 
         if (context.mounted) {
           Navigator.pop(context)
-   ;       showClientDepositInfo(
+   ;       showReceiptInfo(
               context: context,
               currency: receivedCurrency.text.trim(),
               transactionCode: 'RCPT-${counters['receiptsCounter'].toString()}',

@@ -1,8 +1,11 @@
+import 'package:ciyebooks/features/pay/controllers/pay_client_controller.dart';
 import 'package:ciyebooks/features/pay/screens/payments/payment_success_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../common/styles/custom_container.dart';
@@ -31,6 +34,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PayClientController());
     return StreamBuilder<QuerySnapshot>(
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -70,6 +74,9 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
+                        TextButton(onPressed: ()=>controller.createDailyReport(), child: Text('data')),
+
                         // First Row (From, Receiver, Amount)
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,

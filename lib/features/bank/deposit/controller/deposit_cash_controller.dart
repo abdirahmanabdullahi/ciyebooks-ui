@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/bank/deposit/screens/widgets/confirm_deposit.dart';
-import 'package:ciyebooks/features/receive/screens/widgets/deposit_success.dart';
 import 'package:ciyebooks/features/stats/models/stats_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,6 +64,8 @@ class DepositCashController extends GetxController {
   onInit() {
     ///Get the totals and balances
     fetchTotals();
+    createDailyReport();
+
 
     ///Add listeners to the controllers
     depositedCurrency.addListener(updateButtonStatus);
@@ -138,6 +139,7 @@ class DepositCashController extends GetxController {
   }
   Future createBankDeposit(BuildContext context) async {
     try {
+      await createDailyReport();
       ///Compare cash and amount to be paid
       // cashBalance.value = double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0;
 

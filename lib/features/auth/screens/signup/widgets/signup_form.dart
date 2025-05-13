@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
-import '../../common/custom_divider.dart';
 
 import '../../login/login.dart';
 import '../../../controllers/signup_controller.dart';

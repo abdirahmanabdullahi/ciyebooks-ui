@@ -1,18 +1,15 @@
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/accounts/screens/widgets/account_viewer.dart';
 import 'package:ciyebooks/features/accounts/screens/widgets/create_account_form.dart';
-import 'package:ciyebooks/navigation_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
+
 import 'package:intl/intl.dart';
 
 import '../../../common/styles/custom_container.dart';
 import '../../../utils/constants/colors.dart';
-import '../../../utils/constants/sizes.dart';
 
 class Accounts extends StatelessWidget {
   const Accounts({super.key});

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../../../../data/repositories/auth/auth_repo.dart';
-import '../../../../../navigation_menu.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';

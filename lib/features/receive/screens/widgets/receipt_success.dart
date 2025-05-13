@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../../utils/constants/colors.dart';
 
-showClientDepositInfo({
+showReceiptInfo({
   required BuildContext context,
   required String currency,
   required String transactionCode,
@@ -48,7 +48,7 @@ showClientDepositInfo({
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha:0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         )
@@ -81,7 +81,7 @@ showClientDepositInfo({
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha:0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         )
@@ -222,7 +222,7 @@ showClientDepositInfo({
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          // Navigator.of(context).pop();
                         },
 
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

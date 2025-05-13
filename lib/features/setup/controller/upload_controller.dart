@@ -9,10 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../accounts/model/model.dart';
-import '../../forex/model/forex_model.dart';
 import '../../forex/model/new_currency_model.dart';
 
 
@@ -48,17 +46,6 @@ class UploadController extends GetxController {
   final currenciesCheckList = ['CODE','AMOUNT', 'TOTAL'];
 
 
-  @override
-  void onInit() {
-    super.onInit();
-    // fetchCurrencies() async {
-    //   FirebaseFirestore.instance.collection('Common').doc('Currencies').snapshots().listen((snapshot) {
-    //     if (snapshot.exists && snapshot.data()!.isNotEmpty) {
-    //       currencyList.value = snapshot.data() as Map<String, dynamic>;
-    //     }
-    //   });
-    // }
-  }
 
   ///Todo: upload totals
   Future<void> uploadTotals(BuildContext context) async {

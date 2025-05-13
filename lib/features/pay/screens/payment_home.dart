@@ -1,15 +1,12 @@
 import 'dart:io';
 
 import 'package:ciyebooks/features/pay/screens/widgets/payment_bottom_sheet.dart';
-import 'package:ciyebooks/navigation_menu.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../../utils/constants/colors.dart';
 
-import '../controllers/pay_expense_controller.dart';
 import 'expense/expenses.dart';
 import 'payments/payments.dart';
 
@@ -31,6 +28,7 @@ class PaymentHome extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: AppBar(
+
         elevation: 0,
         leading: IconButton(
             onPressed: () => Navigator.pop(context),

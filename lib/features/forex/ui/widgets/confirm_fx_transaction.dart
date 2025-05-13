@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
-import 'fx_transaction_success.dart';
 
 showConfirmForexTransaction(BuildContext context) {
   return showDialog(
@@ -39,7 +38,7 @@ showConfirmForexTransaction(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -52,7 +51,7 @@ showConfirmForexTransaction(BuildContext context) {
                       const SizedBox(height: 15),
                       Obx(() => Text("Confirm ${controller.selectedTransaction}?", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: AppColors.secondary))),
                       Gap(6),
-                      Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.sellingAmount.text.trim()))}",
+                      Text("${controller.currencyCode.text.trim()}  ${formatter.format(double.parse(controller.amount.text.trim()))}",
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),
                       Gap(6),
                     ],
@@ -69,7 +68,7 @@ showConfirmForexTransaction(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -127,7 +126,7 @@ showConfirmForexTransaction(BuildContext context) {
                               style: TextStyle(
                                 fontSize: 13,
                               )),
-                          Text(formatter.format(double.parse(controller.sellingAmount.text.trim())),
+                          Text(formatter.format(double.parse(controller.amount.text.trim())),
                               style: TextStyle(
                                 fontSize: 13,
                               )),

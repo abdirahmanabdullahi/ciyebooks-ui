@@ -1,8 +1,6 @@
-import 'package:ciyebooks/features/bank/deposit/controller/deposit_cash_controller.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../utils/constants/colors.dart';
@@ -45,7 +43,7 @@ showBankDepositInfo({
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -75,7 +73,7 @@ showBankDepositInfo({
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -185,7 +183,7 @@ showBankDepositInfo({
                       // ),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        Navigator.of(context).pop();
+                        // Navigator.of(context).pop();
 
                       },
 

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../controllers/pay_client_controller.dart';
 
 showPaymentInfo({
   required BuildContext context,
@@ -26,7 +24,7 @@ showPaymentInfo({
         locale: 'en_us',
         decimalDigits: 2,
       );
-      final controller = Get.put(PayClientController());
+      // final controller = Get.put(PayClientController());
 
       return PopScope(
         canPop: false,
@@ -49,7 +47,7 @@ showPaymentInfo({
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha:0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         )
@@ -81,7 +79,7 @@ showPaymentInfo({
                       borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha:0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         )
@@ -222,7 +220,6 @@ showPaymentInfo({
                         onPressed: () {
                           Future.delayed(Duration(milliseconds: 800), () {
                             if (context.mounted) {
-                              Navigator.of(context).pop();
                               Navigator.of(context).pop();
                             }
                           });

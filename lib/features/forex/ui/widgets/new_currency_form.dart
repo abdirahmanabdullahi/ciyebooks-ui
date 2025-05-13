@@ -1,13 +1,10 @@
 import 'package:ciyebooks/features/forex/controller/forex_controller.dart';
-import 'package:ciyebooks/features/forex/controller/new_currency_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../utils/constants/colors.dart';
-import '../../../../utils/constants/sizes.dart';
 
 showAddNewCurrencyDialog(BuildContext context) {
   final controller = Get.put(ForexController());

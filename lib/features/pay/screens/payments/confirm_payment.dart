@@ -1,4 +1,3 @@
-import 'package:ciyebooks/features/pay/screens/payments/payment_success_screen.dart';
 import 'package:ciyebooks/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +38,7 @@ showConfirmPayment(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
@@ -69,7 +68,7 @@ showConfirmPayment(BuildContext context) {
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha:0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controllers/pay_expense_controller.dart';
@@ -16,10 +15,10 @@ showExpenseForm(BuildContext context) {
   return showDialog(
       context: context,
       builder: (context) {
-        final NumberFormat formatter = NumberFormat.decimalPatternDigits(
-          locale: 'en_us',
-          decimalDigits: 2,
-        );
+        // final NumberFormat formatter = NumberFormat.decimalPatternDigits(
+        //   locale: 'en_us',
+        //   decimalDigits: 2,
+        // );
         Future<void> vibrate() async {
           await SystemChannels.platform.invokeMethod<void>(
             'HapticFeedback.vibrate',
@@ -170,10 +169,8 @@ showExpenseForm(BuildContext context) {
 
                             onSelected: (value) {
                               if (value != null) {
-                                print(value);
                                 controller.paymentType.value = value.trim();
                                 controller.paymentTypeController.text = value.trim();
-                                print(   controller.paymentTypeController.text);
                                 controller.updateNewCategoryButton();
                               }
                             },

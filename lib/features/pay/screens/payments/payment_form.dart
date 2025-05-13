@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
 
+import '../../../accounts/screens/widgets/create_account_form.dart';
 import '../../../common/widgets/calculator.dart';
 import '../../controllers/pay_client_controller.dart';
 
@@ -60,12 +61,21 @@ return showDialog(
                           style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(
-                            Icons.close,
-                            color: AppColors.prettyDark,
-                          ))
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: ()  => showCreateAccountDialog(context),
+                              icon: Icon(
+                                Icons.add,
+                                color: AppColors.prettyDark,
+                              )),IconButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              icon: Icon(
+                                Icons.close,
+                                color: AppColors.prettyDark,
+                              )),
+                        ],
+                      )
                     ],
                   ),
                 ],

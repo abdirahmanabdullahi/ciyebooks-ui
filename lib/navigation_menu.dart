@@ -5,17 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import 'features/calculator/calculator_screen.dart';
 import 'features/dashboard/home.dart';
-import 'features/notes/notes.dart';
-import 'features/todos/todos.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
+    // final controller = Get.put(NavigationController());
     final authController = Get.put(AuthRepo());
     return Scaffold(
         // Add the Drawer here
