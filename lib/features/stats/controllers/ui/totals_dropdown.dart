@@ -162,7 +162,7 @@ showAddTotals(context) {
             Gap(20),
             SizedBox(height: 45,
               width: double.maxFinite,child: FloatingActionButton(backgroundColor: AppColors.prettyBlue,elevation: 0,
-                onPressed: (){controller.updateTotals(context);},child: Text('Add',style: TextStyle(color: AppColors.quinary),),),)
+                onPressed: (){controller.checkInternetConnectionTotals(context);},child: Text('Add',style: TextStyle(color: AppColors.quinary),),),)
           ],
         ),
       );

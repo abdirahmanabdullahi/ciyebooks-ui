@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:ciyebooks/common/widgets/error_dialog.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
@@ -461,8 +462,24 @@ class UploadController extends GetxController {
 //
 //
   ///Todo: upload currency stock
-
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          uploadCurrencyStock(context);
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+      return;
+    }
+  }
   Future<void> uploadCurrencyStock(BuildContext context) async {
+
+
     //     // ///Upload the file
     final List? lines = await uploadRepo.uploadData(context: context, checkList: currenciesCheckList, fileName: 'Currency stock');
 
@@ -473,6 +490,7 @@ class UploadController extends GetxController {
 
       ///Process the content
       int buyFxCounter = 1000;
+      double costOfCurrencies = 0;
 
       ///PROCESSING
       final batch = _db.batch();

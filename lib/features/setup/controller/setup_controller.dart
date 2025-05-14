@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:ciyebooks/features/bank/deposit/model/deposit_model.dart';
 import 'package:ciyebooks/features/forex/model/new_currency_model.dart';
@@ -9,6 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../common/widgets/error_dialog.dart';
+import '../../../data/repositories/auth/auth_repo.dart';
 import '../../bank/withdraw/model/withdraw_model.dart';
 import '../../pay/models/expense_model.dart';
 import '../../pay/models/pay_client_model.dart';
@@ -48,9 +52,7 @@ class SetupController extends GetxController {
   final amount = TextEditingController();
 
   /// Reset database
-  void resetDatabase() async {
-    await FirebaseFirestore.instance.collection('users').doc(_uid).delete().then((_) {});
-  }
+
 
   @override
   void onInit() {
@@ -86,6 +88,25 @@ class SetupController extends GetxController {
     amount.clear();
     currency.clear();
   }
+  checkInternetConnectionTotals(BuildContext context) async {
+    isLoading.value = true;
+    try {
+      isLoading.value = true;
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        isLoading.value = false;
+        if (context.mounted) {
+          updateTotals(context);
+        }
+      }
+    } on SocketException catch (_) {
+      isLoading.value = false;
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+      return;
+    }
+  }
 
   updateTotals(BuildContext context) async {
     final balancesRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances');
@@ -103,7 +124,25 @@ class SetupController extends GetxController {
       }
     });
   }
-
+  checkInternetConnection(BuildContext context) async {
+    isLoading.value = true;
+    try {
+      isLoading.value = true;
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        isLoading.value = false;
+        if (context.mounted) {
+         completeSetup();
+        }
+      }
+    } on SocketException catch (_) {
+      isLoading.value = false;
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+      return;
+    }
+  }
   /// Update setup status
   Future<void> completeSetup() async {
     try {
@@ -112,16 +151,8 @@ class SetupController extends GetxController {
       //Check connectivity
       // final isConnected = await NetworkManager.instance.isConnected();
       // if (!isConnected) {
-      Get.snackbar("Oh snap! No internet connection.", "Please check your internet connection and try again",
-          icon: Icon(
-            Icons.cloud_off,
-            color: Colors.white,
-          ),
-          backgroundColor: Color(0xffFF0033),
-          colorText: Colors.white);
-      // return;
-      // }
-      final setupStatus = {'AccountIsSetup': true};
+
+      final setupStatus = {'accountIsSetup': true};
 
       await setup.updatesetupStatus(setupStatus).then((_) {
         Get.snackbar(
@@ -135,7 +166,7 @@ class SetupController extends GetxController {
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );
-        // AuthRepo.instance.screenRedirect();
+        AuthRepo.instance.screenRedirect();
       });
     } catch (e) {
       Get.snackbar("Oh snap!", e.toString(), backgroundColor: Color(0xffFF0033), colorText: Colors.white);

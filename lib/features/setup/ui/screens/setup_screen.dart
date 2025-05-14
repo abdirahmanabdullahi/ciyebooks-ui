@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/setup/controller/upload_controller.dart';
 
@@ -11,6 +13,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../common/widgets/error_dialog.dart';
 import '../../../accounts/screens/widgets/account_viewer.dart';
 import '../../../stats/controllers/ui/totals_dropdown.dart';
 import '../../controller/setup_controller.dart';
@@ -80,33 +83,38 @@ class SetupScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(14),topRight: Radius.circular(14),),
-                              color:AppColors.quarternary,
-                            ),
-
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(14),
+                                  topRight: Radius.circular(14),
+                                ),
+                                color: AppColors.prettyBlue,
+                              ),
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Totals", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                                  Text("Totals", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.quinary)),
                                   TextButton(
                                       onPressed: () => showAddTotals(context),
                                       child: Row(
                                         children: [
                                           Icon(
                                             Icons.add,
-                                            color: CupertinoColors.systemBlue,
+                                            color: AppColors.quinary,
                                           ),
                                           Text(
                                             'Update',
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color:AppColors.quinary),
                                           ),
                                         ],
                                       ))
                                 ],
                               ),
                             ),
-                            Gap(10),Padding(
+                            Gap(10),
+                            Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Text("Cash balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
                             ),
@@ -147,102 +155,34 @@ class SetupScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
                                   child: Obx(() => Column(
-                                    children: controller.totals.value.bankBalances.entries.map((entry) {
-                                      return Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 6.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                                                Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                                              ],
-                                            ),
-                                          ),
-                                          Divider(
-                                            height: 0,
-                                            thickness: .11,
-                                            color: AppColors.prettyDark,
-                                          )
-                                        ],
-                                      );
-                                    }).toList(),
-                                  )),
+                                        children: controller.totals.value.bankBalances.entries.map((entry) {
+                                          return Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                                                    Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                                                  ],
+                                                ),
+                                              ),
+                                              Divider(
+                                                height: 0,
+                                                thickness: .11,
+                                                color: AppColors.prettyDark,
+                                              )
+                                            ],
+                                          );
+                                        }).toList(),
+                                      )),
                                 ),
                               ],
                             ),
                           ],
                         ),
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.all(6),
-                      //   decoration: BoxDecoration(
-                      //     color: AppColors.quinary,
-                      //     boxShadow: [
-                      //       BoxShadow(
-                      //         color: Colors.black.withAlpha(30),
-                      //         blurRadius: 4,
-                      //         offset: Offset(-3, 3),
-                      //       )
-                      //     ],
-                      //     borderRadius: BorderRadius.circular(14),
-                      //   ),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       Padding(
-                      //         padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //           children: [
-                      //             Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                      //             TextButton(
-                      //                 onPressed: () => uploadController.uploadRepo.uploadData(context: context, checkList: uploadController.totalsFieldChecklist, fileName: 'totals'),
-                      //                 child: Row(
-                      //                   children: [
-                      //                     Icon(
-                      //                       Icons.add,
-                      //                       color: CupertinoColors.systemBlue,
-                      //                     ),
-                      //                     Text(
-                      //                       'Add',
-                      //                       style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                      //                     ),
-                      //                   ],
-                      //                 ))
-                      //           ],
-                      //         ),
-                      //       ),
-                      //       Padding(
-                      //         padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                      //         child: Obx(() => Column(
-                      //               children: controller.totals.value.bankBalances.entries.map((entry) {
-                      //                 return Column(
-                      //                   children: [
-                      //                     Padding(
-                      //                       padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      //                       child: Row(
-                      //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //                         children: [
-                      //                           Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
-                      //                           Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
-                      //                         ],
-                      //                       ),
-                      //                     ),
-                      //                     Divider(
-                      //                       height: 0,
-                      //                       thickness: .11,
-                      //                       color: AppColors.prettyDark,
-                      //                     )
-                      //                   ],
-                      //                 );
-                      //               }).toList(),
-                      //             )),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
 
                       Obx(() {
                         return Container(
@@ -261,30 +201,38 @@ class SetupScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Currency stock", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                                    TextButton(
-                                        onPressed: () => uploadController.uploadCurrencyStock(context),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: CupertinoColors.systemBlue,
-                                            ),
-                                            Text(
-                                              'Add',
-                                              style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                                            ),
-                                          ],
-                                        ))
-                                  ],
+                              Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(14),
+                                  topRight: Radius.circular(14),
                                 ),
+                                color: AppColors.prettyBlue,
                               ),
-                              Gap(8),
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Currency stock", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.quinary)),
+                                  TextButton(
+                                                              onPressed: () => uploadController.checkInternetConnection(context),
+                                      child: Row(
+                                        children: [
+                                          Icon(size: 25,
+                                            Icons.upload_file_outlined,
+                                            color: AppColors.quinary,
+                                          ),Gap(3),
+                                          Text(
+                                            'Upload',
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary),
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            ),
+                              Gap(10),
+
                               controller.totals.value.currenciesAtCost == 0
                                   ? SizedBox(
                                       width: double.maxFinite,
@@ -378,29 +326,52 @@ class SetupScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(14),
+                                    topRight: Radius.circular(14),
+                                  ),
+                                  color: AppColors.prettyBlue,
+                                ),
+                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("Accounts", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                                    Text("Accounts", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.quinary)),
                                     TextButton(
-                                        onPressed: () => uploadController.uploadAccounts(context),
+                                        onPressed: ()async {
+
+                                          try {
+                                            final result = await InternetAddress.lookup('example.com');
+                                            if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                                              if (context.mounted) {
+                                                uploadController.uploadAccounts(context);
+                                              }
+                                            }
+                                          } on SocketException catch (_) {
+                                            if (context.mounted) {
+                                              showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+                                            }
+                                            return;
+                                          }
+                                          },
                                         child: Row(
                                           children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: CupertinoColors.systemBlue,
-                                            ),
+                                            Icon(size: 25,
+                                              Icons.upload_file_outlined,
+                                              color: AppColors.quinary,
+                                            ),Gap(3),
                                             Text(
-                                              'Add',
-                                              style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
+                                              'Upload',
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary),
                                             ),
                                           ],
                                         ))
                                   ],
                                 ),
                               ),
+                              Gap(10),
                               StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').snapshots(),
                                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -464,7 +435,7 @@ class SetupScreen extends StatelessWidget {
                                                 text: TextSpan(
                                                   children: [
                                                     TextSpan(
-                                                      text: data['AccountName'],
+                                                      text: data['accountName'],
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.w500,
                                                         fontSize: 13,
@@ -494,7 +465,7 @@ class SetupScreen extends StatelessWidget {
                                                           ),
                                                         ),
                                                         TextSpan(
-                                                          text: data['AccountNo'],
+                                                          text: data['accountNo'],
                                                           style: TextStyle(
                                                             fontWeight: FontWeight.w300,
                                                             fontSize: 10,
@@ -557,29 +528,10 @@ class SetupScreen extends StatelessWidget {
                     child: FloatingActionButton(
                       heroTag: 'Complete',
                       backgroundColor: AppColors.prettyBlue,
-                      onPressed: () => showConfirmSetupDialog(context, controller),
+                      onPressed: () => showCompleteSetupDialog(context:context, errorText: 'Please make sure all your data is correct and accurate.', errorTitle: 'Is your data accurate?', ),
                       child: Text(
                         'Complete setup',
                         style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600, fontSize: 12),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 45,
-                    width: double.infinity,
-                    child: FloatingActionButton(
-                      heroTag: 'Reset database',
-                      backgroundColor: AppColors.prettyGrey,
-                      onPressed: () {
-                        showResetDialog(context);
-                        // controller.resetDatabase();
-                      },
-                      child: Text(
-                        'Reset setup',
-                        style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                       ),
                     ),
                   ),
@@ -612,6 +564,4 @@ class SetupScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }
