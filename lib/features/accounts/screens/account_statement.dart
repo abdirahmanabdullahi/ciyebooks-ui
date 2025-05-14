@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +31,7 @@ class AccountStatementStreamPage extends StatelessWidget {
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser?.uid)
             .collection('transactions')
-            .where('accountNo', isEqualTo: '1000')
+            .where('accountNo', isGreaterThanOrEqualTo: '1000')
             // .orderBy('dateCreated', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -44,65 +45,81 @@ class AccountStatementStreamPage extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: const Text("Loading"));
           }
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Account Holder: John Doe', style: TextStyle(fontSize: 14)),
-                Text('Period: May 1 – May 31, 2025', style: TextStyle(fontSize: 14)),
-                SizedBox(height: 24),
-                Row(
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Account Holder: John Doe', style: TextStyle(fontSize: 14)),
+              Text('Period: May 1 – May 31, 2025', style: TextStyle(fontSize: 14)),
+              SizedBox(height: 24),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: AppColors.quarternary,
+                margin: EdgeInsets.only(bottom: 10),
+                child: Row(
                   children: [
-                    Expanded(child: Text('Date', style: TextStyle(fontWeight: FontWeight.bold))),
-                    Expanded(child: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
-                    // Expanded(flex: 2, child: Text('Type', style: TextStyle(fontWeight: FontWeight.bold))),
-                    Expanded(child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.right)),
+                    Expanded(flex:2,
+                        child: Text('Date', style: TextStyle(fontWeight: FontWeight.bold))),
+                    Expanded(flex: 3, child: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
+                    // Expanded(flex: 1, child: Text('Type', style: TextStyle(fontWeight: FontWeight.bold))),
+                    // Expanded(flex: 2, child: Text('Currency', style: TextStyle(fontWeight: FontWeight.bold))),
+                    Expanded(flex: 2, child: Text('Amount', style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.right)),
                   ],
                 ),
-                SizedBox(height: 8),
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: snapshot.data!.docs.length,
-                    separatorBuilder: (_, __) => Divider(height: 16),
-                    itemBuilder: (_, index) {
-                      final data = snapshot.data!.docs;
-                      final transaction = data[index];
-                      // final isCredit = txn['type'] == 'Credit';
+              ),
+              SizedBox(height: 8),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: snapshot.data!.docs.length,
+                  separatorBuilder: (_, __) => Divider(height: 16,thickness: .5,),
+                  itemBuilder: (_, index) {
+                    final data = snapshot.data!.docs;
+                    final transaction = data[index];
+                    // final isCredit = txn['type'] == 'Credit';
 
-                      return Row(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6.0,vertical: 2),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Text(DateFormat('MMM dd').format(transaction['dateCreated'].toDate())),
+                          Expanded(flex:2,
+                            child: Text(DateFormat('MMM dd yyyy').format(transaction['dateCreated'].toDate())),
                           ),
                           Expanded(
+                            flex: 4,
                             child: Text(transaction['description']),
                           ),
                           // Expanded(
                           //   flex: 2,
                           //   child: Text(
-                          //     transaction['transactionType'],
+                          //     transaction['transactionType']=='payment',
+                          //     // style: TextStyle(color: isCredit ? Colors.green : Colors.red),
+                          //   ),
+                          // ), Expanded(
+                          //   flex: 2,
+                          //   child: Text(
+                          //     transaction['currency'],
                           //     // style: TextStyle(color: isCredit ? Colors.green : Colors.red),
                           //   ),
                           // ),
-                          Expanded(flex: 0,
+                          Expanded(
+                            flex: 0,
                             child: RichText(
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: transaction['transactionType']=='receipt'?'-':'+',
+                                    text: transaction['transactionType'] == 'receipt' ? '+' : '-',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: transaction['transactionType']=='receipt'?AppColors.prettyDark:AppColors.red,
+                                      color: transaction['transactionType'] == 'receipt' ? CupertinoColors.systemBlue : AppColors.red,
                                     ),
-                                  ),TextSpan(
+                                  ),
+                                  TextSpan(
                                     text: '${transaction['currency']}: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: transaction['transactionType']=='receipt'?AppColors.prettyDark:AppColors.red,
+                                      color: transaction['transactionType'] == 'receipt' ? CupertinoColors.systemBlue : AppColors.red,
                                     ),
                                   ),
                                   TextSpan(
@@ -116,7 +133,7 @@ class AccountStatementStreamPage extends StatelessWidget {
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 12,
-                                      color: transaction['transactionType']=='receipt'?AppColors.prettyDark:AppColors.red,
+                                      color: transaction['transactionType'] == 'receipt' ? CupertinoColors.systemBlue : AppColors.red,
                                       // Black Value
                                     ),
                                   ),
@@ -129,12 +146,12 @@ class AccountStatementStreamPage extends StatelessWidget {
                             // textAlign: TextAlign.right,
                           ),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),
