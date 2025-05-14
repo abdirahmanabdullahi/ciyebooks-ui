@@ -39,8 +39,8 @@ class AuthRepo extends GetxController {
       if (user.emailVerified) {
 
         /// Check if setup is complete
-        final accountIssetup = await fetchsetupStatus();
-        accountIssetup?Get.offAll(() => NavigationMenu()):Get.offAll(() => setupScreen());
+        final accountSetup = await fetchSetupStatus();
+        accountSetup?Get.offAll(() => NavigationMenu()):Get.offAll(() => SetupScreen());
 
 
       } else {
@@ -52,7 +52,7 @@ class AuthRepo extends GetxController {
   }
 
   /// Check if account is setup
-  Future<bool> fetchsetupStatus() async {
+  Future<bool>  fetchSetupStatus() async {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final data = await FirebaseFirestore.instance.collection('users').doc(uid).get();

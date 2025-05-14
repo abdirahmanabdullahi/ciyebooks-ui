@@ -47,7 +47,7 @@ class StatsScreen extends StatelessWidget {
               // This shows day of week alongside day of month
               showDayOfWeek: true,
               onDateTimeChanged: (DateTime value) {
-                controller.selectedDate.value = DateFormat("d MMM yyyy").format(value);
+                controller.selectedDate.value = DateFormat("d MMM yyyy ").format(value);
               },
               // This is called when the user changes the date.
             ),
@@ -76,7 +76,7 @@ class StatsScreen extends StatelessWidget {
         },
       ).then((date) {
         if (date != null) {
-          controller.selectedDate.value = DateFormat("d MMM yyyy").format(date);
+          controller.selectedDate.value = DateFormat("d MMM yyyy ").format(date);
         }
       });
     }

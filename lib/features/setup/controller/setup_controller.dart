@@ -28,7 +28,7 @@ class SetupController extends GetxController {
   ///Transaction counters
   final counters = {}.obs;
 
-  final _uid = FirebaseAuth.instance.currentUser!.uid;
+  final _uid = FirebaseAuth.instance.currentUser?.uid;
 
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
 

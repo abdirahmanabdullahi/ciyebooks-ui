@@ -14,8 +14,8 @@ import 'package:intl/intl.dart';
 import '../accounts/screens/widgets/account_viewer.dart';
 import 'controller/setup_controller.dart';
 
-class setupScreen extends StatelessWidget {
-  const setupScreen({super.key});
+class SetupScreen extends StatelessWidget {
+  const SetupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../utils/constants/colors.dart';
 import '../account_statement.dart';
@@ -11,7 +14,6 @@ showAccountDetails({required BuildContext context, required String accountName, 
   return showDialog(
     context: context,
     builder: (context) {
-
       return PopScope(
         canPop: false,
         child: AlertDialog(
@@ -21,12 +23,14 @@ showAccountDetails({required BuildContext context, required String accountName, 
             8,
           ),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(34)),
-          content: SingleChildScrollView(physics: ClampingScrollPhysics(),
+          content: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Gap(6),
-                Container(margin: EdgeInsets.all(8),
+                Container(
+                    margin: EdgeInsets.all(8),
                     width: double.maxFinite,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -63,7 +67,8 @@ showAccountDetails({required BuildContext context, required String accountName, 
                 const SizedBox(height: 16),
 
                 // Payment Details box
-                Container(margin: EdgeInsets.all(8),
+                Container(
+                  margin: EdgeInsets.all(8),
                   width: double.infinity,
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -151,7 +156,8 @@ showAccountDetails({required BuildContext context, required String accountName, 
                   ),
                 ),
                 Gap(10),
-                Container(margin: EdgeInsets.all(8),
+                Container(
+                  margin: EdgeInsets.all(8),
                   width: double.infinity,
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -179,15 +185,17 @@ showAccountDetails({required BuildContext context, required String accountName, 
                       ...balances,
                     ],
                   ),
-                ),                Container(margin: EdgeInsets.fromLTRB(8,8,8,16),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(8, 8, 8, 16),
                   child: SizedBox(
                     // height: 45,
                     width: double.maxFinite,
                     child: FloatingActionButton(
-                      // elevation: 0,
-                      // style: ElevatedButton.styleFrom(
-                      //   padding: EdgeInsets.symmetric(horizontal: 10),
-                      //   disabledBackgroundColor: const Color(0xff35389fff),
+                        // elevation: 0,
+                        // style: ElevatedButton.styleFrom(
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   disabledBackgroundColor: const Color(0xff35389fff),
                         backgroundColor: AppColors.prettyBlue,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         // ),
@@ -212,15 +220,16 @@ showAccountDetails({required BuildContext context, required String accountName, 
                     // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     // ),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                       Navigator.push(
                         context,
-                        CupertinoPageRoute(builder: (context) =>  AccountStatementStreamPage()),
-                      );                    },
+                        CupertinoPageRoute(builder: (context) =>  AccountStatement(accountNo: accountNumber, accountName: accountName,)),
+                      );
+                    },
 
                     // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                     child: Text(
-                      'View activity',
+                      'View statement',
                       style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
                     )),
 
@@ -233,3 +242,4 @@ showAccountDetails({required BuildContext context, required String accountName, 
     },
   );
 }
+

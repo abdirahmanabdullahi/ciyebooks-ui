@@ -9,7 +9,7 @@ import '../models/stats_model.dart';
 class StatsController extends GetxController {
   static StatsController get instance => Get.find();
   final String today = DateFormat("d MMM yyyy").format(DateTime.now());
-  final  selectedDate = DateFormat("d MMM yyyy").format(DateTime.now()).obs;
+  final  selectedDate = DateFormat("d MMM yyyy ").format(DateTime.now()).obs;
 
   Rx<DailyReportModel> todayReport = DailyReportModel.empty().obs;
   RxList<AccountModel> accounts = <AccountModel>[].obs;
