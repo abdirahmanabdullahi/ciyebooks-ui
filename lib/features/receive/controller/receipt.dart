@@ -81,7 +81,7 @@ class ReceiptController extends GetxController {
     fetchTotals();
 
     /// Stream for the accounts
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
@@ -101,7 +101,7 @@ class ReceiptController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
@@ -114,15 +114,18 @@ class ReceiptController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
-    isLoading.value =true;
+    isLoading.value = true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+
         if (context.mounted) {
           createReceipt(context);
         }
       }
     } on SocketException catch (_) {
+      isLoading.value = false;
+
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -133,7 +136,7 @@ class ReceiptController extends GetxController {
   /// Check and create daily report if not Created
 
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('dailyReports').doc(today);
     final snapshot = await reportRef.get();
     if (snapshot.exists) {
       dailyReportCreated.value = true;
@@ -146,17 +149,17 @@ class ReceiptController extends GetxController {
     // isLoading.val
     try {
       await createDailyReport();
+
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
 
       ///Doc references
-      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
-      final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('RCPT-${counters['receiptsCounter']}');
-      final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc('PA-${receivingAccountNo.text.trim()}');
-
+      final dailyReportRef = db.collection('users').doc(_uid).collection('dailyReports').doc(today);
+      final paymentRef = db.collection('users').doc(_uid).collection('transactions').doc('RCPT-${counters['receiptsCounter']}');
+      final counterRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final cashRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final accountRef = db.collection('users').doc(_uid).collection('accounts').doc(receivingAccountNo.text.trim());
       ///Get data from the controllers
       final newPayment = ReceiveModel(
           transactionId: 'RCPT-${counters['receiptsCounter']}',
@@ -165,7 +168,7 @@ class ReceiptController extends GetxController {
           depositorName: depositorName.text.trim(),
           currency: receivedCurrency.text.trim(),
           amount: double.tryParse(amount.text.trim()) ?? 0.0,
-          receivingAccountNo: receivingAccountNo.text.trim(),
+          accountNo: receivingAccountNo.text.trim(),
           dateCreated: DateTime.now(),
           description: description.text.trim(),
           receivingAccountName: receivingAccountName.text.trim());
@@ -176,7 +179,7 @@ class ReceiptController extends GetxController {
       }
 
       ///Update account
-      batch.update(accountRef, {'Currencies.${receivedCurrency.text.trim()}': FieldValue.increment(num.parse(amount.text.trim()))});
+      batch.update(accountRef, {'currencies.${receivedCurrency.text.trim()}': FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///Create payment transaction
       batch.set(paymentRef, newPayment.toJson());
@@ -196,7 +199,7 @@ class ReceiptController extends GetxController {
       batch.update(counterRef, {"transactionCounters.receiptsCounter": FieldValue.increment(1)});
 
       await batch.commit().then((_) {
-        isLoading.value=false;
+        isLoading.value = false;
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -210,16 +213,15 @@ class ReceiptController extends GetxController {
         );
 
         if (context.mounted) {
-          Navigator.pop(context)
-   ;       showReceiptInfo(
+          Navigator.pop(context);
+          Navigator.pop(context);
+          showReceiptInfo(
               context: context,
               currency: receivedCurrency.text.trim(),
               transactionCode: 'RCPT-${counters['receiptsCounter'].toString()}',
               amount: amount.text.trim(),
-              depositor: Obx(
-                () => Text(
-                  receivedFromOwner.value ? receivingAccountName.text.trim() : depositorName.text.trim(),
-                ),
+              depositor:Text(
+                depositorName.text.trim(),
               ),
               depositType: receiptType.text.trim(),
               receivingAccountName: receivingAccountName.text.trim(),
@@ -230,15 +232,20 @@ class ReceiptController extends GetxController {
         clearControllers();
       });
     } on FirebaseAuthException catch (e) {
+      isLoading.value = false;
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
+      print(e.toString());
+      isLoading.value = false;
       throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
+      isLoading.value = false;
       throw const TFormatException();
     } on TPlatformException catch (e) {
+      isLoading.value = false;
       throw TPlatformException(e.code).message;
     } catch (e) {
-      isLoading.value=false;
+      isLoading.value = false;
       throw 'Something went wrong. Please try again';
     }
   }

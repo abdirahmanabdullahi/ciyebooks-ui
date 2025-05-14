@@ -59,7 +59,7 @@ showReceiptInfo({
                         Gap(6),
                         Icon(Icons.task_alt, color: Colors.green[700], size: 68),
                         const SizedBox(height: 15),
-                        Text("Client deposit success", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: AppColors.secondary)),
+                        Text("Receipt", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: AppColors.secondary)),
                         Gap(6),
                         Text("$currency  ${formatter.format(double.parse(amount))}",
                             style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25, color: AppColors.secondary)),

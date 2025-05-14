@@ -20,7 +20,7 @@ class SetupController extends GetxController {
   // GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   // GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final setupRepo = Get.put(SetupRepo());
+  final setup= Get.put(setupRepo());
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
@@ -43,7 +43,7 @@ class SetupController extends GetxController {
 
   /// Reset database
   void resetDatabase()async {
-     await FirebaseFirestore.instance.collection('Users').doc(_uid).delete().then((_){
+     await FirebaseFirestore.instance.collection('users').doc(_uid).delete().then((_){
      });
   }
 
@@ -51,7 +51,7 @@ class SetupController extends GetxController {
   void onInit() {
     /// Stream for the totals
 
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         counters.value = totals.value.transactionCounters;
@@ -59,14 +59,14 @@ class SetupController extends GetxController {
     });
 
     /// Stream for the accounts
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
     });
 
     /// Stream for currency stock
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('currencyStock').snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('currencyStock').snapshots().listen((querySnapshot) {
       currencies.clear();
       currencies.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());
@@ -96,7 +96,7 @@ class SetupController extends GetxController {
       // }
       final setupStatus = {'AccountIsSetup': true};
 
-      await setupRepo.updateSetupStatus(setupStatus).then((_) {
+      await setup.updatesetupStatus(setupStatus).then((_) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -104,7 +104,7 @@ class SetupController extends GetxController {
           ),
           shouldIconPulse: true,
           "Success!",
-          'Setup has been completed',
+          'setup has been completed',
           backgroundColor: Colors.green,
           colorText: Colors.white,
         );

@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../../utils/constants/colors.dart';
+import '../account_statement.dart';
 
 showAccountDetails({required BuildContext context, required String accountName, required String accountNumber, required String email, required String phoneNumber, required List<Widget> balances}) {
   return showDialog(
@@ -166,7 +170,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                     children: [
                       Gap(10),
                       Text(
-                        "Balances",
+                        "balances",
                         style: TextStyle(letterSpacing: 2, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.secondary
                             // fontWeight: FontWeight.bold,
                             ),
@@ -175,23 +179,22 @@ showAccountDetails({required BuildContext context, required String accountName, 
                       ...balances,
                     ],
                   ),
-                ),
-                Container(margin: EdgeInsets.symmetric(horizontal: 8,vertical: 16),
+                ),                Container(margin: EdgeInsets.fromLTRB(8,8,8,16),
                   child: SizedBox(
                     // height: 45,
                     width: double.maxFinite,
                     child: FloatingActionButton(
-                        // elevation: 0,
-                        // style: ElevatedButton.styleFrom(
-                        //   padding: EdgeInsets.symmetric(horizontal: 10),
-                        //   disabledBackgroundColor: const Color(0xff35389fff),
+                      // elevation: 0,
+                      // style: ElevatedButton.styleFrom(
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   disabledBackgroundColor: const Color(0xff35389fff),
                         backgroundColor: AppColors.prettyBlue,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         // ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                  
+
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                         child: Text(
                           'Done',
@@ -200,7 +203,28 @@ showAccountDetails({required BuildContext context, required String accountName, 
                   ),
                 ),
 
-                // Gap(6)
+                TextButton(
+                    // elevation: 0,
+                    // style: ElevatedButton.styleFrom(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   disabledBackgroundColor: const Color(0xff35389fff),
+                    // backgroundColor: AppColors.prettyBlue,
+                    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    // ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) =>  AccountStatementStreamPage()),
+                      );                    },
+
+                    // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                    child: Text(
+                      'View activity',
+                      style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
+                    )),
+
+                Gap(10)
               ],
             ),
           ),

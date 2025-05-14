@@ -32,7 +32,7 @@ class PayClientController extends GetxController {
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
-  final bankBalances = {}.obs;
+  final bankbalances = {}.obs;
   final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -84,7 +84,7 @@ class PayClientController extends GetxController {
 
     /// Stream for the accounts
 
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
@@ -107,11 +107,11 @@ class PayClientController extends GetxController {
   }
 
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
-        bankBalances.value = totals.value.bankBalances;
+        bankbalances.value = totals.value.bankBalances;
 
         if (cashBalances.containsKey('KES')) {
         } else {}
@@ -123,44 +123,43 @@ class PayClientController extends GetxController {
 
   /// Check and create daily report if not Created
   createDailyReport() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(_uid)
-        .collection('DailyReports')
-        .doc('13 May 2025')
-        .set(DailyReportModel(
-        received: {'USD': 1243454, 'KES': 456252},
-        payments: {'USD': 2354, 'KES':2345},
-        deposits: {'USD': 876, 'KES': 124},
-        withdrawals: {'USD': 345, 'KES': 324},
-        expenses: {'USD': 3452, 'KES': 345},
-        dailyProfit: 451)
-        .toJson())
-        .then((_) {
-      print('Done');
-    });
-    // final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    // await FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(_uid)
+    //     .collection('dailyReports')
+    //     .doc('13 May 2025')
+    //     .set(DailyReportModel(
+    //     received: {'USD': 1243454, 'KES': 456252},
+    //     payments: {'USD': 2354, 'KES':2345},
+    //     deposits: {'USD': 876, 'KES': 124},
+    //     withdrawals: {'USD': 345, 'KES': 324},
+    //     expenses: {'USD': 3452, 'KES': 345},
+    //     dailyProfit: 451)
+    //     .toJson())
+    //     .then((_) {
+    // });
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('dailyReports').doc(today);
     // final snapshot = await reportRef.get();
     // if (snapshot.exists) {
     //   dailyReportCreated.value = true;
     // }
-    // final snapshot = await reportRef.get();
-    // if (snapshot.exists) {
-    //   dailyReportCreated.value = true;
-    // }
+    final snapshot = await reportRef.get();
+    if (snapshot.exists) {
+      dailyReportCreated.value = true;
+    }
   }
 
-  checkBalances(BuildContext context) {
+  checkbalances(BuildContext context) {
     /// Check if currency is at bank and amount is enough to pay amount requested
     if (paymentType.text.trim() == 'Bank transfer') {
       final currencyKey = paidCurrency.text.trim();
 
-      if (!bankBalances.containsKey(currencyKey)) {
+      if (!bankbalances.containsKey(currencyKey)) {
         showErrorDialog(context: context, errorTitle: 'Currency not available', errorText: 'You do not have a $currencyKey bank account registered.');
         return;
       }
 
-      final availableAmount = double.parse('${bankBalances[currencyKey]}');
+      final availableAmount = double.parse('${bankbalances[currencyKey]}');
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -198,7 +197,7 @@ class PayClientController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
-    isLoading.value =true;
+    isLoading.value = true;
     try {
       isLoading.value = true;
       final result = await InternetAddress.lookup('example.com');
@@ -221,17 +220,16 @@ class PayClientController extends GetxController {
     await createDailyReport();
 
     try {
-
       /// Initialize batch
       final db = FirebaseFirestore.instance;
       final batch = db.batch();
 
       ///Doc references
-      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
-      final paymentRef = db.collection('Users').doc(_uid).collection('transactions').doc('PAY-${counters['paymentsCounter']}');
-      final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final accountRef = db.collection('Users').doc(_uid).collection('accounts').doc('PA-${accountNo.text.trim()}');
+      final dailyReportRef = db.collection('users').doc(_uid).collection('dailyReports').doc(today);
+      final paymentRef = db.collection('users').doc(_uid).collection('transactions').doc('PAY-${counters['paymentsCounter']}');
+      final counterRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final cashRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final accountRef = db.collection('users').doc(_uid).collection('accounts').doc(accountNo.text.trim());
 
       ///Get data from the controllers
       final newPayment = PayClientModel(
@@ -241,7 +239,7 @@ class PayClientController extends GetxController {
           paymentType: paymentType.text.trim(),
           accountFrom: from.text.trim(),
           currency: paidCurrency.text.trim(),
-          amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
+          amount: double.tryParse(amount.text.trim()) ?? 0.0,
           receiver: paidToOwner.value ? from.text.trim() : receiver.text.trim(),
           dateCreated: DateTime.now(),
           description: description.text.trim());
@@ -252,7 +250,7 @@ class PayClientController extends GetxController {
       }
 
       ///Update account
-      batch.update(accountRef, {'Currencies.${paidCurrency.text.trim()}': FieldValue.increment(-num.parse(amount.text.trim()))});
+      batch.update(accountRef, {'currencies.${paidCurrency.text.trim()}': FieldValue.increment(-num.parse(amount.text.trim()))});
 
       ///Create payment transaction
       batch.set(paymentRef, newPayment.toJson());
@@ -270,7 +268,7 @@ class PayClientController extends GetxController {
       ///Update payment counter
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
 
-      await batch.commit().then((_) {
+      await batch.commit().then((_)  {
         isLoading.value = false;
 
         Get.snackbar(
@@ -286,36 +284,39 @@ class PayClientController extends GetxController {
         );
         if (context.mounted) {
           Navigator.of(context).pop();
-          showPaymentInfo(
+          Navigator.of(context).pop();
+           showPaymentInfo(
               context: context,
               transactionCode: 'PAY-${counters['paymentsCounter'].toString()}',
               payee: from.text.trim(),
               paidCurrency: paidCurrency.text.trim(),
               payeeAccountNo: accountNo.text.trim(),
-              receiver: Obx(() => Text(
-                    paidToOwner.value ? from.text.trim() : receiver.text.trim(),
-                    style: TextStyle(
-                      fontSize: 13,
-                    ),
-                  )),
+              receiver: Text(
+                receiver.text.trim(),
+                style: TextStyle(
+                  fontSize: 13,
+                ),
+              ),
               paymentType: paymentType.text.trim(),
               description: description.text.trim(),
               date: DateTime.now(),
               totalPayment: amount.text.trim());
         }
-        clearController();
       });
     } on FirebaseAuthException catch (e) {
+      isLoading.value = false;
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
+      isLoading.value = false;
       throw TFirebaseException(e.code).message;
     } on FormatException {
+      isLoading.value = false;
       throw const TFormatException();
     } on TPlatformException catch (e) {
+      isLoading.value = false;
       throw TPlatformException(e.code).message;
     } catch (e) {
       isLoading.value = false;
-
       throw 'Something went wrong. Please try again';
     }
   }

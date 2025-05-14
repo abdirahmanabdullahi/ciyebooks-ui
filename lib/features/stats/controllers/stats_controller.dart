@@ -18,7 +18,7 @@ class StatsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    FirebaseFirestore.instance.collection('Users').doc(uid).collection('accounts').where('overDrawn',isGreaterThanOrEqualTo: true).snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(uid).collection('accounts').where('overDrawn',isGreaterThanOrEqualTo: true).snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
@@ -28,7 +28,7 @@ class StatsController extends GetxController {
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(uid).collection('DailyReports').doc(today);
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(uid).collection('dailyReports').doc(today);
     final snapshot = await reportRef.get();
 
     if (!snapshot.exists) {

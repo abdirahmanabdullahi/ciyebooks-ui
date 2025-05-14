@@ -51,7 +51,7 @@ showAddNewCurrencyDialog(BuildContext context) {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              DropdownMenu(
+              DropdownMenu(width: double.maxFinite,
                 controller: controller.currencyCode,
                 trailingIcon: Icon(
                   Icons.search,
@@ -78,6 +78,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                 label: Text('Select currency'),
                 selectedTrailingIcon: Icon(Icons.search),
                 onSelected: (value) {
+                print(value);
                   if (value != null) {
                     controller.newCurrencyCode.text = value;
                     controller.updateNewCurrencyButton();
@@ -85,10 +86,20 @@ showAddNewCurrencyDialog(BuildContext context) {
                 },
                 dropdownMenuEntries: controller.currencyList.entries.map((currency) {
                   return DropdownMenuEntry(
-                    value: currency.key,
-                    label: currency.value.toString().replaceAll(RegExp(r'[{}()]'), ''),
-                    labelWidget: Text(
-                      currency.value.toString().replaceAll(RegExp(r'[{}()]'), ''),
+                    value: currency.key.toString(),
+                    label: currency.key,
+                    labelWidget: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            currency.value['code'],
+                          ),
+                        ),Expanded(flex:4,
+                          child: Text(
+                            currency.value['name'].toUpperCase(),
+                          ),
+                        ),
+                      ],
                     ),
                     style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(AppColors.quinary),
@@ -100,20 +111,7 @@ showAddNewCurrencyDialog(BuildContext context) {
                         ))),
                   );
                 }).toList(),
-                // controller.currencyList.entries.map((currency) {
-                //   return DropdownMenuEntry(
-                //       labelWidget: Text('${currency.value['name']}, CODE: ${currency.value['code']}, SYMBOL: ${currency.value['symbol']}'),
-                //       style: ButtonStyle(
-                //           backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                //           side: WidgetStateProperty.all(
-                //             BorderSide(width: 2, color: AppColors.quarternary),
-                //           ),
-                //           shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.all(Radius.circular(0)),
-                //           ))),
-                //       value: [currency.value['code'], currency.value['name'], currency.value['symbol']],
-                //       label: '${currency.value['name']} CODE: ${currency.value['code']} SYMBOL: ${currency.value['symbol']}');
-                // }).toList()
+
               ),
               Gap(15),
               SizedBox(

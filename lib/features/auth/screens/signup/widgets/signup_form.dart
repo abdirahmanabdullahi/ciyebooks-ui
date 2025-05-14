@@ -117,7 +117,7 @@ class SignupForm extends StatelessWidget {
                     : AppColors.prettyDark,
                 onPressed: controller.isLoading.value
                     ? null // Disable button when loading
-                    : () => controller.signup(),
+                    : () => controller.checkInternetConnection(context),
                 child: controller.isLoading.value == true
                     ? SizedBox(
                         height: 25,

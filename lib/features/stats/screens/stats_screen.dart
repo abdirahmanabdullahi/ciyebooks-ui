@@ -107,7 +107,7 @@ class StatsScreen extends StatelessWidget {
         ),
         body: Obx(
           () => StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('DailyReports').doc(controller.selectedDate.value).snapshots(),
+            stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('dailyReports').doc(controller.selectedDate.value).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(child: Text('Something went wrong'));

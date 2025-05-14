@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/auth/models/user_model.dart';
 import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
@@ -6,6 +8,7 @@ import 'package:ciyebooks/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../common/widgets/error_dialog.dart';
 import '../../../data/repositories/user/user_repo.dart';
 import '../../setup/repo/setup_repo.dart';
 import '../screens/signup/controllers/verify_email_controller.dart';
@@ -27,16 +30,29 @@ class SignupController extends GetxController {
   final password = TextEditingController();
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
-  final setupRepo = Get.put(SetupRepo());
+  final setup= Get.put(setupRepo());
   final userRepo = Get.put(UserRepo());
   final controller = Get.put(VerifyEmailController());
 
   // SIGNUP
-  // void recreatedBalances() async {
-  //   await setupRepo.saveSetupData(BalancesModel.empty());
+  // void recreatedbalances() async {
+  //   await setupRepo.savesetupData(balancesModel.empty());
   // }
-
-  void signup() async {
+  checkInternetConnection(BuildContext context) async {
+    isLoading.value=true;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          signup();
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }  void signup() async {
     try {
       //Start loading
       isLoading.value = true;
@@ -83,7 +99,7 @@ class SignupController extends GetxController {
         userName: userName.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
-        accountIsSetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
+        accountIssetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
       );
 
 
@@ -94,9 +110,9 @@ class SignupController extends GetxController {
       await userRepo.saveUserDate(newUser);
 
       ///Create empty setup data
-      await setupRepo.saveSetupData(BalancesModel.empty(),uid).then((value) => Get.snackbar(
+      await setup.savesetupData(BalancesModel.empty(),uid).then((value) => Get.snackbar(
         "Success!",
-        'Balances update complete',
+        'balances update complete',
         backgroundColor: Colors.purple,
         colorText: Colors.white,
       ));

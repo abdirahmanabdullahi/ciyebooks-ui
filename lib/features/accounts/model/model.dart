@@ -30,13 +30,13 @@ class AccountModel {
     return {
       'dateCreated': dateCreated,
       'overDrawn': overDrawn,
-      'AccountName': fullName,
-      'FirstName': firstName,
-      'LastName': lastName,
-      'AccountNo': accountNo,
-      'PhoneNo': phoneNo,
-      'Email': email,
-      'Currencies':currencies
+      'accountName': fullName,
+      'firstName': firstName,
+      'lastName': lastName,
+      'accountNo': accountNo,
+      'phoneNo': phoneNo,
+      'email': email,
+      'currencies':currencies
 
 
     };
@@ -44,15 +44,15 @@ class AccountModel {
 
   factory AccountModel.fromJson(Map<String, dynamic> jsonData) {
     return AccountModel(
-        accountName: jsonData['AccountName'] ?? '',
+        accountName: jsonData['accountName'] ?? '',
         overDrawn: jsonData['overDrawn'] ,
         dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
-        firstName: jsonData['FirstName'] ?? '',
-        lastName: jsonData['LastName'] ?? '',
-        accountNo: jsonData['AccountNo'] ?? '',
-        phoneNo: jsonData['PhoneNo'] ?? '',
-      email: jsonData['Email'] ?? '',
-        currencies: Map<String, dynamic>.from(jsonData['Currencies'])
+        firstName: jsonData['firstName'] ?? '',
+        lastName: jsonData['lastName'] ?? '',
+        accountNo: jsonData['accountNo'] ?? '',
+        phoneNo: jsonData['phoneNo'] ?? '',
+      email: jsonData['email'] ?? '',
+        currencies: Map<String, dynamic>.from(jsonData['currencies'])
 
     );
   }

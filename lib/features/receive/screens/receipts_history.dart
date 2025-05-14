@@ -1,3 +1,4 @@
+import 'package:ciyebooks/common/styles/custom_container.dart';
 import 'package:ciyebooks/features/receive/screens/widgets/receipt_form.dart';
 import 'package:ciyebooks/features/receive/screens/widgets/receipt_success.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,7 +20,7 @@ class ReceiptsHistory extends StatelessWidget {
       decimalDigits: 2,
     );
     final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
-        .collection('Users')
+        .collection('users')
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection('transactions')
         .where('transactionType', isEqualTo: 'receipt')
@@ -80,13 +81,15 @@ class ReceiptsHistory extends StatelessWidget {
                         depositor: Text(data['depositorName']),
                         depositType: data['depositType'],
                         receivingAccountName: data['receivingAccountName'],
-                        receivingAccountNo: data['receivingAccountNo'],
+                        receivingAccountNo: data['accountNo'],
                         description: data['description'],
                         date: data['dateCreated'].toDate()),
-                    child: Container(
-                      color: AppColors.quinary,
+                    child: CustomContainer( darkColor: AppColors.quinary,
                       width: double.infinity,
                       padding: EdgeInsets.all(10),
+                      // color: AppColors.quinary,
+                      // width: double.infinity,
+                      // padding: EdgeInsets.all(10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -152,7 +155,7 @@ class ReceiptsHistory extends StatelessWidget {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: data['receivingAccountNo'],
+                                          text: data['accountNo'],
                                           style: TextStyle(
                                             fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                             // Grey Label

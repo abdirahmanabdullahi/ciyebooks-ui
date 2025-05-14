@@ -5,7 +5,7 @@ class PayClientModel {
   final String paymentType;
   final String accountFrom;
   final String currency;
-  final double amountPaid;
+  final double amount;
   final String receiver;
   final DateTime dateCreated;
   final String description;
@@ -17,37 +17,37 @@ class PayClientModel {
     required this.transactionType,
     required this.accountFrom,
     required this.currency,
-    required this.amountPaid,
+    required this.amount,
     required this.receiver,
     required this.dateCreated,
     required this.description,
   });
   Map<String, dynamic> toJson() {
     return {
-      'TransactionId': transactionId,
+      'transactionId': transactionId,
       'accountNo': accountNo,
       'paymentType': paymentType,
-      'AccountFrom': accountFrom,
-      'Currency': currency,
-      'AmountPaid': amountPaid,
-      'Receiver': receiver,
+      'accountFrom': accountFrom,
+      'currency': currency,
+      'amount': amount,
+      'receiver': receiver,
       'dateCreated': dateCreated,
-      'Description': description,
+      'description': description,
       'transactionType': transactionType
     };
   }
 
   factory PayClientModel.fromJson(Map<String, dynamic> jsonData) {
     return PayClientModel(
-      transactionId: jsonData['TransactionId']??'',
+      transactionId: jsonData['transactionId']??'',
       accountNo: jsonData['accountNo']??'',
       paymentType: jsonData['paymentType']??'',
       transactionType: jsonData['transactionType'],
-      accountFrom: jsonData['AccountFrom']??'',
-      currency: jsonData['Currency']??'',
-      amountPaid: double.tryParse(jsonData['AmountPaid'].toString()) ?? 0.0,
-      receiver: jsonData['Receiver']??'',
-      description: jsonData['Description']??'',
+      accountFrom: jsonData['accountFrom']??'',
+      currency: jsonData['currency']??'',
+      amount: double.tryParse(jsonData['amount'].toString()) ?? 0.0,
+      receiver: jsonData['receiver']??'',
+      description: jsonData['description']??'',
       dateCreated: DateTime.tryParse(jsonData['dateCreated'].toDate().toString())??DateTime.now(),
     );
   }

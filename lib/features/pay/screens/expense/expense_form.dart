@@ -340,7 +340,7 @@ showExpenseForm(BuildContext context) {
                           // ),
                           onPressed: controller.isButtonEnabled.value
                               ? () {
-                                  controller.checkBalances(context);
+                                  controller.checkbalances(context);
                                 }
                               : null,
                           // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

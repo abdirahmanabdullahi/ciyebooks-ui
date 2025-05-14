@@ -95,8 +95,8 @@ showConfirmDeposit(BuildContext context) {
                                 fontSize: 13,
                               )),
                           Obx(
-                                () => controller.depositedByOwner.value
-                                ? Text('Main account holder',
+                                () => controller.depositedByManager.value
+                                ? Text('Manager',
                                 style: TextStyle(
                                   fontSize: 13,
                                 ))

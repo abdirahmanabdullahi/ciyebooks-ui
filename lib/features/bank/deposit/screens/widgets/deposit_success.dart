@@ -9,6 +9,7 @@ import '../../../../../utils/constants/colors.dart';
 showBankDepositInfo({
   required BuildContext context,
   required String currency,
+  required String depositor,
   required String amount,
   required String transactionCode,
   required String description,
@@ -115,6 +116,21 @@ showBankDepositInfo({
                                 fontSize: 13,
                               )),
                           Text(currency,
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                        ],
+                      ), Divider(color: Colors.black, thickness: .11),
+                      // Divider(color: Colors.black, thickness: .11),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Deposited by",
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                          Text(depositor,
                               style: TextStyle(
                                 fontSize: 13,
                               )),

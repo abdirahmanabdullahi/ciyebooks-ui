@@ -237,7 +237,7 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
 
-              /// 💵 Cash Balances
+              /// 💵 Cash balances
               Obx(() => ImageFiltered(
                     imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                     child: Container(
@@ -292,7 +292,7 @@ class Dashboard extends StatelessWidget {
                     ),
                   )),
 
-              /// 💵 Bank Balances
+              /// 💵 Bank balances
 
               Obx(() { if (!profileController.bankEnabled.value) {
                 return SizedBox.shrink();

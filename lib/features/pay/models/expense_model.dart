@@ -6,7 +6,7 @@ class ExpenseModel {
   final String description;
   final DateTime dateCreated;
   final String currency;
-  final double amountPaid;
+  final double amount;
 
 final String transactionType;
 
@@ -17,7 +17,7 @@ final String transactionType;
     required this.description,
     required this.dateCreated,
     required this.currency,
-    required this.amountPaid,
+    required this.amount,
     required this.transactionType,
   });
   Map<String, dynamic> toJson() {
@@ -29,7 +29,7 @@ final String transactionType;
       'description': description,
       'dateCreated': dateCreated,
       'currency': currency,
-      'amountPaid': amountPaid
+      'amount': amount
     };
   }
 
@@ -41,7 +41,7 @@ final String transactionType;
       description: jsonData['description'],
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
       currency: jsonData['currency'],
-      amountPaid: jsonData['amountPaid'],
+      amount: jsonData['amount'],
       transactionType: jsonData['transactionType'],
     );
   }

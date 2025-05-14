@@ -77,62 +77,162 @@ showWithdrawForm(BuildContext context) {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Obx(
-                  () => DropdownMenu(
-                    controller: controller.withdrawnCurrency,
-                    trailingIcon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: CupertinoColors.systemBlue,
-                    ),
-                    expandedInsets: EdgeInsets.zero,
-                    inputDecorationTheme: InputDecorationTheme(
-                      fillColor: AppColors.quinary,
-                      filled: true,
-                      isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                      constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+
+
+                Row(
+                  children: [
+                    Expanded(flex: 3,
+                      child: Obx(
+                            () => DropdownMenu(
+                          controller: controller.withdrawnCurrency,
+                          trailingIcon: Icon(
+                            Icons.keyboard_arrow_down_rounded,
+                            color: CupertinoColors.systemBlue,
+                          ),
+                          expandedInsets: EdgeInsets.zero,
+                          inputDecorationTheme: InputDecorationTheme(
+                            fillColor: AppColors.quinary,
+                            filled: true,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          enableFilter: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          ),
+                          label: Text('Currency'),
+                          selectedTrailingIcon: Icon(Icons.search),
+                          onSelected: (value) {
+                            if (value != null) {
+                              controller.withdrawnCurrency.text = value;
+                            }
+                          },
+                          dropdownMenuEntries: controller.bankbalances.entries.map((currency) {
+                            return DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: currency.key,
+                                label: currency.key,
+                                labelWidget: Text(
+                                  '${currency.key}  ${formatter.format(currency.value)}',
+                                  style: TextStyle(color: currency.value == 0 ? Colors.red : null),
+                                ));
+                          }).toList(),
+                        ),
                       ),
                     ),
-                    enableSearch: true,
-                    requestFocusOnTap: true,
-                    enableFilter: true,
-                    menuStyle: MenuStyle(
-                      padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                    Gap(AppSizes.spaceBtwItems),
+                    Expanded(flex: 4,
+                      child: DropdownMenu(
+                          controller: controller.withdrawnBy,
+                          expandedInsets: EdgeInsets.zero,
+                          trailingIcon: Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: CupertinoColors.systemBlue,
+                          ),
+                          inputDecorationTheme: InputDecorationTheme(
+                            fillColor: AppColors.quinary,
+                            filled: true,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          enableSearch: true,
+                          requestFocusOnTap: true,
+                          enableFilter: true,
+                          menuStyle: MenuStyle(
+                            padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
+                            backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          ),
+                          label: Text('Withdrawn by'),
+                          selectedTrailingIcon: Icon(
+                            Icons.search,
+                            color: CupertinoColors.systemBlue,
+                          ),
+                          // width: double.maxFinite,
+                          onSelected: (value) {
+                            controller.updateButtonStatus();
+                            if (value != null) {
+                              controller.withdrawnByManager.value = value;
+                              value ? (controller.withdrawnBy.text = 'Manager') : controller.withdrawnBy.text = '';
+                            }
+                          },
+                          dropdownMenuEntries: [
+                            DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: true,
+                                label: 'Manager'),
+                            DropdownMenuEntry(
+                                style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all(AppColors.quinary),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(width: 2, color: AppColors.quarternary),
+                                    ),
+                                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    ))),
+                                value: false,
+                                label: 'Other'),
+
+                          ]),
                     ),
-                    label: Text('Select currency'),
-                    selectedTrailingIcon: Icon(Icons.search),
-                    onSelected: (value) {
-                      if (value != null) {
-                        controller.withdrawnCurrency.text = value;
-                      }
-                    },
-                    dropdownMenuEntries: controller.bankBalances.entries.map((currency) {
-                      return DropdownMenuEntry(
-                          style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                              side: WidgetStateProperty.all(
-                                BorderSide(width: 2, color: AppColors.quarternary),
-                              ),
-                              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0)),
-                              ))),
-                          value: currency.key,
-                          label: currency.key,
-                          labelWidget: Text(
-                            '${currency.key}  ${formatter.format(currency.value)}',
-                            style: TextStyle(color: currency.value == 0 ? Colors.red : null),
-                          ));
-                    }).toList(),
+                  ],
+                ),
+
+                Obx(()=> Gap(!controller.withdrawnByManager.value?0:AppSizes.spaceBtwItems)),
+
+                Obx(
+                      () => controller.withdrawnByManager.value
+                      ? SizedBox.shrink()
+                      : Padding(
+                    padding: const EdgeInsets.symmetric(vertical:  10.0),
+                    child: SizedBox(
+                      height: 45,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Name is required";
+                          }
+                          return null;
+                        },
+                        controller: controller.withdrawnBy,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+
+                          labelText: "Depositor's name",
+                          // constraints: BoxConstraints.tight(
+                          // const Size.fromHeight(50),
+                          // ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Gap(AppSizes.spaceBtwItems),
-
-                // Gap(10),
-
                 SizedBox(
                   height: 45,
                   child: TextFormField(
@@ -148,7 +248,7 @@ showWithdrawForm(BuildContext context) {
                     },
                     controller: controller.amount,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
                       labelText: "Amount withdrawn",
                       // constraints: BoxConstraints.tight(
                       // const Size.fromHeight(50),
@@ -169,7 +269,7 @@ showWithdrawForm(BuildContext context) {
                   },
                   controller: controller.description,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
                     labelText: "Description",
                     // constraints: BoxConstraints.tight(
                     // const Size.fromHeight(50),

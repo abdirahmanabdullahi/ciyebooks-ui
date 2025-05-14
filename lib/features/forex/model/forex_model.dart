@@ -34,10 +34,10 @@ class ForexModel {
       'type': type,
       'transactionId': transactionId,
       // 'CurrencyName': currencyName,
-      'CurrencyCode': currencyCode,
-      'Rate': rate,
-      'Amount': amount,
-      'TotalCost': totalCost,
+      'currencyCode': currencyCode,
+      'rate': rate,
+      'amount': amount,
+      'totalCost': totalCost,
       'dateCreated': dateCreated,
     };
   }
@@ -49,12 +49,12 @@ class ForexModel {
       forexType: jsonData['forexType'] ?? '',
       type: jsonData['type'] ?? '',
       // currencyName: jsonData['CurrencyName'] ?? '',
-      currencyCode: jsonData['CurrencyCode'] ?? '',
+      currencyCode: jsonData['currencyCode'] ?? '',
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
-      rate: double.parse(jsonData['Rate'].toString()),
+      rate: double.parse(jsonData['rate'].toString()),
       revenueContributed: double.parse(jsonData['revenueContributed'].toString()),
-      amount: double.parse(jsonData['Amount'].toString()),
-      totalCost: double.parse(jsonData['TotalCost'].toString()),
+      amount: double.parse(jsonData['amount'].toString()),
+      totalCost: double.parse(jsonData['totalCost'].toString()),
       transactionType: jsonData['transactionType'] ?? '',
     );
   }

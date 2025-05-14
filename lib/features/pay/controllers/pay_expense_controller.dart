@@ -29,8 +29,8 @@ class PayExpenseController extends GetxController {
   );
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final cashBalances = {}.obs;
-  final bankBalances = {}.obs;
+  final cashbalances = {}.obs;
+  final bankbalances = {}.obs;
   final expenseCategories = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -95,7 +95,7 @@ class PayExpenseController extends GetxController {
 
       ///Initialize Firestore
       final db = FirebaseFirestore.instance;
-      final docReference = db.collection('Users').doc(uid).collection('expenses').doc('expense categories');
+      final docReference = db.collection('users').doc(uid).collection('expenses').doc('expenseCategories');
 
       docReference.set({
         category.text.trim(): category.text.trim(),
@@ -138,24 +138,24 @@ class PayExpenseController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
-        cashBalances.value = totals.value.cashBalances;
-        bankBalances.value = totals.value.bankBalances;
+        cashbalances.value = totals.value.cashBalances;
+        bankbalances.value = totals.value.bankBalances;
         counters.value = totals.value.transactionCounters;
         transactionCounter.value = counters['expenseCounter'];
       }
     });
 
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('expenses').doc('expense categories').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('expenses').doc('expenseCategories').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         expenseCategories.value = snapshot.data() as Map<String, dynamic>;
       }
     });
     // if (balances.exists && balances.data() != null) {
-    //   totals.value = BalancesModel.fromJson(balances.data() as Map<String, dynamic>);
-    //   cashBalances.value = totals.value.cashBalances;
+    //   totals.value = balancesModel.fromJson(balances.data() as Map<String, dynamic>);
+    //   cashbalances.value = totals.value.cashbalances;
     //   counters.value = totals.value.transactionCounters;
     //   // payments.value = totals.value.payments;
     //   transactionCounter.value = counters['paymentsCounter'];
@@ -414,11 +414,11 @@ class PayExpenseController extends GetxController {
     }
   }
 
-  checkBalances(BuildContext context) {
+  checkbalances(BuildContext context) {
     if (paymentType.value == 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-      final availableAmount = double.parse('${bankBalances[currencyKey]}');
+      final availableAmount = double.parse('${bankbalances[currencyKey]}');
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -433,7 +433,7 @@ class PayExpenseController extends GetxController {
     if (paymentType.value != 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-      final availableAmount = double.parse(cashBalances[currencyKey].toString());
+      final availableAmount = double.parse(cashbalances[currencyKey].toString());
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -451,7 +451,7 @@ class PayExpenseController extends GetxController {
   /// Check and create daily report if not Created
 
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('dailyReports').doc(today);
     final snapshot = await reportRef.get();
     if (snapshot.exists) {
       dailyReportCreated.value = true;
@@ -467,11 +467,11 @@ class PayExpenseController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+      final dailyReportRef = db.collection('users').doc(_uid).collection('dailyReports').doc(today);
 
-      final expenseRef = db.collection('Users').doc(_uid).collection('transactions').doc('EXP-${counters['expenseCounter']}');
-      final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
+      final expenseRef = db.collection('users').doc(_uid).collection('transactions').doc('EXP-${counters['expenseCounter']}');
+      final counterRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final cashRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
 
       final newExpense = ExpenseModel(
           transactionId: 'EXP-${counters['expenseCounter']}',
@@ -480,7 +480,7 @@ class PayExpenseController extends GetxController {
           description: description.text.trim(),
           dateCreated: DateTime.now(),
           currency: paidCurrency.text.trim(),
-          amountPaid: double.tryParse(amount.text.trim()) ?? 0.0,
+          amount: double.tryParse(amount.text.trim()) ?? 0.0,
           transactionType: 'expense');
 
       /// Create daily report

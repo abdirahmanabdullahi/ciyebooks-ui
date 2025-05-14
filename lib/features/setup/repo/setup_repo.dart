@@ -9,26 +9,26 @@ import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
 import '../models/setup_model.dart';
 
-class SetupRepo extends GetxController {
-  static SetupRepo get instance => Get.find();
+class setupRepo extends GetxController {
+  static setupRepo get instance => Get.find();
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   //Function to save data to firestore
-  Future<void> saveSetupData(BalancesModel balances,id) async {
+  Future<void> savesetupData(BalancesModel balances,id) async {
     try {
       await _db
-          .collection('Users')
+          .collection('users')
           .doc(id)
-          .collection('Setup')
-          .doc('Balances')
+          .collection('setup')
+          .doc('balances')
           .set(
             balances.toJson(),
           )
           .then((value) => Get.snackbar(
                 "Success!",
-                'Balances update complete',
+                'balances update complete',
                 backgroundColor: Colors.green,
                 colorText: Colors.white,
               ));
@@ -46,9 +46,9 @@ class SetupRepo extends GetxController {
   }
 
   /// Update single field
-  Future<void> updateSetupStatus(Map<String, dynamic> jsonData) async {
+  Future<void> updatesetupStatus(Map<String, dynamic> jsonData) async {
     try {
-      await _db.collection('Users').doc(uid).update(jsonData);
+      await _db.collection('users').doc(uid).update(jsonData);
 
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
@@ -64,19 +64,19 @@ class SetupRepo extends GetxController {
   }
 
   /// Fetch setup data
-  // Future<BalancesModel> getSetupData() async {
+  // Future<balancesModel> getsetupData() async {
   //   try {
   //     final documentSnapshot = await _db
-  //         .collection('Users')
+  //         .collection('users')
   //         .doc(uid)
-  //         .collection('Setup')
-  //         .doc('Balances')
+  //         .collection('setup')
+  //         .doc('balances')
   //         .get();
   //
   //     if (documentSnapshot.exists) {
-  //       return BalancesModel.fromSnapshot(documentSnapshot);
+  //       return balancesModel.fromSnapshot(documentSnapshot);
   //     } else {
-  //       return BalancesModel.empty();
+  //       return balancesModel.empty();
   //     }
   //
   //   } on FirebaseAuthException catch (e) {

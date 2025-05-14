@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/dashboard/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,7 @@ class RecentTransactions extends StatelessWidget {
 
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('Users')
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .collection('transactions')
           .where('dateCreated', isGreaterThanOrEqualTo: startOfToday)
@@ -64,7 +65,7 @@ class RecentTransactions extends StatelessWidget {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
-                              "${data['CurrencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['Amount'].toString()))} ",
+                              "${data['currencyCode'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
@@ -91,11 +92,11 @@ class RecentTransactions extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              data['AccountFrom'],
+                              data['accountFrom'],
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
-                              "-${data['Currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['AmountPaid'].toString()))} ",
+                              "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
                               style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],
@@ -149,7 +150,7 @@ class RecentTransactions extends StatelessWidget {
                               style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                             Text(
-                              "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amountPaid'].toString()))} ",
+                              "-${data['currency'].toString().toUpperCase()} ${formatter.format(double.parse(data['amount'].toString()))} ",
                               style: TextStyle(color: AppColors.red, fontWeight: FontWeight.w600, fontSize: 12),
                             ),
                           ],

@@ -49,7 +49,7 @@ class AccountsController extends GetxController {
   }
 
   fetchTotals() async {
-    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('Users').doc(uid).collection('Setup').doc('Balances').get();
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(uid).collection('setup').doc('balances').get();
 
     if (documentSnapshot.exists && documentSnapshot.data() != null) {
       final data = documentSnapshot.data() as Map<String, dynamic>;
@@ -77,8 +77,8 @@ class AccountsController extends GetxController {
       );
 
       final batch = db.batch();
-      final newAccountRef = db.collection('Users').doc(uid).collection("accounts").doc('PA-${totals.value.transactionCounters['accountsCounter']}');
-      final accountNoRef = db.collection('Users').doc(uid).collection("Setup").doc('Balances');
+      final newAccountRef = db.collection('users').doc(uid).collection("accounts").doc('${totals.value.transactionCounters['accountsCounter']}');
+      final accountNoRef = db.collection('users').doc(uid).collection("setup").doc('balances');
 
       ///Create new account
       batch.set(newAccountRef, newAccount.toJson());

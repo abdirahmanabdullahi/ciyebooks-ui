@@ -59,7 +59,7 @@ showReceiptForm(BuildContext context) {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
-                            'Receiving a deposit from client',
+                            'Receipt',
                             style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -114,7 +114,6 @@ showReceiptForm(BuildContext context) {
                         controller.receivingAccountNo.text = value[0].toString();
                         controller.receivingAccountName.text = value[2].toString();
                         final currencyMap = value[1] as Map<String, dynamic>;
-
                         controller.currency.value = currencyMap.entries.map((entry) => [entry.key, entry.value]).toList();
                         controller.updateButtonStatus();
                       }
@@ -312,7 +311,8 @@ showReceiptForm(BuildContext context) {
                       if (value != null) {
                         controller.receivedFromOwner.value = value;
                         value
-                            ? (controller.depositorName.text = controller.receivingAccountName.text.trim(), controller.receivedFrom.text = controller.receivingAccountName.text.trim())
+                            ? (controller.depositorName.text = controller.receivingAccountName.text.trim(),
+                        controller.receivedFrom.text = controller.receivingAccountName.text.trim())
                             : controller.depositorName.text = '';
                       }
                     },
@@ -447,5 +447,7 @@ showReceiptForm(BuildContext context) {
         ),
       );
     },
-  ).then((_){controller.clearControllers();});
+  ).then((_) {
+    controller.clearControllers();
+  });
 }

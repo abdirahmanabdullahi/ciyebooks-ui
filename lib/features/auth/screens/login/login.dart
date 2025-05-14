@@ -87,7 +87,7 @@ class Login extends StatelessWidget {
                             )),
                       ),
                     ),
-                    // TextButton(onPressed: () => Get.offAll(() => Signup()), child: Text('data')),
+                    TextButton(onPressed: () => Get.offAll(() => Signup()), child: Text('data')),
                     // const Gap(AppSizes.spaceBtwSections / 2),
                     SizedBox(
                       height: 45,
@@ -102,7 +102,7 @@ class Login extends StatelessWidget {
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           onPressed: controller.isLoading.value
                               ? null // Disable button when loading
-                              : () => controller.signIn(),
+                              : () => controller.checkInternetConnection(context),
                           child: controller.isLoading.value == true
                               ? SizedBox(
                                   height: 25,

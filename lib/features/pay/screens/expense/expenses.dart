@@ -23,7 +23,7 @@ final NumberFormat formatter = NumberFormat.decimalPatternDigits(
 
 class ExpenseHistoryState extends State<ExpenseHistory> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('Users')
+      .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
       .where('transactionType', isEqualTo: 'expense')
@@ -100,7 +100,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                                   ),
                                   TextSpan(
                                     text: formatter
-                                        .format(data['amountPaid'])
+                                        .format(data['amount'])
                                         // text: payment.amountPaid
                                         .toString(),
                                     style: TextStyle(
@@ -128,7 +128,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: data['paymentType'],
+                                        text: data['paymentType'].toUpperCase(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                           // Grey Label

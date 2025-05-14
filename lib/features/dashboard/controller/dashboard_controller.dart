@@ -17,7 +17,7 @@ class DashboardController extends GetxController {
   final hide = false.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
-
+final transactionsStream = '';
   final _uid = FirebaseAuth.instance.currentUser?.uid;
 
 
@@ -41,30 +41,31 @@ class DashboardController extends GetxController {
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   @override
   void onInit() {
+
     /// Stream for the accounts
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('accounts').snapshots().listen((querySnapshot) {
       accounts.value = querySnapshot.docs.map((doc) {
         return AccountModel.fromJson(doc.data());
       }).toList();
     });
 
     ///Totals Stream
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
-        // currency.value = BalancesModel.fromJson()
+        // currency.value = balancesModel.fromJson()
       }
     });
 
     /// Stream for currency stock
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Currency stock').orderBy('totalCost', descending: true).snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('CurrencyStock').orderBy('totalCost', descending: true).snapshots().listen((querySnapshot) {
       currencies.clear();
       currencies.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());
       }).toList();
     });
     FirebaseFirestore.instance
-        .collection('Users')
+        .collection('users')
         .doc(_uid)
         .collection('transactions')
         .where('transactionType', isEqualTo: 'payment')
@@ -77,7 +78,7 @@ class DashboardController extends GetxController {
       }).toList();
     });
     FirebaseFirestore.instance
-        .collection('Users')
+        .collection('users')
         .doc(_uid)
         .collection('transactions')
         .where('transactionType', isEqualTo: 'receipt')

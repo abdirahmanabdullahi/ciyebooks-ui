@@ -19,7 +19,7 @@ class AuthRepo extends GetxController {
   // final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
   Rx<UserModel> userData = UserModel.empty().obs;
-  final accountIsSetUp = false.obs;
+  final accountIssetup = false.obs;
 
 
 // Called from main.dart on app launch
@@ -39,8 +39,8 @@ class AuthRepo extends GetxController {
       if (user.emailVerified) {
 
         /// Check if setup is complete
-        final accountIsSetup = await fetchSetupStatus();
-        accountIsSetup?Get.offAll(() => NavigationMenu()):Get.offAll(() => SetupScreen());
+        final accountIssetup = await fetchsetupStatus();
+        accountIssetup?Get.offAll(() => NavigationMenu()):Get.offAll(() => setupScreen());
 
 
       } else {
@@ -52,14 +52,14 @@ class AuthRepo extends GetxController {
   }
 
   /// Check if account is setup
-  Future<bool> fetchSetupStatus() async {
+  Future<bool> fetchsetupStatus() async {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
-      final data = await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      final data = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (data.exists) {
         userData.value = UserModel.fromJson(data.data()!);
       }
-      return userData.value.accountIsSetup;
+      return userData.value.accountIssetup;
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

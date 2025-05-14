@@ -32,8 +32,9 @@ class DepositCashController extends GetxController {
   final isButtonEnabled = false.obs;
   final bankBalances = {}.obs;
   final cashBalances = {}.obs;
-  final depositedByOwner = true.obs;
+  // final depositedByOwner = true.obs;
   final isLoading = false.obs;
+  final depositedByManager = true.obs;
 
   ///Sort by date for the history screen
   final sortCriteria = 'dateCreated'.obs;
@@ -80,7 +81,7 @@ class DepositCashController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen(
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen(
       (snapshot) {
         if (snapshot.exists) {
           totals.value = BalancesModel.fromJson(snapshot.data()!);
@@ -93,7 +94,7 @@ class DepositCashController extends GetxController {
   }
 
   ///Check if bank balances are enough
-  checkBalances(BuildContext context) {
+  checkbalances(BuildContext context) {
     final currency = depositedCurrency.text.trim();
     final availableAmount = double.parse('${cashBalances[currency]}');
     final requestedAmount = double.parse(amount.text.trim());
@@ -131,7 +132,7 @@ class DepositCashController extends GetxController {
 
   /// Check and create daily report if not Created
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('dailyReports').doc(today);
     final snapshot = await reportRef.get();
     if (snapshot.exists) {
       dailyReportCreated.value = true;
@@ -141,7 +142,7 @@ class DepositCashController extends GetxController {
     try {
       await createDailyReport();
       ///Compare cash and amount to be paid
-      // cashBalance.value = double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0;
+      // cashBalance.value = double.tryParse(cashbalances[depositedCurrency.text.trim()].toString()) ?? 0.0;
 
       if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
@@ -178,10 +179,10 @@ class DepositCashController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('BKDP-${counters['bankDepositCounter']}');
-      final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
+      final dailyReportRef = db.collection('users').doc(_uid).collection('dailyReports').doc(today);
+      final depositRef = db.collection('users').doc(_uid).collection('transactions').doc('BKDP-${counters['bankDepositCounter']}');
+      final counterRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final cashRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
 
       final newDeposit = DepositModel(
         depositedBy: depositorName.text.trim(),
@@ -233,7 +234,7 @@ class DepositCashController extends GetxController {
             transactionCode: 'BKDP-${counters['bankDepositCounter']}',
             amount: amount.text.trim(),
             description: description.text.trim(),
-            date: DateTime.now());
+            date: DateTime.now(), depositor: depositorName.text.trim());
       }        clearControllers();
 
     } on FirebaseAuthException catch (e) {

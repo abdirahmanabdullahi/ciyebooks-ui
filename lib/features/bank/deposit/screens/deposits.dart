@@ -18,7 +18,7 @@ class Deposits extends StatelessWidget {
       decimalDigits: 2,
     );
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('transactions').where('transactionType', isEqualTo: 'deposit').snapshots(),
+      stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('transactions').where('transactionType', isEqualTo: 'deposit').orderBy('dateCreated',descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
@@ -43,7 +43,7 @@ class Deposits extends StatelessWidget {
                     amount: data['amount'].toString(),
                     transactionCode: data['transactionId'],
                     description: data['description'],
-                    date: data['dateCreated'].toDate());
+                    date: data['dateCreated'].toDate(), depositor: data['depositedBy']);
               },
               child: CustomContainer(
                 darkColor: AppColors.quinary,
@@ -61,7 +61,7 @@ class Deposits extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: data['withdrawnBy'],
+                                text: data['depositedBy'],
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12,
@@ -114,7 +114,7 @@ class Deposits extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: data['transactionType'],
+                                    text: data['transactionType'].toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                       // Grey Label

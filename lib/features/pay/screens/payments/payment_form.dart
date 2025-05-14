@@ -343,7 +343,8 @@ return showDialog(
                     controller.updateButtonStatus();
                     if (value != null) {
                       controller.paidToOwner.value = value;
-                      value ? (controller.receiver.text = controller.from.text.trim(), controller.paidTo.text = controller.from.text.trim()) : controller.receiver.text = '';
+                      value ? (controller.receiver.text = controller.from.text.trim(),
+                      controller.paidTo.text = controller.from.text.trim()) : controller.receiver.text = '';
                     }
                   },
                   dropdownMenuEntries: [
@@ -473,7 +474,7 @@ return showDialog(
                       // ),
                       onPressed: controller.isButtonEnabled.value
                           ? () {
-                              controller.checkBalances(context);
+                              controller.checkbalances(context);
                             }
                           : null,
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

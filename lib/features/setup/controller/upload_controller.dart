@@ -96,7 +96,7 @@ class UploadController extends GetxController {
       ///PROCESSING
       final batch = _db.batch();
       ///Reference to the counter
-      final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+      final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
       for (var line in lines) {
         final splitLine = line.split(',');
         if (splitLine.length < 5) {
@@ -119,7 +119,7 @@ class UploadController extends GetxController {
             accountName: '${splitLine[0]} ${splitLine[1]}', overDrawn: overDrawn.value);
 
         ///Point where to create each new account
-        final newAccountRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("accounts").doc('$accountsCounter');
+        final newAccountRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("accounts").doc('$accountsCounter');
 
         ///CREATE THE ACCOUNT
         batch.set(newAccountRef, newAccount.toJson());
@@ -165,7 +165,7 @@ class UploadController extends GetxController {
 //       final batch = _db.batch();
 //
 //       ///Reference to the counter
-//       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+//       final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
 //       for (var line in lines) {
 //         final splitLine = line.split(',');
 //         if (splitLine.length < 5) {
@@ -185,7 +185,7 @@ class UploadController extends GetxController {
 //         );
 //
 //         ///Point where to create each new account
-//         final newPaymentRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('PAY-$paymentsCounter');
+//         final newPaymentRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('PAY-$paymentsCounter');
 //
 //         ///CREATE THE TRANSACTION
 //         batch.set(newPaymentRef, newPayment.toJson());
@@ -231,7 +231,7 @@ class UploadController extends GetxController {
 //       final batch = _db.batch();
 //
 //       ///Reference to the counter
-//       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+//       final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
 //       for (var line in lines) {
 //         final splitLine = line.split(',');
 //         if (splitLine.length < 5) {
@@ -247,7 +247,7 @@ class UploadController extends GetxController {
 //             amountPaid: double.tryParse(splitLine[3]) ?? 0.0, paymentType: 'Cash');
 //
 //         ///Point where to create each new account
-//         final newExpenseRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('EXP-$expenseCounter');
+//         final newExpenseRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('EXP-$expenseCounter');
 //
 //         ///CREATE THE ACCOUNT
 //         batch.set(newExpenseRef, newExpense.toJson());
@@ -293,7 +293,7 @@ class UploadController extends GetxController {
 //       final batch = _db.batch();
 //
 //       ///Reference to the counter
-//       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+//       final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
 //       for (var line in lines) {
 //         final splitLine = line.split(',');
 //         if (splitLine.length < 5) {
@@ -313,7 +313,7 @@ class UploadController extends GetxController {
 //             receivingAccountNo: '');
 //
 //         ///Point where to create each new account
-//         final newReceiptRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('RCPT-$receiptsCounter');
+//         final newReceiptRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('RCPT-$receiptsCounter');
 //
 //         ///CREATE THE ACCOUNT
 //         batch.set(newReceiptRef, newReceipt.toJson());
@@ -359,7 +359,7 @@ class UploadController extends GetxController {
 //       final batch = _db.batch();
 //
 //       ///Reference to the counter
-//       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+//       final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
 //       for (var line in lines) {
 //         final splitLine = line.split(',');
 //         if (splitLine.length < 5) {
@@ -376,7 +376,7 @@ class UploadController extends GetxController {
 //             description: splitLine[4]);
 //
 //         ///Point where to create each new account
-//         final newReceiptRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('WDR-$bankWithdrawCounter');
+//         final newReceiptRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('WDR-$bankWithdrawCounter');
 //
 //         ///CREATE THE ACCOUNT
 //         batch.set(newReceiptRef, newWithdrawal.toJson());
@@ -421,7 +421,7 @@ class UploadController extends GetxController {
 //       final batch = _db.batch();
 //
 //       ///Reference to the counter
-//       final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Setup').doc('Balances');
+//       final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('setup').doc('balances');
 //       for (var line in lines) {
 //         final splitLine = line.split(',');
 //         if (splitLine.length < 5) {
@@ -437,7 +437,7 @@ class UploadController extends GetxController {
 //         );
 //
 //         ///Point where to create each new account
-//         final newDepositRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('DPST-$bankDepositCounter');
+//         final newDepositRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("transactions").doc('DPST-$bankDepositCounter');
 //
 //         ///CREATE THE ACCOUNT
 //         batch.set(newDepositRef, newDeposit.toJson());
@@ -484,7 +484,7 @@ class UploadController extends GetxController {
       final batch = _db.batch();
 
       ///Reference to the counter
-      // final counterRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('currencyStock');
+      // final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('currencyStock');
       for (var line in lines) {
 
         final splitLine = line.split(',');
@@ -505,10 +505,10 @@ class UploadController extends GetxController {
         // final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
 
         ///Update the total cost of currencies field
-        final totalsRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("Setup").doc('Balances');
+        final totalsRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("setup").doc('balances');
 
         ///Point where to create each new currency account
-        final newCurrencyRef = _db.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection("currencyStock").doc(splitLine[0]);
+        final newCurrencyRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("currencyStock").doc(splitLine[0]);
 
         ///CREATE THE FX TRANSACTION
         // batch.set(buyFxTransactionRef, buyCurrency.toJson());

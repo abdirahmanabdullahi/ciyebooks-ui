@@ -111,11 +111,26 @@ showBankWithdrawInfo({
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Withdrawn currency",
+                          Text("Currency",
                               style: TextStyle(
                                 fontSize: 13,
                               )),
                           Text(currency,
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                        ],
+                      ), Divider(color: Colors.black, thickness: .11),
+                      // Divider(color: Colors.black, thickness: .11),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Withdrawn by",
+                              style: TextStyle(
+                                fontSize: 13,
+                              )),
+                          Text(withdrawnBy,
                               style: TextStyle(
                                 fontSize: 13,
                               )),

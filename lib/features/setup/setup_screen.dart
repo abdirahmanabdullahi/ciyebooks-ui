@@ -14,8 +14,8 @@ import 'package:intl/intl.dart';
 import '../accounts/screens/widgets/account_viewer.dart';
 import 'controller/setup_controller.dart';
 
-class SetupScreen extends StatelessWidget {
-  const SetupScreen({super.key});
+class setupScreen extends StatelessWidget {
+  const setupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -353,7 +353,7 @@ class SetupScreen extends StatelessWidget {
                                 ),
                               ),
                               StreamBuilder<QuerySnapshot>(
-                                stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').snapshots(),
+                                stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('accounts').snapshots(),
                                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                                   if (snapshot.hasError) {
                                     return Text('Something went wrong');
@@ -506,7 +506,7 @@ class SetupScreen extends StatelessWidget {
                     child: FloatingActionButton(
                       heroTag: 'Complete',
                       backgroundColor: AppColors.prettyBlue,
-                      onPressed: () => showConfirmSetupDialog(context, controller),
+                      onPressed: () => showConfirmsetupDialog(context, controller),
                       child: Text(
                         'Complete setup',
                         style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600, fontSize: 12),
@@ -562,7 +562,7 @@ class SetupScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showConfirmSetupDialog(BuildContext context, SetupController controller) {
+  Future<dynamic> showConfirmsetupDialog(BuildContext context, SetupController controller) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(

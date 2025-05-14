@@ -20,7 +20,7 @@ class ForexTransactions extends StatelessWidget {
     );
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('Users')
+          .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .collection('transactions')
           .where('transactionType', isEqualTo: 'forex')
@@ -46,12 +46,12 @@ class ForexTransactions extends StatelessWidget {
                   onTap: () => showForexInfo(
                       context: context,
                       forexType: data['forexType'],
-                      currency: data['CurrencyCode'],
+                      currency: data['currencyCode'],
                       transactionCode: data['transactionId'],
                       method: data['type'],
-                      amount: data['Amount'].toString(),
-                      rate: data['Rate'].toString(),
-                      totalCost: data['TotalCost'].toString(),
+                      amount: data['amount'].toString(),
+                      rate: data['rate'].toString(),
+                      totalCost: data['totalCost'].toString(),
                       date: data['dateCreated'].toDate()),
                   child: CustomContainer(
                     darkColor: AppColors.quinary,
@@ -69,7 +69,7 @@ class ForexTransactions extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${data['forexType'].replaceAll('Fx', '').toUpperCase()} - ${data['CurrencyCode']}',
+                                    text: '${data['forexType'].replaceAll('Fx', '').toUpperCase()} - ${data['currencyCode']}',
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: data['forexType'] == 'SELLFX' ? AppColors.red : CupertinoColors.systemBlue
                                         // Grey Label
                                         // Black Value
@@ -82,7 +82,7 @@ class ForexTransactions extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: formatter.format(double.parse(data['Amount'].toString())),
+                                    text: formatter.format(double.parse(data['amount'].toString())),
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: data['forexType'] == 'SELLFX' ? AppColors.red : CupertinoColors.systemBlue
                                         // Grey Label
                                         // Black Value
@@ -95,7 +95,7 @@ class ForexTransactions extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: formatter.format(double.parse(data['Rate'].toString())),
+                                    text: formatter.format(double.parse(data['rate'].toString())),
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: data['forexType'] == 'SELLFX' ? AppColors.red : CupertinoColors.systemBlue
                                         // Grey Label
                                         // Black Value
@@ -108,7 +108,7 @@ class ForexTransactions extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: formatter.format(double.parse(data['TotalCost'].toString())),
+                                    text: formatter.format(double.parse(data['totalCost'].toString())),
                                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12, color: data['forexType'] == 'SELLFX' ? AppColors.red : CupertinoColors.systemBlue
                                         // Grey Label
                                         // Black Value
@@ -147,7 +147,7 @@ class ForexTransactions extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: data['type'].toString(),
+                                        text: data['type'].toUpperCase(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                           // Grey Label

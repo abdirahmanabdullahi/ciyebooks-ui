@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
   Future<void>getUserData()async{
 
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    final userDate = await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+    final userDate = await FirebaseFirestore.instance.collection('users').doc(uid).get();
     if(userDate.exists){
       user.value = UserModel.fromJson(userDate.data() as Map<String,dynamic>);
 

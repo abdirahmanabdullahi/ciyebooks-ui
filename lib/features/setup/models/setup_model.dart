@@ -44,7 +44,7 @@ class BalancesModel {
     required this.transactionCounters,
   });
 
-  /// Convert `BalancesModel` to JSON structure for storing data in Firestore
+  /// Convert `balancesModel` to JSON structure for storing data in Firestore
   Map<String, dynamic> toJson() {
     return {
       'bankBalances': bankBalances,
@@ -66,7 +66,7 @@ class BalancesModel {
     };
   }
 
-  /// Factory constructor to convert firestore data from Map to BalancesModel
+  /// Factory constructor to convert firestore data from Map to balancesModel
   static BalancesModel empty() => BalancesModel(
         // shillingAtBank: 0.0,
         // shillingCashInHand: 0.0,
@@ -136,12 +136,12 @@ class BalancesModel {
     );
   }
 
-  /// Factory constructor for creating a `BalancesModel` instance from a Firestore document snapshot
-  // factory BalancesModel.fromSnapshot(
+  /// Factory constructor for creating a `balancesModel` instance from a Firestore document snapshot
+  // factory balancesModel.fromSnapshot(
   //     DocumentSnapshot<Map<String, dynamic>> document) {
   //   final data = document.data();
   //   if (data != null) {
-  //     return BalancesModel(
+  //     return balancesModel(
   //       capital: (data['Capital'] as num?)?.toDouble() ?? 0.0,
   //       kesCashBalance: (data['KesCashBalance'] as num?)?.toDouble() ?? 0.0,
   //       usdCashBalance: (data['UsdCashBalance'] as num?)?.toDouble() ?? 0.0,

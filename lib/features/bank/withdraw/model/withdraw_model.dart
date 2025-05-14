@@ -4,7 +4,7 @@ class WithdrawModel {
   final String currency;
   final double amount;
   final DateTime dateCreated;
-  final String withdrawalType;
+  // final String withdrawalType;
   final String withdrawnBy;
   final String description;
   WithdrawModel({required this.description,
@@ -14,7 +14,7 @@ class WithdrawModel {
     required this.currency,
     required this.amount,
     required this.dateCreated,
-    required this.withdrawalType,
+    // required this.withdrawalType,
   });
   Map<String, dynamic> toJson() {
     return {
@@ -23,7 +23,7 @@ class WithdrawModel {
       'currency': currency,
       'amount': amount,
       'dateCreated': dateCreated,
-      'withdrawalType': withdrawalType,
+      // 'withdrawalType': withdrawalType,
       'withdrawnBy': withdrawnBy,
       'description':description,
     };
@@ -36,8 +36,9 @@ class WithdrawModel {
       currency: jsonData['currency'],
       amount: (jsonData['amount'] as num?)?.toDouble() ?? 0.0,
       dateCreated: DateTime.parse(jsonData['dateCreated'].toDate().toString()),
-      withdrawalType: jsonData['withdrawalType'],
-      withdrawnBy: jsonData['withdrawnBy'], description: jsonData['description'],
+      // withdrawalType: jsonData['withdrawalType'],
+      withdrawnBy: jsonData['withdrawnBy'],
+      description: jsonData['description'],
     );
   }
 }

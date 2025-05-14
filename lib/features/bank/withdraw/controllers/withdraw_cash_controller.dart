@@ -28,7 +28,7 @@ class WithdrawCashController extends GetxController {
 
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final bankBalances = {}.obs;
+  final bankbalances = {}.obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
 
@@ -36,8 +36,8 @@ class WithdrawCashController extends GetxController {
   final sortCriteria = 'dateCreated'.obs;
 
   // final currency = [].obs;
-  final withdrawCashFormKey = GlobalKey<FormState>();
   final transactionCounter = 0.obs;
+  final withdrawnByManager = true.obs;
 
   ///Controllers
   final amount = TextEditingController();
@@ -45,6 +45,7 @@ class WithdrawCashController extends GetxController {
   final description = TextEditingController();
   final withdrawnBy = TextEditingController();
   final withdrawType = TextEditingController();
+
 
   /// Clear controller after data submission
   clearController(){
@@ -76,10 +77,10 @@ class WithdrawCashController extends GetxController {
 
   /// *-----------------------------Start data submission---------------------------------*
   fetchTotals() async {
-    FirebaseFirestore.instance.collection('Users').doc(_uid).collection('Setup').doc('Balances').snapshots().listen(
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen(
       (snapshot) {
         if (snapshot.exists) {
-          bankBalances.value = totals.value.bankBalances;
+          bankbalances.value = totals.value.bankBalances;
           totals.value = BalancesModel.fromJson(snapshot.data()!);
           counters.value = totals.value.transactionCounters;
           transactionCounter.value = counters['bankDepositCounter'];
@@ -91,7 +92,7 @@ class WithdrawCashController extends GetxController {
   checkBalances(BuildContext context) {
     final currencyKey = withdrawnCurrency.text.trim();
 
-    final availableAmount = double.parse('${bankBalances[currencyKey]}');
+    final availableAmount = double.parse('${bankbalances[currencyKey]}');
     final requestedAmount = double.parse(amount.text.trim());
 
     if (requestedAmount > availableAmount) {
@@ -116,6 +117,7 @@ class WithdrawCashController extends GetxController {
         }
       }
     } on SocketException catch (_) {
+      isLoading.value =false;
       if (context.mounted) {
         showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
       }
@@ -124,7 +126,7 @@ class WithdrawCashController extends GetxController {
 
 
   createDailyReport() async {
-    final reportRef = FirebaseFirestore.instance.collection('Users').doc(_uid).collection('DailyReports').doc(today);
+    final reportRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('dailyReports').doc(today);
     final snapshot = await reportRef.get();
     if (snapshot.exists) {
       dailyReportCreated.value = true;
@@ -138,7 +140,7 @@ class WithdrawCashController extends GetxController {
       await createDailyReport();
       ///Compare bank balance and amount to withdraw
 
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankbalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -154,7 +156,7 @@ class WithdrawCashController extends GetxController {
 
         return;
       }
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankbalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -174,10 +176,10 @@ class WithdrawCashController extends GetxController {
       final batch = db.batch();
 
       ///Doc references
-      final dailyReportRef = db.collection('Users').doc(_uid).collection('DailyReports').doc(today);
-      final depositRef = db.collection('Users').doc(_uid).collection('transactions').doc('BKWD-${counters['bankWithdrawCounter']}');
-      final counterRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
-      final cashRef = db.collection('Users').doc(_uid).collection('Setup').doc('Balances');
+      final dailyReportRef = db.collection('users').doc(_uid).collection('dailyReports').doc(today);
+      final depositRef = db.collection('users').doc(_uid).collection('transactions').doc('BKWD-${counters['bankWithdrawCounter']}');
+      final counterRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
+      final cashRef = db.collection('users').doc(_uid).collection('setup').doc('balances');
 
       final newWithdrawal = WithdrawModel(
           description: description.text.trim(),
@@ -186,8 +188,8 @@ class WithdrawCashController extends GetxController {
           transactionId: 'BKWD-${counters['bankWithdrawCounter']}',
           currency: withdrawnCurrency.text.trim(),
           amount: double.tryParse(amount.text.trim()) ?? 0.0,
-          dateCreated: DateTime.now(),
-          withdrawalType: withdrawType.text.trim());
+          dateCreated: DateTime.now(),);
+          // withdrawalType: withdrawType.text.trim());
 
      /// Create daily report if not created
       if(!dailyReportCreated.value){

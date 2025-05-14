@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../common/widgets/error_dialog.dart';
 
 class SignInController extends GetxController {
   static SignInController get instance => Get.find();
@@ -24,25 +28,26 @@ class SignInController extends GetxController {
   // }
 
   /// Autofill email and password
-
+  checkInternetConnection(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          signIn();
+        }
+      }
+    } on SocketException catch (_) {
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
+  }
   Future<void> signIn() async {
+    isLoading.value=true;
+
     try {
       isLoading.value = true;
 
-      ///Check internet connectivity
-      // final isConnected = await NetworkManager.instance.isConnected();
-      // if (!isConnected) {
-      //   isLoading.value = false;
-      //   Get.snackbar("Oh snap! No internet connection.",
-      //       "Please check your internet connection and try again",
-      //       icon: Icon(
-      //         Icons.cloud_off,
-      //         color: Colors.white,
-      //       ),
-      //       backgroundColor: Color(0xffFF0033),
-      //       colorText: Colors.white);
-      //   return;
-      // }
 
       /// Validate form
       if (!signInFormKey.currentState!.validate()) {

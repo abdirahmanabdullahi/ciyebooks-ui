@@ -10,9 +10,10 @@ import '../../../common/widgets/calculator.dart';
 import '../../controller/forex_controller.dart';
 import 'new_currency_form.dart';
 
-showForexForm(BuildContext context) {      final controller = Get.put(ForexController());
+showForexForm(BuildContext context) {
+  final controller = Get.put(ForexController());
 
-showDialog(
+  showDialog(
     context: context,
     builder: (context) {
       // final NumberFormat formatter = NumberFormat.decimalPatternDigits(
@@ -45,8 +46,7 @@ showDialog(
               borderRadius: BorderRadius.all(Radius.circular(15)),
             ),
             title: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12)), color: AppColors.quinary),
+              decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
               width: double.maxFinite,
               // height: 30,
               child: Padding(
@@ -503,5 +503,7 @@ showDialog(
         ),
       );
     },
-  ).then((_){controller.clearController();});
+  ).then((_) {
+    controller.clearController();
+  });
 }

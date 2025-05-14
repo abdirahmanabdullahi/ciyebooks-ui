@@ -57,7 +57,7 @@ class Accounts extends StatelessWidget {
             reverse: true,
             shrinkWrap: true,
             // physics: ClampingScrollPhysics(),
-            query: FirebaseFirestore.instance.collection('Users').doc(uid).collection('accounts').withConverter<AccountModel>(
+            query: FirebaseFirestore.instance.collection('users').doc(uid).collection('accounts').withConverter<AccountModel>(
                   fromFirestore: (snapshot, _) => AccountModel.fromJson(snapshot.data()!),
                   toFirestore: (account, _) => account.toJson(),
                 ),

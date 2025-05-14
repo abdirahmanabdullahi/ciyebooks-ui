@@ -18,7 +18,7 @@ class Withdrawals extends StatelessWidget {
       decimalDigits: 2,
     );
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser?.uid).collection('transactions').where('transactionType', isEqualTo: 'withdrawal').snapshots(),
+      stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection('transactions').where('transactionType', isEqualTo: 'withdrawal').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return const Text('Something went wrong');
@@ -113,7 +113,7 @@ class Withdrawals extends StatelessWidget {
                                   text: TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: data['transactionType'],
+                                        text: data['transactionType'].toUpperCase(),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
                                           // Grey Label

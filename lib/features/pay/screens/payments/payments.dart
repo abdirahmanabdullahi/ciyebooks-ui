@@ -25,7 +25,7 @@ final NumberFormat formatter = NumberFormat.decimalPatternDigits(
 
 class PaymentsHistoryState extends State<PaymentsHistory> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('Users')
+      .collection('users')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('transactions')
       .where('transactionType', isEqualTo: 'payment')
@@ -34,7 +34,6 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(PayClientController());
     return StreamBuilder<QuerySnapshot>(
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -56,17 +55,17 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                 return GestureDetector(
                   onTap: () => showPaymentInfo(
                       context: context,
-                      transactionCode: data['TransactionId'],
-                      payee: data['AccountFrom'],
+                      transactionCode: data['transactionId'],
+                      payee: data['accountFrom'],
                       payeeAccountNo: data['accountNo'],
-                      receiver: Text(data['Receiver'],),
+                      receiver: Text(data['receiver'],),
                       paymentType: data['paymentType'],
-                      description: data['Description'],
+                      description: data['description'],
                       date: data['dateCreated'].toDate(),
                       totalPayment: formatter.format(
-                        double.parse(data['AmountPaid'].toString()),
+                        double.parse(data['amount'].toString()),
                       ),
-                      paidCurrency: data['Currency']),
+                      paidCurrency: data['currency']),
                   child: CustomContainer(
                     darkColor: AppColors.quinary,
                     width: double.infinity,
@@ -75,7 +74,6 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        TextButton(onPressed: ()=>controller.createDailyReport(), child: Text('data')),
 
                         // First Row (From, Receiver, Amount)
                         Row(
@@ -86,7 +84,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: data['AccountFrom'],
+                                    text: data['accountFrom'],
                                     style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12,
@@ -102,7 +100,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '${data['Currency']}: ',
+                                    text: '${data['currency']}: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 10,
@@ -111,7 +109,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                                   ),
                                   TextSpan(
                                     text: formatter
-                                        .format(data['AmountPaid'])
+                                        .format(data['amount'])
                                         // text: payment.amountPaid
                                         .toString(),
                                     style: TextStyle(
@@ -178,7 +176,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: data['TransactionId'],
+                                        text: data['transactionId'],
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
 

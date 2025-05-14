@@ -15,7 +15,7 @@ class ReceiptRepo extends GetxController {
 
   Future<void> recordReceipt(ReceiveModel receipt) async {
     try {
-      await _db.collection('Users').doc(_uid).collection('transactions').doc(receipt.transactionId).set(receipt.toJson());
+      await _db.collection('users').doc(_uid).collection('transactions').doc(receipt.transactionId).set(receipt.toJson());
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

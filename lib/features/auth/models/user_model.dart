@@ -6,12 +6,12 @@ class UserModel {
   final String userName;
   final String email;
   String phoneNumber;
-  final bool accountIsSetup;
+  final bool accountIssetup;
 
   UserModel({
     required this.firstName,
     required this.accountName,
-    required this.accountIsSetup,
+    required this.accountIssetup,
     required this.lastName,
     required this.accountId,
     required this.userName,
@@ -30,7 +30,7 @@ class UserModel {
         userName: '',
         email: '',
         phoneNumber: '',
-        accountIsSetup: false,
+        accountIssetup: false,
       );
 
   /// Convert userModel to JSON structure for storing data in firestore
@@ -38,25 +38,25 @@ class UserModel {
     return {
       'firstName': firstName,
       'accountName': accountName,
-      'LastName': lastName,
-      'UserName': userName,
-      'Email': email,
-      'PhoneNumber': phoneNumber,
-      'AccountIsSetup': accountIsSetup,
+      'lastName': lastName,
+      'userName': userName,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'accountIsSetup': accountIssetup,
       'accountId': accountId,
     };
   }
 
   factory UserModel.fromJson(Map<String, dynamic> jsonData) {
     return UserModel(
-      firstName: jsonData['FirstName'] ?? '',
+      firstName: jsonData['firstName'] ?? '',
       accountName: jsonData['accountName'] ?? '',
-      lastName: jsonData['LastName'] ?? '',
+      lastName: jsonData['lastName'] ?? '',
       accountId: jsonData['id'] ?? '',
-      userName: jsonData['UserName'] ?? '',
-      email: jsonData['Email'] ?? '',
-      phoneNumber: jsonData['PhoneNumber'] ?? '',
-      accountIsSetup: jsonData['AccountIsSetup'],
+      userName: jsonData['userName'] ?? '',
+      email: jsonData['email'] ?? '',
+      phoneNumber: jsonData['phoneNumber'] ?? '',
+      accountIssetup: jsonData['accountIsSetup'],
     );
   }
 }
