@@ -20,7 +20,7 @@ class SetupController extends GetxController {
   // GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   // GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final setup= Get.put(setupRepo());
+  final setup = Get.put(setupRepo());
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;
@@ -40,11 +40,16 @@ class SetupController extends GetxController {
 
   RxList<DepositModel> deposits = <DepositModel>[].obs;
 
+  /// For setup totals
+  final isCash = true.obs;
+
+  final type = TextEditingController();
+  final currency = TextEditingController();
+  final amount = TextEditingController();
 
   /// Reset database
-  void resetDatabase()async {
-     await FirebaseFirestore.instance.collection('users').doc(_uid).delete().then((_){
-     });
+  void resetDatabase() async {
+    await FirebaseFirestore.instance.collection('users').doc(_uid).delete().then((_) {});
   }
 
   @override
@@ -73,8 +78,30 @@ class SetupController extends GetxController {
       }).toList();
     });
 
-
     super.onInit();
+  }
+
+  clearControllers(){
+    type.clear();
+    amount.clear();
+    currency.clear();
+  }
+
+  updateTotals(BuildContext context) async {
+    final balancesRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances');
+    if (type.text.trim() == 'CASH') {
+      await balancesRef.update({'cashBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        print('done cash');
+      });
+    }
+    await balancesRef.update({'bankBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    });
   }
 
   /// Update setup status
@@ -85,14 +112,14 @@ class SetupController extends GetxController {
       //Check connectivity
       // final isConnected = await NetworkManager.instance.isConnected();
       // if (!isConnected) {
-        Get.snackbar("Oh snap! No internet connection.", "Please check your internet connection and try again",
-            icon: Icon(
-              Icons.cloud_off,
-              color: Colors.white,
-            ),
-            backgroundColor: Color(0xffFF0033),
-            colorText: Colors.white);
-        // return;
+      Get.snackbar("Oh snap! No internet connection.", "Please check your internet connection and try again",
+          icon: Icon(
+            Icons.cloud_off,
+            color: Colors.white,
+          ),
+          backgroundColor: Color(0xffFF0033),
+          colorText: Colors.white);
+      // return;
       // }
       final setupStatus = {'AccountIsSetup': true};
 

@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 import '../../../features/auth/screens/login/login.dart';
-import '../../../features/setup/setup_screen.dart';
+import '../../../features/setup/ui/screens/setup_screen.dart';
 import '../../../navigation_menu.dart';
 
 class AuthRepo extends GetxController {

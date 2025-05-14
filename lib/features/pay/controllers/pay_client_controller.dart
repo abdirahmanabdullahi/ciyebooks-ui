@@ -149,7 +149,7 @@ class PayClientController extends GetxController {
     }
   }
 
-  checkbalances(BuildContext context) {
+  checkBalances(BuildContext context) {
     /// Check if currency is at bank and amount is enough to pay amount requested
     if (paymentType.text.trim() == 'Bank transfer') {
       final currencyKey = paidCurrency.text.trim();

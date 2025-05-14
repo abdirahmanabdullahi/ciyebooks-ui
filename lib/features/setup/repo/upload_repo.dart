@@ -40,7 +40,6 @@ class UploadRepo extends GetxController {
       ///Todo: Check if all headers exist in the file.
       final lines = file.readAsLinesSync(encoding: utf8);
       final List headers = lines.isNotEmpty ? lines[0].split(',').map((e) => e.replaceAll('"', '').trim()).toList() : [];
-
       if (!listEquals(headers, checkList)) {
         if (context.mounted) {
           showErrorDialog(context:context, errorTitle:  "Unsupported data format!.", errorText: 'Please use the provided "Totals template" excel sheet to upload your data');

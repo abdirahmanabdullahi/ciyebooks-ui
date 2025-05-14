@@ -11,8 +11,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../accounts/screens/widgets/account_viewer.dart';
-import 'controller/setup_controller.dart';
+import '../../../accounts/screens/widgets/account_viewer.dart';
+import '../../../stats/controllers/ui/totals_dropdown.dart';
+import '../../controller/setup_controller.dart';
+import '../widgets/confirm_setup_dialog.dart';
+import '../widgets/reset_database.dart';
 
 class SetupScreen extends StatelessWidget {
   const SetupScreen({super.key});
@@ -77,14 +80,17 @@ class SetupScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
+                            Container(decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(14),topRight: Radius.circular(14),),
+                              color:AppColors.quarternary,
+                            ),
+
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("Cash balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                                  Text("Totals", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
                                   TextButton(
-                                      onPressed: () => uploadController.uploadRepo.uploadData(context: context, checkList: uploadController.totalsFieldChecklist, fileName: 'totals'),
+                                      onPressed: () => showAddTotals(context),
                                       child: Row(
                                         children: [
                                           Icon(
@@ -92,7 +98,7 @@ class SetupScreen extends StatelessWidget {
                                             color: CupertinoColors.systemBlue,
                                           ),
                                           Text(
-                                            'Add',
+                                            'Update',
                                             style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
                                           ),
                                         ],
@@ -100,8 +106,12 @@ class SetupScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            Gap(10),Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Text("Cash balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                            ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                              padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 6),
                               child: Obx(() => Column(
                                     children: controller.totals.value.cashBalances.entries.map((entry) {
                                       return Column(
@@ -126,51 +136,17 @@ class SetupScreen extends StatelessWidget {
                                     }).toList(),
                                   )),
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: AppColors.quinary,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withAlpha(30),
-                              blurRadius: 4,
-                              offset: Offset(-3, 3),
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
-                                  TextButton(
-                                      onPressed: () => uploadController.uploadRepo.uploadData(context: context, checkList: uploadController.totalsFieldChecklist, fileName: 'totals'),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.add,
-                                            color: CupertinoColors.systemBlue,
-                                          ),
-                                          Text(
-                                            'Add',
-                                            style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                                          ),
-                                        ],
-                                      ))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                              child: Obx(() => Column(
+                            Gap(15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                                  child: Obx(() => Column(
                                     children: controller.totals.value.bankBalances.entries.map((entry) {
                                       return Column(
                                         children: [
@@ -193,10 +169,80 @@ class SetupScreen extends StatelessWidget {
                                       );
                                     }).toList(),
                                   )),
+                                ),
+                              ],
                             ),
                           ],
                         ),
                       ),
+                      // Container(
+                      //   margin: EdgeInsets.all(6),
+                      //   decoration: BoxDecoration(
+                      //     color: AppColors.quinary,
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //         color: Colors.black.withAlpha(30),
+                      //         blurRadius: 4,
+                      //         offset: Offset(-3, 3),
+                      //       )
+                      //     ],
+                      //     borderRadius: BorderRadius.circular(14),
+                      //   ),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       Padding(
+                      //         padding: const EdgeInsets.fromLTRB(18, 0, 10, 6),
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             Text("Bank balances", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: AppColors.prettyDark)),
+                      //             TextButton(
+                      //                 onPressed: () => uploadController.uploadRepo.uploadData(context: context, checkList: uploadController.totalsFieldChecklist, fileName: 'totals'),
+                      //                 child: Row(
+                      //                   children: [
+                      //                     Icon(
+                      //                       Icons.add,
+                      //                       color: CupertinoColors.systemBlue,
+                      //                     ),
+                      //                     Text(
+                      //                       'Add',
+                      //                       style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
+                      //                     ),
+                      //                   ],
+                      //                 ))
+                      //           ],
+                      //         ),
+                      //       ),
+                      //       Padding(
+                      //         padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
+                      //         child: Obx(() => Column(
+                      //               children: controller.totals.value.bankBalances.entries.map((entry) {
+                      //                 return Column(
+                      //                   children: [
+                      //                     Padding(
+                      //                       padding: const EdgeInsets.symmetric(vertical: 6.0),
+                      //                       child: Row(
+                      //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //                         children: [
+                      //                           Text(entry.key, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500)),
+                      //                           Text(formatter.format(entry.value), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.prettyDark)),
+                      //                         ],
+                      //                       ),
+                      //                     ),
+                      //                     Divider(
+                      //                       height: 0,
+                      //                       thickness: .11,
+                      //                       color: AppColors.prettyDark,
+                      //                     )
+                      //                   ],
+                      //                 );
+                      //               }).toList(),
+                      //             )),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
 
                       Obx(() {
                         return Container(
@@ -312,7 +358,9 @@ class SetupScreen extends StatelessWidget {
                           ),
                         );
                       }),
-                      Container(height: 500,padding: EdgeInsets.all( 8),
+                      Container(
+                        height: 500,
+                        padding: EdgeInsets.all(8),
                         margin: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: AppColors.quinary,
@@ -325,7 +373,8 @@ class SetupScreen extends StatelessWidget {
                           ],
                           borderRadius: BorderRadius.circular(14),
                         ),
-                        child: SingleChildScrollView(physics: ClampingScrollPhysics(),
+                        child: SingleChildScrollView(
+                          physics: ClampingScrollPhysics(),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -369,11 +418,11 @@ class SetupScreen extends StatelessWidget {
                                       return GestureDetector(
                                         onTap: () => showAccountDetails(
                                           context: context,
-                                          accountName: data['AccountName'],
-                                          accountNumber: data['AccountNo'],
-                                          email: data['Email'],
-                                          phoneNumber: data['PhoneNo'],
-                                          balances: data['Currencies'].entries.expand<Widget>((currency) {
+                                          accountName: data['accountName'],
+                                          accountNumber: data['accountNo'],
+                                          email: data['email'],
+                                          phoneNumber: data['phoneNo'],
+                                          balances: data['currencies'].entries.expand<Widget>((currency) {
                                             return [
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -392,14 +441,16 @@ class SetupScreen extends StatelessWidget {
                                             ];
                                           }).toList(),
                                         ),
-                                        child: Container(margin: EdgeInsets.fromLTRB(3,6,3,0),
-                                          decoration: BoxDecoration( boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withAlpha(30),
-                                              blurRadius: 4,
-                                              offset: Offset(-3, 3),
-                                            )
-                                          ],
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(3, 6, 3, 0),
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withAlpha(30),
+                                                blurRadius: 4,
+                                                offset: Offset(-3, 3),
+                                              )
+                                            ],
                                             borderRadius: BorderRadius.circular(10),
                                             color: AppColors.quinary,
                                           ),
@@ -506,7 +557,7 @@ class SetupScreen extends StatelessWidget {
                     child: FloatingActionButton(
                       heroTag: 'Complete',
                       backgroundColor: AppColors.prettyBlue,
-                      onPressed: () => showConfirmsetupDialog(context, controller),
+                      onPressed: () => showConfirmSetupDialog(context, controller),
                       child: Text(
                         'Complete setup',
                         style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600, fontSize: 12),
@@ -562,219 +613,5 @@ class SetupScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showConfirmsetupDialog(BuildContext context, SetupController controller) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        backgroundColor: AppColors.quarternary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 10,
-        titlePadding: EdgeInsets.zero,
-        title: Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                color: AppColors.quinary,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.warning_rounded,
-                      color: Colors.orange,
-                    ),
-                    Gap(10),
-                    Text(
-                      'Are you sure?',
-                      style: TextStyle(
-                        color: CupertinoColors.systemBlue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 30),
-        content: Text(
-          'Have you confirmed your totals and other uploaded data? If not, please do so. No hurry!.If done, please proceed to submit the data.',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actionsPadding: EdgeInsets.only(bottom: 15),
-        actions: [
-          SizedBox(
-            height: 40,
-            width: 100,
-            child: FloatingActionButton(
-              backgroundColor: AppColors.quinary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              onPressed: () {
-                controller.completeSetup();
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Submit data",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                  color: Colors.blue,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: SizedBox(
-              height: 40,
-              width: 100,
-              child: FloatingActionButton(
-                backgroundColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Future<dynamic> showResetDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        backgroundColor: AppColors.quarternary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        elevation: 10,
-        titlePadding: EdgeInsets.zero,
-        title: Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                color: AppColors.quinary,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.warning_rounded,
-                      color: Colors.orange,
-                    ),
-                    Gap(10),
-                    Text(
-                      'Reset items',
-                      style: TextStyle(
-                        color: CupertinoColors.systemBlue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 30),
-        content: DropdownMenu(
-            expandedInsets: EdgeInsets.zero,
-
-            // controller: controller.from,
-            trailingIcon: Icon(
-              Icons.keyboard_arrow_down_outlined,
-              color: CupertinoColors.systemBlue,
-            ),
-            inputDecorationTheme: InputDecorationTheme(
-              fillColor: AppColors.quinary,
-              filled: true,
-              isDense: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            enableSearch: true,
-            requestFocusOnTap: true,
-            enableFilter: true,
-            menuStyle: MenuStyle(
-              padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-              backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-              maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-            ),
-            label: Text('Select items to reset'),
-            selectedTrailingIcon: Icon(
-              Icons.search,
-              color: CupertinoColors.systemBlue,
-            ),
-            // width: double.maxFinite,
-            onSelected: (value) {},
-            dropdownMenuEntries: [
-              DropdownMenuEntry(
-                  style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                      side: WidgetStateProperty.all(
-                        BorderSide(width: 2, color: AppColors.quarternary),
-                      ),
-                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                      ))),
-                  value: 'accounts',
-                  label: 'accounts'),
-            ]),
-        actionsAlignment: MainAxisAlignment.center,
-        actionsPadding: EdgeInsets.only(bottom: 15),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: SizedBox(
-              height: 45,
-              width: double.maxFinite,
-              child: FloatingActionButton(
-                elevation: 0,
-                backgroundColor: AppColors.quinary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  "Reset",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                    color: Colors.redAccent,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

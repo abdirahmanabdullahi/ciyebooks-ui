@@ -28,13 +28,8 @@ class UploadController extends GetxController {
   final totalsFieldChecklist = [
     'shillingAtBank',
     'shillingCashInHand',
-    'shillingReceivable',
-    'shillingPayable',
     'dollarAtBank',
     'dollarCashInHand',
-    'dollarReceivable',
-    'dollarPayable',
-    'currenciesAtCost'
   ];
   // final depositsCheckList = ['Date', 'Deposited_By', 'Currency', 'Amount', 'Narrative'];
   // final transfersCheckList = ['Date', 'Currency', 'Receiver', 'Amount', 'Narrative'];
@@ -48,37 +43,36 @@ class UploadController extends GetxController {
 
 
   ///Todo: upload totals
-  Future<void> uploadTotals(BuildContext context) async {
-    final List? lines = await uploadRepo.uploadData(context: context, checkList: totalsHeadersCheckList, fileName: 'Totals template');
-
-    ///Todo: Check if all required fields are there.
-    if (lines != null && lines.isNotEmpty) {
-      /// Remove the headers
-      lines.removeAt(0);
-
-      ///Parse the data to a map.
-      Map<String, dynamic> parsedTotals = {};
-      final List fieldNames = [];
-      for (var line in lines) {
-        final key = line.split(',')[0].replaceAll('"', '');
-        fieldNames.add(key);
-
-        final value = double.tryParse(line.split(',')[1].replaceAll('"', '').trim()) ?? 0.0;
-
-        parsedTotals[key] = value;
-      }
-
-      if (!listEquals(fieldNames, totalsFieldChecklist)) {
-        if (context.mounted) {
-          showErrorDialog(context: context,errorTitle:  "Oops! Unsupported data format!.",errorText:  ' Please use the provided "Totals template" excel sheet to upload your data');
-        }
-        return;
-      }
-
-      /// Save the data to firestore
-      ///Todo: Upload the data to firestore
-    }
-  }
+  // Future<void> uploadTotals(BuildContext context) async {
+  //   final List? lines = await uploadRepo.uploadData(context: context, checkList: totalsHeadersCheckList, fileName: 'Totals template');
+  //   ///Todo: Check if all required fields are there.
+  //   if (lines != null && lines.isNotEmpty) {
+  //     /// Remove the headers
+  //     lines.removeAt(0);
+  //     ///Parse the data to a map.
+  //     Map<String, dynamic> parsedTotals = {};
+  //     final List fieldNames = [];
+  //     for (var line in lines) {
+  //       final key = line.split(',')[0].replaceAll('"', '');
+  //       fieldNames.add(key);
+  //
+  //       final value = double.tryParse(line.split(',')[1].replaceAll('"', '').trim()) ?? 0.0;
+  //
+  //       parsedTotals[key] = value;
+  //     }
+  //
+  //     if (!listEquals(fieldNames, totalsFieldChecklist)) {
+  //       if (context.mounted) {
+  //         showErrorDialog(context: context,errorTitle:  "Oops! Unsupported data format!.",errorText:  ' Please use the provided "Totals template" excel sheet to upload your data');
+  //       }
+  //       return;
+  //     }
+  //
+  //
+  //     /// Save the data to firestore
+  //     ///Todo: Upload the data to firestore
+  //   }
+  // }
 
   Future<void> uploadAccounts(BuildContext context) async {
     //     // ///Upload the file

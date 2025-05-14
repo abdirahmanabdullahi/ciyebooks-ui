@@ -474,7 +474,7 @@ return showDialog(
                       // ),
                       onPressed: controller.isButtonEnabled.value
                           ? () {
-                              controller.checkbalances(context);
+                              controller.checkBalances(context);
                             }
                           : null,
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
