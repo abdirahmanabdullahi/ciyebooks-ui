@@ -87,7 +87,7 @@ class Login extends StatelessWidget {
                             )),
                       ),
                     ),
-                    TextButton(onPressed: () => Get.offAll(() => Signup()), child: Text('data')),
+                    // TextButton(onPressed: () => Get.offAll(() => Signup()), child: Text('data')),
                     // const Gap(AppSizes.spaceBtwSections / 2),
                     SizedBox(
                       height: 45,

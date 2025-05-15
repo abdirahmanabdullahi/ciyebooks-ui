@@ -166,6 +166,7 @@ showBankDepositForm(BuildContext context) {
                           ),
                           // width: double.maxFinite,
                           onSelected: (value) {
+                            print(DateTime.now());
                             controller.updateButtonStatus();
                             if (value != null) {
                               controller.depositedByManager.value = value;
@@ -200,71 +201,6 @@ showBankDepositForm(BuildContext context) {
                     ),
 
                   ],
-                ),
-                Expanded(flex: 4,
-                  child: DropdownMenu(
-                      controller: controller.depositorName,
-                      expandedInsets: EdgeInsets.zero,
-                      trailingIcon: Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: CupertinoColors.systemBlue,
-                      ),
-                      inputDecorationTheme: InputDecorationTheme(
-                        fillColor: AppColors.quinary,
-                        filled: true,
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                        constraints: BoxConstraints.tight(const Size.fromHeight(45)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      enableSearch: true,
-                      requestFocusOnTap: true,
-                      enableFilter: true,
-                      menuStyle: MenuStyle(
-                        padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
-                        backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                        maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
-                      ),
-                      label: Text('Deposited by'),
-                      selectedTrailingIcon: Icon(
-                        Icons.search,
-                        color: CupertinoColors.systemBlue,
-                      ),
-                      // width: double.maxFinite,
-                      onSelected: (value) {
-                        controller.updateButtonStatus();
-                        if (value != null) {
-                          controller.depositedByManager.value = value;
-                          value ? (controller.depositorName.text = 'Manager') : controller.depositorName.text = '';
-                        }
-                      },
-                      dropdownMenuEntries: [
-                        DropdownMenuEntry(
-                            style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                side: WidgetStateProperty.all(
-                                  BorderSide(width: 2, color: AppColors.quarternary),
-                                ),
-                                shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(0)),
-                                ))),
-                            value: true,
-                            label: 'Manager'),
-                        DropdownMenuEntry(
-                            style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all(AppColors.quinary),
-                                side: WidgetStateProperty.all(
-                                  BorderSide(width: 2, color: AppColors.quarternary),
-                                ),
-                                shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(0)),
-                                ))),
-                            value: false,
-                            label: 'Other'),
-
-                      ]),
                 ),
 
                 Obx(()=> Gap(!controller.depositedByManager.value?0:AppSizes.spaceBtwItems)),
@@ -355,7 +291,7 @@ showBankDepositForm(BuildContext context) {
                         // ),
                         onPressed: controller.isButtonEnabled.value
                             ? () {
-                                controller.checkbalances(context);
+                                controller.checkBalances(context);
                               }
                             : null,
                         // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

@@ -31,7 +31,7 @@ class ReceiptsHistory extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => showReceiptForm(context),
         backgroundColor: AppColors.prettyDark,
-        shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         child: Icon(
           Icons.add,
           color: AppColors.quinary,

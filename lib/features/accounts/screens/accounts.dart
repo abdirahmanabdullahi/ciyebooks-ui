@@ -26,7 +26,7 @@ class Accounts extends StatelessWidget {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.prettyDark,
-          shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
           onPressed: () => showCreateAccountDialog(context),
           child: Icon(
             Icons.add,
@@ -35,7 +35,7 @@ class Accounts extends StatelessWidget {
             // size: 35,
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(

@@ -58,7 +58,7 @@ final transactionsStream = '';
     });
 
     /// Stream for currency stock
-    FirebaseFirestore.instance.collection('users').doc(_uid).collection('CurrencyStock').orderBy('totalCost', descending: true).snapshots().listen((querySnapshot) {
+    FirebaseFirestore.instance.collection('users').doc(_uid).collection('currencyStock').orderBy('totalCost', descending: true).snapshots().listen((querySnapshot) {
       currencies.clear();
       currencies.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());

@@ -21,7 +21,7 @@ class BankHistory extends StatelessWidget {
       backgroundColor: AppColors.quarternary,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.prettyDark,
-        shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
 
         onPressed: () => Platform.isIOS ? showIosBankActionSheet(context) : showAndroidBankBottomSheet(context: context),
         child: Icon(
@@ -30,7 +30,7 @@ class BankHistory extends StatelessWidget {
           // size: 35,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(

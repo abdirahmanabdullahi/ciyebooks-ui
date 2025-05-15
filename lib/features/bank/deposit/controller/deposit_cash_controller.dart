@@ -94,7 +94,7 @@ class DepositCashController extends GetxController {
   }
 
   ///Check if bank balances are enough
-  checkbalances(BuildContext context) {
+  checkBalances(BuildContext context) {
     final currency = depositedCurrency.text.trim();
     final availableAmount = double.parse('${cashBalances[currency]}');
     final requestedAmount = double.parse(amount.text.trim());
@@ -143,36 +143,36 @@ class DepositCashController extends GetxController {
       await createDailyReport();
       ///Compare cash and amount to be paid
       // cashBalance.value = double.tryParse(cashbalances[depositedCurrency.text.trim()].toString()) ?? 0.0;
-
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0)) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Bank deposit failed",
-          'Amount to be deposited cannot be more than cash in hand',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-
-        return;
-      }
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0)) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Zero cash warning",
-          'If you make this deposit, you will have no cash left',
-          backgroundColor: Colors.orangeAccent,
-          colorText: Colors.white,
-        );
-        // return;
-      }
+      //
+      // if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0)) {
+      //   Get.snackbar(
+      //     icon: Icon(
+      //       Icons.cloud_done,
+      //       color: Colors.white,
+      //     ),
+      //     shouldIconPulse: true,
+      //     "Bank deposit failed",
+      //     'Amount to be deposited cannot be more than cash in hand',
+      //     backgroundColor: Colors.red,
+      //     colorText: Colors.white,
+      //   );
+      //
+      //   return;
+      // }
+      // if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(cashBalances[depositedCurrency.text.trim()].toString()) ?? 0.0)) {
+      //   Get.snackbar(
+      //     icon: Icon(
+      //       Icons.cloud_done,
+      //       color: Colors.white,
+      //     ),
+      //     shouldIconPulse: true,
+      //     "Zero cash warning",
+      //     'If you make this deposit, you will have no cash left',
+      //     backgroundColor: Colors.orangeAccent,
+      //     colorText: Colors.white,
+      //   );
+      //   // return;
+      // }
 
       /// Initialize batch
       final db = FirebaseFirestore.instance;
@@ -199,6 +199,9 @@ class DepositCashController extends GetxController {
       }
       ///Create payment transaction
       batch.set(depositRef, newDeposit.toJson());
+
+      /// Update daily report
+      batch.update(dailyReportRef, {"deposits.${depositedCurrency.text.trim()}": FieldValue.increment(num.parse(amount.text.trim()))});
 
       ///update cash balance
       batch.update(cashRef, {"cashBalances.${depositedCurrency.text.trim()}": FieldValue.increment(-num.parse(amount.text.trim()))});

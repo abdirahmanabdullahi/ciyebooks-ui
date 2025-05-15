@@ -23,30 +23,17 @@ class ForexHome extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.quarternary,
-      floatingActionButton: Row(mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-            backgroundColor: AppColors.prettyDark,
-            shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
-            onPressed: () => showForexForm(context),
-            child: Icon(
-              Icons.add,
-              color: AppColors.quinary,
-              // size: 35,
-            ),
-          ), FloatingActionButton(heroTag: '234234',
-            backgroundColor: AppColors.prettyDark,
-            shape: RoundedRectangleBorder(side: BorderSide(color: AppColors.quinary, width: 2.5), borderRadius: BorderRadius.circular(100)),
-            onPressed: () => controller.printCurrencies(),
-            child: Icon(
-              Icons.new_label,
-              color: AppColors.quinary,
-              // size: 35,
-            ),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.prettyDark,
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(100)),
+        onPressed: () => showForexForm(context),
+        child: Icon(
+          Icons.add,
+          color: AppColors.quinary,
+          // size: 35,
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
