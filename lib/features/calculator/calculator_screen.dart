@@ -23,53 +23,50 @@ class CalculatorScreen extends StatelessWidget {
         Obx(
           () {
             String display = "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-              child: SizedBox(
-                height: 100,
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      style: IconButton.styleFrom(backgroundColor: AppColors.quinary),
-                      onPressed: () async {
-                        await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
-                      },
-                      icon: Icon(
-                        Icons.copy,
-                        color: Colors.black38,
-                      ),
+            return SizedBox(
+              height: 100,
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    style: IconButton.styleFrom(backgroundColor: AppColors.quinary),
+                    onPressed: () async {
+                      await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
+                    },
+                    icon: Icon(
+                      Icons.copy,
+                      color: Colors.black38,
                     ),
-                    Row(
+                  ),
+                  Row(
 
 
-                      children: [
+                    children: [
 
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              reverse: true,
-                              child: Text(
-                                display,
-                                style: TextStyle(
-                                  color: AppColors.prettyDark,
-                                  fontSize: display.length > 14
-                                      ? 25
-                                      : display.length > 30
-                                          ? 20
-                                          : 35,
-                                  fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
-                                ),
-                                textAlign: TextAlign.end,
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            reverse: true,
+                            child: Text(
+                              display,
+                              style: TextStyle(
+                                color: AppColors.prettyDark,
+                                fontSize: display.length > 14
+                                    ? 25
+                                    : display.length > 30
+                                        ? 20
+                                        : 35,
+                                fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
                               ),
+                              textAlign: TextAlign.end,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             );
           },
