@@ -91,7 +91,19 @@ class PayExpenseController extends GetxController {
 
 
 
-  addNewExpenseCategory() {
+  addNewExpenseCategory(BuildContext context) async {
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+
+      }
+    } on SocketException catch (_) {
+      isLoading.value=false;
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+      return;
+    }
 
     isLoading.value=true;
     try {
@@ -104,6 +116,10 @@ class PayExpenseController extends GetxController {
       docReference.set({
         category.text.trim(): category.text.trim(),
       }, SetOptions(merge: true)).then((_){
+        if(context.mounted){
+          Navigator.pop(context);
+
+        }
         isLoading.value=false; Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -400,7 +416,7 @@ class PayExpenseController extends GetxController {
   //   }
   // }
   ///Check internet connection
-  checkInternetConnection(BuildContext context) async {
+  checkInternetConnection(BuildContext context ) async {
     isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
@@ -462,7 +478,7 @@ class PayExpenseController extends GetxController {
     }
   }
 
-  Future createExpense(BuildContext context) async {
+  createExpense(BuildContext context) async {
 
     try {
       await createDailyReport();

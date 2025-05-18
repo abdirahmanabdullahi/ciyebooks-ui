@@ -56,29 +56,33 @@ showAddExpenseCategoryDialog(context) {
               SizedBox(
                   height: 45,
                   width: double.maxFinite,
-                  child: TextFormField(inputFormatters: [                        FilteringTextInputFormatter.deny(RegExp(r'^\d*\.?\d*$')),
-                  ],
-                    onChanged: (value)=>controller.updateNewCategoryButton(),
+                  child: TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(RegExp(r'^\d*\.?\d*$')),
+                    ],
+                    onChanged: (value) => controller.updateNewCategoryButton(),
                     controller: controller.category,
-                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                        labelText: 'Category name'),
+                    decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 8), labelText: 'Category name'),
                   )),
               Gap(AppSizes.spaceBtwItems * 2.5),
               SizedBox(
                 height: 45,
                 width: double.maxFinite,
                 child: Obx(
-                  ()=> FloatingActionButton(
+                  () => FloatingActionButton(
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    backgroundColor: controller.newCategoryButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,                onPressed:controller.newCategoryButtonEnabled.value? () {
-                      controller.addNewExpenseCategory();
-                    }:null,
-
+                    backgroundColor: controller.newCategoryButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
+                    onPressed: controller.newCategoryButtonEnabled.value
+                        ? () {
+                            controller.addNewExpenseCategory(context,);
+                          }
+                        : null,
                     child: const Text(
                       'Add',
                       style: TextStyle(color: AppColors.quinary),
-                    ),              ),
+                    ),
+                  ),
                 ),
               )
             ],

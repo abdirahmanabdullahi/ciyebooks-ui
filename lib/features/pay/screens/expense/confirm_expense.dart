@@ -201,8 +201,8 @@ showConfirmExpenseDialog(BuildContext context) {
                         backgroundColor: AppColors.prettyBlue,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                         // ),
-                        onPressed:controller.isLoading.value?null: ()  {
-                           controller.checkInternetConnection(context);
+                        onPressed:controller.isLoading.value?null: ()  async {
+                           controller.checkInternetConnection(context, );
 
                         },
 
@@ -218,42 +218,42 @@ showConfirmExpenseDialog(BuildContext context) {
                 ),
 
                 Gap(10),
-                SizedBox(
-                  // height: 45,
-                  width: double.maxFinite,
-                  child: Obx(
-                        ()=> FloatingActionButton(disabledElevation: 0,
-                        // elevation: 0,
-                        // style: ElevatedButton.styleFrom(
-                        //   padding: EdgeInsets.symmetric(horizontal: 10),
-                        //   disabledBackgroundColor: const Color(0xff35389fff),
-                        backgroundColor: AppColors.quinary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                        // ),
-                        onPressed: controller.isLoading.value?null:() {
-                          Navigator.of(context).pop();
-                        },
+                Obx(
+                  ()=>controller.isLoading.value?SizedBox.shrink(): SizedBox(
+                    // height: 45,
+                    width: double.maxFinite,
+                    child:FloatingActionButton(disabledElevation: 0,
+                          // elevation: 0,
+                          // style: ElevatedButton.styleFrom(
+                          //   padding: EdgeInsets.symmetric(horizontal: 10),
+                          //   disabledBackgroundColor: const Color(0xff35389fff),
+                          backgroundColor: AppColors.quinary,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          // ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
 
-                        // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.west_outlined,
-                                color: AppColors.prettyDark,
+                          // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Icon(
+                                  Icons.west_outlined,
+                                  color: AppColors.prettyDark,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Back',
-                              style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            )
-                          ],
-                        )),
+                              Text(
+                                'Back',
+                                style: TextStyle(color: AppColors.prettyDark, fontSize: 14, fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              )
+                            ],
+                          )),
                   ),
                 ),
                 Gap(6)

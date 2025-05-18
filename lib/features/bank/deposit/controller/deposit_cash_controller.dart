@@ -138,6 +138,7 @@ class DepositCashController extends GetxController {
     }
   }
   Future createBankDeposit(BuildContext context) async {
+    isLoading.value=true;
     try {
       await createDailyReport();
       ///Compare cash and amount to be paid
