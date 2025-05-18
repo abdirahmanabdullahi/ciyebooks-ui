@@ -6,7 +6,6 @@ import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/features/setup/repo/upload_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -43,10 +42,8 @@ class UploadController extends GetxController {
 
 
 
-  ///Todo: upload totals
   // Future<void> uploadTotals(BuildContext context) async {
   //   final List? lines = await uploadRepo.uploadData(context: context, checkList: totalsHeadersCheckList, fileName: 'Totals template');
-  //   ///Todo: Check if all required fields are there.
   //   if (lines != null && lines.isNotEmpty) {
   //     /// Remove the headers
   //     lines.removeAt(0);
@@ -71,7 +68,6 @@ class UploadController extends GetxController {
   //
   //
   //     /// Save the data to firestore
-  //     ///Todo: Upload the data to firestore
   //   }
   // }
 
@@ -79,7 +75,6 @@ class UploadController extends GetxController {
     //     // ///Upload the file
     final List? lines = await uploadRepo.uploadData(context: context, checkList: accountsCheckList, fileName: 'Accounts template');
 
-    ///Todo: Check if all required fields are there.
     if (lines != null && lines.isNotEmpty) {
       /// Remove the headers
       lines.removeAt(0);
@@ -129,12 +124,10 @@ class UploadController extends GetxController {
     }
   }
 
-//   ///Todo: upload payments
 //   Future<void> uploadPayments(BuildContext context) async {
 //     //     // ///Upload the file
 //     final List? lines = await uploadRepo.uploadData(context: context, checkList: paymentsCheckList, fileName: 'Payments template');
 //
-//     ///Todo: Check if all required fields are there.
 //     if (lines != null && lines.isNotEmpty) {
 //       /// Remove the headers
 //       lines.removeAt(0);
@@ -195,12 +188,10 @@ class UploadController extends GetxController {
 //     }
 //   }
 //
-//   ///Todo: upload expenses
 //   Future<void> uploadExpenses(BuildContext context) async {
 //     //     // ///Upload the file
 //     final List? lines = await uploadRepo.uploadData(context: context, checkList: expensesCheckList, fileName: 'Expenses template');
 //
-//     ///Todo: Check if all required fields are there.
 //     if (lines != null && lines.isNotEmpty) {
 //       /// Remove the headers
 //       lines.removeAt(0);
@@ -257,12 +248,10 @@ class UploadController extends GetxController {
 //     }
 //   }
 //
-//   // ///Todo: upload receipts
 //   Future<void> uploadReceipts(BuildContext context) async {
 //     //     // ///Upload the file
 //     final List? lines = await uploadRepo.uploadData(context: context, checkList: receiptsCheckList, fileName: 'Receipts template');
 //
-//     ///Todo: Check if all required fields are there.
 //     if (lines != null && lines.isNotEmpty) {
 //       /// Remove the headers
 //       lines.removeAt(0);
@@ -291,7 +280,6 @@ class UploadController extends GetxController {
 //             amount: double.tryParse(splitLine[4]) ?? 0.0,
 //             dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
 //             description: splitLine[5],
-//             ///Todo: Add account no here
 //             receivingAccountNo: '');
 //
 //         ///Point where to create each new account
@@ -323,12 +311,10 @@ class UploadController extends GetxController {
 //     }
 //   }
 //
-//   // ///Todo: upload withdrawals
 //   Future<void> uploadWithdrawals(BuildContext context) async {
 //     //     // ///Upload the file
 //     final List? lines = await uploadRepo.uploadData(context: context, checkList: withdrawalsCheckList, fileName: 'Withdrawals template');
 //
-//     ///Todo: Check if all required fields are there.
 //     if (lines != null && lines.isNotEmpty) {
 //       /// Remove the headers
 //       lines.removeAt(0);
@@ -390,7 +376,6 @@ class UploadController extends GetxController {
 //     //     // ///Upload the file
 //     final List? lines = await uploadRepo.uploadData(context: context, checkList: depositsCheckList, fileName: 'Deposits template');
 //
-//     ///Todo: Check if all required fields are there.
 //     if (lines != null && lines.isNotEmpty) {
 //       /// Remove the headers
 //       lines.removeAt(0);
@@ -448,7 +433,6 @@ class UploadController extends GetxController {
 //   }
 //
 //
-  ///Todo: upload currency stock
   checkInternetConnection(BuildContext context) async {
     try {
       final result = await InternetAddress.lookup('example.com');
@@ -469,60 +453,62 @@ class UploadController extends GetxController {
 
 
     //     // ///Upload the file
-    final List? lines = await uploadRepo.uploadData(context: context, checkList: currenciesCheckList, fileName: 'Currency stock');
+if(context.mounted){
+  final List? lines = await uploadRepo.uploadData(context: context, checkList: currenciesCheckList, fileName: 'Currency stock');
 
-    ///Todo: Check if all required fields are there.
-    if (lines != null && lines.isNotEmpty) {
-      /// Remove the headers
-      lines.removeAt(0);
+  if (lines != null && lines.isNotEmpty) {
+    /// Remove the headers
+    lines.removeAt(0);
 
-      ///Process the content
-      int buyFxCounter = 1000;
-      double costOfCurrencies = 0;
+    ///Process the content
+    // int buyFxCounter = 1000;
+    // double costOfCurrencies = 0;
 
-      ///PROCESSING
-      final batch = _db.batch();
+    ///PROCESSING
+    final batch = _db.batch();
 
-      ///Reference to the counter
-      // final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('currencyStock');
-      for (var line in lines) {
+    ///Reference to the counter
+    // final counterRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).collection('currencyStock');
+    for (var line in lines) {
 
-        final splitLine = line.split(',');
-        // if (splitLine.length != 2) {
-        //   return;
-        // }
-        final newCurrency = CurrencyModel(currencyName: '', amount: double.parse(splitLine[1]), totalCost: double.parse(splitLine[2]), symbol: '', currencyCode: splitLine[0].toUpperCase());
-        // final buyCurrency = ForexModel(
-        //     currencyCode: splitLine[2].toUpperCase(),
-        //     forexType: '',
-        //     type: '',
-        //     rate: double.parse(splitLine[3]),
-        //     amount: double.parse(splitLine[4]),
-        //     totalCost: double.parse(splitLine[5]),
-        //     dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
-        //     transactionType: 'forex',
-        //     transactionId: 'FXBY-$buyFxCounter', revenueContributed: 0);
-        // final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
+      final splitLine = line.split(',');
+      // if (splitLine.length != 2) {
+      //   return;
+      // }
+      final newCurrency = CurrencyModel(currencyName: '', amount: double.parse(splitLine[1]), totalCost: double.parse(splitLine[2]), symbol: '', currencyCode: splitLine[0].toUpperCase());
+      // final buyCurrency = ForexModel(
+      //     currencyCode: splitLine[2].toUpperCase(),
+      //     forexType: '',
+      //     type: '',
+      //     rate: double.parse(splitLine[3]),
+      //     amount: double.parse(splitLine[4]),
+      //     totalCost: double.parse(splitLine[5]),
+      //     dateCreated: DateFormat("dd/MM/yyyy").parse(splitLine[0]),
+      //     transactionType: 'forex',
+      //     transactionId: 'FXBY-$buyFxCounter', revenueContributed: 0);
+      // final newCurrencyAccount = CurrencyModel( currencyName: splitLine[1], currencyCode: splitLine[2].toUpperCase(), symbol: '', amount: 0, totalCost: 0);
 
-        ///Update the total cost of currencies field
-        final totalsRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("setup").doc('balances');
+      ///Update the total cost of currencies field
+      final totalsRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("setup").doc('balances');
 
-        ///Point where to create each new currency account
-        final newCurrencyRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("currencyStock").doc(splitLine[0]);
+      ///Point where to create each new currency account
+      final newCurrencyRef = _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("currencyStock").doc(splitLine[0]);
 
-        ///CREATE THE FX TRANSACTION
-        // batch.set(buyFxTransactionRef, buyCurrency.toJson());
+      ///CREATE THE FX TRANSACTION
+      // batch.set(buyFxTransactionRef, buyCurrency.toJson());
 
-        ///Create the new currency
-        batch.set(newCurrencyRef, newCurrency.toJson());
+      ///Create the new currency
+      batch.set(newCurrencyRef, newCurrency.toJson());
 
-        ///UPDATE THE COUNTER
-        batch.update(totalsRef, {"currenciesAtCost": FieldValue.increment(double.parse(splitLine[2]))});
-      }
-
-      ///After accounts are created, update the firestore counter
-
-      await batch.commit();
+      ///UPDATE THE COUNTER
+      batch.update(totalsRef, {"currenciesAtCost": FieldValue.increment(double.parse(splitLine[2]))});
     }
+
+    ///After accounts are created, update the firestore counter
+
+    await batch.commit();
+  }
+
+}
   }
 }

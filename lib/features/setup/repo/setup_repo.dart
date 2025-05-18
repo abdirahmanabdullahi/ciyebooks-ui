@@ -9,14 +9,14 @@ import '../../../utils/exceptions/format_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
 import '../models/setup_model.dart';
 
-class setupRepo extends GetxController {
-  static setupRepo get instance => Get.find();
+class SetupRepo extends GetxController {
+  static SetupRepo get instance => Get.find();
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   //Function to save data to firestore
-  Future<void> savesetupData(BalancesModel balances,id) async {
+  Future<void> saveSetupData(BalancesModel balances,id) async {
     try {
       await _db
           .collection('users')

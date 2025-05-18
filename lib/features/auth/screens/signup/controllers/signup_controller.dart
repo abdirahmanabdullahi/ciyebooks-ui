@@ -30,7 +30,7 @@ class SignupController extends GetxController {
   final password = TextEditingController();
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
 
-  final setup= Get.put(setupRepo());
+  final setup= Get.put(SetupRepo());
   final userRepo = Get.put(UserRepo());
   final controller = Get.put(VerifyEmailController());
 
@@ -110,7 +110,7 @@ class SignupController extends GetxController {
       await userRepo.saveUserDate(newUser);
 
       ///Create empty setup data
-      await setup.savesetupData(BalancesModel.empty(),uid).then((value) => Get.snackbar(
+      await setup.saveSetupData(BalancesModel.empty(),uid).then((value) => Get.snackbar(
         "Success!",
         'balances update complete',
         backgroundColor: Colors.purple,

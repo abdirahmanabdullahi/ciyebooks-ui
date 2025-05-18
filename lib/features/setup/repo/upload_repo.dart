@@ -17,19 +17,16 @@ class UploadRepo extends GetxController {
     required List checkList,
     required String fileName,
   }) async {
-    ///Todo: upload the file.
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['csv']);
     if (result != null) {
       File file = File(result.files.single.path!);
 
-      ///Todo:Check if file type is CSV.
       if (!file.path.endsWith('.csv')) {
         if (context.mounted) {
           showErrorDialog(context:context, errorTitle: "Unsupported File Type.", errorText: "The selected file is not supported. Please upload a CSV file.");
         }
         return null;
       }
-      //Todo:Check if file is not empty.
       if (file.readAsLinesSync(encoding: utf8).isEmpty) {
         if (context.mounted) {
           showErrorDialog(context:context,errorTitle:  "File empty.",errorText:  "The selected file has no data. Please upload a valid CSV file with data.");
@@ -37,7 +34,6 @@ class UploadRepo extends GetxController {
         return null;
       }
 
-      ///Todo: Check if all headers exist in the file.
       final lines = file.readAsLinesSync(encoding: utf8);
       final List headers = lines.isNotEmpty ? lines[0].split(',').map((e) => e.replaceAll('"', '').trim()).toList() : [];
       if (!listEquals(headers, checkList)) {

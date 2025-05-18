@@ -18,7 +18,6 @@ import '../../../accounts/screens/widgets/account_viewer.dart';
 import '../../../stats/controllers/ui/totals_dropdown.dart';
 import '../../controller/setup_controller.dart';
 import '../widgets/confirm_setup_dialog.dart';
-import '../widgets/reset_database.dart';
 
 class SetupScreen extends StatelessWidget {
   const SetupScreen({super.key});

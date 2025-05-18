@@ -107,7 +107,7 @@ class AccountStatement extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: const Text("Loading"));
           }
-          final transactions = snapshot.data;
+          // final transactions = snapshot.data;
           // final totalPayment =transactions.docs.where((t)=>t['transactionType']=='payment').fold(0.0, total)
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

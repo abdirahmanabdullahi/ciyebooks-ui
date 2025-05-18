@@ -2,7 +2,6 @@ import 'package:ciyebooks/features/setup/controller/setup_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 showCompleteSetupDialog({required BuildContext context, required String errorText, required String errorTitle}) {
   return showDialog(

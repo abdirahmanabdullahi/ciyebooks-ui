@@ -24,7 +24,7 @@ class SetupController extends GetxController {
   // GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   // GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final setup = Get.put(setupRepo());
+  final setup = Get.put(SetupRepo());
 
   RxList<AccountModel> accounts = <AccountModel>[].obs;
   RxList<CurrencyModel> currencies = <CurrencyModel>[].obs;

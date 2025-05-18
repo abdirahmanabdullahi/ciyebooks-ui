@@ -78,7 +78,6 @@ showAddNewCurrencyDialog(BuildContext context) {
                 label: Text('Select currency'),
                 selectedTrailingIcon: Icon(Icons.search),
                 onSelected: (value) {
-                print(value);
                   if (value != null) {
                     controller.newCurrencyCode.text = value;
                     controller.updateNewCurrencyButton();

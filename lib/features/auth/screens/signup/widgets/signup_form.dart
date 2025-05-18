@@ -1,14 +1,10 @@
-import 'package:ciyebooks/features/auth/screens/signup/widgets/switch_screens.dart';
-import 'package:ciyebooks/features/auth/screens/signup/widgets/terms_and_conditions.dart';
 import 'package:ciyebooks/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 
-import '../../login/login.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupForm extends StatelessWidget {

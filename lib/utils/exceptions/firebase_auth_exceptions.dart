@@ -50,8 +50,8 @@ class TFirebaseAuthException implements Exception {
       case 'user-token-expired':
         return 'The user\'s token has expired, and authentication is required.'
             ' Please sign in again.';
-       case 'wrong-password':
-        return 'The password is invalid. Please check your password and try again.';
+       // case 'wrong-password':
+       //  return 'The password is invalid. Please check your password and try again.';
       case 'user-token-revoked':
         return 'The user\'s token has been revoked. Please sign in again.';
       case 'invalid-message-payload':
