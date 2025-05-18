@@ -28,7 +28,7 @@ class WithdrawCashController extends GetxController {
 
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final bankbalances = {}.obs;
+  final bankBalances = {}.obs;
   final isButtonEnabled = false.obs;
   final isLoading = false.obs;
 
@@ -80,7 +80,7 @@ class WithdrawCashController extends GetxController {
     FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen(
       (snapshot) {
         if (snapshot.exists) {
-          bankbalances.value = totals.value.bankBalances;
+          bankBalances.value = totals.value.bankBalances;
           totals.value = BalancesModel.fromJson(snapshot.data()!);
           counters.value = totals.value.transactionCounters;
           transactionCounter.value = counters['bankDepositCounter'];
@@ -92,7 +92,7 @@ class WithdrawCashController extends GetxController {
   checkBalances(BuildContext context) {
     final currencyKey = withdrawnCurrency.text.trim();
 
-    final availableAmount = double.parse('${bankbalances[currencyKey]}');
+    final availableAmount = double.parse('${bankBalances[currencyKey]}');
     final requestedAmount = double.parse(amount.text.trim());
 
     if (requestedAmount > availableAmount) {
@@ -140,7 +140,7 @@ class WithdrawCashController extends GetxController {
       await createDailyReport();
       ///Compare bank balance and amount to withdraw
 
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankbalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) > (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -156,7 +156,7 @@ class WithdrawCashController extends GetxController {
 
         return;
       }
-      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankbalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
+      if ((double.tryParse(amount.text.trim()) ?? 0.0) == (double.tryParse(bankBalances[withdrawnCurrency.text.trim()].toString()) ?? 0.0)) {
         Get.snackbar(
           icon: Icon(
             Icons.cloud_done,
@@ -248,6 +248,8 @@ class WithdrawCashController extends GetxController {
     } catch (e) {
       isLoading.value;
       throw 'Something went wrong. Please try again';
+    }finally{
+      isLoading.value=false;
     }
   }
 

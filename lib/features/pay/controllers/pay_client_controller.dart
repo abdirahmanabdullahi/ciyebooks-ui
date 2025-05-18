@@ -32,7 +32,7 @@ class PayClientController extends GetxController {
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
   final cashBalances = {}.obs;
-  final bankbalances = {}.obs;
+  final bankBalances = {}.obs;
   final payments = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -111,7 +111,7 @@ class PayClientController extends GetxController {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
         cashBalances.value = totals.value.cashBalances;
-        bankbalances.value = totals.value.bankBalances;
+        bankBalances.value = totals.value.bankBalances;
 
         if (cashBalances.containsKey('KES')) {
         } else {}
@@ -154,12 +154,12 @@ class PayClientController extends GetxController {
     if (paymentType.text.trim() == 'Bank transfer') {
       final currencyKey = paidCurrency.text.trim();
 
-      if (!bankbalances.containsKey(currencyKey)) {
+      if (!bankBalances.containsKey(currencyKey)) {
         showErrorDialog(context: context, errorTitle: 'Currency not available', errorText: 'You do not have a $currencyKey bank account registered.');
         return;
       }
 
-      final availableAmount = double.parse('${bankbalances[currencyKey]}');
+      final availableAmount = double.parse('${bankBalances[currencyKey]}');
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -318,6 +318,8 @@ class PayClientController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       throw 'Something went wrong. Please try again';
+    }finally{
+      isLoading.value=false;
     }
   }
 

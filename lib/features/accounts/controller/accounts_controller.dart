@@ -136,6 +136,8 @@ class AccountsController extends GetxController {
       isLoading.value = false;
 
       throw 'Something went wrong. Please try again';
+    }finally{
+      isLoading.value=false;
     }
     Get.snackbar(
       "Success!",
