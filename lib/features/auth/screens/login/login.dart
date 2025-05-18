@@ -34,14 +34,15 @@ class Login extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 45,
-                      child: CupertinoTextField(autocorrect: false,enableSuggestions: false,
+                      child: CupertinoTextField(onChanged: (value)=>controller.updateSubmitButton(),autocorrect: false,enableSuggestions: false,
                           decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)), placeholder: 'Email', controller: controller.email
                       ),
                     ),
                     Gap(10),
                     SizedBox(
                       height: 45,
-                      child: CupertinoTextField(autocorrect: false,enableSuggestions: false,autofillHints: <String>[],
+                      child: CupertinoTextField(onChanged: (value)=>controller.updateSubmitButton(),
+                        autocorrect: false,enableSuggestions: false,autofillHints: <String>[],
                         decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)),
                         obscureText: true,
                         controller: controller.password,
@@ -63,12 +64,12 @@ class Login extends StatelessWidget {
                       width: double.maxFinite,
                       height: 45,
                       child: Obx(
-                        () => FloatingActionButton(
+                        () => FloatingActionButton(disabledElevation: 0,
                           elevation: 3,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           backgroundColor: AppColors.prettyBlue,
-                          // elevation: 0,
-                          onPressed: controller.isLoading.value ? null : () => controller.checkInternetConnection(context),
+                          onPressed: (!controller.isButtonEnabled.value||controller.isLoading.value )? null : () => controller.checkInternetConnection(context),
                           child: Text(
                             'Sign in',
                             style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary),
