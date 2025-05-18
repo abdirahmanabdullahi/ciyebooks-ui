@@ -13,21 +13,24 @@ class SignInController extends GetxController {
   final rememberMe = false.obs;
   final hidePassword = true.obs;
   final isLoading = false.obs;
-  // final localStorage = GetStorage();
+  final isButtonEnabled  = false.obs;
   final email = TextEditingController();
   final password = TextEditingController();
-  GlobalKey<FormState> signInFormKey = GlobalKey<FormState>();
 
-  // @override
-  // void onInit() {
-  //   email.text = localStorage.read('REMEMBER_ME_EMAIL');
-  //   password.text = localStorage.read('REMEMBER_ME_PASSWORD');
-  //   super.onInit();
-  //
-  //
-  // }
 
-  /// Autofill email and password
+  @override
+  void onInit() {
+    /// Add listeners
+    email.addListener(updateSubmitButton);
+    password.addListener(updateSubmitButton);
+    super.onInit();
+
+
+  }
+  updateSubmitButton(){
+isButtonEnabled.value = email.text.isNotEmpty&&password.text.isNotEmpty;
+  }
+
   checkInternetConnection(BuildContext context) async {
     try {
       final result = await InternetAddress.lookup('example.com');
@@ -50,11 +53,7 @@ class SignInController extends GetxController {
 
 
       /// Validate form
-      if (!signInFormKey.currentState!.validate()) {
-        isLoading.value = false;
-        return;
-      }
-      // if (_formKey.currentState!.validate()) {
+
 
       /// Save data if remember me is checked
       if (rememberMe.value) {

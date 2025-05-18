@@ -1,5 +1,5 @@
 import 'package:ciyebooks/features/auth/models/user_model.dart';
-import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
+import 'package:ciyebooks/features/auth/screens/login/widgets/verify_email.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_auth_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/firebase_exceptions.dart';
 import 'package:ciyebooks/utils/exceptions/format_exceptions.dart';
@@ -19,7 +19,7 @@ class AuthRepo extends GetxController {
   // final deviceStorage = GetStorage();
   final _auth = FirebaseAuth.instance;
   Rx<UserModel> userData = UserModel.empty().obs;
-  final accountIssetup = false.obs;
+  final accountIsSetup = false.obs;
 
 
 // Called from main.dart on app launch
@@ -59,7 +59,7 @@ class AuthRepo extends GetxController {
       if (data.exists) {
         userData.value = UserModel.fromJson(data.data()!);
       }
-      return userData.value.accountIssetup;
+      return userData.value.accountIsSetup;
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

@@ -200,7 +200,7 @@ showForexForm(BuildContext context) {
                         menuStyle: MenuStyle(
                           padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                           backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                         ),
                         label: Text(
                           'Currency',
@@ -263,7 +263,7 @@ showForexForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text(' Type'),
                           selectedTrailingIcon: Icon(

@@ -9,7 +9,7 @@ import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/constants/text_strings.dart';
 
 import '../../login/login.dart';
-import '../../../controllers/signup_controller.dart';
+import '../controllers/signup_controller.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({
@@ -53,18 +53,7 @@ class SignupForm extends StatelessWidget {
             ],
           ),
           const Gap(AppSizes.spaceBtwInputFields/2),
-          TextFormField(cursorHeight: 30,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400),
-            validator: (value) =>
-                Validator.validateEmptyText('username', value),
-            controller: controller.userName,
-            expands: false,
-            decoration: const InputDecoration(
-              // prefixIcon: Icon(Iconsax.user_edit),
-              label: Text(AppTexts.username),
-            ),
-          ),
-          const Gap(AppSizes.spaceBtwInputFields/2),
-          TextFormField(keyboardType: TextInputType.emailAddress,
+             TextFormField(keyboardType: TextInputType.emailAddress,
             validator: (value) => Validator.validateEmail(value),
             controller: controller.email,
             expands: false,
@@ -83,65 +72,9 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           const Gap(AppSizes.spaceBtwInputFields/2),
-          Obx(
-            () => TextFormField(
-              obscureText: controller.hidePassword(),
-              validator: (value) => Validator.validatePassword(value),
-              controller: controller.password,
-              expands: false,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outline),
-                suffixIcon: IconButton(
-                    onPressed: () => controller.hidePassword.value =
-                        !controller.hidePassword.value,
-                    icon: Icon(controller.hidePassword.value == true
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined)),
-                label: Text(AppTexts.password),
-              ),
-            ),
-          ),
-          const Gap(AppSizes.spaceBtwInputFields/2),
-          const TermsAndConditions(),
-          const Gap(AppSizes.spaceBtwSections),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: Obx(
-              () => FloatingActionButton(
-                elevation: 0,
-                isExtended: true,
-                enableFeedback: true,
-                backgroundColor: controller.isLoading.value
-                    ? AppColors.prettyDark.withValues(alpha: .9)
-                    : AppColors.prettyDark,
-                onPressed: controller.isLoading.value
-                    ? null // Disable button when loading
-                    : () => controller.checkInternetConnection(context),
-                child: controller.isLoading.value == true
-                    ? SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ))
-                    : Text(
-                        AppTexts.createAccount,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .apply(color: AppColors.quinary),
-                      ),
-              ),
-            ),
-          ),
-          const Gap(AppSizes.spaceBtwItems),
-          SwitchScreens(
-            title: AppTexts.goToLoginTitle,
-            label: AppTexts.goToLoginLabel,
-            onPressed: () => Get.offAll(() => Login()),
-          ),
 
+SizedBox(width: double.maxFinite,
+    child: FloatingActionButton(onPressed:controller.isLoading.value?null: ()=>controller.signup(), child: Text('Submit',style: TextStyle(),))),
         ],
       ),
     );

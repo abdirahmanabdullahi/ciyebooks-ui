@@ -29,8 +29,8 @@ class PayExpenseController extends GetxController {
   );
   final counters = {}.obs;
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
-  final cashbalances = {}.obs;
-  final bankbalances = {}.obs;
+  final cashBalances = {}.obs;
+  final bankBalances = {}.obs;
   final expenseCategories = {}.obs;
   final cashBalance = 0.0.obs;
   final paidAmount = 0.0.obs;
@@ -88,7 +88,11 @@ class PayExpenseController extends GetxController {
   }
 
   /// *-----------------------------Add new expense category----------------------------------*
+
+
+
   addNewExpenseCategory() {
+
     isLoading.value=true;
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -141,8 +145,8 @@ class PayExpenseController extends GetxController {
     FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
       if (snapshot.exists) {
         totals.value = BalancesModel.fromJson(snapshot.data()!);
-        cashbalances.value = totals.value.cashBalances;
-        bankbalances.value = totals.value.bankBalances;
+        cashBalances.value = totals.value.cashBalances;
+        bankBalances.value = totals.value.bankBalances;
         counters.value = totals.value.transactionCounters;
         transactionCounter.value = counters['expenseCounter'];
       }
@@ -414,11 +418,11 @@ class PayExpenseController extends GetxController {
     }
   }
 
-  checkbalances(BuildContext context) {
+  checkBalances(BuildContext context) {
     if (paymentType.value == 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-      final availableAmount = double.parse('${bankbalances[currencyKey]}');
+      final availableAmount = double.parse('${bankBalances[currencyKey]}');
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {
@@ -433,7 +437,7 @@ class PayExpenseController extends GetxController {
     if (paymentType.value != 'Bank') {
       final currencyKey = paidCurrency.text.trim();
 
-      final availableAmount = double.parse(cashbalances[currencyKey].toString());
+      final availableAmount = double.parse(cashBalances[currencyKey].toString());
       final requestedAmount = double.parse(amount.text.trim());
 
       if (requestedAmount > availableAmount) {

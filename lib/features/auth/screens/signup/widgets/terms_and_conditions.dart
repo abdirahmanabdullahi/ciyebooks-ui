@@ -1,4 +1,4 @@
-import 'package:ciyebooks/features/auth/controllers/signup_controller.dart';
+import 'package:ciyebooks/features/auth/screens/signup/controllers/signup_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';

@@ -308,7 +308,7 @@ class SetupScreen extends StatelessWidget {
                       }),
                       Container(
                         height: 500,
-                        padding: EdgeInsets.all(8),
+                        // padding: EdgeInsets.all(8),
                         margin: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: AppColors.quinary,
@@ -430,7 +430,6 @@ class SetupScreen extends StatelessWidget {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              // First Row (From, Receiver, Amount)
                                               RichText(
                                                 text: TextSpan(
                                                   children: [

@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:ciyebooks/data/repositories/auth/auth_repo.dart';
 import 'package:ciyebooks/features/auth/models/user_model.dart';
-import 'package:ciyebooks/features/auth/screens/signup/verify_email.dart';
+import 'package:ciyebooks/features/auth/screens/login/widgets/verify_email.dart';
 import 'package:ciyebooks/features/setup/models/setup_model.dart';
 import 'package:ciyebooks/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../common/widgets/error_dialog.dart';
-import '../../../data/repositories/user/user_repo.dart';
-import '../../setup/repo/setup_repo.dart';
-import '../screens/signup/controllers/verify_email_controller.dart';
+import '../../../../../common/widgets/error_dialog.dart';
+import '../../../../../data/repositories/user/user_repo.dart';
+import '../../../../setup/repo/setup_repo.dart';
+import '../../../controllers/verify_email_controller.dart';
 
 class SignupController extends GetxController {
   static SignupController get instance => Get.find();
@@ -99,7 +99,7 @@ class SignupController extends GetxController {
         userName: userName.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
-        accountIssetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
+        accountIsSetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
       );
 
 

@@ -88,7 +88,11 @@ class StatsScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                controller.selectedDate.value = DateFormat("d MMM yyyy ").format(DateTime.now());
+
+                Navigator.pop(context);
+              },
               icon: Icon(
                 Icons.arrow_back_ios_rounded,
                 color: AppColors.quinary,
@@ -102,10 +106,12 @@ class StatsScreen extends StatelessWidget {
                 ))
           ],
           // automaticallyImplyLeading: false,
-          backgroundColor: AppColors.prettyBlue,
-          title: Text(
-            'Daily report',
-            style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary),
+          backgroundColor: AppColors.prettyBlue,centerTitle: true,
+          title: Obx(
+            ()=> Text(
+              controller.selectedDate.value,
+              style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w800, fontSize: 15),
+            ),
           ),
         ),
         body: Obx(
@@ -131,20 +137,20 @@ class StatsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Report date',
-                            style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w300, fontSize: 15),
-                          ),
-                          Text(
-                            controller.selectedDate.value,
-                            style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w300, fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      Gap(10),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     const Text(
+                      //       'Report date',
+                      //       style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w300, fontSize: 15),
+                      //     ),
+                      //     Text(
+                      //       controller.selectedDate.value,
+                      //       style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w300, fontSize: 18),
+                      //     ),
+                      //   ],
+                      // ),
+                      // Gap(10),
 
                       Container(
                         padding: EdgeInsets.all(16),

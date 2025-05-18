@@ -119,7 +119,7 @@ Future<dynamic> showCreateAccountDialog(BuildContext context) {
                       backgroundColor: controller.isButtonEnabled.value ? AppColors.prettyBlue : AppColors.prettyGrey,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       // ),
-                      onPressed: controller.isButtonEnabled.value && !controller.isLoading.value ? () => controller.createAccount(context) : null,
+                      onPressed: controller.isButtonEnabled.value && !controller.isLoading.value ? () => controller.checkInternetConnection(context) : null,
                       // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),
                       child: controller.isLoading.value
                           ? SizedBox(

@@ -81,7 +81,7 @@ showWithdrawForm(BuildContext context) {
 
                 Row(
                   children: [
-                    Expanded(flex: 3,
+                    Expanded(flex: 5,
                       child: Obx(
                             () => DropdownMenu(
                           controller: controller.withdrawnCurrency,
@@ -106,7 +106,7 @@ showWithdrawForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Currency'),
                           selectedTrailingIcon: Icon(Icons.search),
@@ -136,7 +136,7 @@ showWithdrawForm(BuildContext context) {
                       ),
                     ),
                     Gap(AppSizes.spaceBtwItems),
-                    Expanded(flex: 4,
+                    Expanded(flex: 6,
                       child: DropdownMenu(
                           controller: controller.withdrawnBy,
                           expandedInsets: EdgeInsets.zero,
@@ -160,7 +160,7 @@ showWithdrawForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Withdrawn by'),
                           selectedTrailingIcon: Icon(

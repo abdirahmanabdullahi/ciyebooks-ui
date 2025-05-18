@@ -109,7 +109,7 @@ showExpenseForm(BuildContext context) {
                       menuStyle: MenuStyle(
                         padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                         backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                        maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                        maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                       ),
                       selectedTrailingIcon: Icon(
                         Icons.search,
@@ -138,7 +138,7 @@ showExpenseForm(BuildContext context) {
                   Gap(AppSizes.spaceBtwItems),
                   Row(
                     children: [
-                      Expanded(flex: 4,
+                      Expanded(flex: 6,
                         child: DropdownMenu(
                             controller: controller.paymentTypeController,
                             trailingIcon: Icon(
@@ -162,7 +162,7 @@ showExpenseForm(BuildContext context) {
                             menuStyle: MenuStyle(
                               padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                               backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                             ),
                             label: Text('Payment type'),
                             selectedTrailingIcon: Icon(Icons.search),
@@ -210,7 +210,7 @@ showExpenseForm(BuildContext context) {
                                   label: 'Mobile money'),
                             ]),
                       ),        Gap(AppSizes.spaceBtwItems),
-                      Expanded(flex: 3,
+                      Expanded(flex: 5,
                         child: DropdownMenu(
                             controller: controller.paidCurrency,
                             trailingIcon: Icon(
@@ -234,7 +234,7 @@ showExpenseForm(BuildContext context) {
                             menuStyle: MenuStyle(
                               padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                               backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                              maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                             ),
                             label: Text('Currency'),
                             selectedTrailingIcon: Icon(Icons.search),
@@ -340,7 +340,7 @@ showExpenseForm(BuildContext context) {
                           // ),
                           onPressed: controller.isButtonEnabled.value
                               ? () {
-                                  controller.checkbalances(context);
+                                  controller.checkBalances(context);
                                 }
                               : null,
                           // onPressed: controller.isLoading.value ? null : () => controller.createPayment(context),

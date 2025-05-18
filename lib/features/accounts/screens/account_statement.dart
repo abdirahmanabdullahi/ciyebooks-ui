@@ -89,7 +89,7 @@ class AccountStatement extends StatelessWidget {
             .collection('users')
             .doc(FirebaseAuth.instance.currentUser?.uid)
             .collection('transactions')
-            .where('accountNo', isGreaterThanOrEqualTo: '1000')
+            .where('accountNo', isEqualTo: accountNo)
             // .orderBy('dateCreated', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

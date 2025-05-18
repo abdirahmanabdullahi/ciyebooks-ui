@@ -35,7 +35,7 @@ class UploadController extends GetxController {
   // final depositsCheckList = ['Date', 'Deposited_By', 'Currency', 'Amount', 'Narrative'];
   // final transfersCheckList = ['Date', 'Currency', 'Receiver', 'Amount', 'Narrative'];
   // final withdrawalsCheckList = ['Date', 'Currency', 'Amount', 'Withdrawn_By', 'Narrative'];
-  final totalsHeadersCheckList = ['Name', 'Amount'];
+  // final totalsHeadersCheckList = ['Name', 'Amount'];
   // final receiptsCheckList = ['Date', 'Received_From', 'Receiving_Account', 'Currency', 'Amount', 'Description'];
   // final paymentsCheckList = ['Date', 'Account_From', 'Receiver', 'Currency', 'Amount', 'Description'];
   final accountsCheckList = ['First_Name', 'Last_Name', 'Phone_No', 'Email', 'USD', 'KES'];
@@ -85,7 +85,6 @@ class UploadController extends GetxController {
       lines.removeAt(0);
 
       ///Process the content
-
       int accountsCounter = 1000;
 
       ///PROCESSING
@@ -97,9 +96,9 @@ class UploadController extends GetxController {
         if (splitLine.length < 5) {
           return;
         }
-        if(splitLine[4] -0 || splitLine[5]){
-          overDrawn.value=true;
-        }
+        // if(splitLine[4] -0 || splitLine[5]){
+        //   overDrawn.value=true;
+        // }
         final newAccount = AccountModel(
             currencies: {
               'USD': double.tryParse(splitLine[4]) ?? 0.0,
@@ -126,19 +125,7 @@ class UploadController extends GetxController {
       ///After accounts are created, update the firestore counter
       batch.update(counterRef, {"transactionCounters.accountsCounter": accountsCounter});
 
-      await batch.commit().then((_) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Success!",
-          '${accountsCounter - 1000} accounts uploaded',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      });
+      await batch.commit();
     }
   }
 
@@ -478,6 +465,7 @@ class UploadController extends GetxController {
     }
   }
   Future<void> uploadCurrencyStock(BuildContext context) async {
+    await _db.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).collection("setup").doc('balances').update({"currenciesAtCost":0 });
 
 
     //     // ///Upload the file
@@ -534,19 +522,7 @@ class UploadController extends GetxController {
 
       ///After accounts are created, update the firestore counter
 
-      await batch.commit().then((_) {
-        Get.snackbar(
-          icon: Icon(
-            Icons.cloud_done,
-            color: Colors.white,
-          ),
-          shouldIconPulse: true,
-          "Success!",
-          '${buyFxCounter - 1000} currencies uploaded',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      });
+      await batch.commit();
     }
   }
 }

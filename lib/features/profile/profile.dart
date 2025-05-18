@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/auth/screens/signup/signup.dart';
 import 'package:ciyebooks/features/profile/controller/profile_controller.dart';
 import 'package:ciyebooks/features/profile/screens/widgets/info_tile.dart';
 import 'package:ciyebooks/utils/constants/colors.dart';
@@ -165,7 +166,7 @@ class Profile extends StatelessWidget {
               ),
 
               const SizedBox(height: 18),
-              ListTile(
+              ListTile(onTap: ()=>Navigator.push(context, CupertinoPageRoute(builder: (context)=>Signup())),
                 contentPadding: EdgeInsets.fromLTRB(16, 0, 8, 0),
                 title: Text('Submit a user for review'),
                 trailing: Icon(Icons.chevron_right),

@@ -113,7 +113,6 @@ class DepositCashController extends GetxController {
 
   /// Check internet connection
   checkInternetConnection(BuildContext context) async {
-    isLoading.value=true;
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {

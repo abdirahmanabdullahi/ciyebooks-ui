@@ -238,8 +238,7 @@ class TransactionHistory extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                    else if ((data['transactionType'] == 'receipt')) {
+                    } else if ((data['transactionType'] == 'receipt')) {
                       return GestureDetector(
                         onTap: () => showReceiptInfo(
                             context: context,
@@ -252,8 +251,8 @@ class TransactionHistory extends StatelessWidget {
                             receivingAccountNo: data['receivingAccountNo'],
                             description: data['description'],
                             date: data['dateCreated'].toDate()),
-                        child: Container(
-                          color: AppColors.quinary,
+                        child: CustomContainer(
+                          darkColor: AppColors.quinary,
                           width: double.infinity,
                           padding: EdgeInsets.all(10),
                           child: Column(
@@ -299,7 +298,7 @@ class TransactionHistory extends StatelessWidget {
                                           style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12,
-                                            color: CupertinoColors.systemBlue, // Grey Label
+                                            color: AppColors.red, // Grey Label
                                             // Black Value
                                           ),
                                         ),
@@ -317,6 +316,21 @@ class TransactionHistory extends StatelessWidget {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: data['transactionType'].toUpperCase(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w300, fontSize: 10, color: AppColors.secondary,
+                                                // Grey Label
+                                                // Black Value
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Gap(10),
                                       RichText(
                                         text: TextSpan(
                                           children: [
@@ -603,7 +617,7 @@ class TransactionHistory extends StatelessWidget {
                                         ),
                                         TextSpan(
                                           text: formatter
-                                              .format(data['amountPaid'])
+                                              .format(data['amount'])
                                               // text: payment.amountPaid
                                               .toString(),
                                           style: TextStyle(
@@ -701,8 +715,7 @@ class TransactionHistory extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                    else if (data['transactionType'] == 'deposit') {
+                    } else if (data['transactionType'] == 'deposit') {
                       return GestureDetector(
                         onTap: () {
                           showBankDepositInfo(
@@ -711,7 +724,8 @@ class TransactionHistory extends StatelessWidget {
                               amount: data['amount'].toString(),
                               transactionCode: data['transactionId'],
                               description: data['description'],
-                              date: data['dateCreated'].toDate(), depositor: data['depositedBy']);
+                              date: data['dateCreated'].toDate(),
+                              depositor: data['depositedBy']);
                         },
                         child: CustomContainer(
                           darkColor: AppColors.quinary,
@@ -837,8 +851,7 @@ class TransactionHistory extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                    else if (data['transactionType'] == 'withdrawal') {
+                    } else if (data['transactionType'] == 'withdrawal') {
                       return GestureDetector(
                         onTap: () => showBankWithdrawInfo(
                             context: context,
@@ -972,7 +985,6 @@ class TransactionHistory extends StatelessWidget {
                           ),
                         ),
                       );
-
                     } else {
                       return SizedBox.shrink();
                     }

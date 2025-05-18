@@ -48,7 +48,8 @@ showAddTotals(context) {
             ),
           ),
         ),
-        content: Column(mainAxisSize: MainAxisSize.min,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             DropdownMenu(
                 controller: controller.type,
@@ -73,11 +74,11 @@ showAddTotals(context) {
                 menuStyle: MenuStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                   backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                  maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                  maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                 ),
                 label: Text('Type'),
                 selectedTrailingIcon: Icon(Icons.search),
-               onSelected: (value){},
+                onSelected: (value) {},
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                       style: ButtonStyle(
@@ -101,7 +102,8 @@ showAddTotals(context) {
                           ))),
                       value: 'CASH',
                       label: 'CASH'),
-                ]),            Gap(10),
+                ]),
+            Gap(10),
             DropdownMenu(
                 controller: controller.currency,
                 trailingIcon: Icon(
@@ -125,11 +127,11 @@ showAddTotals(context) {
                 menuStyle: MenuStyle(
                   padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                   backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                  maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                  maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                 ),
                 label: Text('Received from'),
                 selectedTrailingIcon: Icon(Icons.search),
-               onSelected: (value){},
+                onSelected: (value) {},
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                       style: ButtonStyle(
@@ -153,21 +155,33 @@ showAddTotals(context) {
                           ))),
                       value: 'KES',
                       label: 'KES'),
-                ]),            Gap(10),
-
-            TextFormField(controller: controller.amount,
-              decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                  label: Text('Amount')),
+                ]),
+            Gap(10),
+            TextFormField(
+              controller: controller.amount,
+              decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), label: Text('Amount')),
             ),
             Gap(20),
-            SizedBox(height: 45,
-              width: double.maxFinite,child: FloatingActionButton(backgroundColor: AppColors.prettyBlue,elevation: 0,
-                onPressed: (){controller.checkInternetConnectionTotals(context);},child: Text('Add',style: TextStyle(color: AppColors.quinary),),),)
+            SizedBox(
+              height: 45,
+              width: double.maxFinite,
+              child: FloatingActionButton(
+                backgroundColor: AppColors.prettyBlue,
+                elevation: 0,
+                onPressed: () {
+                  controller.checkInternetConnectionTotals(context);
+                },
+                child: Text(
+                  'Add',
+                  style: TextStyle(color: AppColors.quinary),
+                ),
+              ),
+            )
           ],
         ),
       );
     },
-  ).then((_){
+  ).then((_) {
     controller.clearControllers();
   });
 }

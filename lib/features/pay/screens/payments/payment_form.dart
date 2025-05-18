@@ -113,7 +113,7 @@ return showDialog(
                     menuStyle: MenuStyle(
                       padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                       backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                     ),
                     label: Text('Paying account'),
                     selectedTrailingIcon: Icon(
@@ -152,7 +152,7 @@ return showDialog(
               Row(
                 children: [
                   Expanded(
-                    flex: 4,
+                    flex: 6,
                     child: DropdownMenu(
                         controller: controller.paymentType,
                         expandedInsets: EdgeInsets.zero,
@@ -176,7 +176,7 @@ return showDialog(
                         menuStyle: MenuStyle(
                           padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                           backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                          maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                         ),
                         label: Text('Payment type'),
                         selectedTrailingIcon: Icon(
@@ -236,7 +236,7 @@ return showDialog(
                   ),
                   Gap(AppSizes.spaceBtwItems),
                   Expanded(
-                    flex: 3,
+                    flex: 5,
                     child: Obx(
                       () => SizedBox(
                         height: 45,
@@ -264,7 +264,7 @@ return showDialog(
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Currency'),
                           selectedTrailingIcon: Icon(
@@ -331,7 +331,7 @@ return showDialog(
                   menuStyle: MenuStyle(
                     padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                     backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                    maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                    maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                   ),
                   label: Text('Paid to'),
                   selectedTrailingIcon: Icon(

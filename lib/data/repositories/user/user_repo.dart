@@ -17,7 +17,7 @@ class UserRepo extends GetxController {
 
   Future<void> saveUserDate(UserModel user) async {
     try {
-      await _db.collection('users').doc(user.accountId).set(user.toJson());
+      await _db.collection('signups').doc('${user.firstName}${user.lastName}').set(user.toJson());
     } on FirebaseAuthException catch (e) {
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {

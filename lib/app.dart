@@ -27,7 +27,7 @@ class _AppState extends State<App> {
               children: [
                 SizedBox(width: double.maxFinite,),
                 Image(height: 300,
-                    image: AssetImage('assets/logos/logo dark.png')),
+                    image: AssetImage('assets/logos/logo.png')),
               ],
             )));
   }

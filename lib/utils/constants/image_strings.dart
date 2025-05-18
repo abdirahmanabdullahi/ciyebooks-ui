@@ -3,8 +3,8 @@
 /// This class contains all the App Images in String formats.
 class AppImages {
   // -- App Logos
-  static const String logoDark = "assets/logos/logo dark.png";
-  static const String logoLight = "assets/logos/logo dark.png";
+  static const String logoDark = "assets/logos/logo.png";
+  static const String logoLight = "assets/logos/logo.png";
 
 
   // -- Animations

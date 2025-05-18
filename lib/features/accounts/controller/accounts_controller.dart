@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:ciyebooks/features/accounts/model/model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../common/widgets/error_dialog.dart';
 import '../../../utils/exceptions/firebase_auth_exceptions.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
@@ -41,6 +44,24 @@ class AccountsController extends GetxController {
     firstName.addListener(updateButtonStatus);
     lastName.addListener(updateButtonStatus);
     super.onInit();
+  }
+
+
+  checkInternetConnection(BuildContext context) async {
+    isLoading.value = true;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (context.mounted) {
+          createAccount(context);
+        }
+      }
+    } on SocketException catch (_) {
+      isLoading.value = false;
+      if (context.mounted) {
+        showErrorDialog(context: context, errorTitle: 'Connection error!', errorText: 'Please check your network connection and try again.');
+      }
+    }
   }
 
   /// Enable/disable submit button

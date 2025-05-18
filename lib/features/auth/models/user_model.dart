@@ -6,12 +6,12 @@ class UserModel {
   final String userName;
   final String email;
   String phoneNumber;
-  final bool accountIssetup;
+  final bool accountIsSetup;
 
   UserModel({
     required this.firstName,
     required this.accountName,
-    required this.accountIssetup,
+    required this.accountIsSetup,
     required this.lastName,
     required this.accountId,
     required this.userName,
@@ -30,7 +30,7 @@ class UserModel {
         userName: '',
         email: '',
         phoneNumber: '',
-        accountIssetup: false,
+        accountIsSetup: false,
       );
 
   /// Convert userModel to JSON structure for storing data in firestore
@@ -42,7 +42,7 @@ class UserModel {
       'userName': userName,
       'email': email,
       'phoneNumber': phoneNumber,
-      'accountIsSetup': accountIssetup,
+      'accountIsSetup': accountIsSetup,
       'accountId': accountId,
     };
   }
@@ -56,7 +56,7 @@ class UserModel {
       userName: jsonData['userName'] ?? '',
       email: jsonData['email'] ?? '',
       phoneNumber: jsonData['phoneNumber'] ?? '',
-      accountIssetup: jsonData['accountIsSetup'],
+      accountIsSetup: jsonData['accountIsSetup'],
     );
   }
 }

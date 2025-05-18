@@ -79,7 +79,7 @@ showBankDepositForm(BuildContext context) {
               children: [
                 Row(
                   children: [
-                    Expanded(flex: 3,
+                    Expanded(flex: 5,
                       child: Obx(
                         () => DropdownMenu(
                           controller: controller.depositedCurrency,
@@ -104,7 +104,7 @@ showBankDepositForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Currency'),
                           selectedTrailingIcon: Icon(Icons.search),
@@ -133,7 +133,7 @@ showBankDepositForm(BuildContext context) {
                         ),
                       ),
                     ),            Gap(AppSizes.spaceBtwItems),
-                    Expanded(flex: 4,
+                    Expanded(flex: 6,
                       child: DropdownMenu(
                           controller: controller.depositorName,
                           expandedInsets: EdgeInsets.zero,
@@ -157,7 +157,7 @@ showBankDepositForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Deposited by'),
                           selectedTrailingIcon: Icon(
@@ -166,7 +166,6 @@ showBankDepositForm(BuildContext context) {
                           ),
                           // width: double.maxFinite,
                           onSelected: (value) {
-                            print(DateTime.now());
                             controller.updateButtonStatus();
                             if (value != null) {
                               controller.depositedByManager.value = value;

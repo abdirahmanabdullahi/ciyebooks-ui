@@ -109,20 +109,26 @@ class SetupController extends GetxController {
   }
 
   updateTotals(BuildContext context) async {
-    final balancesRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances');
-    if (type.text.trim() == 'CASH') {
-      await balancesRef.update({'cashBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
+    try{
+      final balancesRef = FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances');
+      if (type.text.trim() == 'CASH') {
+        await balancesRef.update({'cashBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
+        });
+      }else{
+      await balancesRef.update({'bankBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
         if (context.mounted) {
           Navigator.of(context).pop();
         }
-        print('done cash');
-      });
+      });}
+    }catch(e){
+if(context.mounted){
+  showErrorDialog(context: context, errorText: 'Error!', errorTitle: 'There was an error when updating totals. Please try again later.')
+;}
     }
-    await balancesRef.update({'bankBalances.${currency.text.trim()}': double.parse(amount.text.trim())}).then((_) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    });
+
   }
   checkInternetConnection(BuildContext context) async {
     isLoading.value = true;

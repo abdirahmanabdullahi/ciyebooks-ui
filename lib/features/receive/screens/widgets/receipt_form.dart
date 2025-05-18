@@ -102,7 +102,7 @@ showReceiptForm(BuildContext context) {
                     menuStyle: MenuStyle(
                       padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                       backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                     ),
                     label: Text('Select receiving account'),
                     selectedTrailingIcon: Icon(
@@ -137,7 +137,7 @@ showReceiptForm(BuildContext context) {
                 Row(
                   children: [
                     Expanded(
-                      flex: 4,
+                      flex: 6,
                       child: DropdownMenu(
                           controller: controller.receiptType,
                           trailingIcon: Icon(
@@ -161,7 +161,7 @@ showReceiptForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Deposit type'),
                           selectedTrailingIcon: Icon(Icons.search),
@@ -215,7 +215,7 @@ showReceiptForm(BuildContext context) {
                     ),
                     Gap(AppSizes.spaceBtwItems),
                     Expanded(
-                      flex: 3,
+                      flex: 5,
                       child: Obx(
                         () => DropdownMenu(
                           controller: controller.receivedCurrency,
@@ -240,7 +240,7 @@ showReceiptForm(BuildContext context) {
                           menuStyle: MenuStyle(
                             padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                             backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                            maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                           ),
                           label: Text('Currency'),
                           selectedTrailingIcon: Icon(Icons.search),
@@ -302,7 +302,7 @@ showReceiptForm(BuildContext context) {
                     menuStyle: MenuStyle(
                       padding: WidgetStateProperty.all(EdgeInsets.symmetric(horizontal: 0, vertical: 6)),
                       backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
-                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 500)), // Adjust height here
+                      maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                     ),
                     label: Text('Received from'),
                     selectedTrailingIcon: Icon(Icons.search),
