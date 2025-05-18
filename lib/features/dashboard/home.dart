@@ -52,10 +52,10 @@ class Dashboard extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed:  () => Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (context) => const StatsScreen()),
-    ),
+            onPressed: () => Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => const StatsScreen()),
+            ),
             icon: Icon(
               Icons.bar_chart_rounded,
               color: AppColors.quinary,
@@ -122,7 +122,7 @@ class Dashboard extends StatelessWidget {
                                     },
                                     icon: Icon(
                                       size: 15,
-                                      controller.hide.value ? Icons.visibility_off : Icons.visibility,
+                                      controller.hide.value ? Icons.visibility : Icons.visibility_off,
                                       color: AppColors.quinary,
                                     )),
                               )
@@ -187,7 +187,7 @@ class Dashboard extends StatelessWidget {
                               );
                             }),
 
-                          TopButton(
+                        TopButton(
                             heroTag: "Bank",
                             icon: Icons.account_balance_outlined,
                             label: 'Bank',
@@ -199,16 +199,16 @@ class Dashboard extends StatelessWidget {
                             }),
 
                         // if (profileController.forexEnabled.value)
-                          TopButton(
-                              heroTag: "Forex",
-                              icon: Icons.currency_exchange_rounded,
-                              label: 'Forex',
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(builder: (context) => const ForexHome()),
-                                );
-                              }),
+                        TopButton(
+                            heroTag: "Forex",
+                            icon: Icons.currency_exchange_rounded,
+                            label: 'Forex',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (context) => const ForexHome()),
+                              );
+                            }),
                         TopButton(
                             heroTag: "Accounts",
                             icon: Icons.group_outlined,
@@ -294,9 +294,10 @@ class Dashboard extends StatelessWidget {
 
               /// 💵 Bank balances
 
-              Obx(() { if (!profileController.bankEnabled.value) {
-                return SizedBox.shrink();
-              }
+              Obx(() {
+                if (!profileController.bankEnabled.value) {
+                  return SizedBox.shrink();
+                }
                 return ImageFiltered(
                   imageFilter: controller.hide.value ? ImageFilter.blur(sigmaX: 5, sigmaY: 5) : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
                   child: Container(
@@ -439,9 +440,8 @@ class Dashboard extends StatelessWidget {
                                   );
                                 },
                               ),
-
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 24.0,horizontal: 16 ),
+                          padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

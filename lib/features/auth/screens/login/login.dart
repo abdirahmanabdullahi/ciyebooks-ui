@@ -34,23 +34,31 @@ class Login extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 45,
-                      child: CupertinoTextField(decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)), placeholder: 'Email', controller: controller.email),
+                      child: CupertinoTextField(autocorrect: false,enableSuggestions: false,
+                          decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)), placeholder: 'Email', controller: controller.email
+                      ),
                     ),
                     Gap(10),
                     SizedBox(
                       height: 45,
-                      child:
-                           CupertinoTextField(
-                
-                            decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)),
-                            obscureText: true,
-                            controller: controller.password,
-                            placeholder: 'Password',
-                
-                        ),
-                
+                      child: CupertinoTextField(autocorrect: false,enableSuggestions: false,autofillHints: <String>[],
+                        decoration: BoxDecoration(color: AppColors.quinary, borderRadius: BorderRadius.circular(10)),
+                        obscureText: true,
+                        controller: controller.password,
+                        placeholder: 'Password',
+                      ),
                     ),
-                    Gap(25),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: GestureDetector(
+                              onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => ForgotPassword())),
+                              child: Text(
+                                'Forgot password?',
+                                style: TextStyle(fontWeight: FontWeight.w500, color: CupertinoColors.systemBlue),
+                              ))),
+                    ),
                     SizedBox(
                       width: double.maxFinite,
                       height: 45,
@@ -68,28 +76,7 @@ class Login extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Gap(6),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                          alignment: Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => ForgotPassword())),
-                            child: RichText(
-                                text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Forgot password? Reset ',
-                                  style: TextStyle(fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                                ),
-                                TextSpan(
-                                  text: 'here',
-                                  style: TextStyle(decoration:TextDecoration.underline,fontWeight: FontWeight.bold, color: CupertinoColors.systemBlue),
-                                ),
-                              ],
-                            )),
-                          )),
-                    ),
+
                   ],
                 ),
               ),
