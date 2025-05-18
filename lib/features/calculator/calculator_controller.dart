@@ -30,11 +30,11 @@ class CalculatorController extends GetxController {
   void calculate() {
     if (number1.isEmpty || operand.isEmpty || number2.isEmpty) return;
 
-    final double num1 = double.parse(number1.value);
-    final double num2 = double.parse(number2.value);
-    if (num2 == 0) {
-      return;
-    }
+    final double num1 = double.parse(number1.value.replaceAll(',', ''));
+    final double num2 = double.parse(number2.value.replaceAll(',', ''));
+    // if (num2 == 0) {
+    //   return;
+    // }
 
     double result = 0.0;
     switch (operand.value) {
