@@ -232,21 +232,17 @@ class ReceiptController extends GetxController {
         clearControllers();
       });
     } on FirebaseAuthException catch (e) {
-      isLoading.value = false;
       throw TFirebaseAuthException(e.code).message;
     } on FirebaseException catch (e) {
-      print(e.toString());
-      isLoading.value = false;
       throw TFirebaseException(e.code).message;
     } on FormatException catch (_) {
-      isLoading.value = false;
       throw const TFormatException();
     } on TPlatformException catch (e) {
-      isLoading.value = false;
       throw TPlatformException(e.code).message;
     } catch (e) {
-      isLoading.value = false;
       throw 'Something went wrong. Please try again';
+    }finally{
+      isLoading.value=false;
     }
   }
 

@@ -115,7 +115,7 @@ showWithdrawForm(BuildContext context) {
                               controller.withdrawnCurrency.text = value;
                             }
                           },
-                          dropdownMenuEntries: controller.bankbalances.entries.map((currency) {
+                          dropdownMenuEntries: controller.bankBalances.entries.map((currency) {
                             return DropdownMenuEntry(
                                 style: ButtonStyle(
                                     backgroundColor: WidgetStateProperty.all(AppColors.quinary),

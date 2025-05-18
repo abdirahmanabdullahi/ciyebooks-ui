@@ -251,6 +251,8 @@ class DepositCashController extends GetxController {
     } catch (e) {
       isLoading.value=false;
       throw 'Something went wrong. Please try again';
+    }finally{
+      isLoading.value=false;
     }
   }
 
