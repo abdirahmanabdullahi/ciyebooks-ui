@@ -34,7 +34,7 @@ class Login extends StatelessWidget {
                   children: [
                     SizedBox(
                       height: 45,
-                      child: TextFormField(
+                      child: TextFormField(controller: controller.email,
                         decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), labelText: 'Email'),
                         onChanged: (value) => controller.updateSubmitButton(), autocorrect: false, enableSuggestions: false,
                       ),
@@ -78,7 +78,7 @@ class Login extends StatelessWidget {
                           elevation: 3,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           backgroundColor: AppColors.prettyBlue,
-                          onPressed: (!controller.isButtonEnabled.value || controller.isLoading.value) ? null : () => controller.checkInternetConnection(context),
+                          onPressed: !controller.isButtonEnabled.value||controller.isLoading.value  ? null : () => controller.checkInternetConnection(context),
                           child: Text(
                             'Sign in',
                             style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.quinary),

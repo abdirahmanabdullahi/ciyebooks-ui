@@ -24,37 +24,52 @@ class CalculatorScreen extends StatelessWidget {
           () {
             String display = "${formatNumber(controller.number1.value)} ${controller.operand.value} ${formatNumber(controller.number2.value)}";
             return Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 0, 20, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                      flex: 2,
-                      child: IconButton(
-                          onPressed: () async {
-                            await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
-                          },
-                          icon: Icon(Icons.copy, color: Colors.black38))),
-                  Expanded(
-                    flex: 10,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      reverse: true,
-                      child: Text(
-                        display,
-                        style: TextStyle(
-                          color: AppColors.prettyDark,
-                          fontSize: display.length > 14
-                              ? 25
-                              : display.length > 30
-                                  ? 20
-                                  : 35,
-                          fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.end,
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: SizedBox(
+                height: 100,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      style: IconButton.styleFrom(backgroundColor: AppColors.quinary),
+                      onPressed: () async {
+                        await Clipboard.setData(ClipboardData(text: num.parse(display.replaceAll(',', '')).toString()));
+                      },
+                      icon: Icon(
+                        Icons.copy,
+                        color: Colors.black38,
                       ),
                     ),
-                  ),
-                ],
+                    Row(
+
+
+                      children: [
+
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              reverse: true,
+                              child: Text(
+                                display,
+                                style: TextStyle(
+                                  color: AppColors.prettyDark,
+                                  fontSize: display.length > 14
+                                      ? 25
+                                      : display.length > 30
+                                          ? 20
+                                          : 35,
+                                  fontWeight: display.length > 14 ? FontWeight.w400 : FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -66,13 +81,13 @@ class CalculatorScreen extends StatelessWidget {
         ),
         // Buttons
         Wrap(
-          spacing: 3,
-          runSpacing: 3,
+          // spacing: 3,
+          // runSpacing: 3,
           children: Btn.buttonValues
               .map(
                 (value) => SizedBox(
-                  width: value == Btn.calculate ? screenWidth / 3 + 3: screenWidth / 6,
-                  height: 55,
+                  width: value == Btn.calculate ? screenWidth / 2.5 : screenWidth / 5,
+                  height: 70,
                   child: _buildButton(value, controller),
                 ),
               )
@@ -146,7 +161,7 @@ class CalculatorScreen extends StatelessWidget {
       Btn.divide,
       Btn.calculate,
     ].contains(value)
-        ? CupertinoColors.systemBlue
+        ? AppColors.prettyBlue
         : AppColors.quinary;
   }
 }

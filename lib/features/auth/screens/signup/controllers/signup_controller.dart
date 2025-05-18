@@ -99,7 +99,7 @@ class SignupController extends GetxController {
         userName: userName.text.trim(),
         email: email.text.trim(),
         phoneNumber: phoneNumber.text.trim(),
-        accountIsSetup: false, accountName: '${firstName.text.trim()} ${lastName.text.trim()}',
+        accountIsSetup: false,
       );
 
 

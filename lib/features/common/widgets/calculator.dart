@@ -9,16 +9,11 @@ showCalculator(BuildContext context) {
     builder: (context) {
       return AlertDialog(
           titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.fromLTRB(70, 0, 30, 0),
+          insetPadding: EdgeInsets.fromLTRB(20,200,20,0),
           backgroundColor: AppColors.quarternary,
-          contentPadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.all(15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          content: SizedBox(
-              width: double.maxFinite,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20.0, 0, 16),
-                child: CalculatorScreen(),
-              )));
+          content: CalculatorScreen());
     },
   ).then((value) {
     // controller.enableOverlayButton.value = true;

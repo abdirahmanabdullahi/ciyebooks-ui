@@ -15,6 +15,7 @@ import '../../utils/constants/colors.dart';
 
 import '../accounts/screens/accounts.dart';
 import '../bank/bank_home.dart';
+import '../common/widgets/calculator.dart';
 import '../forex/ui/forex_home.dart';
 import '../pay/screens/payment_home.dart';
 import '../profile/profile.dart';
@@ -52,6 +53,12 @@ class Dashboard extends StatelessWidget {
         ),
         actions: [
           IconButton(
+            onPressed: () => showCalculator(context),
+            icon: Icon(
+              Icons.calculate_rounded,
+              color: AppColors.quinary,
+            ),
+          ),  IconButton(
             onPressed: () => Navigator.push(
               context,
               CupertinoPageRoute(builder: (context) => const StatsScreen()),
