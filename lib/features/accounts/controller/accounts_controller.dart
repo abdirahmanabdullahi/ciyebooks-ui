@@ -23,6 +23,10 @@ class AccountsController extends GetxController {
   final db = FirebaseFirestore.instance;
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
+  final  startingDate = DateTime.now().obs;
+  final  endDate = DateTime.now().obs;
+
+
   final firstName = TextEditingController();
   final lastName = TextEditingController();
   final phoneNo = TextEditingController();
@@ -40,6 +44,12 @@ class AccountsController extends GetxController {
 
   @override
   void onInit() {
+
+    final now = DateTime.now();
+    final startOfMonth = DateTime(now.year, now.month, 1);
+    startingDate.value =startOfMonth;
+
+
     fetchTotals();
     firstName.addListener(updateButtonStatus);
     lastName.addListener(updateButtonStatus);

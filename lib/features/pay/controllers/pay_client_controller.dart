@@ -268,7 +268,7 @@ class PayClientController extends GetxController {
       ///Update payment counter
       batch.update(counterRef, {"transactionCounters.paymentsCounter": FieldValue.increment(1)});
 
-      await batch.commit().then((_)  {
+      await batch.commit().then((_) {
         isLoading.value = false;
 
         Get.snackbar(
@@ -285,7 +285,7 @@ class PayClientController extends GetxController {
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-           showPaymentInfo(
+          showPaymentInfo(
               context: context,
               transactionCode: 'PAY-${counters['paymentsCounter'].toString()}',
               payee: from.text.trim(),
@@ -318,8 +318,8 @@ class PayClientController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       throw 'Something went wrong. Please try again';
-    }finally{
-      isLoading.value=false;
+    } finally {
+      isLoading.value = false;
     }
   }
 
