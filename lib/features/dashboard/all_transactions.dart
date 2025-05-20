@@ -248,7 +248,7 @@ class TransactionHistory extends StatelessWidget {
                             depositor: Text(data['depositorName']),
                             depositType: data['depositType'],
                             receivingAccountName: data['receivingAccountName'],
-                            receivingAccountNo: data['receivingAccountNo'],
+                            receivingAccountNo: data['accountNo'],
                             description: data['description'],
                             date: data['dateCreated'].toDate()),
                         child: CustomContainer(
@@ -572,7 +572,7 @@ class TransactionHistory extends StatelessWidget {
                             context: context,
                             transactionCode: data['transactionId'],
                             category: data['category'],
-                            amountPaid: data['amountPaid'].toString(),
+                            amountPaid: data['amount'].toString(),
                             description: data['description'],
                             currency: data['currency'],
                             date: data['dateCreated'].toDate()),
