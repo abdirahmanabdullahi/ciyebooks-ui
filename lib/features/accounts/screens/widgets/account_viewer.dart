@@ -89,7 +89,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                             ),
                       ),
                       SizedBox(height: 24),
-                      // Divider(color: Colors.black, thickness: .11),
+                      // Divider(color: Colors.black, ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +104,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -118,7 +118,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -133,7 +133,7 @@ showAccountDetails({required BuildContext context, required String accountName, 
                         ],
                       ),
 
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -69,11 +69,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          // height: 0,
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );
@@ -100,11 +96,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          // height: 0,
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );
@@ -127,11 +119,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          // height: 0,
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );
@@ -154,11 +142,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          // height: 0,
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );
@@ -181,10 +165,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );
@@ -208,11 +189,7 @@ class RecentTransactions extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Divider(
-                          // height: 0,
-                          thickness: .11,
-                          color: AppColors.prettyDark,
-                        )
+                           Divider(),
                       ],
                     ),
                   );

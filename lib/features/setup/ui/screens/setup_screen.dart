@@ -135,7 +135,7 @@ class SetupScreen extends StatelessWidget {
                                           ),
                                           Divider(
                                             height: 0,
-                                            thickness: .11,
+                                            
                                             color: AppColors.prettyDark,
                                           )
                                         ],
@@ -169,7 +169,7 @@ class SetupScreen extends StatelessWidget {
                                               ),
                                               Divider(
                                                 height: 0,
-                                                thickness: .11,
+                                                
                                                 color: AppColors.prettyDark,
                                               )
                                             ],
@@ -407,7 +407,7 @@ class SetupScreen extends StatelessWidget {
                                                   ),
                                                 ],
                                               ),
-                                              Divider(color: Colors.black, thickness: .11),
+                                              Divider(),
                                             ];
                                           }).toList(),
                                         ),
@@ -445,7 +445,7 @@ class SetupScreen extends StatelessWidget {
                                                 ),
                                               ),
 
-                                              Divider(color: AppColors.prettyDark, thickness: .11),
+                                              Divider(color: AppColors.prettyDark, ),
 
                                               // Second Row (Transaction ID, Type, Date)
                                               Row(

@@ -85,7 +85,7 @@ showConfirmPayment(BuildContext context) {
                             ),
                       ),
                       SizedBox(height: 24),
-                      // Divider(color: Colors.black, thickness: .11),
+                      // Divider(color: Colors.black, ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -99,7 +99,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -113,7 +113,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,7 +137,7 @@ showConfirmPayment(BuildContext context) {
                         ],
                       ),
 
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,7 +152,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +167,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,7 +182,7 @@ showConfirmPayment(BuildContext context) {
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11), Gap(13),
+                      Divider(), Gap(13),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

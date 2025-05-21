@@ -91,7 +91,7 @@ showForexInfo({
                             ),
                       ),
                       SizedBox(height: 24),
-                      // Divider(color: Colors.black, thickness: .11),
+                      // Divider(color: Colors.black, ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,7 +106,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -120,7 +120,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -135,7 +135,7 @@ showForexInfo({
                         ],
                       ),
 
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +150,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,7 +165,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,7 +180,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +195,7 @@ showForexInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11), Gap(13),
+                      Divider(), Gap(13),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

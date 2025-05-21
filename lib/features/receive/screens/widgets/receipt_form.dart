@@ -1,3 +1,4 @@
+import 'package:ciyebooks/features/accounts/screens/widgets/create_account_form.dart';
 import 'package:ciyebooks/features/receive/screens/widgets/confirm_receipt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +32,14 @@ showReceiptForm(BuildContext context) {
         canPop: false,
         child: AlertDialog(
           titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.all(16),
+          insetPadding: EdgeInsets.all(6),
           backgroundColor: AppColors.quarternary,
           contentPadding: EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           title: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)), color: AppColors.quinary),
             width: double.maxFinite,
             // height: 30,
             child: Padding(
@@ -55,12 +56,17 @@ showReceiptForm(BuildContext context) {
                           style: TextStyle(color: AppColors.prettyDark, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      IconButton(
+                      Row(children: [IconButton(
+                          onPressed: () => showCreateAccountDialog(context),
+                          icon: Icon(
+                            Icons.add,
+                            color: AppColors.prettyDark,
+                          )),Gap(20), IconButton(
                           onPressed: () => Navigator.of(context).pop(),
                           icon: Icon(
                             Icons.close,
                             color: AppColors.prettyDark,
-                          ))
+                          )),Gap(20),],)
                     ],
                   ),
                 ],
@@ -391,9 +397,8 @@ showReceiptForm(BuildContext context) {
               ),
               Gap(AppSizes.spaceBtwItems),
               TextFormField(
-                maxLength: 40,
-                maxLines: 2,
-                minLines: 2,
+                maxLength: 20,
+            
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Description";
@@ -402,7 +407,7 @@ showReceiptForm(BuildContext context) {
                 },
                 controller: controller.description,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical:16 ),
                   labelText: "Description",
                   // constraints: BoxConstraints.tight(
                   // const Size.fromHeight(50),
@@ -432,7 +437,7 @@ showReceiptForm(BuildContext context) {
                         style: TextStyle(color: AppColors.quinary, fontWeight: FontWeight.w600),
                       )),
                 ),
-              ),
+              ),Gap(3)
             ],
           ),
         ),

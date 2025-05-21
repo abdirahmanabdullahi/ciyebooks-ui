@@ -29,14 +29,14 @@ return showDialog(
 
       return AlertDialog(
         titlePadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(16),
+        insetPadding: EdgeInsets.all(6),
         contentPadding: EdgeInsets.all(16),
         backgroundColor: AppColors.quarternary,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         title: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
+          decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)), color: AppColors.quinary),
           width: double.maxFinite,
           // height: 30,
           child: Padding(

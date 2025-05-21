@@ -286,8 +286,8 @@ class Dashboard extends StatelessWidget {
                                         ),
                                         Divider(
                                           height: 0,
-                                          thickness: .11,
-                                          color: AppColors.prettyDark,
+                                          
+                                      
                                         )
                                       ],
                                     );
@@ -330,8 +330,10 @@ class Dashboard extends StatelessWidget {
                         Gap(8),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 0, 16, 16),
-                          child: Obx(() => Column(
-                                children: controller.totals.value.bankBalances.entries.map((entry) {
+                          child: Obx(
+                            () => Column(
+                              children: controller.totals.value.bankBalances.entries.map(
+                                (entry) {
                                   return Column(
                                     children: [
                                       Padding(
@@ -346,13 +348,15 @@ class Dashboard extends StatelessWidget {
                                       ),
                                       Divider(
                                         height: 0,
-                                        thickness: .11,
-                                        color: AppColors.prettyDark,
+                                        
+
                                       )
                                     ],
                                   );
-                                }).toList(),
-                              )),
+                                },
+                              ).toList(),
+                            ),
+                          ),
                         ),
                       ],
                     ),

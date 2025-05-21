@@ -111,7 +111,7 @@ showReceiptInfo({
                                 )),
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -123,7 +123,7 @@ showReceiptInfo({
                           ],
                         ),
 
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -137,7 +137,7 @@ showReceiptInfo({
                                 )),
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -151,7 +151,7 @@ showReceiptInfo({
                                 ))
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -165,7 +165,7 @@ showReceiptInfo({
                                 )),
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -179,7 +179,7 @@ showReceiptInfo({
                                 )),
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -193,7 +193,7 @@ showReceiptInfo({
                                 )),
                           ],
                         ),
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
                         Gap(13),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

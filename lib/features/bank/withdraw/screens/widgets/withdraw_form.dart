@@ -31,13 +31,13 @@ showWithdrawForm(BuildContext context) {
         child: AlertDialog(
           titlePadding: EdgeInsets.zero,
           backgroundColor: AppColors.quarternary,
-          insetPadding: EdgeInsets.all(16),
+          insetPadding: EdgeInsets.all(6),
           contentPadding: EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           title: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12)), color: AppColors.quinary),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)), color: AppColors.quinary),
             width: double.maxFinite,
             // height: 30,
             child: Padding(
@@ -250,9 +250,9 @@ showWithdrawForm(BuildContext context) {
               ),
               Gap(AppSizes.spaceBtwItems),
               TextFormField(
-                maxLength: 40,
-                maxLines: 3,
-                minLines: 3,
+                maxLength: 20,
+                maxLines: 2,
+                minLines: 2,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Description";

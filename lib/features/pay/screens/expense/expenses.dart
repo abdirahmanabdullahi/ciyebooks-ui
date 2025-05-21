@@ -55,7 +55,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                       context: context,
                       transactionCode: data['transactionId'],
                       category: data['category'],
-                      amountPaid: data['amountPaid'].toString(),
+                      amountPaid: data['amount'].toString(),
                       description: data['description'],
                       currency: data['currency'],
                       date: data['dateCreated'].toDate()),
@@ -116,7 +116,7 @@ class ExpenseHistoryState extends State<ExpenseHistory> {
                           ],
                         ),
 
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider( ),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

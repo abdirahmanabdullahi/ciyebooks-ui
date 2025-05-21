@@ -123,7 +123,7 @@ class PaymentsHistoryState extends State<PaymentsHistory> {
                           ],
                         ),
 
-                        Divider(color: Colors.black, thickness: .11),
+                        Divider(),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

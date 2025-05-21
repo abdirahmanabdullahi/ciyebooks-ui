@@ -87,7 +87,7 @@ class Accounts extends StatelessWidget {
                                   )),
                             ],
                           ),
-                          Divider(color: Colors.black, thickness: .11),
+                          Divider(),
                         ],
                       );
                     }).toList()),
@@ -115,9 +115,8 @@ class Accounts extends StatelessWidget {
                         ),
                       ),
 
-                      Divider(color: AppColors.prettyDark, thickness: .11),
+                      Divider(),
 
-                      // Second Row (Transaction ID, Type, Date)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

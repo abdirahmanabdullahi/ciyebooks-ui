@@ -105,8 +105,8 @@ showBankWithdrawInfo({
                         ],
                       ),
 
-                      Divider(color: Colors.black, thickness: .11),
-                      // Divider(color: Colors.black, thickness: .11),
+                      Divider(),
+                      //    Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,8 +120,8 @@ showBankWithdrawInfo({
                                 fontSize: 13,
                               )),
                         ],
-                      ), Divider(color: Colors.black, thickness: .11),
-                      // Divider(color: Colors.black, thickness: .11),
+                      ),    Divider(),
+                      //    Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,7 +137,7 @@ showBankWithdrawInfo({
                         ],
                       ),
 
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,7 +152,7 @@ showBankWithdrawInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11),
+                      Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +167,7 @@ showBankWithdrawInfo({
                               )),
                         ],
                       ),
-                      Divider(color: Colors.black, thickness: .11), Gap(13),
+                      Divider(), Gap(13),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
