@@ -133,7 +133,7 @@ class AccountStatement extends StatelessWidget {
                             ),
                             TextSpan(
                               text: accountName,
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: CupertinoColors.systemBlue),
+                              style: TextStyle(fontSize: 12, color: CupertinoColors.systemBlue),
                             ),
                             // TextSpan(
                             //   text: formatter.format(
@@ -164,7 +164,7 @@ class AccountStatement extends StatelessWidget {
                             ),
                             TextSpan(
                               text: accountNo,
-                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: CupertinoColors.systemBlue),
+                              style: TextStyle(fontSize: 12, color: CupertinoColors.systemBlue),
                             ),
                             // TextSpan(
                             //   text: formatter.format(
@@ -242,7 +242,7 @@ class AccountStatement extends StatelessWidget {
                           color: AppColors.quarternary,
                           child: Row(
                             children: [
-                              Expanded(flex: 2, child: Text('Date', style: TextStyle(fontWeight: FontWeight.bold))),
+                              Expanded(flex: 3, child: Text('Date', style: TextStyle(fontWeight: FontWeight.bold))),
                               Expanded(flex: 3, child: Text('Description', style: TextStyle(fontWeight: FontWeight.bold))),
                               // Expanded(flex: 1, child: Text('Type', style: TextStyle(fontWeight: FontWeight.bold))),
                               // Expanded(flex: 2, child: Text('Currency', style: TextStyle(fontWeight: FontWeight.bold))),
@@ -271,7 +271,7 @@ class AccountStatement extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      flex: 2,
+                                      flex: 3,
                                       child: Text(DateFormat('dd MMMM yyy').format(transaction['dateCreated'].toDate())),
                                     ),
                                     Expanded(
