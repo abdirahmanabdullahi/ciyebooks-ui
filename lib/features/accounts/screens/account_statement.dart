@@ -47,7 +47,7 @@ class AccountStatement extends StatelessWidget {
       ).then((picked) {
         if (picked != null) {
           controller.startingDate.value = picked.start;
-          controller.endDate.value = picked.end;
+          controller.endDate.value = picked.end.add(Duration(days: 1));
           // controller.selectedDate.value = DateFormat("d MMM yyyy").format(date);
         }
       });
