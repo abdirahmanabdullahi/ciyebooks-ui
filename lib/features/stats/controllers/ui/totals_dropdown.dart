@@ -78,7 +78,9 @@ showAddTotals(context) {
                 ),
                 label: Text('Type'),
                 selectedTrailingIcon: Icon(Icons.search),
-                onSelected: (value) {},
+                onSelected: (value) {
+                  controller.updateButtonStatus();
+                },
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                       style: ButtonStyle(
@@ -129,9 +131,11 @@ showAddTotals(context) {
                   backgroundColor: WidgetStateProperty.all(AppColors.quinary), // Adjust height here,
                   maximumSize: WidgetStateProperty.all(Size(double.infinity, 200)), // Adjust height here
                 ),
-                label: Text('Received from'),
+                label: Text('Currency'),
                 selectedTrailingIcon: Icon(Icons.search),
-                onSelected: (value) {},
+                onSelected: (value) {
+                  controller.updateButtonStatus();
+                },
                 dropdownMenuEntries: [
                   DropdownMenuEntry(
                       style: ButtonStyle(
@@ -158,6 +162,9 @@ showAddTotals(context) {
                 ]),
             Gap(10),
             TextFormField(
+              onChanged: (value) {
+                controller.updateButtonStatus();
+              },
               controller: controller.amount,
               decoration: InputDecoration(contentPadding: EdgeInsets.symmetric(horizontal: 16), label: Text('Amount')),
             ),
@@ -165,15 +172,19 @@ showAddTotals(context) {
             SizedBox(
               height: 45,
               width: double.maxFinite,
-              child: FloatingActionButton(
-                backgroundColor: AppColors.prettyBlue,
-                elevation: 0,
-                onPressed: () {
-                  controller.checkInternetConnectionTotals(context);
-                },
-                child: Text(
-                  'Add',
-                  style: TextStyle(color: AppColors.quinary),
+              child: Obx(
+                ()=> FloatingActionButton(disabledElevation: 0,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: controller.isButtonEnabled.value?AppColors.prettyBlue:AppColors.prettyGrey,
+                  // elevation: 0,
+                  onPressed: !controller.isButtonEnabled.value
+                      ? null
+                      : () {
+                          controller.checkInternetConnectionTotals(context);
+                        },
+                  child: Text(
+                    'Add',
+                    style: TextStyle(color: AppColors.quinary),
+                  ),
                 ),
               ),
             )

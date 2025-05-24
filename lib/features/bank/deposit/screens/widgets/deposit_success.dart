@@ -106,7 +106,6 @@ showBankDepositInfo({
                       ),
 
                       Divider(),
-                      //    Divider(),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

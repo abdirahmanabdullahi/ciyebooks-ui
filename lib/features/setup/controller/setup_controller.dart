@@ -21,6 +21,7 @@ class SetupController extends GetxController {
   static SetupController get instance => Get.find();
 
   final isLoading = false.obs;
+  final isButtonEnabled = false.obs;
   // GlobalKey<FormState> capitalFormKey = GlobalKey<FormState>();
   // GlobalKey<FormState> cashKesInHandFormKey = GlobalKey<FormState>();
   Rx<BalancesModel> totals = BalancesModel.empty().obs;
@@ -31,17 +32,11 @@ class SetupController extends GetxController {
 
   ///Transaction counters
   final counters = {}.obs;
-
   final _uid = FirebaseAuth.instance.currentUser?.uid;
-
   RxList<PayClientModel> payments = <PayClientModel>[].obs;
-
   RxList<ReceiveModel> receipts = <ReceiveModel>[].obs;
-
   RxList<ExpenseModel> expenses = <ExpenseModel>[].obs;
-
   RxList<WithdrawModel> withdrawals = <WithdrawModel>[].obs;
-
   RxList<DepositModel> deposits = <DepositModel>[].obs;
 
   /// For setup totals
@@ -56,6 +51,9 @@ class SetupController extends GetxController {
 
   @override
   void onInit() {
+    type.addListener(updateButtonStatus);
+    amount.addListener(updateButtonStatus);
+    currency.addListener(updateButtonStatus);
     /// Stream for the totals
 
     FirebaseFirestore.instance.collection('users').doc(_uid).collection('setup').doc('balances').snapshots().listen((snapshot) {
@@ -81,6 +79,11 @@ class SetupController extends GetxController {
     });
 
     super.onInit();
+  }
+
+  ///Enable/disable the totals update button
+  updateButtonStatus(){
+    isButtonEnabled.value = type.text.isNotEmpty&&currency.text.isNotEmpty&&amount.text.isNotEmpty&&(double.parse(amount.text.trim())>0);
   }
 
   clearControllers(){

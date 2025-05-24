@@ -63,7 +63,7 @@ class AppTexts {
   static const String changeYourPasswordTitle = "Password Reset Email Sent";
   static const String changeYourPasswordSubTitle = "Your account security is our priority! We've Sent You a secure link to safely change your password and keep your account protected.";
   static const String confirmEmail = "Verify your email address!";
-  static const String confirmEmailSubTitle = "Congratulations! Your Account Awaits: Verify Your Email to Start Shopping and Experience a World of Unrivaled Deals and Personalized Offers.";
+  static const String confirmEmailSubTitle = "Congratulations! Your Account Awaits: Verify Your Email to access your account";
   static const String emailNotReceivedMessage = "Didn’t get the email? Check your junk/spam or resend it.";
   static const String yourAccountCreatedTitle = "Your account was successfully created!";
   static const String emailVerified = "Your email has been verified";

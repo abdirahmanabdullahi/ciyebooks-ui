@@ -18,9 +18,9 @@ class VerifyEmail extends StatelessWidget {
     final controller = Get.put(VerifyEmailController());
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.quarternary,
+        backgroundColor: AppColors.prettyBlue,
         automaticallyImplyLeading: true,leading: IconButton(onPressed: (){FirebaseAuth.instance.signOut();
-          AuthRepo.instance.screenRedirect();}, icon: Icon(Icons.arrow_back_ios)),
+          AuthRepo.instance.screenRedirect();}, icon: Icon(Icons.arrow_back_ios,color: AppColors.quinary,)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -38,12 +38,12 @@ class VerifyEmail extends StatelessWidget {
                   AppTexts.confirmEmail,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const Gap(AppSizes.spaceBtwItems),
-                Text(
-                  'info@ciyebooks.com',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
+                // const Gap(AppSizes.spaceBtwItems),
+                // Text(
+                //   'info@ciyebooks.com',
+                //   style: Theme.of(context).textTheme.bodyLarge,
+                //   textAlign: TextAlign.center,
+                // ),
                 const Gap(AppSizes.spaceBtwItems),
                 Text(
                   AppTexts.confirmEmailSubTitle,
@@ -56,7 +56,7 @@ class VerifyEmail extends StatelessWidget {
                   width: double.infinity,
                   child: FloatingActionButton(
                     elevation: 2,
-                    backgroundColor: AppColors.prettyDark,
+                    backgroundColor: AppColors.prettyBlue,
                     child: Text(
                       AppTexts.tContinue,
                       style: Theme.of(context).textTheme.titleLarge!.apply(color: AppColors.quinary),

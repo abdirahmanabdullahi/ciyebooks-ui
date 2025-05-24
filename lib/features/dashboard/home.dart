@@ -164,11 +164,11 @@ class Dashboard extends StatelessWidget {
                               formatter
                                   .format((double.parse(controller.totals.value.cashBalances['KES'].toString()) + double.parse(controller.totals.value.bankBalances['KES'].toString())))
                                   .toString(),
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 35, color: AppColors.quinary),
+                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 30, color: AppColors.quinary),
                             ),
                           )),
                     ),
-                    Gap(18),
+                    Gap(35),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

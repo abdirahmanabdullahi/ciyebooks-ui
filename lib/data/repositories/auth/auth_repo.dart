@@ -44,7 +44,7 @@ class AuthRepo extends GetxController {
 
 
       } else {
-        Get.offAll(() => VerifyEmail());
+        Get.off(() => VerifyEmail());
       }
     } else {
       Get.offAll(() => Login());
