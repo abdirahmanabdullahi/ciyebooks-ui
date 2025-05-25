@@ -25,9 +25,9 @@ class AccountStatement extends StatelessWidget {
         initialEntryMode: DatePickerEntryMode.calendarOnly,
         context: context,
         firstDate: DateTime(1900),
-        lastDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 1)),
         builder: (context, child) {
-          return Theme(
+          return Theme( 
             data: Theme.of(context).copyWith(
                 colorScheme: ColorScheme.light(
                   primary: AppColors.prettyBlue, // header background color
@@ -205,7 +205,7 @@ class AccountStatement extends StatelessWidget {
                                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: CupertinoColors.black),
                               ),
                               TextSpan(
-                                text: DateFormat('dd MMM yyy').format(controller.endDate.value),
+                                text: DateFormat('dd MMM yyy').format(controller.endDate.value.subtract(Duration(days: 1))),
                                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: CupertinoColors.systemBlue),
                               ),
                               // TextSpan(
