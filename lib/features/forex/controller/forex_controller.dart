@@ -83,7 +83,7 @@ class ForexController extends GetxController {
 
   @override
   onInit() async {
-    fetchTotals();
+    fetchCurrencyStock();
     fetchCurrencies();
     createDailyReport();
 
@@ -294,7 +294,7 @@ class ForexController extends GetxController {
         ((num.tryParse(sellingRate.text) ?? 0) > 0 && (num.tryParse(amount.text) ?? 0) > 0 && (num.tryParse(sellingTotal.text.replaceAll(',', '')) ?? 0) > 0);
   }
 
-  fetchTotals() async {
+  fetchCurrencyStock() async {
     FirebaseFirestore.instance.collection('users').doc(_uid).collection('currencyStock').snapshots().listen((querySnapshot) {
       currencyStock.value = querySnapshot.docs.map((doc) {
         return CurrencyModel.fromJson(doc.data());

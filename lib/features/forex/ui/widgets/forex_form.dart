@@ -60,7 +60,11 @@ showForexForm(BuildContext context) {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: IconButton(
-                                onPressed: () => showAddNewCurrencyDialog(context),
+                                onPressed: ()async{ await controller.clearController();
+                                  if(context.mounted){
+                                    showAddNewCurrencyDialog(context);
+                                  }
+                                  },
                                 icon: Icon(
                                   Icons.add,
                                   color: AppColors.prettyDark,

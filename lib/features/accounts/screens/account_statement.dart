@@ -27,7 +27,7 @@ class AccountStatement extends StatelessWidget {
         firstDate: DateTime(1900),
         lastDate: DateTime.now().add(Duration(days: 1)),
         builder: (context, child) {
-          return Theme( 
+          return Theme(
             data: Theme.of(context).copyWith(
                 colorScheme: ColorScheme.light(
                   primary: AppColors.prettyBlue, // header background color
@@ -193,14 +193,16 @@ class AccountStatement extends StatelessWidget {
                               TextSpan(
                                 text: 'Period:    ',
                                 style: TextStyle(fontSize: 12, color: AppColors.prettyDark),
-                              ), TextSpan(
+                              ),
+                              TextSpan(
                                 text: '    From   ',
                                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: CupertinoColors.black),
                               ),
                               TextSpan(
                                 text: DateFormat('dd MMM yyy').format(controller.startingDate.value),
                                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: CupertinoColors.systemBlue),
-                              ), TextSpan(
+                              ),
+                              TextSpan(
                                 text: '    to   ',
                                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12, color: CupertinoColors.black),
                               ),
