@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:ciyebooks/features/stats/controllers/stats_controller.dart';
 import 'package:ciyebooks/features/stats/models/stats_model.dart';
@@ -24,35 +23,7 @@ class StatsScreen extends StatelessWidget {
     final controller = Get.put(StatsController());
 
     void showDialog() {
-      Platform.isIOS
-          ? showCupertinoModalPopup<void>(
-              context: context,
-              builder: (BuildContext context) => Container(
-                height: 216,
-                padding: const EdgeInsets.only(top: 6.0),
-                // The Bottom margin is provided to align the popup above the system
-                // navigation bar.
-                margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                // Provide a background color for the popup.
-                color: AppColors.quinary,
-                // Use a SafeArea widget to avoid system overlaps.
-                child: SafeArea(
-                  child: CupertinoDatePicker(
-                    backgroundColor: AppColors.quinary,
-                    initialDateTime: DateTime.now(),
-                    mode: CupertinoDatePickerMode.date,
-                    use24hFormat: true,
-                    // This shows day of week alongside day of month
-                    showDayOfWeek: true,
-                    onDateTimeChanged: (DateTime value) {
-                      controller.selectedDate.value = DateFormat("d MMM yyyy ").format(value);
-                    },
-                    // This is called when the user changes the date.
-                  ),
-                ),
-              ),
-            )
-          : showDatePicker(
+         showDatePicker(
               initialEntryMode: DatePickerEntryMode.calendarOnly,
               context: context,
               initialDate: DateTime.now(),
